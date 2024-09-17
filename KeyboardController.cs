@@ -18,7 +18,26 @@ namespace Legend_of_the_Power_Rangers
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {
-                
+                { Keys.W, new LinkUpCommand() },
+                { Keys.S, new LinkDownCommand() },
+                { Keys.A, new LinkLeftCommand() },
+                { Keys.D, new LinkRightCommand() },
+                { Keys.Z, new LinkSwordCommand() },
+                { Keys.N, new LinkSwordCommand() },
+                { Keys.D1, new LinkItem1Command() },
+                { Keys.D2, new LinkItem2Command() },
+                { Keys.D3, new LinkItem3Command() },
+                { Keys.D4, new LinkItem4Command() },
+                { Keys.D5, new LinkItem5Command() },
+                { Keys.E, new LinkBecomeDamagedCommand() },
+                { Keys.T, new BlockPreviousCommand() },
+                { Keys.Y, new BlockNextCommand() },
+                { Keys.U, new ItemShowPreviousCommand() },
+                { Keys.I, new ItemShowNextCommand() },
+                { Keys.O, new NPCShowPreviousCommand() },
+                { Keys.P, new NPCShowNextCommand() },
+                { Keys.Q, new QuitCommand() },
+                { Keys.R, new ResetCommand() }
             };
         }
         public void Update()

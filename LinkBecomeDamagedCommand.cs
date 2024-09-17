@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class LinkUpCommand : ICommand
+    public class LinkBecomeDamagedCommand : ICommand
     {
-        public LinkUpCommand() {
+        public LinkBecomeDamagedCommand() {
             
         }
         public void Execute()
