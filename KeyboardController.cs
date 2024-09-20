@@ -12,7 +12,6 @@ namespace Legend_of_the_Power_Rangers
     public class KeyboardController : IController<Keys>
     {
         private Dictionary<Keys, ICommand> keyCommandMappings;
-        private Texture2D pacManTexture;
 
         public KeyboardController(Game1 game)
         {
