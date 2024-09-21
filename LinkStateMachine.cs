@@ -48,7 +48,6 @@ namespace Legend_of_the_Power_Rangers
             switch (currentState)
             {
                 case LinkState.Right:
-                    //new link right sprite
                     break;
                 case LinkState.Left:
                     //
