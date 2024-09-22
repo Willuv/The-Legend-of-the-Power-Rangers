@@ -6,14 +6,16 @@ using System.Threading.Tasks;
 
 namespace Legend_of_the_Power_Rangers
 {
-    internal class LinkDownCommand : ICommand
+    public class LinkDownCommand : ICommand
     {
-        public LinkDownCommand() 
-        { 
-        }
-
-        public void Execute() 
+        private readonly LinkStateMachine stateMachine;
+        public LinkDownCommand()
         {
+            this.stateMachine = new LinkStateMachine();
+        }
+        public void Execute()
+        {
+            this.stateMachine.ChangeState(LinkStateMachine.LinkState.Down);
         }
     }
 }
