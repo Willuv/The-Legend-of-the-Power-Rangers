@@ -9,12 +9,14 @@ namespace Legend_of_the_Power_Rangers
 {
     public class LinkLeftCommand : ICommand
     {
-        public LinkLeftCommand() {
-            
+        private readonly LinkStateMachine stateMachine;
+        public LinkLeftCommand()
+        {
+            this.stateMachine = new LinkStateMachine();
         }
         public void Execute()
         {
-            
+            this.stateMachine.ChangeState(LinkStateMachine.LinkState.Left);
         }
     }
 }

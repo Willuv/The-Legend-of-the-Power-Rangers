@@ -9,6 +9,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
+        private KeyboardController keyboardControl;
         private Enemy enemy; // Consolidate to use only 'enemy'
 
         public Game1()
@@ -16,6 +17,7 @@ namespace Legend_of_the_Power_Rangers
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            keyboardControl = new KeyboardController();
         }
 
         protected override void Initialize()
