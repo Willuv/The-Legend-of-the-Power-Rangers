@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -9,6 +10,7 @@ namespace Legend_of_the_Power_Rangers
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
         private KeyboardController keyboardControl;
+        private Enemy enemy; // Consolidate to use only 'enemy'
 
         public Game1()
         {
@@ -20,24 +22,25 @@ namespace Legend_of_the_Power_Rangers
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
-
             base.Initialize();
         }
 
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
+            // Load textures in the sprite factory
+            EnemySpriteFactory.Instance.LoadAllTextures(Content);
+            // Initialize enemy at a starting position
+            enemy = new Enemy(new Vector2(200, 200)); 
         }
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
+            if (enemy == null)
+            {
+                throw new InvalidOperationException("Enemy not initialized");
+            }
+            enemy.Update(gameTime);
 
             base.Update(gameTime);
         }
@@ -45,9 +48,12 @@ namespace Legend_of_the_Power_Rangers
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-
+            _spriteBatch.Begin();
+            if (enemy != null)
+            {
+                enemy.Draw(_spriteBatch);
+            }
+            _spriteBatch.End();
             base.Draw(gameTime);
         }
     }
