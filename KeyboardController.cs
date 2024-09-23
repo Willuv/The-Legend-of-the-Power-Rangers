@@ -11,9 +11,9 @@ namespace Legend_of_the_Power_Rangers
 {
     public class KeyboardController : IController<Keys>
     {
-        private Dictionary<Keys, ICommand> keyCommandMappings;
+        private readonly Dictionary<Keys, ICommand> keyCommandMappings;
 
-        public KeyboardController(Game1 game)
+        public KeyboardController()
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {

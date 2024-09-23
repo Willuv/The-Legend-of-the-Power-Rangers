@@ -9,13 +9,16 @@ namespace Legend_of_the_Power_Rangers
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Enemy enemy; 
+        
+        private KeyboardController keyboardControl;
+        private Enemy enemy;
 
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            keyboardControl = new KeyboardController();
         }
 
         protected override void Initialize()
