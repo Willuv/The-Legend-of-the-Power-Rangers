@@ -9,7 +9,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        private Enemy enemy; // Consolidate to use only 'enemy'
+        private Enemy enemy; 
 
         public Game1()
         {
@@ -38,9 +38,9 @@ namespace Legend_of_the_Power_Rangers
             {
                 throw new InvalidOperationException("Enemy not initialized");
             }
-            enemy.Update(gameTime);
 
             base.Update(gameTime);
+            enemy.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
