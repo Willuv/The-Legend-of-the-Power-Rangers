@@ -9,8 +9,10 @@ namespace Legend_of_the_Power_Rangers
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-        
-        private KeyboardController keyboardControl;
+
+        private Link link;
+        private LinkStateMachine stateMachine;
+        private KeyboardController keyboardController;
         private Enemy enemy;
 
         public Game1()
@@ -18,7 +20,6 @@ namespace Legend_of_the_Power_Rangers
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            keyboardControl = new KeyboardController();
         }
 
         protected override void Initialize()
@@ -29,27 +30,35 @@ namespace Legend_of_the_Power_Rangers
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-            // Load textures in the sprite factory
+
+            Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
+            stateMachine = new LinkStateMachine(linkSpriteSheet);
+            link = new Link(linkSpriteSheet);
+            keyboardController = new KeyboardController(stateMachine);
+
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
-            // Initialize enemy at a starting position
             enemy = new Enemy(new Vector2(200, 200)); 
         }
 
         protected override void Update(GameTime gameTime)
         {
+
+            keyboardController.Update();
+            link.Update(gameTime);
             if (enemy == null)
             {
                 throw new InvalidOperationException("Enemy not initialized");
             }
-
-            base.Update(gameTime);
             enemy.Update(gameTime);
+            base.Update(gameTime);
+
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
+            link.Draw(_spriteBatch);
             if (enemy != null)
             {
                 enemy.Draw(_spriteBatch);

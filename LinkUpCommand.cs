@@ -10,8 +10,8 @@ namespace Legend_of_the_Power_Rangers
     public class LinkUpCommand : ICommand
     {
         private readonly LinkStateMachine stateMachine;
-        public LinkUpCommand() {
-            this.stateMachine = new LinkStateMachine();
+        public LinkUpCommand(LinkStateMachine stateMachine) {
+            this.stateMachine = stateMachine;
         }
         public void Execute()
         {

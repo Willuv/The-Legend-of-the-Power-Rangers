@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -14,8 +15,19 @@ namespace Legend_of_the_Power_Rangers
             Left, Right, Up, Down, Attack,
             Item1, Item2, Item3, Item4, Item5
         }
-        private LinkState currentState = LinkState.Right;
-        private LinkState lastDirection = LinkState.Right;
+
+        private LinkState currentState;
+        private LinkState lastDirection;
+        private Texture2D linkSpriteSheet;
+        private ISprite currentSprite;
+
+        public LinkStateMachine(Texture2D spriteSheet)
+        {
+            linkSpriteSheet = spriteSheet;
+            currentState = LinkState.Right;
+            lastDirection = LinkState.Right;
+            currentSprite = new LinkUpSprite(linkSpriteSheet);
+        }
 
         public void ChangeState(LinkState newState)
         {
@@ -53,6 +65,7 @@ namespace Legend_of_the_Power_Rangers
                     //
                     break;
                 case LinkState.Up:
+                    currentSprite = new LinkUpSprite(linkSpriteSheet);
                     break;
                 case LinkState.Down:
                     break;
@@ -162,6 +175,10 @@ namespace Legend_of_the_Power_Rangers
                 case LinkState.Item5:
                     break;
             }
+        }
+        public ISprite GetCurrentSprite()
+        {
+            return currentSprite;
         }
     }
 }
