@@ -36,13 +36,12 @@ namespace Legend_of_the_Power_Rangers
     public void Update(GameTime gameTime)
     {
         directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
-        if (directionChangeTimer >= 2) // Change direction every 2 seconds
+        if (directionChangeTimer >= 2)
         {
             SetRandomDirection();
             directionChangeTimer = 0;
         }
 
-        // Move enemy in the current direction
         position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
         position2 += direction * speed * 2 * (float)gameTime.ElapsedGameTime.TotalSeconds;
         sprite.Update(gameTime);
