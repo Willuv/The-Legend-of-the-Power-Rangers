@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,6 +13,7 @@ namespace Legend_of_the_Power_Rangers
     public class KeyboardController : IController<Keys>
     {
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
+        private readonly LinkIdleCommand idleCommand;
 
         public KeyboardController(LinkStateMachine stateMachine)
         {
@@ -38,10 +40,18 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.Q, new QuitCommand() },
                 { Keys.R, new ResetCommand() }
             };
+            idleCommand = new LinkIdleCommand(stateMachine);
         }
         public void Update()
         {
             Keys[] pressedKeys = Keyboard.GetState().GetPressedKeys();
+
+            if (pressedKeys.Length == 0)
+            {
+                idleCommand.Execute();
+                return;
+            }
+
             foreach (Keys key in pressedKeys)
             {
                 if (keyCommandMappings.ContainsKey(key))

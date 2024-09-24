@@ -12,7 +12,7 @@ namespace Legend_of_the_Power_Rangers
     {
         public enum LinkState
         {
-            Left, Right, Up, Down, Attack,
+            Left, Right, Up, Down, Idle, Attack,
             Item1, Item2, Item3, Item4, Item5
         }
 
@@ -24,36 +24,36 @@ namespace Legend_of_the_Power_Rangers
         public LinkStateMachine(Texture2D spriteSheet)
         {
             linkSpriteSheet = spriteSheet;
-            currentState = LinkState.Right;
+            currentState = LinkState.Idle;
             lastDirection = LinkState.Right;
             currentSprite = new LinkUpSprite(linkSpriteSheet);
         }
 
         public void ChangeState(LinkState newState)
         {
+            if (newState == LinkState.Idle)
+            {
+                currentState = newState;
+                return;
+            }
             if (newState == LinkState.Attack)
             {
                 ChangeAttackState();
             }
-            else if (newState == LinkState.Item1 ||
-                    newState == LinkState.Item2 || newState == LinkState.Item3 ||
-                    newState == LinkState.Item4 || newState == LinkState.Item5)
+            else if (newState == LinkState.Item1 || newState == LinkState.Item2 ||
+                     newState == LinkState.Item3 || newState == LinkState.Item4 || 
+                     newState == LinkState.Item5)
             {
                 ChangeItemState(newState);
             }
             else
             {
-                if (newState != LinkState.Attack &&
-                    !(newState == LinkState.Item1 || newState == LinkState.Item2 ||
-                    newState == LinkState.Item3 || newState == LinkState.Item4 ||
-                    newState == LinkState.Item5))
-                {
-                    lastDirection = newState;
-                }
+                lastDirection = newState;
                 currentState = newState;
                 ChangeDirectionState();
             }
         }
+
 
         private void ChangeDirectionState()
         {
@@ -179,6 +179,15 @@ namespace Legend_of_the_Power_Rangers
         public ISprite GetCurrentSprite()
         {
             return currentSprite;
+        }
+        public LinkState GetCurrentState()
+        {
+            return currentState;
+        }
+
+        public LinkState GetLastDirection()
+        {
+            return lastDirection;
         }
     }
 }
