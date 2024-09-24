@@ -36,12 +36,13 @@ namespace Legend_of_the_Power_Rangers
                 currentState = newState;
                 return;
             }
+
             if (newState == LinkState.Attack)
             {
                 ChangeAttackState();
             }
             else if (newState == LinkState.Item1 || newState == LinkState.Item2 ||
-                     newState == LinkState.Item3 || newState == LinkState.Item4 || 
+                     newState == LinkState.Item3 || newState == LinkState.Item4 ||
                      newState == LinkState.Item5)
             {
                 ChangeItemState(newState);
@@ -62,17 +63,16 @@ namespace Legend_of_the_Power_Rangers
                 case LinkState.Right:
                     break;
                 case LinkState.Left:
-                    //
                     break;
                 case LinkState.Up:
                     currentSprite = new LinkUpSprite(linkSpriteSheet);
                     break;
                 case LinkState.Down:
+                    currentSprite = new LinkDownSprite(linkSpriteSheet);
                     break;
-            }
-            currentState = lastDirection;
-        }
 
+            }
+        } 
         private void ChangeAttackState()
             {
                 switch(lastDirection)

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class LinkUpSprite : ISprite
+    public class LinkDownSprite : ISprite
     {
         private Texture2D linkTexture;
         private int currentFrame;
@@ -13,7 +13,7 @@ namespace Legend_of_the_Power_Rangers
         private int spriteWidth;
         private int spriteHeight;
         private int currentLinkLocation;
-        public LinkUpSprite(Texture2D texture)
+        public LinkDownSprite(Texture2D texture)
         {
             linkTexture = texture;
             currentFrame = 0;
@@ -26,7 +26,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
-            Rectangle sourceRectangle = new Rectangle(60, currentLinkLocation, 14, 16);
+            Rectangle sourceRectangle = new Rectangle(0, currentLinkLocation, 14, 16);
             spriteBatch.Draw(linkTexture, position, sourceRectangle, Color.White);
 
         }
