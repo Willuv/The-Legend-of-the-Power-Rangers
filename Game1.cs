@@ -34,8 +34,8 @@ namespace Legend_of_the_Power_Rangers
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             stateMachine = new LinkStateMachine(linkSpriteSheet);
-            link = new Link(linkSpriteSheet);
-            movement = new LinkMovement(link);
+            link = new Link(linkSpriteSheet, stateMachine);
+            movement = new LinkMovement(link, stateMachine);
 
             keyboardController = new KeyboardController(stateMachine);
 

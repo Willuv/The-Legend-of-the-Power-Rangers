@@ -13,6 +13,7 @@ namespace Legend_of_the_Power_Rangers
         private int spriteWidth;
         private int spriteHeight;
         private int currentLinkLocation;
+        private float scaleFactor = 2f;
         public LinkUpSprite(Texture2D texture)
         {
             linkTexture = texture;
@@ -27,7 +28,7 @@ namespace Legend_of_the_Power_Rangers
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             Rectangle sourceRectangle = new Rectangle(60, currentLinkLocation, 14, 16);
-            spriteBatch.Draw(linkTexture, position, sourceRectangle, Color.White);
+            spriteBatch.Draw(linkTexture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
 
         }
         public void Update(GameTime gameTime)

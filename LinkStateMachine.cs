@@ -31,12 +31,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void ChangeState(LinkState newState)
         {
-            if (newState == LinkState.Idle)
-            {
-                currentState = newState;
-                return;
-            }
-
+            Console.WriteLine($"State changed to: {newState}");
             if (newState == LinkState.Attack)
             {
                 ChangeAttackState();
@@ -61,8 +56,10 @@ namespace Legend_of_the_Power_Rangers
             switch (currentState)
             {
                 case LinkState.Right:
+                    currentSprite = new LinkRightSprite(linkSpriteSheet);
                     break;
                 case LinkState.Left:
+                    currentSprite = new LinkLeftSprite(linkSpriteSheet);
                     break;
                 case LinkState.Up:
                     currentSprite = new LinkUpSprite(linkSpriteSheet);
@@ -176,6 +173,7 @@ namespace Legend_of_the_Power_Rangers
                     break;
             }
         }
+
         public ISprite GetCurrentSprite()
         {
             return currentSprite;
