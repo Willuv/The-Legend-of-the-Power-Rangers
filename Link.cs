@@ -22,6 +22,11 @@ namespace Legend_of_the_Power_Rangers
             position = new Vector2(200, 200);
         }
 
+        public void UpdatePosition(Vector2 movement)
+        {
+            position += movement;
+        }
+
         public void Update(GameTime gameTime)
         {
             ISprite currentSprite = stateMachine.GetCurrentSprite();

@@ -12,6 +12,7 @@ namespace Legend_of_the_Power_Rangers
 
         private Link link;
         private LinkStateMachine stateMachine;
+        private LinkMovement movement;
         private KeyboardController keyboardController;
         private Enemy enemy;
 
@@ -34,6 +35,8 @@ namespace Legend_of_the_Power_Rangers
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             stateMachine = new LinkStateMachine(linkSpriteSheet);
             link = new Link(linkSpriteSheet);
+            movement = new LinkMovement(link);
+
             keyboardController = new KeyboardController(stateMachine);
 
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
@@ -44,7 +47,9 @@ namespace Legend_of_the_Power_Rangers
         {
 
             keyboardController.Update();
+            movement.UpdateMovement(stateMachine);
             link.Update(gameTime);
+
             if (enemy == null)
             {
                 throw new InvalidOperationException("Enemy not initialized");
@@ -58,6 +63,7 @@ namespace Legend_of_the_Power_Rangers
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             _spriteBatch.Begin();
+
             link.Draw(_spriteBatch);
             if (enemy != null)
             {
