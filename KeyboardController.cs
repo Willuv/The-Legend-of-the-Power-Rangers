@@ -13,14 +13,14 @@ namespace Legend_of_the_Power_Rangers
     {
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
 
-        public KeyboardController()
+        public KeyboardController(LinkStateMachine stateMachine)
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {
-                { Keys.W, new LinkUpCommand() },
-                { Keys.S, new LinkDownCommand() },
-                { Keys.A, new LinkLeftCommand() },
-                { Keys.D, new LinkRightCommand() },
+                { Keys.W, new LinkUpCommand(stateMachine) },
+                { Keys.S, new LinkDownCommand(stateMachine) },
+                { Keys.A, new LinkLeftCommand(stateMachine) },
+                { Keys.D, new LinkRightCommand(stateMachine) },
                 { Keys.Z, new LinkSwordCommand() },
                 { Keys.N, new LinkSwordCommand() },
                 { Keys.D1, new LinkItem1Command() },
