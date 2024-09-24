@@ -15,10 +15,10 @@ namespace Legend_of_the_Power_Rangers
         private LinkStateMachine stateMachine;
         private Vector2 position;
 
-        public Link(Texture2D spriteSheet)
+        public Link(Texture2D spriteSheet, LinkStateMachine stateMachine)
         {
             linkSpriteSheet = spriteSheet;
-            stateMachine = new LinkStateMachine(spriteSheet);
+            this.stateMachine = stateMachine;
             position = new Vector2(200, 200);
         }
 

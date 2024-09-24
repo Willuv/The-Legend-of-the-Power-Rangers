@@ -31,17 +31,13 @@ namespace Legend_of_the_Power_Rangers
 
         public void ChangeState(LinkState newState)
         {
-            if (newState == LinkState.Idle)
-            {
-                currentState = newState;
-                return;
-            }
+            Console.WriteLine($"State changed to: {newState}");
             if (newState == LinkState.Attack)
             {
                 ChangeAttackState();
             }
             else if (newState == LinkState.Item1 || newState == LinkState.Item2 ||
-                     newState == LinkState.Item3 || newState == LinkState.Item4 || 
+                     newState == LinkState.Item3 || newState == LinkState.Item4 ||
                      newState == LinkState.Item5)
             {
                 ChangeItemState(newState);
@@ -60,19 +56,20 @@ namespace Legend_of_the_Power_Rangers
             switch (currentState)
             {
                 case LinkState.Right:
+                    currentSprite = new LinkRightSprite(linkSpriteSheet);
                     break;
                 case LinkState.Left:
-                    //
+                    currentSprite = new LinkLeftSprite(linkSpriteSheet);
                     break;
                 case LinkState.Up:
                     currentSprite = new LinkUpSprite(linkSpriteSheet);
                     break;
                 case LinkState.Down:
+                    currentSprite = new LinkDownSprite(linkSpriteSheet);
                     break;
-            }
-            currentState = lastDirection;
-        }
 
+            }
+        } 
         private void ChangeAttackState()
             {
                 switch(lastDirection)
@@ -176,6 +173,7 @@ namespace Legend_of_the_Power_Rangers
                     break;
             }
         }
+
         public ISprite GetCurrentSprite()
         {
             return currentSprite;
