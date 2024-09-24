@@ -13,7 +13,7 @@ namespace Legend_of_the_Power_Rangers
         private int spriteWidth;
         private int spriteHeight;
         private int currentLinkLocation;
-        private float scaleFactor = 2f;
+        private float scaleFactor = 3f;
         public LinkLeftSprite(Texture2D texture)
         {
             linkTexture = texture;

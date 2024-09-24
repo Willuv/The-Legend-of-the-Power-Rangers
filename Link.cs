@@ -29,8 +29,11 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
-            ISprite currentSprite = stateMachine.GetCurrentSprite();
-            currentSprite.Update(gameTime);
+            if (stateMachine.GetCurrentState() != LinkStateMachine.LinkState.Idle)
+            {
+                ISprite currentSprite = stateMachine.GetCurrentSprite();
+                currentSprite.Update(gameTime);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)

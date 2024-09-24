@@ -26,12 +26,15 @@ namespace Legend_of_the_Power_Rangers
             linkSpriteSheet = spriteSheet;
             currentState = LinkState.Idle;
             lastDirection = LinkState.Right;
-            currentSprite = new LinkUpSprite(linkSpriteSheet);
+            currentSprite = new LinkRightSprite(linkSpriteSheet);
         }
 
         public void ChangeState(LinkState newState)
         {
-            Console.WriteLine($"State changed to: {newState}");
+            if (newState == currentState)
+            {
+                return;
+            }
             if (newState == LinkState.Attack)
             {
                 ChangeAttackState();

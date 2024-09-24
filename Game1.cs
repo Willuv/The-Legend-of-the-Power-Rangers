@@ -69,7 +69,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 enemy.Draw(_spriteBatch);
             }
-            _spriteBatch.End();
+            _spriteBatch.End(); 
             base.Draw(gameTime);
         }
     }

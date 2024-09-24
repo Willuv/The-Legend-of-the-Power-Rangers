@@ -13,7 +13,7 @@ namespace Legend_of_the_Power_Rangers
         private int spriteWidth;
         private int spriteHeight;
         private int currentLinkLocation;
-        private float scaleFactor = 2f;
+        private float scaleFactor = 3f;
         public LinkDownSprite(Texture2D texture)
         {
             linkTexture = texture;
@@ -24,7 +24,7 @@ namespace Legend_of_the_Power_Rangers
             currentLinkLocation = 0;
             nextSpriteDistance = 28;
         }
-            
+
         public void Draw(SpriteBatch spriteBatch, Vector2 position)
         {
             Rectangle sourceRectangle = new Rectangle(0, currentLinkLocation, 14, 16);
