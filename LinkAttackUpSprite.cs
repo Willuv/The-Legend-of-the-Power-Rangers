@@ -52,6 +52,7 @@ namespace Legend_of_the_Power_Rangers
                 currentFrame = 0;
             }
         }
+
     }
 
 
