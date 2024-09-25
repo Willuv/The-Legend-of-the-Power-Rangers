@@ -19,36 +19,41 @@ namespace Legend_of_the_Power_Rangers
         private LinkState currentState;
         private LinkState lastDirection;
         private Texture2D linkSpriteSheet;
-        private ISprite currentSprite;
+        private ILinkSprite currentSprite;
 
         public LinkStateMachine(Texture2D spriteSheet)
         {
             linkSpriteSheet = spriteSheet;
             currentState = LinkState.Idle;
             lastDirection = LinkState.Right;
-            currentSprite = new LinkUpSprite(linkSpriteSheet);
+            currentSprite = new LinkRightSprite(linkSpriteSheet);
         }
 
         public void ChangeState(LinkState newState)
         {
-            if (newState == LinkState.Idle)
+            if (newState == currentState)
             {
-                currentState = newState;
                 return;
             }
             if (newState == LinkState.Attack)
             {
                 ChangeAttackState();
+                currentState = LinkState.Attack;
+                return;
             }
-            else if (newState == LinkState.Item1 || newState == LinkState.Item2 ||
-                     newState == LinkState.Item3 || newState == LinkState.Item4 || 
+
+            if (newState == LinkState.Item1 || newState == LinkState.Item2 ||
+                     newState == LinkState.Item3 || newState == LinkState.Item4 ||
                      newState == LinkState.Item5)
             {
                 ChangeItemState(newState);
             }
-            else
+            if (newState == LinkState.Up || newState == LinkState.Down ||
+                newState == LinkState.Left || newState == LinkState.Right)
             {
                 lastDirection = newState;
+            }
+            {
                 currentState = newState;
                 ChangeDirectionState();
             }
@@ -60,49 +65,66 @@ namespace Legend_of_the_Power_Rangers
             switch (currentState)
             {
                 case LinkState.Right:
+                    currentSprite = new LinkRightSprite(linkSpriteSheet);
                     break;
                 case LinkState.Left:
-                    //
+                    currentSprite = new LinkLeftSprite(linkSpriteSheet);
                     break;
                 case LinkState.Up:
                     currentSprite = new LinkUpSprite(linkSpriteSheet);
                     break;
                 case LinkState.Down:
+                    currentSprite = new LinkDownSprite(linkSpriteSheet);
                     break;
-            }
-            currentState = lastDirection;
-        }
 
+            }
+        } 
         private void ChangeAttackState()
             {
                 switch(lastDirection)
                 {
+                    
                     case LinkState.Right:
+                    System.Diagnostics.Debug.WriteLine($"Attack Right");
+                    currentSprite = new LinkAttackRightSprite(linkSpriteSheet);
                         break;
                     case LinkState.Left:
+                    System.Diagnostics.Debug.WriteLine($"Attack Left");
+
+                    currentSprite = new LinkAttackLeftSprite(linkSpriteSheet);
                         break;
                     case LinkState.Up:
+                    System.Diagnostics.Debug.WriteLine($"Attack Up");
+
+                    currentSprite = new LinkAttackUpSprite(linkSpriteSheet);
                         break;
                     case LinkState.Down:
+                    System.Diagnostics.Debug.WriteLine($"Attack Down");
+
+                    currentSprite = new LinkAttackDownSprite(linkSpriteSheet);
                         break;
                 }
 
-            currentState = lastDirection;
+            currentState = LinkState.Attack;
             }
         private void ChangeItemState(LinkState itemState)
         {
             switch (lastDirection)
             {
                 case LinkState.Right:
+                    currentSprite = new LinkItemRightSprite(linkSpriteSheet);
                     RightItemState(itemState);
                     break;
                 case LinkState.Left:
+                    currentSprite = new LinkItemLeftSprite(linkSpriteSheet);
                     LeftItemState(itemState);
                     break;
                 case LinkState.Up:
+                    currentSprite = new LinkItemUpSprite(linkSpriteSheet);
                     UpItemState(itemState);
                     break;
                 case LinkState.Down:
+                    currentSprite = new LinkItemDownSprite(linkSpriteSheet);
                     DownItemState(itemState);
                     break;
             }
@@ -114,6 +136,7 @@ namespace Legend_of_the_Power_Rangers
             switch (itemState)
             {
                 case LinkState.Item1:
+                    
                     break;
                 case LinkState.Item2:
                     break;
@@ -176,7 +199,8 @@ namespace Legend_of_the_Power_Rangers
                     break;
             }
         }
-        public ISprite GetCurrentSprite()
+
+        public ILinkSprite GetCurrentSprite()
         {
             return currentSprite;
         }

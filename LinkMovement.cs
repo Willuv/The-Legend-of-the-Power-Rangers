@@ -1,15 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Legend_of_the_Power_Rangers
 {
     public class LinkMovement
     {
         private Link link;
+        private LinkStateMachine stateMachine;
         private const float MovementSpeed = 2f;
 
-        public LinkMovement(Link link)
+        public LinkMovement(Link link, LinkStateMachine stateMachine)
         {
             this.link = link;
+            this.stateMachine = stateMachine;
         }
 
         public void UpdateMovement(LinkStateMachine stateMachine)

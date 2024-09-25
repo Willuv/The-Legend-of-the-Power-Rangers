@@ -15,10 +15,10 @@ namespace Legend_of_the_Power_Rangers
         private LinkStateMachine stateMachine;
         private Vector2 position;
 
-        public Link(Texture2D spriteSheet)
+        public Link(Texture2D spriteSheet, LinkStateMachine stateMachine)
         {
             linkSpriteSheet = spriteSheet;
-            stateMachine = new LinkStateMachine(spriteSheet);
+            this.stateMachine = stateMachine;
             position = new Vector2(200, 200);
         }
 
@@ -26,17 +26,34 @@ namespace Legend_of_the_Power_Rangers
         {
             position += movement;
         }
-
-        public void Update(GameTime gameTime)
+        public Vector2 GetPosition()
         {
-            ISprite currentSprite = stateMachine.GetCurrentSprite();
-            currentSprite.Update(gameTime);
+            return position;
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public Texture2D GetLinkSpriteSheet()
         {
-            ISprite currentSprite = stateMachine.GetCurrentSprite();
-            currentSprite.Draw(spriteBatch, position);
+            return linkSpriteSheet;
+        }
+
+        public LinkStateMachine GetStateMachine()
+        {
+            return stateMachine;
+        }
+
+        public virtual void Update(GameTime gameTime)
+        {
+            if (stateMachine.GetCurrentState() != LinkStateMachine.LinkState.Idle)
+            {
+                ILinkSprite currentSprite = stateMachine.GetCurrentSprite();
+                currentSprite.Update(gameTime);
+            }
+        }
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            ILinkSprite currentSprite = stateMachine.GetCurrentSprite();
+            currentSprite.Draw(spriteBatch, position, Color.White);
         }
     }
 }
