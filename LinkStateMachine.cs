@@ -38,16 +38,22 @@ namespace Legend_of_the_Power_Rangers
             if (newState == LinkState.Attack)
             {
                 ChangeAttackState();
+                currentState = LinkState.Attack;
+                return;
             }
-            else if (newState == LinkState.Item1 || newState == LinkState.Item2 ||
+
+            if (newState == LinkState.Item1 || newState == LinkState.Item2 ||
                      newState == LinkState.Item3 || newState == LinkState.Item4 ||
                      newState == LinkState.Item5)
             {
                 ChangeItemState(newState);
             }
-            else
+            if (newState == LinkState.Up || newState == LinkState.Down ||
+                newState == LinkState.Left || newState == LinkState.Right)
             {
                 lastDirection = newState;
+            }
+            {
                 currentState = newState;
                 ChangeDirectionState();
             }
@@ -75,19 +81,27 @@ namespace Legend_of_the_Power_Rangers
         } 
         private void ChangeAttackState()
             {
-                switch(currentState)
+                switch(lastDirection)
                 {
+                    
                     case LinkState.Right:
-                        currentSprite = new LinkAttackRightSprite(linkSpriteSheet);
+                    System.Diagnostics.Debug.WriteLine($"Attack Right");
+                    currentSprite = new LinkAttackRightSprite(linkSpriteSheet);
                         break;
                     case LinkState.Left:
-                        currentSprite = new LinkAttackLeftSprite(linkSpriteSheet);
+                    System.Diagnostics.Debug.WriteLine($"Attack Left");
+
+                    currentSprite = new LinkAttackLeftSprite(linkSpriteSheet);
                         break;
                     case LinkState.Up:
-                        currentSprite = new LinkAttackUpSprite(linkSpriteSheet);
+                    System.Diagnostics.Debug.WriteLine($"Attack Up");
+
+                    currentSprite = new LinkAttackUpSprite(linkSpriteSheet);
                         break;
                     case LinkState.Down:
-                        currentSprite = new LinkAttackDownSprite(linkSpriteSheet);
+                    System.Diagnostics.Debug.WriteLine($"Attack Down");
+
+                    currentSprite = new LinkAttackDownSprite(linkSpriteSheet);
                         break;
                 }
 
