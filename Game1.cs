@@ -16,6 +16,8 @@ namespace Legend_of_the_Power_Rangers
         private LinkMovement movement;
         private KeyboardController keyboardController;
         private Enemy enemy;
+        private IItem item = new ItemCompass();
+        private Texture2D itemTexture;
 
         public Game1()
         {
@@ -43,6 +45,7 @@ namespace Legend_of_the_Power_Rangers
 
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = new Enemy(new Vector2(200, 200)); 
+            itemTexture = Content.Load<Texture2D>("Items");
         }
 
         protected override void Update(GameTime gameTime)
@@ -57,6 +60,7 @@ namespace Legend_of_the_Power_Rangers
                 throw new InvalidOperationException("Enemy not initialized");
             }
             enemy.Update(gameTime);
+            item.Update(gameTime);
             base.Update(gameTime);
 
         }
@@ -71,6 +75,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 enemy.Draw(_spriteBatch);
             }
+            item.Draw(itemTexture, _spriteBatch);
             _spriteBatch.End(); 
             base.Draw(gameTime);
         }
