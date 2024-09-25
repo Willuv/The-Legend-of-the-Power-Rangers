@@ -9,12 +9,13 @@ namespace Legend_of_the_Power_Rangers
 {
     public class LinkSwordCommand : ICommand
     {
-        public LinkSwordCommand() {
-            
+        private readonly LinkStateMachine stateMachine;
+        public LinkSwordCommand(LinkStateMachine stateMachine) {
+            this.stateMachine = stateMachine;
         }
         public void Execute()
         {
-            
+            stateMachine.ChangeState(LinkStateMachine.LinkState.Attack);
         }
     }
 }
