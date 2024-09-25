@@ -17,7 +17,7 @@ namespace Legend_of_the_Power_Rangers
         private float timeDamaged;
         private Link baseLink;
 
-        public LinkDecorator(Link baseLink) : base(baseLink.GetLinkSpriteSheet(), baseLink.GetStateMachine())
+        public LinkDecorator(Link baseLink) : base(baseLink.GetLinkSpriteSheet())
         {
             this.baseLink = baseLink;
             damagedColor = Color.Red;

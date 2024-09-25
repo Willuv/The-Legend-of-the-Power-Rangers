@@ -11,9 +11,7 @@ namespace Legend_of_the_Power_Rangers
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Link link;
-        private LinkStateMachine stateMachine;
         private LinkDecorator linkDecorator;
-        private LinkMovement movement;
         private KeyboardController keyboardController;
         private Enemy enemy;
         private DragonBoss DragonBoss;
@@ -37,12 +35,10 @@ namespace Legend_of_the_Power_Rangers
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
-            stateMachine = new LinkStateMachine(linkSpriteSheet);
-            link = new Link(linkSpriteSheet, stateMachine);
+            link = new Link(linkSpriteSheet);
             linkDecorator = new LinkDecorator(link);
-            movement = new LinkMovement(link, stateMachine);
 
-            keyboardController = new KeyboardController(stateMachine, linkDecorator);
+            keyboardController = new KeyboardController(link.GetStateMachine(), linkDecorator);
 
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = new Enemy(new Vector2(200, 200)); 
@@ -54,14 +50,12 @@ namespace Legend_of_the_Power_Rangers
         {
             keyboardController.Update();
 
-            movement.UpdateMovement(stateMachine);
+
             link.Update(gameTime);
             enemy.Update(gameTime);
             DragonBoss.Update(gameTime);
             linkDecorator.Update(gameTime);
 
-     
-            enemy.Update(gameTime);
             item.Update(gameTime);
             base.Update(gameTime);
         }
@@ -72,12 +66,11 @@ namespace Legend_of_the_Power_Rangers
             spriteBatch.Begin();
 
             link.Draw(spriteBatch);
-            enemy.Draw(spriteBatch);
             DragonBoss.Draw(spriteBatch);
             
-            linkDecorator.Draw(_spriteBatch);
-            enemy.Draw(_spriteBatch);
-            item.Draw(itemTexture, _spriteBatch);
+            linkDecorator.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
+            item.Draw(itemTexture, spriteBatch);
             base.Draw(gameTime);
             
             spriteBatch.End();
