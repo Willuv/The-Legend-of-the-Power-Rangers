@@ -19,19 +19,22 @@ namespace Legend_of_the_Power_Rangers
         private LinkState currentState;
         private LinkState lastDirection;
         private Texture2D linkSpriteSheet;
-        private ISprite currentSprite;
+        private ILinkSprite currentSprite;
 
         public LinkStateMachine(Texture2D spriteSheet)
         {
             linkSpriteSheet = spriteSheet;
             currentState = LinkState.Idle;
             lastDirection = LinkState.Right;
-            currentSprite = new LinkUpSprite(linkSpriteSheet);
+            currentSprite = new LinkRightSprite(linkSpriteSheet);
         }
 
         public void ChangeState(LinkState newState)
         {
-            Console.WriteLine($"State changed to: {newState}");
+            if (newState == currentState)
+            {
+                return;
+            }
             if (newState == LinkState.Attack)
             {
                 ChangeAttackState();
@@ -174,7 +177,7 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
-        public ISprite GetCurrentSprite()
+        public ILinkSprite GetCurrentSprite()
         {
             return currentSprite;
         }
