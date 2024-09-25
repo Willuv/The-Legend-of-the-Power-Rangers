@@ -9,7 +9,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
-
+        private Item item;
         private Link link;
         private LinkStateMachine stateMachine;
         private LinkDecorator linkDecorator;
@@ -33,8 +33,13 @@ namespace Legend_of_the_Power_Rangers
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            
+
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
-            stateMachine = new LinkStateMachine(linkSpriteSheet);
+            Texture2D itemSpriteSheet = Content.Load<Texture2D>("Items");
+            Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
+            item = new Item(itemSpriteSheet, projectileSpriteSheet);
+            stateMachine = new LinkStateMachine(item, linkSpriteSheet, itemSpriteSheet, projectileSpriteSheet);
             link = new Link(linkSpriteSheet, stateMachine);
             linkDecorator = new LinkDecorator(link);
             movement = new LinkMovement(link, stateMachine);
@@ -51,7 +56,8 @@ namespace Legend_of_the_Power_Rangers
             keyboardController.Update();
             movement.UpdateMovement(stateMachine);
             linkDecorator.Update(gameTime);
-
+            item.Update(gameTime);
+            item.SetPosition(link.GetPosition());
             if (enemy == null)
             {
                 throw new InvalidOperationException("Enemy not initialized");
@@ -67,6 +73,7 @@ namespace Legend_of_the_Power_Rangers
             _spriteBatch.Begin();
 
             linkDecorator.Draw(_spriteBatch);
+            item.Draw(_spriteBatch);
             if (enemy != null)
             {
                 enemy.Draw(_spriteBatch);

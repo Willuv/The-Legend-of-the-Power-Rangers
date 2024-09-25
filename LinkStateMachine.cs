@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using static Legend_of_the_Power_Rangers.Item;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -20,13 +21,19 @@ namespace Legend_of_the_Power_Rangers
         private LinkState lastDirection;
         private Texture2D linkSpriteSheet;
         private ILinkSprite currentSprite;
+        private Texture2D itemSpriteSheet;
+        private Texture2D projectileSpriteSheet;
+        private Item item;
 
-        public LinkStateMachine(Texture2D spriteSheet)
+        public LinkStateMachine(Item item, Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
         {
             linkSpriteSheet = spriteSheet;
+            itemSpriteSheet = itemSheet;
+            projectileSpriteSheet = projectileSheet;
             currentState = LinkState.Idle;
             lastDirection = LinkState.Right;
             currentSprite = new LinkRightSprite(linkSpriteSheet);
+            this.item = item;
         }
 
         public void ChangeState(LinkState newState)
@@ -99,89 +106,42 @@ namespace Legend_of_the_Power_Rangers
             {
                 case LinkState.Right:
                     currentSprite = new LinkItemRightSprite(linkSpriteSheet);
-                    RightItemState(itemState);
+                    ItemState(itemState, lastDirection);
                     break;
                 case LinkState.Left:
                     currentSprite = new LinkItemLeftSprite(linkSpriteSheet);
-                    LeftItemState(itemState);
+                    ItemState(itemState, lastDirection);
                     break;
                 case LinkState.Up:
                     currentSprite = new LinkItemUpSprite(linkSpriteSheet);
-                    UpItemState(itemState);
+                    ItemState(itemState, lastDirection);
                     break;
                 case LinkState.Down:
                     currentSprite = new LinkItemDownSprite(linkSpriteSheet);
-                    DownItemState(itemState);
+                    ItemState(itemState, lastDirection);
                     break;
             }
             currentState = lastDirection;
         }
 
-        private void LeftItemState(LinkState itemState)
+        private void ItemState(LinkState itemState, LinkState direction)
         {
             switch (itemState)
             {
                 case LinkState.Item1:
-                    
+                    item.SetType(ItemType.Bomb);
                     break;
                 case LinkState.Item2:
+                    item.SetType(ItemType.Arrow);                    
                     break;
                 case LinkState.Item3:
+                    item.SetType(ItemType.Sword);
                     break;
                 case LinkState.Item4:
+                    item.SetType(ItemType.Boomerang);
                     break;
                 case LinkState.Item5:
-                    break;
-            }
-        }
-
-        private void UpItemState(LinkState itemState)
-        {
-            switch (itemState)
-            {
-                case LinkState.Item1:
-                    break;
-                case LinkState.Item2:
-                    break;
-                case LinkState.Item3:
-                    break;
-                case LinkState.Item4:
-                    break;
-                case LinkState.Item5:
-                    break;
-            }
-        }
-
-        private void DownItemState(LinkState itemState)
-        {
-            switch (itemState)
-            {
-                case LinkState.Item1:
-                    break;
-                case LinkState.Item2:
-                    break;
-                case LinkState.Item3:
-                    break;
-                case LinkState.Item4:
-                    break;
-                case LinkState.Item5:
-                    break;
-            }
-        }
-
-        private void RightItemState(LinkState itemState)
-        {
-            switch (itemState)
-            {
-                case LinkState.Item1:
-                    break;
-                case LinkState.Item2:
-                    break;
-                case LinkState.Item3:
-                    break;
-                case LinkState.Item4:
-                    break;
-                case LinkState.Item5:
+                    item.SetType(ItemType.Candle);
                     break;
             }
         }
@@ -199,5 +159,6 @@ namespace Legend_of_the_Power_Rangers
         {
             return lastDirection;
         }
+
     }
 }
