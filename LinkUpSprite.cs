@@ -4,14 +4,12 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class LinkUpSprite : ISprite
+    public class LinkUpSprite : ILinkSprite
     {
         private Texture2D linkTexture;
         private int currentFrame;
         private int totalFrames;
         private int nextSpriteDistance;
-        private int spriteWidth;
-        private int spriteHeight;
         private int currentLinkLocation;
         private float scaleFactor = 3f;
         public LinkUpSprite(Texture2D texture)
@@ -19,16 +17,14 @@ namespace Legend_of_the_Power_Rangers
             linkTexture = texture;
             currentFrame = 0;
             totalFrames = 10;
-            spriteWidth = 14;
-            spriteHeight = 16;
             currentLinkLocation = 0;
             nextSpriteDistance = 28;
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
         {
             Rectangle sourceRectangle = new Rectangle(60, currentLinkLocation, 14, 16);
-            spriteBatch.Draw(linkTexture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
+            spriteBatch.Draw(linkTexture, position, sourceRectangle, color, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
 
         }
         public void Update(GameTime gameTime)

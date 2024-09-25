@@ -19,7 +19,7 @@ namespace Legend_of_the_Power_Rangers
         private LinkState currentState;
         private LinkState lastDirection;
         private Texture2D linkSpriteSheet;
-        private ISprite currentSprite;
+        private ILinkSprite currentSprite;
 
         public LinkStateMachine(Texture2D spriteSheet)
         {
@@ -177,7 +177,7 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
-        public ISprite GetCurrentSprite()
+        public ILinkSprite GetCurrentSprite()
         {
             return currentSprite;
         }

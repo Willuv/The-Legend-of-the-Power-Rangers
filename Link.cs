@@ -26,20 +26,34 @@ namespace Legend_of_the_Power_Rangers
         {
             position += movement;
         }
+        public Vector2 GetPosition()
+        {
+            return position;
+        }
 
-        public void Update(GameTime gameTime)
+        public Texture2D GetLinkSpriteSheet()
+        {
+            return linkSpriteSheet;
+        }
+
+        public LinkStateMachine GetStateMachine()
+        {
+            return stateMachine;
+        }
+
+        public virtual void Update(GameTime gameTime)
         {
             if (stateMachine.GetCurrentState() != LinkStateMachine.LinkState.Idle)
             {
-                ISprite currentSprite = stateMachine.GetCurrentSprite();
+                ILinkSprite currentSprite = stateMachine.GetCurrentSprite();
                 currentSprite.Update(gameTime);
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Draw(SpriteBatch spriteBatch)
         {
-            ISprite currentSprite = stateMachine.GetCurrentSprite();
-            currentSprite.Draw(spriteBatch, position);
+            ILinkSprite currentSprite = stateMachine.GetCurrentSprite();
+            currentSprite.Draw(spriteBatch, position, Color.White);
         }
     }
 }
