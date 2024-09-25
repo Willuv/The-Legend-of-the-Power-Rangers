@@ -9,12 +9,13 @@ namespace Legend_of_the_Power_Rangers
 {
     public class LinkBecomeDamagedCommand : ICommand
     {
-        public LinkBecomeDamagedCommand() {
-            
+        private LinkDecorator linkDecorator;
+        public LinkBecomeDamagedCommand(LinkDecorator linkDecorator) {
+            this.linkDecorator = linkDecorator;
         }
         public void Execute()
         {
-            
+            linkDecorator.TakeDamage();
         }
     }
 }
