@@ -46,12 +46,12 @@ namespace Legend_of_the_Power_Rangers
         public void SetDirection(Vector2 direction)
         {
             int directionIndex = 0;
-            if (direction.X < 0) directionIndex = 1;
-            else if (direction.Y < 0) directionIndex = 2;
-            else if (direction.X > 0) directionIndex = 3;
+            if (direction.X < 0) directionIndex = 2;
+            else if (direction.Y < 0) directionIndex = 4;
+            else if (direction.X > 0) directionIndex = 6;
 
-            frameIndex1 = directionIndex * 2;
-            frameIndex2 = frameIndex1 + 16;
+            frameIndex1 = directionIndex;
+            frameIndex2 = frameIndex1 + 16; // 16 is distance between sprites
             currentFrameIndex = frameIndex1;
         }
 

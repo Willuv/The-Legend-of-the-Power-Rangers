@@ -8,9 +8,8 @@ namespace Legend_of_the_Power_Rangers
 {
     private EnemySprite sprite;
     private EnemySprite sprite2;
-    private Vector2 position;
-    private Vector2 position2;
-
+    public Vector2 position;
+    public Vector2 position2;
     private float speed = 33f;
     private Vector2 direction;
     private Random random = new Random();
@@ -18,10 +17,10 @@ namespace Legend_of_the_Power_Rangers
 
     public Enemy(Vector2 initialPosition)
     {
-        sprite = (EnemySprite)EnemySpriteFactory.Instance.CreateExampleEnemySprite();
-        sprite2 = (EnemySprite)EnemySpriteFactory.Instance.CreateExampleEnemy2Sprite();
+        sprite = EnemySpriteFactory.Instance.CreateEnemySprite("RedKnight");
+        sprite2 = EnemySpriteFactory.Instance.CreateEnemySprite("BlueOcto");
         position = initialPosition;
-        position2 = initialPosition;
+        position2 = initialPosition  + new Vector2(60, 0);
         SetRandomDirection();
     }
 
@@ -33,7 +32,7 @@ namespace Legend_of_the_Power_Rangers
         sprite2.SetDirection(direction);
     }
 
-    public void Update(GameTime gameTime)
+    public virtual void Update(GameTime gameTime)
     {
         directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
         if (directionChangeTimer >= 2)
@@ -49,10 +48,10 @@ namespace Legend_of_the_Power_Rangers
         
     }
 
-    public void Draw(SpriteBatch spriteBatch)
+    public virtual void Draw(SpriteBatch spriteBatch)
     {
         sprite.Draw(spriteBatch, position);
-        sprite2.Draw(spriteBatch, position2 + new Vector2(60, 0));
+        sprite2.Draw(spriteBatch, position2);
     }
 }
 
