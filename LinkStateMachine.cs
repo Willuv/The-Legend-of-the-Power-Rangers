@@ -75,34 +75,42 @@ namespace Legend_of_the_Power_Rangers
         } 
         private void ChangeAttackState()
             {
-                switch(lastDirection)
+                switch(currentState)
                 {
                     case LinkState.Right:
+                        currentSprite = new LinkAttackRightSprite(linkSpriteSheet);
                         break;
                     case LinkState.Left:
+                        currentSprite = new LinkAttackLeftSprite(linkSpriteSheet);
                         break;
                     case LinkState.Up:
+                        currentSprite = new LinkAttackUpSprite(linkSpriteSheet);
                         break;
                     case LinkState.Down:
+                        currentSprite = new LinkAttackDownSprite(linkSpriteSheet);
                         break;
                 }
 
-            currentState = lastDirection;
+            currentState = LinkState.Attack;
             }
         private void ChangeItemState(LinkState itemState)
         {
             switch (lastDirection)
             {
                 case LinkState.Right:
+                    currentSprite = new LinkItemRightSprite(linkSpriteSheet);
                     RightItemState(itemState);
                     break;
                 case LinkState.Left:
+                    currentSprite = new LinkItemLeftSprite(linkSpriteSheet);
                     LeftItemState(itemState);
                     break;
                 case LinkState.Up:
+                    currentSprite = new LinkItemUpSprite(linkSpriteSheet);
                     UpItemState(itemState);
                     break;
                 case LinkState.Down:
+                    currentSprite = new LinkItemDownSprite(linkSpriteSheet);
                     DownItemState(itemState);
                     break;
             }
@@ -114,6 +122,7 @@ namespace Legend_of_the_Power_Rangers
             switch (itemState)
             {
                 case LinkState.Item1:
+                    
                     break;
                 case LinkState.Item2:
                     break;
