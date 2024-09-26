@@ -49,7 +49,11 @@ namespace Legend_of_the_Power_Rangers
             Vector2 movement = stateMachine.UpdateMovement();
             UpdatePosition(movement);
             currentSprite = stateMachine.GetCurrentSprite();
-            currentSprite.Update(gameTime);
+            if (stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle ||
+                stateMachine.GetCurrentDirection() != LinkStateMachine.LinkDirection.Idle)
+            {
+                currentSprite.Update(gameTime);
+            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)

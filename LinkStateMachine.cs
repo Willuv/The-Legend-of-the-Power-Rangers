@@ -20,6 +20,7 @@ namespace Legend_of_the_Power_Rangers
         private LinkAction currentAction;
         private Texture2D linkSpriteSheet;
         private ILinkSprite currentSprite;
+        private LinkDirection lastDirection;
 
         private const float MovementSpeed = 2f;
 
@@ -28,13 +29,19 @@ namespace Legend_of_the_Power_Rangers
             linkSpriteSheet = spriteSheet;
             currentAction = LinkAction.Idle;
             currentDirection = LinkDirection.Right;
+            lastDirection =  LinkDirection.Right;
             currentSprite = new LinkRightSprite(linkSpriteSheet);
-        }
 
-        public void ChangeDirection(LinkDirection newDirection)
+    }
+
+    public void ChangeDirection(LinkDirection newDirection)
         {
             if (currentDirection != newDirection)
             {
+                if (newDirection != LinkDirection.Idle)
+                {
+                    lastDirection = newDirection;
+                }
                 currentDirection = newDirection;
                 ChangeDirectionState();
             }
@@ -122,7 +129,7 @@ namespace Legend_of_the_Power_Rangers
         private void ChangeAttackState()
         {
             System.Diagnostics.Debug.WriteLine($"Attack");
-            switch (currentDirection)
+            switch (lastDirection)
             {
                 case LinkDirection.Right:
                     System.Diagnostics.Debug.WriteLine($"Attack Right");
@@ -152,7 +159,6 @@ namespace Legend_of_the_Power_Rangers
         {
             return currentAction;
         }
-
         public LinkDirection GetCurrentDirection()
         {
             return currentDirection;
