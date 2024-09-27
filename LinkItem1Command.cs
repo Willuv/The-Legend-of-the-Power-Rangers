@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Execute()
         {
-            this.stateMachine.ChangeState(LinkStateMachine.LinkState.Item1);
+            this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item1);
         }
     }
 }

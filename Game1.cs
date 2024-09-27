@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
@@ -9,17 +9,16 @@ namespace Legend_of_the_Power_Rangers
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
         private Link link;
-        private LinkStateMachine stateMachine;
         private LinkDecorator linkDecorator;
-        private LinkMovement movement;
         private KeyboardController keyboardController;
         private Enemy enemy;
+        private DragonBoss DragonBoss;
         private IItem item = new ItemCompass();
         private Texture2D itemTexture;
+        
         private int itemIndex = 0;
 
          
@@ -29,12 +28,14 @@ namespace Legend_of_the_Power_Rangers
                                     new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(), new ItemFairy(), 
                                     new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()};
 
+
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
+        
         public void ChangeItem(int direction)
         {
             itemIndex += direction;
@@ -59,18 +60,15 @@ namespace Legend_of_the_Power_Rangers
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
-            stateMachine = new LinkStateMachine(linkSpriteSheet);
-            link = new Link(linkSpriteSheet, stateMachine);
+            link = new Link(linkSpriteSheet);
             linkDecorator = new LinkDecorator(link);
-            movement = new LinkMovement(link, stateMachine);
-
-            
 
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = new Enemy(new Vector2(200, 200)); 
+            DragonBoss = new DragonBoss(new Vector2(400, 150));
             itemTexture = Content.Load<Texture2D>("Items");
 
             keyboardController = new KeyboardController(stateMachine, linkDecorator, this);
@@ -80,39 +78,37 @@ namespace Legend_of_the_Power_Rangers
         protected override void Update(GameTime gameTime)
         {
 
-            
-            movement.UpdateMovement(stateMachine);
-            linkDecorator.Update(gameTime);
 
-            if (enemy == null)
-            {
-                throw new InvalidOperationException("Enemy not initialized");
-            }
+            link.Update(gameTime);
             enemy.Update(gameTime);
             if (item == null)
             {
                 throw new InvalidOperationException("item not initialized");
             }
             item.Update(gameTime);
-            base.Update(gameTime);
             keyboardController.Update();
 
+            DragonBoss.Update(gameTime);
+            linkDecorator.Update(gameTime);
+
+            base.Update(gameTime);
         }
         
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin();
+            spriteBatch.Begin();
 
-            linkDecorator.Draw(_spriteBatch);
-            if (enemy != null)
-            {
-                enemy.Draw(_spriteBatch);
-            }
-            item.Draw(itemTexture, _spriteBatch);
-            _spriteBatch.End(); 
+            link.Draw(spriteBatch);
+            DragonBoss.Draw(spriteBatch);
+            
+            linkDecorator.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
+            item.Draw(itemTexture, spriteBatch);
             base.Draw(gameTime);
+            
+            spriteBatch.End();
         }
         
 
