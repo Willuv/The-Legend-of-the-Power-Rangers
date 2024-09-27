@@ -18,6 +18,16 @@ namespace Legend_of_the_Power_Rangers
         private IItem item = new ItemCompass();
         private Texture2D itemTexture;
         
+
+        private int itemIndex = 0;
+
+         
+        
+        private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(), 
+                                    new ItemHeartContainer(), new ItemArrow(), new ItemTriforce(), new ItemWoodBoomerang(), 
+                                    new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(), new ItemFairy(), 
+                                    new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()};
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
