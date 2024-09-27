@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework;
@@ -18,6 +18,8 @@ namespace Legend_of_the_Power_Rangers
         private DragonBoss DragonBoss;
         private IItem item = new ItemCompass();
         private Texture2D itemTexture;
+
+        private LinkStateMachine stateMachine;
         
         private int itemIndex = 0;
 
