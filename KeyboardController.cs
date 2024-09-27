@@ -46,6 +46,7 @@ namespace Legend_of_the_Power_Rangers
         {
             Keys[] pressedKeys = Keyboard.GetState().GetPressedKeys();
 
+
             if (pressedKeys.Length == 0)
             {
                 idleCommand.Execute();
