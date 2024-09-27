@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +12,7 @@ namespace Legend_of_the_Power_Rangers
     public class KeyboardController : IController<Keys>
     {
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
+        private readonly HashSet<Keys> actionKeysPressed;
         private readonly LinkIdleCommand idleCommand;
 
         public KeyboardController(LinkStateMachine stateMachine, LinkDecorator linkDecorator, Game1 game)
@@ -40,28 +40,57 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.Q, new QuitCommand() },
                 { Keys.R, new ResetCommand() }
             };
+            actionKeysPressed = new HashSet<Keys>();
             idleCommand = new LinkIdleCommand(stateMachine);
         }
+
         public void Update()
         {
             Keys[] pressedKeys = Keyboard.GetState().GetPressedKeys();
-
-
-            if (pressedKeys.Length == 0)
-            {
-                idleCommand.Execute();
-                return;
-            }
+            bool movementKeyPressed = false;
 
             foreach (Keys key in pressedKeys)
             {
                 if (keyCommandMappings.ContainsKey(key))
                 {
                     ICommand command = keyCommandMappings[key];
-                    command.Execute();
+
+                    if (actionKeysPressed.Contains(key))
+                    {
+                        continue;
+                    }
+
+                    if (key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D)
+                    {
+                        if (actionKeysPressed.Count == 0)
+                        {
+                            command.Execute();
+                            movementKeyPressed = true;
+                        }
+                    }
+                    else
+                    {
+                        command.Execute();
+                        actionKeysPressed.Add(key);
+                        movementKeyPressed = false;
+                    }
+                }
+            }
+
+            if (!movementKeyPressed)
+            {
+                idleCommand.Execute();
+            }
+
+            foreach (var key in actionKeysPressed.ToList())
+            {
+                if (!pressedKeys.Contains(key))
+                {
+                    actionKeysPressed.Remove(key);
                 }
             }
         }
+
         public void RegisterCommand(Keys key, ICommand command)
         {
             keyCommandMappings[key] = command;

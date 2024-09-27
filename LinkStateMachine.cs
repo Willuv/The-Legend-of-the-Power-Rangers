@@ -24,6 +24,7 @@ namespace Legend_of_the_Power_Rangers
 
         private const float MovementSpeed = 2f;
 
+
         public LinkStateMachine(Texture2D spriteSheet)
         {
             linkSpriteSheet = spriteSheet;
