@@ -25,7 +25,7 @@ namespace Legend_of_the_Power_Rangers
          
         
         private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(), 
-                                    new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(), 
+                                    new ItemHeartContainer(), new ItemArrow(), new ItemTriforce(), new ItemWoodBoomerang(), 
                                     new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(), new ItemFairy(), 
                                     new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()};
 
