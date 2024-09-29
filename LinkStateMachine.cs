@@ -21,18 +21,19 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D linkSpriteSheet;
         private ILinkSprite currentSprite;
         private LinkDirection lastDirection;
+        private Texture2D itemSpriteSheet;
+        private Texture2D projectileSpriteSheet;
+        private Item item;
 
-        private const float MovementSpeed = 2f;
-
-        public LinkStateMachine(Texture2D spriteSheet)
+        public LinkStateMachine(Item item, Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
         {
             linkSpriteSheet = spriteSheet;
             currentAction = LinkAction.Idle;
             currentDirection = LinkDirection.Right;
             lastDirection =  LinkDirection.Right;
             currentSprite = new LinkRightSprite(linkSpriteSheet);
-
-    }
+            this.item = item;
+        }
 
     public void ChangeDirection(LinkDirection newDirection)
         {
