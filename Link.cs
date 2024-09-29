@@ -12,15 +12,17 @@ namespace Legend_of_the_Power_Rangers
     public class Link
     {
         private Texture2D linkSpriteSheet;
+        private Texture2D itemSpriteSheet;
+        private Texture2D projectileSpriteSheet;
         private LinkStateMachine stateMachine;
         private ILinkSprite currentSprite;
         private Vector2 position;
-
+        private Item item;
 
         public Link(Texture2D spriteSheet)
         {
             linkSpriteSheet = spriteSheet;
-            stateMachine = new LinkStateMachine(linkSpriteSheet);
+            stateMachine = new LinkStateMachine(item, linkSpriteSheet, itemSpriteSheet, projectileSpriteSheet);
             position = new Vector2(200, 200);
             currentSprite = stateMachine.GetCurrentSprite();
         }

@@ -47,8 +47,6 @@ namespace Legend_of_the_Power_Rangers
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            
-
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             link = new Link(linkSpriteSheet);
             linkDecorator = new LinkDecorator(link);

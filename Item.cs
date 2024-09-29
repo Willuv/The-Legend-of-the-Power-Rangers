@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemSpriteSheet;
         private Texture2D projectileSpriteSheet;
         private Vector2 position;
-        private LinkState direction;
+        private LinkDirection direction;
         private IitemSprite currentItem;
         public enum ItemType
         {
@@ -36,7 +36,7 @@ namespace Legend_of_the_Power_Rangers
             this.position = position;
         }
 
-        public void SetDirection(LinkState direction) 
+        public void SetDirection(LinkDirection direction) 
         { 
             this.direction = direction;
         }

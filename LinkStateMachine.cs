@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
+using static Legend_of_the_Power_Rangers.Item;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -24,7 +25,7 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemSpriteSheet;
         private Texture2D projectileSpriteSheet;
         private Item item;
-
+        private const float MovementSpeed = 2f;
         public LinkStateMachine(Item item, Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
         {
             linkSpriteSheet = spriteSheet;
@@ -106,22 +107,27 @@ namespace Legend_of_the_Power_Rangers
                     ChangeAttackState();
                     break;
                 case LinkAction.Item1:
+                    item.SetType(ItemType.Bomb);
                     // Handle Item1 action
                     break;
                 case LinkAction.Item2:
+                    item.SetType(ItemType.Arrow);
                     // Handle Item2 action
                     break;
                 case LinkAction.Item3:
+                    item.SetType(ItemType.Sword);
                     // Handle Item3 action
                     break;
                 case LinkAction.Item4:
+                    item.SetType(ItemType.Boomerang);
                     // Handle Item4 action
                     break;
                 case LinkAction.Item5:
+                    item.SetType(ItemType.Candle);
                     // Handle Item5 action
                     break;
                 case LinkAction.Idle:
-                default:
+                    item.SetType(ItemType.NONE);
                     // Default idle state
                     break;
             }
