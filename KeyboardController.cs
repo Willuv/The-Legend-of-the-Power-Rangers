@@ -12,82 +12,103 @@ namespace Legend_of_the_Power_Rangers
     public class KeyboardController : IController<Keys>
     {
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
-        private readonly HashSet<Keys> actionKeysPressed;
+        private readonly HashSet<Keys> pressedMovementKeys;
+        private readonly HashSet<Keys> processedActionKeys;
         private readonly LinkIdleCommand idleCommand;
+        private Keys lastDirectionKey;
 
         public KeyboardController(LinkStateMachine stateMachine, LinkDecorator linkDecorator, Game1 game)
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
-            {
-                { Keys.W, new LinkUpCommand(stateMachine) },
-                { Keys.S, new LinkDownCommand(stateMachine) },
-                { Keys.A, new LinkLeftCommand(stateMachine) },
-                { Keys.D, new LinkRightCommand(stateMachine) },
-                { Keys.Z, new LinkSwordCommand(stateMachine) },
-                { Keys.N, new LinkSwordCommand(stateMachine) },
-                { Keys.D1, new LinkItem1Command(stateMachine) },
-                { Keys.D2, new LinkItem2Command(stateMachine) },
-                { Keys.D3, new LinkItem3Command(stateMachine) },
-                { Keys.D4, new LinkItem4Command(stateMachine) },
-                { Keys.D5, new LinkItem5Command(stateMachine) },
-                { Keys.E, new LinkBecomeDamagedCommand(linkDecorator) },
-                { Keys.T, new BlockPreviousCommand() },
-                { Keys.Y, new BlockNextCommand() },
-                { Keys.U, new ItemShowPreviousCommand(game) },
-                { Keys.I, new ItemShowNextCommand(game) },
-                { Keys.O, new NPCShowPreviousCommand() },
-                { Keys.P, new NPCShowNextCommand() },
-                { Keys.Q, new QuitCommand() },
-                { Keys.R, new ResetCommand() }
-            };
-            actionKeysPressed = new HashSet<Keys>();
+        {
+            { Keys.W, new LinkUpCommand(stateMachine) },
+            { Keys.S, new LinkDownCommand(stateMachine) },
+            { Keys.A, new LinkLeftCommand(stateMachine) },
+            { Keys.D, new LinkRightCommand(stateMachine) },
+            { Keys.Z, new LinkSwordCommand(stateMachine) },
+            { Keys.N, new LinkSwordCommand(stateMachine) },
+            { Keys.D1, new LinkItem1Command(stateMachine) },
+            { Keys.D2, new LinkItem2Command(stateMachine) },
+            { Keys.D3, new LinkItem3Command(stateMachine) },
+            { Keys.D4, new LinkItem4Command(stateMachine) },
+            { Keys.D5, new LinkItem5Command(stateMachine) },
+            { Keys.E, new LinkBecomeDamagedCommand(linkDecorator) },
+            { Keys.T, new BlockPreviousCommand() },
+            { Keys.Y, new BlockNextCommand() },
+            { Keys.U, new ItemShowPreviousCommand(game) },
+            { Keys.I, new ItemShowNextCommand(game) },
+            { Keys.O, new NPCShowPreviousCommand() },
+            { Keys.P, new NPCShowNextCommand() },
+            { Keys.Q, new QuitCommand() },
+            { Keys.R, new ResetCommand() }
+        };
+
+            pressedMovementKeys = new HashSet<Keys>();
+            processedActionKeys = new HashSet<Keys>();
             idleCommand = new LinkIdleCommand(stateMachine);
+            lastDirectionKey = Keys.None;
         }
 
         public void Update()
         {
             Keys[] pressedKeys = Keyboard.GetState().GetPressedKeys();
-            bool movementKeyPressed = false;
 
             foreach (Keys key in pressedKeys)
             {
                 if (keyCommandMappings.ContainsKey(key))
                 {
-                    ICommand command = keyCommandMappings[key];
-
-                    if (actionKeysPressed.Contains(key))
-                    {
-                        continue;
-                    }
-
                     if (key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D)
                     {
-                        if (actionKeysPressed.Count == 0)
+                        if (!pressedMovementKeys.Contains(key))
                         {
-                            command.Execute();
-                            movementKeyPressed = true;
+                            pressedMovementKeys.Add(key);
+                            lastDirectionKey = key;
+                            keyCommandMappings[key].Execute();
                         }
                     }
                     else
                     {
-                        command.Execute();
-                        actionKeysPressed.Add(key);
-                        movementKeyPressed = false;
+                        if (!processedActionKeys.Contains(key))
+                        {
+                            keyCommandMappings[key].Execute();
+                            processedActionKeys.Add(key);
+                        }
                     }
                 }
             }
 
-            if (!movementKeyPressed)
-            {
-                idleCommand.Execute();
-            }
-
-            foreach (var key in actionKeysPressed.ToList())
+            foreach (Keys key in pressedMovementKeys.ToList())
             {
                 if (!pressedKeys.Contains(key))
                 {
-                    actionKeysPressed.Remove(key);
+                    pressedMovementKeys.Remove(key);
+                    if (key == lastDirectionKey)
+                    {
+                        if (pressedMovementKeys.Count > 0)
+                        {
+                            lastDirectionKey = pressedMovementKeys.Last();
+                            keyCommandMappings[lastDirectionKey].Execute();
+                        }
+                        else
+                        {
+                            idleCommand.Execute();
+                            lastDirectionKey = Keys.None;
+                        }
+                    }
                 }
+            }
+
+            foreach (Keys key in processedActionKeys.ToList())
+            {
+                if (!pressedKeys.Contains(key))
+                {
+                    processedActionKeys.Remove(key);
+                }
+            }
+
+            if (pressedMovementKeys.Count == 0 && lastDirectionKey == Keys.None)
+            {
+                idleCommand.Execute();
             }
         }
 
