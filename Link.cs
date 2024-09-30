@@ -6,20 +6,25 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
     public class Link
     {
         private Texture2D linkSpriteSheet;
+        private Texture2D itemSpriteSheet;
+        private Texture2D projectileSpriteSheet;
         private LinkStateMachine stateMachine;
+        private ILinkSprite currentSprite;
         private Vector2 position;
 
-        public Link(Texture2D spriteSheet, LinkStateMachine stateMachine)
+        public Link(Texture2D spriteSheet)
         {
             linkSpriteSheet = spriteSheet;
-            this.stateMachine = stateMachine;
+            stateMachine = new LinkStateMachine(linkSpriteSheet, itemSpriteSheet, projectileSpriteSheet);
             position = new Vector2(200, 200);
+            currentSprite = stateMachine.GetCurrentSprite();
         }
 
         public void UpdatePosition(Vector2 movement)
@@ -41,19 +46,31 @@ namespace Legend_of_the_Power_Rangers
             return stateMachine;
         }
 
+        public LinkDirection GetDirection()
+        {
+            return stateMachine.GetLastDirection();
+        }
+
         public virtual void Update(GameTime gameTime)
         {
-            if (stateMachine.GetCurrentState() != LinkStateMachine.LinkState.Idle)
+            Vector2 movement = stateMachine.UpdateMovement();
+            UpdatePosition(movement);
+            currentSprite = stateMachine.GetCurrentSprite();
+            if (stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle ||
+                stateMachine.GetCurrentDirection() != LinkStateMachine.LinkDirection.Idle)
             {
-                ILinkSprite currentSprite = stateMachine.GetCurrentSprite();
                 currentSprite.Update(gameTime);
             }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            ILinkSprite currentSprite = stateMachine.GetCurrentSprite();
-            currentSprite.Draw(spriteBatch, position, Color.White);
+            currentSprite = stateMachine.GetCurrentSprite();
+
+            if (stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle)
+            {
+                currentSprite.Draw(spriteBatch, position, Color.White);
+            }
         }
     }
 }

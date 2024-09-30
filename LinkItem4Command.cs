@@ -10,13 +10,16 @@ namespace Legend_of_the_Power_Rangers
     public class LinkItem4Command : ICommand
     {
         private readonly LinkStateMachine stateMachine;
-        public LinkItem4Command(LinkStateMachine stateMachine)
+        private readonly LinkItemFactory linkItemFactory;
+        public LinkItem4Command(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory)
         {
             this.stateMachine = stateMachine;
+            this.linkItemFactory = linkItemFactory;
         }
         public void Execute()
         {
-            this.stateMachine.ChangeState(LinkStateMachine.LinkState.Item4);
+            this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
+            this.linkItemFactory.CreateItem(Item.ItemType.Boomerang);
         }
     }
 }

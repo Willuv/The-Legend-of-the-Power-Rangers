@@ -8,6 +8,7 @@ namespace Legend_of_the_Power_Rangers
 	public interface IitemSprite
 	{
 			void Update(GameTime gametime);
-			void Draw(SpriteBatch spriteBatch, Vector2 position);
+			void Draw(SpriteBatch spriteBatch);
+			bool GetState();
 	}
 }

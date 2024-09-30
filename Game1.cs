@@ -1,25 +1,40 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework.Input;
 
 namespace Legend_of_the_Power_Rangers
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
-        private Item item;
+        private GraphicsDeviceManager graphics;
+        private SpriteBatch spriteBatch;
         private Link link;
-        private LinkStateMachine stateMachine;
         private LinkDecorator linkDecorator;
-        private LinkMovement movement;
         private KeyboardController keyboardController;
         private Enemy enemy;
+        private DragonBoss DragonBoss;
+        private LinkItemFactory linkItemFactory;
+        private IItem item = new ItemCompass();
+        private Texture2D itemTexture;
+
+
+        private int itemIndex = 0;
+
+
+
+        private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(),
+                                    new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
+                                    new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(), new ItemFairy(),
+                                    new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()};
+
+
 
         public Game1()
         {
-            _graphics = new GraphicsDeviceManager(this);
+            graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
@@ -31,55 +46,70 @@ namespace Legend_of_the_Power_Rangers
 
         protected override void LoadContent()
         {
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
-            Texture2D itemSpriteSheet = Content.Load<Texture2D>("Items");
             Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
-            item = new Item(itemSpriteSheet, projectileSpriteSheet);
-            stateMachine = new LinkStateMachine(item, linkSpriteSheet, itemSpriteSheet, projectileSpriteSheet);
-            link = new Link(linkSpriteSheet, stateMachine);
+            Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
+            itemTexture = Content.Load<Texture2D>("Items");
+            linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
+            link = new Link(linkSpriteSheet);
             linkDecorator = new LinkDecorator(link);
-            movement = new LinkMovement(link, stateMachine);
 
-            keyboardController = new KeyboardController(stateMachine, linkDecorator);
+            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
 
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = new Enemy(new Vector2(200, 200)); 
+            DragonBoss = new DragonBoss(new Vector2(400, 150));
+
+        }
+
+        public void ChangeItem(int direction)
+        {
+            itemIndex += direction;
+            if (itemIndex >= ItemList.Length)
+            {
+                itemIndex = 0;
+            }
+            if (itemIndex < 0)
+            {
+                itemIndex = ItemList.Length - 1;
+            }
+            item = ItemList[itemIndex];
         }
 
         protected override void Update(GameTime gameTime)
         {
-
             keyboardController.Update();
-            movement.UpdateMovement(stateMachine);
-            linkDecorator.Update(gameTime);
-            item.Update(gameTime);
-            item.SetPosition(link.GetPosition());
-            if (enemy == null)
-            {
-                throw new InvalidOperationException("Enemy not initialized");
-            }
-            enemy.Update(gameTime);
-            base.Update(gameTime);
 
+            link.Update(gameTime);
+            linkItemFactory.Update(gameTime, link.GetPosition(), link.GetDirection());
+            enemy.Update(gameTime);
+            DragonBoss.Update(gameTime);
+            linkDecorator.Update(gameTime);
+            if (item == null)
+            {
+                throw new InvalidOperationException("item not initialized");
+            }
+            item.Update(gameTime);
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            _spriteBatch.Begin();
+            spriteBatch.Begin();
 
-            linkDecorator.Draw(_spriteBatch);
-            item.Draw(_spriteBatch);
-            if (enemy != null)
-            {
-                enemy.Draw(_spriteBatch);
-            }
-            _spriteBatch.End(); 
+            link.Draw(spriteBatch);
+            linkItemFactory.Draw(spriteBatch);
+            DragonBoss.Draw(spriteBatch);
+            
+            linkDecorator.Draw(spriteBatch);
+            enemy.Draw(spriteBatch);
+            item.Draw(itemTexture, spriteBatch);
             base.Draw(gameTime);
+            
+            spriteBatch.End();
         }
     }
 }

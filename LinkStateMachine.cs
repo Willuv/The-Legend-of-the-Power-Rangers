@@ -1,147 +1,166 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework;
+using static Legend_of_the_Power_Rangers.LinkStateMachine;
 using static Legend_of_the_Power_Rangers.Item;
 
 namespace Legend_of_the_Power_Rangers
 {
     public class LinkStateMachine
     {
-        public enum LinkState
+        public enum LinkDirection
         {
-            Left, Right, Up, Down, Idle, Attack,
-            Item1, Item2, Item3, Item4, Item5
+            Left, Right, Up, Down, Idle
+        }
+        public enum LinkAction
+        {
+            Idle, Attack, Item
         }
 
-        private LinkState currentState;
-        private LinkState lastDirection;
+        private LinkDirection currentDirection;
+        private LinkAction currentAction;
         private Texture2D linkSpriteSheet;
         private ILinkSprite currentSprite;
+        private LinkDirection lastDirection;
         private Texture2D itemSpriteSheet;
         private Texture2D projectileSpriteSheet;
-        private Item item;
-
-        public LinkStateMachine(Item item, Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
+        private const float MovementSpeed = 2f;
+        public LinkStateMachine(Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
         {
             linkSpriteSheet = spriteSheet;
-            itemSpriteSheet = itemSheet;
-            projectileSpriteSheet = projectileSheet;
-            currentState = LinkState.Idle;
-            lastDirection = LinkState.Right;
+            currentAction = LinkAction.Idle;
+            currentDirection = LinkDirection.Right;
+            lastDirection =  LinkDirection.Right;
             currentSprite = new LinkRightSprite(linkSpriteSheet);
-            this.item = item;
         }
 
-        public void ChangeState(LinkState newState)
+    public void ChangeDirection(LinkDirection newDirection)
         {
-            if (newState == currentState)
+            if (currentDirection != newDirection)
             {
-                return;
-            }
-            if (newState == LinkState.Attack)
-            {
-                ChangeAttackState();
-            }
-            else if (newState == LinkState.Item1 || newState == LinkState.Item2 ||
-                     newState == LinkState.Item3 || newState == LinkState.Item4 ||
-                     newState == LinkState.Item5)
-            {
-                ChangeItemState(newState);
-            }
-            else
-            {
-                lastDirection = newState;
-                currentState = newState;
+                if (newDirection != LinkDirection.Idle)
+                {
+                    lastDirection = newDirection;
+                }
+                currentDirection = newDirection;
                 ChangeDirectionState();
             }
         }
 
-
-        private void ChangeDirectionState()
+        public void ChangeAction(LinkAction newAction)
         {
-            switch (currentState)
+            if (currentAction != newAction)
             {
-                case LinkState.Right:
-                    currentSprite = new LinkRightSprite(linkSpriteSheet);
-                    break;
-                case LinkState.Left:
-                    currentSprite = new LinkLeftSprite(linkSpriteSheet);
-                    break;
-                case LinkState.Up:
-                    currentSprite = new LinkUpSprite(linkSpriteSheet);
-                    break;
-                case LinkState.Down:
-                    currentSprite = new LinkDownSprite(linkSpriteSheet);
-                    break;
-
+                currentAction = newAction;
+                ChangeActionState();
             }
-        } 
-        private void ChangeAttackState()
-            {
-                switch(currentState)
-                {
-                    case LinkState.Right:
-                        currentSprite = new LinkAttackRightSprite(linkSpriteSheet);
-                        break;
-                    case LinkState.Left:
-                        currentSprite = new LinkAttackLeftSprite(linkSpriteSheet);
-                        break;
-                    case LinkState.Up:
-                        currentSprite = new LinkAttackUpSprite(linkSpriteSheet);
-                        break;
-                    case LinkState.Down:
-                        currentSprite = new LinkAttackDownSprite(linkSpriteSheet);
-                        break;
-                }
-
-            currentState = LinkState.Attack;
-            }
-        private void ChangeItemState(LinkState itemState)
-        {
-            switch (lastDirection)
-            {
-                case LinkState.Right:
-                    currentSprite = new LinkItemRightSprite(linkSpriteSheet);
-                    ItemState(itemState, lastDirection);
-                    break;
-                case LinkState.Left:
-                    currentSprite = new LinkItemLeftSprite(linkSpriteSheet);
-                    ItemState(itemState, lastDirection);
-                    break;
-                case LinkState.Up:
-                    currentSprite = new LinkItemUpSprite(linkSpriteSheet);
-                    ItemState(itemState, lastDirection);
-                    break;
-                case LinkState.Down:
-                    currentSprite = new LinkItemDownSprite(linkSpriteSheet);
-                    ItemState(itemState, lastDirection);
-                    break;
-            }
-            currentState = lastDirection;
         }
 
-        private void ItemState(LinkState itemState, LinkState direction)
+        public Vector2 UpdateMovement()
         {
-            switch (itemState)
+            Vector2 movement = Vector2.Zero;
+
+            switch (currentDirection)
             {
-                case LinkState.Item1:
-                    item.SetType(ItemType.Bomb);
+                case LinkDirection.Up:
+                    movement.Y = -MovementSpeed;
                     break;
-                case LinkState.Item2:
-                    item.SetType(ItemType.Arrow);                    
+                case LinkDirection.Down:
+                    movement.Y = MovementSpeed;
                     break;
-                case LinkState.Item3:
-                    item.SetType(ItemType.Sword);
+                case LinkDirection.Left:
+                    movement.X = -MovementSpeed;
                     break;
-                case LinkState.Item4:
-                    item.SetType(ItemType.Boomerang);
+                case LinkDirection.Right:
+                    movement.X = MovementSpeed;
                     break;
-                case LinkState.Item5:
-                    item.SetType(ItemType.Candle);
+                case LinkDirection.Idle:
+                    break;
+            }
+            if (currentAction != LinkAction.Idle)
+            {
+                movement = Vector2.Zero;
+            }
+            return movement;
+        }
+        private void ChangeDirectionState()
+        {
+            switch (currentDirection)
+            {
+                case LinkDirection.Right:
+                    currentSprite = new LinkRightSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Left:
+                    currentSprite = new LinkLeftSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Up:
+                    currentSprite = new LinkUpSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Down:
+                    currentSprite = new LinkDownSprite(linkSpriteSheet);
+                    break;
+            }
+            }
+        private void ChangeActionState()
+        {
+            switch (currentAction)
+            {
+                case LinkAction.Attack:
+                    ChangeAttackState();
+                    break;
+                case LinkAction.Item:
+                    
+                    ChangeItemState();
+                    break;
+                case LinkAction.Idle:
+                    // Default idle state
+                    break;
+            }
+        }
+
+        private void ChangeAttackState()
+        {
+            System.Diagnostics.Debug.WriteLine($"Attack");
+            switch (lastDirection)
+            {
+                case LinkDirection.Right:
+                    System.Diagnostics.Debug.WriteLine($"Attack Right");
+                    currentSprite = new LinkAttackRightSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Left:
+                    System.Diagnostics.Debug.WriteLine($"Attack Left");
+                    currentSprite = new LinkAttackLeftSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Up:
+                    System.Diagnostics.Debug.WriteLine($"Attack Up");
+                    currentSprite = new LinkAttackUpSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Down:
+                    System.Diagnostics.Debug.WriteLine($"Attack Down");
+                    currentSprite = new LinkAttackDownSprite(linkSpriteSheet);
+                    break;
+            }
+        }
+
+        private void ChangeItemState()
+        {
+            System.Diagnostics.Debug.WriteLine($"Item");
+            switch (lastDirection)
+            {
+                case LinkDirection.Right:
+                    System.Diagnostics.Debug.WriteLine($"Item Right");
+                    currentSprite = new LinkItemRightSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Left:
+                    System.Diagnostics.Debug.WriteLine($"Item Left");
+                    currentSprite = new LinkItemLeftSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Up:
+                    System.Diagnostics.Debug.WriteLine($"Item Up");
+                    currentSprite = new LinkItemUpSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Down:
+                    System.Diagnostics.Debug.WriteLine($"Item Down");
+                    currentSprite = new LinkItemDownSprite(linkSpriteSheet);
                     break;
             }
         }
@@ -150,15 +169,17 @@ namespace Legend_of_the_Power_Rangers
         {
             return currentSprite;
         }
-        public LinkState GetCurrentState()
-        {
-            return currentState;
-        }
 
-        public LinkState GetLastDirection()
+        public LinkAction GetCurrentAction()
         {
+            return currentAction;
+        }
+        public LinkDirection GetCurrentDirection()
+        {
+            return currentDirection;
+        }
+        public LinkDirection GetLastDirection() {
             return lastDirection;
         }
-
     }
 }
