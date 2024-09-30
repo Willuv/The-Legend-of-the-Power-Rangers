@@ -10,49 +10,64 @@ namespace Legend_of_the_Power_Rangers
 		private Texture2D bombTexture;
         int totalFrames;
         int currentFrame;
+        bool finished;
+        Rectangle usedRectangle;
+        Rectangle sourceRectangle1;
         Vector2 offset;
-
-
-        float scaleFactor = 2f;
-
-
-        public BombSprite(Texture2D texture, LinkDirection direction)
+        Vector2 offset2;
+        Vector2 position;
+        float scaleFactor = 3f;
+        public BombSprite(Texture2D texture, Vector2 position, LinkDirection direction)
 		{
             bombTexture = texture;
+            finished = false;
             currentFrame = 0;
-            totalFrames = 10;
-            offset = Vector2.Zero;
+            totalFrames = 70;
+            this.position = position;
+            this.usedRectangle = new Rectangle(203, 0, 9, 15);
+            this.sourceRectangle1 = new Rectangle(84, 119, 7, 6);
             switch (direction)
             {
                 case LinkDirection.Left:
-                    offset.X = -10;
+                    offset = new Vector2(-30, 0);
+                    offset2 = new Vector2(-60, -20);
                     break;
                 case LinkDirection.Right:
-                    offset.X = 10;
+                    offset = new Vector2(50, 0);
+                    offset2 = new Vector2(20, -20);
                     break;
                 case LinkDirection.Up:
-                    offset.Y = -10;
+                    offset = new Vector2(5, -50);
+                    offset2 = new Vector2(-25, -70);
                     break;
                 case LinkDirection.Down:
-                    offset.Y = 10;
+                    offset = new Vector2(5, 50);
+                    offset2 = new Vector2(-25, 25);
                     break;
             }
             
 			
 
 		}
-        public void Draw(SpriteBatch spriteBatch, Vector2 position)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            Rectangle sourceRectangle = new Rectangle(203, 0, 9, 15);
-            spriteBatch.Draw(bombTexture, position + offset, sourceRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
+            spriteBatch.Draw(bombTexture, position + offset, usedRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
         }
         public void Update(GameTime gametime)
         {
             currentFrame++;
-            if (currentFrame > totalFrames)
-            {
-                
+            if (currentFrame == 50) {
+                scaleFactor = 12f;
+                offset = offset2;
+                usedRectangle = sourceRectangle1;
             }
+            else if (currentFrame == totalFrames)
+            {
+                finished = true;
+            }
+        }
+        public bool GetState() {
+            return finished;
         }
 
     }

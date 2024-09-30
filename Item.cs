@@ -15,79 +15,48 @@ namespace Legend_of_the_Power_Rangers
 
         private Texture2D itemSpriteSheet;
         private Texture2D projectileSpriteSheet;
-        private Vector2 position;
-        private LinkDirection direction;
-        private IitemSprite currentItem;
+        private Texture2D blockSpriteSheet; 
+        private IitemSprite item;
         public enum ItemType
         {
-            Boomerang, Arrow, Sword, Bomb, Candle, NONE
-        }
-        private ItemType type;
-
-        public Item(Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet)
-        {
-            this.itemSpriteSheet = itemSpriteSheet;
-            this.projectileSpriteSheet = projectileSpriteSheet;
-            this.type = ItemType.NONE;
+            Boomerang, Arrow, Sword, Bomb, Candle
         }
 
-        public void SetPosition(Vector2 position)
-        {
-            this.position = position;
-        }
-
-        public void SetDirection(LinkDirection direction) 
-        { 
-            this.direction = direction;
-        }
-
-        public void SetType(ItemType type)
-        {
-            this.type = type;
-        }
-
-
-        //public Texture2D GetitemSpriteSheet()
-        //{
-        //    return itemSpriteSheet;
-        //}
-
-        //public Texture2D GetprojectileSpriteSheet()
-        //{ 
-        //    return projectileSpriteSheet;
-        //}
-
-        public virtual void Update(GameTime gameTime)
+        public Item(ItemType type, Vector2 position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
         {
             switch (type)
             {
                 case ItemType.Bomb:
-                    currentItem = new BombSprite(itemSpriteSheet, direction);
+                    item = new BombSprite(itemSpriteSheet, position, direction);
                     break;
                 case ItemType.Arrow:
-                    //currentItem = new ArrowSprite(projectileSpriteSheet);
+                    item = new ArrowSprite(projectileSpriteSheet, position, direction);
                     break;
                 case ItemType.Sword:
-                    //currentItem = new SwordSprite(projectileSpriteSheet);
+                    item = new SwordSprite(projectileSpriteSheet, position, direction);
                     break;
                 case ItemType.Boomerang:
-                    //currentItem = new BoomerangSprite(itemSpriteSheet);
+                    item = new BoomerangSprite(itemSpriteSheet, position, direction);
                     break;
                 case ItemType.Candle:
-                    //currentItem = new CandleSprite(enemySpriteSheet);
-                    break;
-                case ItemType.NONE:
-                    currentItem = null;
+                    item = new CandleSprite(blockSpriteSheet, position, direction);
                     break;
             }
+            this.itemSpriteSheet = itemSpriteSheet;
+            this.projectileSpriteSheet = projectileSpriteSheet;
+            this.blockSpriteSheet = blockSpriteSheet;
         }
-
+        public virtual void Update(GameTime gameTime)
+        {
+            item.Update(gameTime);
+        }
         public virtual void Draw(SpriteBatch spriteBatch)
         {
-            if (currentItem != null)
-            {
-                currentItem.Draw(spriteBatch, position);
-            }
+            item.Draw(spriteBatch);
+        }
+        public bool GetState()
+        {
+            return item.GetState();
         }
     }
 }

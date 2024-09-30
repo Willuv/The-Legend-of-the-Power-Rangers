@@ -13,8 +13,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public enum LinkAction
         {
-            Idle, Attack,
-            Item1, Item2, Item3, Item4, Item5
+            Idle, Attack, Item
         }
 
         private LinkDirection currentDirection;
@@ -24,16 +23,14 @@ namespace Legend_of_the_Power_Rangers
         private LinkDirection lastDirection;
         private Texture2D itemSpriteSheet;
         private Texture2D projectileSpriteSheet;
-        private Item item;
         private const float MovementSpeed = 2f;
-        public LinkStateMachine(Item item, Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
+        public LinkStateMachine(Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
         {
             linkSpriteSheet = spriteSheet;
             currentAction = LinkAction.Idle;
             currentDirection = LinkDirection.Right;
             lastDirection =  LinkDirection.Right;
             currentSprite = new LinkRightSprite(linkSpriteSheet);
-            this.item = item;
         }
 
     public void ChangeDirection(LinkDirection newDirection)
@@ -79,6 +76,10 @@ namespace Legend_of_the_Power_Rangers
                 case LinkDirection.Idle:
                     break;
             }
+            if (currentAction != LinkAction.Idle)
+            {
+                movement = Vector2.Zero;
+            }
             return movement;
         }
         private void ChangeDirectionState()
@@ -106,28 +107,11 @@ namespace Legend_of_the_Power_Rangers
                 case LinkAction.Attack:
                     ChangeAttackState();
                     break;
-                case LinkAction.Item1:
-                    item.SetType(ItemType.Bomb);
-                    // Handle Item1 action
-                    break;
-                case LinkAction.Item2:
-                    item.SetType(ItemType.Arrow);
-                    // Handle Item2 action
-                    break;
-                case LinkAction.Item3:
-                    item.SetType(ItemType.Sword);
-                    // Handle Item3 action
-                    break;
-                case LinkAction.Item4:
-                    item.SetType(ItemType.Boomerang);
-                    // Handle Item4 action
-                    break;
-                case LinkAction.Item5:
-                    item.SetType(ItemType.Candle);
-                    // Handle Item5 action
+                case LinkAction.Item:
+                    
+                    ChangeItemState();
                     break;
                 case LinkAction.Idle:
-                    item.SetType(ItemType.NONE);
                     // Default idle state
                     break;
             }
@@ -157,6 +141,30 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
+        private void ChangeItemState()
+        {
+            System.Diagnostics.Debug.WriteLine($"Item");
+            switch (lastDirection)
+            {
+                case LinkDirection.Right:
+                    System.Diagnostics.Debug.WriteLine($"Item Right");
+                    currentSprite = new LinkItemRightSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Left:
+                    System.Diagnostics.Debug.WriteLine($"Item Left");
+                    currentSprite = new LinkItemLeftSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Up:
+                    System.Diagnostics.Debug.WriteLine($"Item Up");
+                    currentSprite = new LinkItemUpSprite(linkSpriteSheet);
+                    break;
+                case LinkDirection.Down:
+                    System.Diagnostics.Debug.WriteLine($"Item Down");
+                    currentSprite = new LinkItemDownSprite(linkSpriteSheet);
+                    break;
+            }
+        }
+
         public ILinkSprite GetCurrentSprite()
         {
             return currentSprite;
@@ -169,6 +177,9 @@ namespace Legend_of_the_Power_Rangers
         public LinkDirection GetCurrentDirection()
         {
             return currentDirection;
+        }
+        public LinkDirection GetLastDirection() {
+            return lastDirection;
         }
     }
 }

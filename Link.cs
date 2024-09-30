@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -17,12 +18,11 @@ namespace Legend_of_the_Power_Rangers
         private LinkStateMachine stateMachine;
         private ILinkSprite currentSprite;
         private Vector2 position;
-        private Item item;
 
         public Link(Texture2D spriteSheet)
         {
             linkSpriteSheet = spriteSheet;
-            stateMachine = new LinkStateMachine(item, linkSpriteSheet, itemSpriteSheet, projectileSpriteSheet);
+            stateMachine = new LinkStateMachine(linkSpriteSheet, itemSpriteSheet, projectileSpriteSheet);
             position = new Vector2(200, 200);
             currentSprite = stateMachine.GetCurrentSprite();
         }
@@ -44,6 +44,11 @@ namespace Legend_of_the_Power_Rangers
         public LinkStateMachine GetStateMachine()
         {
             return stateMachine;
+        }
+
+        public LinkDirection GetDirection()
+        {
+            return stateMachine.GetLastDirection();
         }
 
         public virtual void Update(GameTime gameTime)
