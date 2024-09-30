@@ -24,7 +24,10 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemSpriteSheet;
         private Texture2D projectileSpriteSheet;
         private const float MovementSpeed = 2f;
+
+      
         public LinkStateMachine(Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
+
         {
             linkSpriteSheet = spriteSheet;
             currentAction = LinkAction.Idle;
