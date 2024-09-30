@@ -39,11 +39,14 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.I, new ItemShowNextCommand(game) },
                 { Keys.O, new NPCShowPreviousCommand() },
                 { Keys.P, new NPCShowNextCommand() },
-                { Keys.Q, new QuitCommand() },
+                { Keys.Q, new QuitCommand(game) },
                 { Keys.R, new ResetCommand(game) }
             };
             idleCommand = new LinkIdleCommand(stateMachine);
             lastDirectionKey = Keys.None;
+
+            pressedMovementKeys = new HashSet<Keys>();
+            processedActionKeys = new HashSet<Keys>();
         }
 
         public void Update()

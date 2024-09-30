@@ -15,7 +15,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Execute()
         {
-            game.StartGame();
+            game.ResetGame();
         }
     }
 }

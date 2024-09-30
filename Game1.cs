@@ -46,10 +46,13 @@ namespace Legend_of_the_Power_Rangers
             IsMouseVisible = true;
         }
 
-        public void StartGame()
+        public void ResetGame()
         {
-            Initialize();
+            base.Initialize();
             LoadContent();
+            block = BlockList[0];
+            item = ItemList[0];
+            //Alex add enemy = EnemyList[0];
         }
 
         protected override void Initialize()
