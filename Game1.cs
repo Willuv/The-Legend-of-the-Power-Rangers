@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,6 +16,7 @@ namespace Legend_of_the_Power_Rangers
         private KeyboardController keyboardController;
         private Enemy enemy;
         private DragonBoss DragonBoss;
+        private LinkItemFactory linkItemFactory;
         private IItem item = new ItemCompass();
         private Texture2D itemTexture;
         private IBlock block = new BlockStatue1();
@@ -55,10 +56,14 @@ namespace Legend_of_the_Power_Rangers
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
+            Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
+            Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
+            itemTexture = Content.Load<Texture2D>("Items");
+            linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
             link = new Link(linkSpriteSheet);
             linkDecorator = new LinkDecorator(link);
 
-            keyboardController = new KeyboardController(link.GetStateMachine(), linkDecorator, this);
+            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
 
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = new Enemy(new Vector2(200, 200)); 
@@ -100,6 +105,7 @@ namespace Legend_of_the_Power_Rangers
             keyboardController.Update();
 
             link.Update(gameTime);
+            linkItemFactory.Update(gameTime, link.GetPosition(), link.GetDirection());
             enemy.Update(gameTime);
             DragonBoss.Update(gameTime);
             linkDecorator.Update(gameTime);
@@ -118,6 +124,7 @@ namespace Legend_of_the_Power_Rangers
             spriteBatch.Begin();
 
             link.Draw(spriteBatch);
+            linkItemFactory.Draw(spriteBatch);
             DragonBoss.Draw(spriteBatch);
             
             linkDecorator.Draw(spriteBatch);
