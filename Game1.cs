@@ -22,8 +22,8 @@ namespace Legend_of_the_Power_Rangers
         private IBlock block = new BlockStatue1();
         private Texture2D blockTexture;
 
-        private int itemIndex = 0;
-        private int blockIndex = 0; 
+        private int itemIndex;
+        private int blockIndex; 
 
 
 
@@ -44,6 +44,12 @@ namespace Legend_of_the_Power_Rangers
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+        }
+
+        public void StartGame()
+        {
+            Initialize();
+            LoadContent();
         }
 
         protected override void Initialize()
@@ -68,8 +74,11 @@ namespace Legend_of_the_Power_Rangers
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = new Enemy(new Vector2(200, 200)); 
             DragonBoss = new DragonBoss(new Vector2(400, 150));
+            
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
+            itemIndex = 0;
+            blockIndex = 0;
         }
 
         public void ChangeItem(int direction)
