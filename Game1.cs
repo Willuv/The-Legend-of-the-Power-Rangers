@@ -21,11 +21,11 @@ namespace Legend_of_the_Power_Rangers
         private IBlock block = new BlockStatue1();
         private Texture2D blockTexture;
 
-        private int itemIndex = 0;
-        private int blockIndex = 0; 
+
+        private int itemIndex;
+        private int blockIndex; 
         private int enemyIndex = 0;
         
-
         private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(),
                                     new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
                                     new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(), new ItemFairy(),
@@ -43,6 +43,15 @@ namespace Legend_of_the_Power_Rangers
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+        }
+
+        public void ResetGame()
+        {
+            base.Initialize();
+            LoadContent();
+            block = BlockList[0];
+            item = ItemList[0];
+            //Alex add enemy = EnemyList[0];
         }
 
         protected override void Initialize()
@@ -66,9 +75,11 @@ namespace Legend_of_the_Power_Rangers
             
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), enemyTypes[1]);
-            
+
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
+            itemIndex = 0;
+            blockIndex = 0;
         }
 
         public void ChangeItem(int direction)

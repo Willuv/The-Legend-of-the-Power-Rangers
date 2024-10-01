@@ -9,12 +9,13 @@ namespace Legend_of_the_Power_Rangers
 {
     public class QuitCommand : ICommand
     {
-        public QuitCommand() {
-            
+        Game1 game;
+        public QuitCommand(Game1 game) {
+            this.game = game;
         }
         public void Execute()
         {
-            
+            game.Exit();
         }
     }
 }
