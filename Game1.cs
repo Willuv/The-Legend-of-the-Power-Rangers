@@ -15,7 +15,6 @@ namespace Legend_of_the_Power_Rangers
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
         private Enemy enemy;
-        private DragonBoss DragonBoss;
         private LinkItemFactory linkItemFactory;
         private IItem item = new ItemCompass();
         private Texture2D itemTexture;
@@ -24,8 +23,8 @@ namespace Legend_of_the_Power_Rangers
 
         private int itemIndex = 0;
         private int blockIndex = 0; 
-
-
+        private int enemyIndex = 0;
+        
 
         private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(),
                                     new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
@@ -37,7 +36,7 @@ namespace Legend_of_the_Power_Rangers
                                         new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(), 
                                         new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()};
 
-
+        private string[] enemyTypes = { "RedOcto", "BlueOcto", "RedGorya", "BlueGorya", "RedMoblin", "DarkMoblin", "RedKnight" , "BlueKnight", "RedCentaur", "BlueCentaur", "DragonBoss" };
 
         public Game1()
         {
@@ -64,10 +63,10 @@ namespace Legend_of_the_Power_Rangers
             linkDecorator = new LinkDecorator(link);
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
-
+            
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
-            enemy = new Enemy(new Vector2(200, 200)); 
-            DragonBoss = new DragonBoss(new Vector2(400, 150));
+            enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), enemyTypes[1]);
+            
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
         }
@@ -100,6 +99,38 @@ namespace Legend_of_the_Power_Rangers
             block = BlockList[blockIndex];
         }
 
+        public void ChangeEnemy(int direction)
+        {
+            enemyIndex += direction;
+            if (enemyIndex >= enemyTypes.Length)
+            {
+                enemyIndex = 0;
+            }
+            else if (enemyIndex < 0)
+            {
+                enemyIndex = enemyTypes.Length - 1;
+            }
+            string newType = enemyTypes[enemyIndex];
+            
+            if (newType == "DragonBoss")
+            {
+                //Switching
+                enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), newType);
+            }
+            else
+            {
+                if (enemy.enemyType == "DragonBoss")
+                {
+                    // If DragonBoss, reinitialize
+                    enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), newType);
+                }
+                else
+                {
+                    enemy.ChangeType(newType);
+                }
+            }
+        }
+
         protected override void Update(GameTime gameTime)
         {
             keyboardController.Update();
@@ -107,7 +138,6 @@ namespace Legend_of_the_Power_Rangers
             link.Update(gameTime);
             linkItemFactory.Update(gameTime, link.GetPosition(), link.GetDirection());
             enemy.Update(gameTime);
-            DragonBoss.Update(gameTime);
             linkDecorator.Update(gameTime);
             if (item == null)
             {
@@ -125,10 +155,9 @@ namespace Legend_of_the_Power_Rangers
 
             link.Draw(spriteBatch);
             linkItemFactory.Draw(spriteBatch);
-            DragonBoss.Draw(spriteBatch);
-            
             linkDecorator.Draw(spriteBatch);
             enemy.Draw(spriteBatch);
+
             item.Draw(itemTexture, spriteBatch);
             block.Draw(blockTexture, spriteBatch);
             base.Draw(gameTime);
