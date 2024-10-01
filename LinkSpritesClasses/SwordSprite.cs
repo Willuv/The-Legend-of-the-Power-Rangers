@@ -68,7 +68,7 @@ namespace Legend_of_the_Power_Rangers
                 case LinkDirection.Down:
                     sourceRectangle = new Rectangle(4, 3, 7, 16);
                     offset = new Vector2(15, 50);
-                    movement.Y = -3;
+                    movement.Y = 3;
                     break;
             }
 
