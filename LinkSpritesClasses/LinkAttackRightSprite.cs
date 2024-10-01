@@ -29,12 +29,13 @@ namespace Legend_of_the_Power_Rangers
             currentLinkLocation = 59;
             nextSpriteDistance = 28;
             isAnimationPlaying = true;
+
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
         {
             Rectangle sourceRectangle = new Rectangle(spriteStart, currentLinkLocation, spriteWidth, spriteHeight);
-            spriteBatch.Draw(linkTexture, position, sourceRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
+            spriteBatch.Draw(linkTexture, position + swordOffset, sourceRectangle, Color.White, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
 
         }
         public void Update(GameTime gameTime)
@@ -44,12 +45,14 @@ namespace Legend_of_the_Power_Rangers
             if (currentFrame == 10)
             {
                 currentLinkLocation = currentLinkLocation + nextSpriteDistance;
+                swordOffset.X = 22;
                 spriteStart -= 6;
                 spriteWidth += 14;
             }
             if (currentFrame > totalFrames)
             {
                 currentLinkLocation = currentLinkLocation - nextSpriteDistance;
+                swordOffset.X = 0;
                 spriteStart += 6;
                 spriteWidth -= 14;
                 currentFrame = 0;
