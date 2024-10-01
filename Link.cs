@@ -55,10 +55,11 @@ namespace Legend_of_the_Power_Rangers
         {
             Vector2 movement = stateMachine.UpdateMovement();
             UpdatePosition(movement);
-            currentSprite = stateMachine.GetCurrentSprite();
-            if (stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle ||
-                stateMachine.GetCurrentDirection() != LinkStateMachine.LinkDirection.Idle)
+            stateMachine.UpdateAnimation(gameTime);
+
+            if (stateMachine.GetCurrentDirection() != LinkStateMachine.LinkDirection.Idle || stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle)
             {
+                var currentSprite = stateMachine.GetCurrentSprite();
                 currentSprite.Update(gameTime);
             }
         }

@@ -4,7 +4,7 @@ using System;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class LinkAttackRightSprite : ILinkSprite
+    public class LinkAttackRightSprite : IAttackSprite
     {
         private Texture2D linkTexture;
         private int currentFrame;
@@ -16,6 +16,8 @@ namespace Legend_of_the_Power_Rangers
         private int spriteStart;
         private float scaleFactor = 3f;
         private Vector2 swordOffset;
+        private bool isAnimationPlaying;
+
         public LinkAttackRightSprite(Texture2D texture)
         {
             linkTexture = texture;
@@ -26,7 +28,8 @@ namespace Legend_of_the_Power_Rangers
             spriteStart = 87;
             currentLinkLocation = 59;
             nextSpriteDistance = 28;
-            swordOffset = new Vector2(0,0);
+            isAnimationPlaying = true;
+
         }
 
         public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
@@ -37,6 +40,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Update(GameTime gameTime)
         {
+
             currentFrame++;
             if (currentFrame == 10)
             {
@@ -52,7 +56,14 @@ namespace Legend_of_the_Power_Rangers
                 spriteStart += 6;
                 spriteWidth -= 14;
                 currentFrame = 0;
+                isAnimationPlaying = false;
+
             }
+
+        }
+        public bool IsAnimationPlaying()
+        {
+            return isAnimationPlaying;
         }
     }
 
