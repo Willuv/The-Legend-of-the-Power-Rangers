@@ -6,73 +6,67 @@ using Microsoft.Xna.Framework.Graphics;
 namespace Legend_of_the_Power_Rangers
 {
     public class DragonBoss : Enemy
-{
-    private List<Tuple<EnemySprite, Vector2>> projectiles;
-    private EnemySprite sprite;
-    private double projectileFireTimer = 0;
-    private double projectileFireInterval = 1;
-
-    public DragonBoss(Vector2 initialPosition) : base(initialPosition)
     {
-        sprite = EnemySpriteFactory.Instance.CreateEnemySprite("DragonBoss");
-        projectiles = new List<Tuple<EnemySprite, Vector2>>();
-    }
+        private List<Tuple<EnemySprite, Vector2>> projectiles;
+        private double projectileFireTimer = 0;
+        private double projectileFireInterval = 1;
 
-    public override void Update(GameTime gameTime)
-{
-    base.Update(gameTime);
-    sprite.Update(gameTime);
-    ShootProjectiles(gameTime);
-
-    for (int i = 0; i < projectiles.Count; i++)
-    {
-        var projectile = projectiles[i];
-        Vector2 direction;
-        if (i % 3 == 0)//Southwest
+        public DragonBoss(Vector2 initialPosition) : base(initialPosition, "DragonBoss")
         {
-            direction = new Vector2(-1, -1);
+            projectiles = new List<Tuple<EnemySprite, Vector2>>();
         }
-        else if (i % 3 == 1)//West
+
+        public override void Update(GameTime gameTime)
         {
-            direction = new Vector2(-1, 0);
+            base.Update(gameTime);
+            UpdateProjectiles(gameTime);
         }
-        else//Northwest
+
+        private void UpdateProjectiles(GameTime gameTime)
         {
-            direction = new Vector2(-1, 1);
+            projectileFireTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (projectileFireTimer >= projectileFireInterval)
+            {
+                ShootProjectiles();
+                projectileFireTimer = 0;//Reset timer
+            }
+
+            for (int i = 0; i < projectiles.Count; i++)
+            {
+                var projectile = projectiles[i];
+                Vector2 projectileDirection = GetProjectileDirection(i);
+                Vector2 newPosition = projectile.Item2 + projectileDirection * 200 * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                projectiles[i] = new Tuple<EnemySprite, Vector2>(projectile.Item1, newPosition);
+            }
         }
-        //Update position
-        Vector2 newPosition = projectile.Item2 + direction * 200 * (float)gameTime.ElapsedGameTime.TotalSeconds;
-        projectiles[i] = new Tuple<EnemySprite, Vector2>(projectile.Item1, newPosition);
-    }
-}
 
-    private void ShootProjectiles(GameTime gameTime)
-    {
-        projectileFireTimer += gameTime.ElapsedGameTime.TotalSeconds;
-
-        if (projectileFireTimer >= projectileFireInterval)
+        private void ShootProjectiles()
         {
-            //3 projectiles
-            var projectile1 = EnemySpriteFactory.Instance.CreateEnemySprite("Projectile");
-            projectiles.Add(new Tuple<EnemySprite, Vector2>(projectile1, position));
-
-            var projectile2 = EnemySpriteFactory.Instance.CreateEnemySprite("Projectile");
-            projectiles.Add(new Tuple<EnemySprite, Vector2>(projectile2, position));
-
-            var projectile3 = EnemySpriteFactory.Instance.CreateEnemySprite("Projectile");
-            projectiles.Add(new Tuple<EnemySprite, Vector2>(projectile3, position));
-
-            projectileFireTimer = 0;//Reset timer
+            for (int i = 0; i < 3; i++)
+            {
+                var projectile = EnemySpriteFactory.Instance.CreateEnemySprite("Projectile");
+                projectiles.Add(new Tuple<EnemySprite, Vector2>(projectile, position));
+            }
         }
-    }
 
-    public override void Draw(SpriteBatch spriteBatch)
-    {
-        sprite.Draw(spriteBatch, position);//Draw boss
-        foreach (var projectile in projectiles)//Draw projectile
+        private Vector2 GetProjectileDirection(int index)
         {
-            projectile.Item1.Draw(spriteBatch, projectile.Item2);
+            switch (index % 3)
+            {
+                case 0: return new Vector2(-1, -1);//Southwest
+                case 1: return new Vector2(-1, 0);//West
+                case 2: return new Vector2(-1, 1);//Northwest
+                default: return new Vector2(0, 0);//Should not reach here
+            }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            base.Draw(spriteBatch);//Draw boss
+            foreach (var projectile in projectiles)//Draw projectiles
+            {
+                projectile.Item1.Draw(spriteBatch, projectile.Item2);
+            }
         }
     }
-}
 }

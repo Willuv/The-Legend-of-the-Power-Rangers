@@ -18,26 +18,23 @@ namespace Legend_of_the_Power_Rangers
         public EnemySprite(Texture2D Enemytexture, int framesCount, int spriteWidth, int spriteHeight, int xOffset = 0, int yOffset = 0)
         {
             texture = Enemytexture;
-            sourceRectangle = new Rectangle[framesCount * 8];
+            sourceRectangle = new Rectangle[64];
 
             for (int direction = 0; direction < 4; direction++)
             {
                 for (int i = 0; i < framesCount; i++)
                 {
                     int baseIndex = direction * framesCount + i;
-                    int alternateIndex = baseIndex + framesCount * 4;
-
                     sourceRectangle[baseIndex] = new Rectangle(
                         xOffset + i * spriteWidth,
                         yOffset + direction * spriteHeight,
                         spriteWidth,
                         spriteHeight);
+                        
+                        if (framesCount == 4) {//DragonBoss size & frames
+                        sourceRectangle[baseIndex] = new Rectangle(xOffset + i * 41, yOffset, spriteWidth, spriteHeight);
+                    }
 
-                    sourceRectangle[alternateIndex] = new Rectangle(
-                        xOffset + i * spriteWidth,
-                        yOffset + (direction + 4) * spriteHeight,
-                        spriteWidth,
-                        spriteHeight);
                 }
             }
         }
@@ -55,6 +52,17 @@ namespace Legend_of_the_Power_Rangers
             currentFrameIndex = frameIndex1;
         }
 
+        public void SetDragonDirection(Vector2 direction)
+        {
+            int directionIndex = 0;
+            if (direction.X < 0) directionIndex = 2;
+            else if (direction.Y < 0) directionIndex = 4;
+            else if (direction.X > 0) directionIndex = 6;
+
+            frameIndex1 = directionIndex;
+            frameIndex2 = frameIndex1; // Duplicate Frame1
+            currentFrameIndex = frameIndex1;
+        }
         public void Update(GameTime gameTime)
         {
             timeSinceLastToggle += gameTime.ElapsedGameTime.TotalMilliseconds;

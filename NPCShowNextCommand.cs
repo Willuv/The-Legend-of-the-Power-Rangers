@@ -6,14 +6,18 @@ using System.Threading.Tasks;
 
 namespace Legend_of_the_Power_Rangers
 {
-    internal class NPCShowNextCommand : ICommand
+    public class NPCShowNextCommand : ICommand
     {
-        public NPCShowNextCommand() 
+        private int direction = 1;
+        private readonly Game1 game1;
+        public NPCShowNextCommand(Game1 game) 
         { 
+            game1 = game;
         }
 
         public void Execute() 
         {
+            game1.ChangeEnemy(direction);
         }
     }
 }

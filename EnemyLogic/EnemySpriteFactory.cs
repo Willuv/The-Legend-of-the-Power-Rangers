@@ -34,18 +34,26 @@ public class EnemySpriteFactory
     {
         switch (type)
         {
-            case "RedKnight":
-                return new EnemySprite(enemySpritesheet, 8, 15, 15, 0, 180);
-            case "BlueOcto":
-                return new EnemySprite(enemySpritesheet, 8, 15, 15, 120, 0);
             case "RedOcto":
                 return new EnemySprite(enemySpritesheet, 8, 15, 15, 0, 0);
+            case "BlueOcto":
+                return new EnemySprite(enemySpritesheet, 8, 15, 15, 120, 0);
             case "RedGorya":
                 return new EnemySprite(enemySpritesheet, 8, 15, 15, 0, 60);
-            case "Centaur":
-                return new EnemySprite(enemySpritesheet, 8, 15, 15, 0, 240);
-            case "Moblin":
+            case "BlueGorya":
+                return new EnemySprite(enemySpritesheet, 8, 15, 15, 120, 60);
+            case "RedMoblin":
+                return new EnemySprite(enemySpritesheet, 8, 15, 15, 0, 120);
+            case "DarkMoblin":
                 return new EnemySprite(enemySpritesheet, 8, 15, 15, 120, 120);
+            case "RedKnight":
+                return new EnemySprite(enemySpritesheet, 8, 15, 15, 0, 180);
+            case "BlueKnight":
+                return new EnemySprite(enemySpritesheet, 8, 15, 15, 120, 180);
+            case "RedCentaur":
+                return new EnemySprite(enemySpritesheet, 8, 15, 15, 0, 240);
+            case "BlueCentaur":
+                return new EnemySprite(enemySpritesheet, 8, 15, 15, 120, 240);
             case "Projectile":
                 return new EnemySprite(enemySpritesheet, 8, 15, 15, 330, 0);
             case "DragonBoss":
