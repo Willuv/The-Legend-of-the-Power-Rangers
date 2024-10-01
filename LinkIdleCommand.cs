@@ -15,9 +15,11 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Execute()
         {
-            this.stateMachine.ChangeDirection(LinkStateMachine.LinkDirection.Idle);
-            this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
-
+            if (!stateMachine.IsAttacking())
+            {
+                stateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
+            }
+            stateMachine.ChangeDirection(LinkStateMachine.LinkDirection.Idle);
 
         }
     }

@@ -24,19 +24,21 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemSpriteSheet;
         private Texture2D projectileSpriteSheet;
         private const float MovementSpeed = 2f;
+        private bool isAttacking;
 
-      
+
         public LinkStateMachine(Texture2D spriteSheet, Texture2D itemSheet, Texture2D projectileSheet)
 
         {
             linkSpriteSheet = spriteSheet;
             currentAction = LinkAction.Idle;
             currentDirection = LinkDirection.Right;
-            lastDirection =  LinkDirection.Right;
+            lastDirection = LinkDirection.Right;
             currentSprite = new LinkRightSprite(linkSpriteSheet);
+            isAttacking = false;
         }
 
-    public void ChangeDirection(LinkDirection newDirection)
+        public void ChangeDirection(LinkDirection newDirection)
         {
             if (currentDirection != newDirection)
             {
@@ -55,6 +57,11 @@ namespace Legend_of_the_Power_Rangers
             {
                 currentAction = newAction;
                 ChangeActionState();
+
+                if (newAction == LinkAction.Attack)
+                {
+                    isAttacking = true;
+                }
             }
         }
 
@@ -102,7 +109,7 @@ namespace Legend_of_the_Power_Rangers
                     currentSprite = new LinkDownSprite(linkSpriteSheet);
                     break;
             }
-            }
+        }
         private void ChangeActionState()
         {
             switch (currentAction)
@@ -111,7 +118,7 @@ namespace Legend_of_the_Power_Rangers
                     ChangeAttackState();
                     break;
                 case LinkAction.Item:
-                    
+
                     ChangeItemState();
                     break;
                 case LinkAction.Idle:
@@ -122,23 +129,18 @@ namespace Legend_of_the_Power_Rangers
 
         private void ChangeAttackState()
         {
-            System.Diagnostics.Debug.WriteLine($"Attack");
             switch (lastDirection)
             {
                 case LinkDirection.Right:
-                    System.Diagnostics.Debug.WriteLine($"Attack Right");
                     currentSprite = new LinkAttackRightSprite(linkSpriteSheet);
                     break;
                 case LinkDirection.Left:
-                    System.Diagnostics.Debug.WriteLine($"Attack Left");
                     currentSprite = new LinkAttackLeftSprite(linkSpriteSheet);
                     break;
                 case LinkDirection.Up:
-                    System.Diagnostics.Debug.WriteLine($"Attack Up");
                     currentSprite = new LinkAttackUpSprite(linkSpriteSheet);
                     break;
                 case LinkDirection.Down:
-                    System.Diagnostics.Debug.WriteLine($"Attack Down");
                     currentSprite = new LinkAttackDownSprite(linkSpriteSheet);
                     break;
             }
@@ -146,27 +148,37 @@ namespace Legend_of_the_Power_Rangers
 
         private void ChangeItemState()
         {
-            System.Diagnostics.Debug.WriteLine($"Item");
             switch (lastDirection)
             {
                 case LinkDirection.Right:
-                    System.Diagnostics.Debug.WriteLine($"Item Right");
                     currentSprite = new LinkItemRightSprite(linkSpriteSheet);
                     break;
                 case LinkDirection.Left:
-                    System.Diagnostics.Debug.WriteLine($"Item Left");
                     currentSprite = new LinkItemLeftSprite(linkSpriteSheet);
                     break;
                 case LinkDirection.Up:
-                    System.Diagnostics.Debug.WriteLine($"Item Up");
                     currentSprite = new LinkItemUpSprite(linkSpriteSheet);
                     break;
                 case LinkDirection.Down:
-                    System.Diagnostics.Debug.WriteLine($"Item Down");
                     currentSprite = new LinkItemDownSprite(linkSpriteSheet);
                     break;
             }
         }
+
+        public bool IsAttacking()
+        {
+            return isAttacking;
+        }
+
+        public void UpdateAnimation(GameTime gameTime)
+        {
+            if (currentSprite is IAttackSprite attackSprite && !attackSprite.IsAnimationPlaying())
+            {
+                isAttacking = false;
+            }
+        }
+
+
 
         public ILinkSprite GetCurrentSprite()
         {
@@ -181,7 +193,8 @@ namespace Legend_of_the_Power_Rangers
         {
             return currentDirection;
         }
-        public LinkDirection GetLastDirection() {
+        public LinkDirection GetLastDirection()
+        {
             return lastDirection;
         }
     }

@@ -16,6 +16,7 @@ namespace Legend_of_the_Power_Rangers
         private readonly HashSet<Keys> processedActionKeys;
         private readonly LinkIdleCommand idleCommand;
         private Keys lastDirectionKey;
+        private bool isAttackKeyPressed;
 
         public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Game1 game)
         {
@@ -44,6 +45,11 @@ namespace Legend_of_the_Power_Rangers
             };
             idleCommand = new LinkIdleCommand(stateMachine);
             lastDirectionKey = Keys.None;
+
+            pressedMovementKeys = new HashSet<Keys>();
+            processedActionKeys = new HashSet<Keys>();
+
+            isAttackKeyPressed = false; 
         }
 
         public void Update()
