@@ -2,10 +2,7 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
+using System.Diagnostics;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -13,6 +10,9 @@ namespace Legend_of_the_Power_Rangers
     {
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
         private readonly LinkIdleCommand idleCommand;
+        private KeyboardState currentKeyboardState;
+        private KeyboardState previousKeyboardState;
+        
 
         public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Game1 game)
         {
@@ -40,21 +40,36 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.R, new ResetCommand(game) }
             };
             idleCommand = new LinkIdleCommand(stateMachine);
-
         }
 
         public void Update()
         {
-            Keys[] pressedKeys = Keyboard.GetState().GetPressedKeys();
+            currentKeyboardState = Keyboard.GetState();
+            Keys[] pressedKeys = currentKeyboardState.GetPressedKeys();
+            var currentPressedKeySet = new HashSet<Keys>(pressedKeys);
+
+            foreach (var key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
+            {
+                //if i remove the second part of the if statement I'm able to constantly call the movement commands by holding the key
+                if (currentPressedKeySet.Contains(key) && !previousKeyboardState.IsKeyDown(key))
+                {
+                    Debug.WriteLine("Movement.");
+                    keyCommandMappings[key].Execute();
+                }
+            }
+
             foreach (Keys key in pressedKeys)
             {
-                if (keyCommandMappings.ContainsKey(key))
+                if (!previousKeyboardState.IsKeyDown(key) && keyCommandMappings.ContainsKey(key))
                 {
                     ICommand command = keyCommandMappings[key];
                     command.Execute();
-                } 
+                }
             }
+
+            previousKeyboardState = currentKeyboardState;
         }
+
         public void RegisterCommand(Keys key, ICommand command)
         {
             keyCommandMappings[key] = command;

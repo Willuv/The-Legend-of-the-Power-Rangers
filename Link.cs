@@ -11,7 +11,7 @@ public class Link
 
     public Link()
     {
-        stateMachine = new LinkStateMachine(); // Pass the spriteSheet as necessary
+        stateMachine = new LinkStateMachine();
         position = new Vector2(200, 200);
         currentSprite = stateMachine.GetCurrentSprite();
     }
@@ -33,7 +33,7 @@ public class Link
 
     public LinkDirection GetDirection()
     {
-        return stateMachine.GetCurrentDirection(); // Get current direction without checking for idle
+        return stateMachine.GetCurrentDirection();
     }
 
     public virtual void Update(GameTime gameTime)
@@ -41,22 +41,14 @@ public class Link
         Vector2 movement = stateMachine.UpdateMovement();
         UpdatePosition(movement);
 
-        // Instead of checking for idle direction, just check if it's not idle action
-        if (stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle)
-        {
-            currentSprite = stateMachine.GetCurrentSprite();
-            currentSprite.Update(gameTime);
-        }
+        currentSprite = stateMachine.GetCurrentSprite();
+        currentSprite.Update(gameTime);
+
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {
         currentSprite = stateMachine.GetCurrentSprite();
-
-        // Draw only if Link is performing an action
-        if (stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle)
-        {
-            currentSprite.Draw(spriteBatch, position, Color.White);
-        }
+        currentSprite.Draw(spriteBatch, position, Color.White);
     }
 }

@@ -22,13 +22,11 @@ namespace Legend_of_the_Power_Rangers
         private LinkAction currentAction;
         private ILinkSprite currentSprite;
         private const float MovementSpeed = 2f;
-        private bool isMoving;
 
         public LinkStateMachine()
         {
             currentAction = LinkAction.Idle;
             currentDirection = LinkDirection.Right;
-            isMoving = false;
             currentSprite = LinkSpriteFactory.Instance.CreateLinkSprite(currentAction, currentDirection);
         }
 

@@ -18,7 +18,6 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
-        // Method to set the sprite sheet
         public void SetSpriteSheet(Texture2D spriteSheet)
         {
             linkSpriteSheet = spriteSheet;

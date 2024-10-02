@@ -129,14 +129,12 @@ namespace Legend_of_the_Power_Rangers
             
             if (newType == "DragonBoss")
             {
-                //Switching
                 enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), newType);
             }
             else
             {
                 if (enemy.enemyType == "DragonBoss")
                 {
-                    // If DragonBoss, reinitialize
                     enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), newType);
                 }
                 else
