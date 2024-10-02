@@ -12,11 +12,7 @@ namespace Legend_of_the_Power_Rangers
     public class KeyboardController : IController<Keys>
     {
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
-        private readonly HashSet<Keys> pressedMovementKeys;
-        private readonly HashSet<Keys> processedActionKeys;
         private readonly LinkIdleCommand idleCommand;
-        private Keys lastDirectionKey;
-        private bool isAttackKeyPressed;
 
         public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Game1 game)
         {
@@ -44,78 +40,21 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.R, new ResetCommand(game) }
             };
             idleCommand = new LinkIdleCommand(stateMachine);
-            lastDirectionKey = Keys.None;
 
-            pressedMovementKeys = new HashSet<Keys>();
-            processedActionKeys = new HashSet<Keys>();
-
-
-            isAttackKeyPressed = false; 
         }
 
         public void Update()
         {
             Keys[] pressedKeys = Keyboard.GetState().GetPressedKeys();
-
             foreach (Keys key in pressedKeys)
             {
                 if (keyCommandMappings.ContainsKey(key))
                 {
-                    if (key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D)
-                    {
-                        if (!pressedMovementKeys.Contains(key))
-                        {
-                            pressedMovementKeys.Add(key);
-                            lastDirectionKey = key;
-                            keyCommandMappings[key].Execute();
-                        }
-                    }
-                    else
-                    {
-                        if (!processedActionKeys.Contains(key))
-                        {
-                            keyCommandMappings[key].Execute();
-                            processedActionKeys.Add(key);
-                        }
-                    }
-                }
-            }
-
-            foreach (Keys key in pressedMovementKeys.ToList())
-            {
-                if (!pressedKeys.Contains(key))
-                {
-                    pressedMovementKeys.Remove(key);
-                    if (key == lastDirectionKey)
-                    {
-                        if (pressedMovementKeys.Count > 0)
-                        {
-                            lastDirectionKey = pressedMovementKeys.Last();
-                            keyCommandMappings[lastDirectionKey].Execute();
-                        }
-                        else
-                        {
-                            idleCommand.Execute();
-                            lastDirectionKey = Keys.None;
-                        }
-                    }
-                }
-            }
-
-            foreach (Keys key in processedActionKeys.ToList())
-            {
-                if (!pressedKeys.Contains(key))
-                {
-                    processedActionKeys.Remove(key);
-                }
-            }
-
-            if (pressedMovementKeys.Count == 0 && lastDirectionKey == Keys.None)
-            {
-                idleCommand.Execute();
+                    ICommand command = keyCommandMappings[key];
+                    command.Execute();
+                } 
             }
         }
-
         public void RegisterCommand(Keys key, ICommand command)
         {
             keyCommandMappings[key] = command;

@@ -67,12 +67,15 @@ namespace Legend_of_the_Power_Rangers
             Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
             itemTexture = Content.Load<Texture2D>("Items");
+
+            LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
+
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
-            link = new Link(linkSpriteSheet);
+            link = new Link();
             linkDecorator = new LinkDecorator(link);
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
-            
+
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), enemyTypes[1]);
 
@@ -81,6 +84,7 @@ namespace Legend_of_the_Power_Rangers
             itemIndex = 0;
             blockIndex = 0;
         }
+
 
         public void ChangeItem(int direction)
         {
