@@ -20,6 +20,8 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemTexture;
         private IBlock block = new BlockStatue1();
         private Texture2D blockTexture;
+        private CollisionDetector collisionDetector;
+        //private SortingMachine sortingMachine;
 
 
         private int itemIndex;
@@ -80,6 +82,10 @@ namespace Legend_of_the_Power_Rangers
             blockTexture = Content.Load<Texture2D>("Blocks");
             itemIndex = 0;
             blockIndex = 0;
+
+            collisionDetector = new CollisionDetector();
+            //sortingMachine = new SortingMachine();
+            //sortingMachine.quickSort(list of loaded objects for this scene)
         }
 
         public void ChangeItem(int direction)
@@ -157,6 +163,9 @@ namespace Legend_of_the_Power_Rangers
             item.Update(gameTime);
             block.Update(gameTime);
             base.Update(gameTime);
+
+            //sortingMachine.bubbleSort(list of objects)
+            collisionDetector.checkForCollisions();
         }
 
         protected override void Draw(GameTime gameTime)
