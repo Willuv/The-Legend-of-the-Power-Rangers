@@ -38,13 +38,25 @@ public class Link
 
     public virtual void Update(GameTime gameTime)
     {
+        // Update the state machine's action timer
+        stateMachine.UpdateActionTimer(gameTime);
+
         Vector2 movement = stateMachine.UpdateMovement();
-        UpdatePosition(movement);
+        bool isMoving = (movement != Vector2.Zero);
+
+        if (isMoving)
+        {
+            UpdatePosition(movement);
+        }
+        else if (!stateMachine.IsActionLocked()) // Only switch to idle if no action is locked
+        {
+            stateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
+        }
 
         currentSprite = stateMachine.GetCurrentSprite();
         currentSprite.Update(gameTime);
-
     }
+
 
     public virtual void Draw(SpriteBatch spriteBatch)
     {

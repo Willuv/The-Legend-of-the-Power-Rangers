@@ -48,16 +48,6 @@ namespace Legend_of_the_Power_Rangers
             Keys[] pressedKeys = currentKeyboardState.GetPressedKeys();
             var currentPressedKeySet = new HashSet<Keys>(pressedKeys);
 
-            foreach (var key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
-            {
-                //if i remove the second part of the if statement I'm able to constantly call the movement commands by holding the key
-                if (currentPressedKeySet.Contains(key) && !previousKeyboardState.IsKeyDown(key))
-                {
-                    Debug.WriteLine("Movement.");
-                    keyCommandMappings[key].Execute();
-                }
-            }
-
             foreach (Keys key in pressedKeys)
             {
                 if (!previousKeyboardState.IsKeyDown(key) && keyCommandMappings.ContainsKey(key))
@@ -66,6 +56,15 @@ namespace Legend_of_the_Power_Rangers
                     command.Execute();
                 }
             }
+
+            foreach (var key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
+            {
+                if (currentPressedKeySet.Contains(key))
+                {
+                    keyCommandMappings[key].Execute();
+                }
+            }
+
 
             previousKeyboardState = currentKeyboardState;
         }

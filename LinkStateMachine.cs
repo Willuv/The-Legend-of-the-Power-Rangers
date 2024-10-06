@@ -23,11 +23,15 @@ namespace Legend_of_the_Power_Rangers
         private ILinkSprite currentSprite;
         private const float MovementSpeed = 2f;
 
+        private double actionTimeRemaining; 
+        private const double ActionDuration = 0.5; // 0.5 seconds (adjust as necessary)
+
         public LinkStateMachine()
         {
             currentAction = LinkAction.Idle;
             currentDirection = LinkDirection.Right;
             currentSprite = LinkSpriteFactory.Instance.CreateLinkSprite(currentAction, currentDirection);
+            actionTimeRemaining = 0;
         }
 
         public void ChangeDirection(LinkDirection newDirection)
@@ -50,6 +54,12 @@ namespace Legend_of_the_Power_Rangers
             {
                 currentAction = newAction;
                 ChangeActionState();
+
+                // Set the action timer if it's an attack or item action
+                if (newAction == LinkAction.Attack || newAction == LinkAction.Item)
+                {
+                    actionTimeRemaining = ActionDuration;
+                }
             }
         }
 
@@ -76,6 +86,20 @@ namespace Legend_of_the_Power_Rangers
                 }
             }
             return movement;
+        }
+
+        public void UpdateActionTimer(GameTime gameTime)
+        {
+            // Decrease the timer based on elapsed time
+            if (actionTimeRemaining > 0)
+            {
+                actionTimeRemaining -= gameTime.ElapsedGameTime.TotalSeconds;
+            }
+        }
+
+        public bool IsActionLocked()
+        {
+            return actionTimeRemaining > 0;
         }
 
         private void ChangeDirectionState()
@@ -106,8 +130,5 @@ namespace Legend_of_the_Power_Rangers
         {
             return currentDirection;
         }
-
-
     }
-
 }
