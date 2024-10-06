@@ -2,17 +2,14 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Legend_of_the_Power_Rangers
 {
     public class KeyboardController : IController<Keys>
     {
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
-        private readonly LinkIdleCommand idleCommand;
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
-        
 
         public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Game1 game)
         {
@@ -39,7 +36,6 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.Q, new QuitCommand(game) },
                 { Keys.R, new ResetCommand(game) }
             };
-            idleCommand = new LinkIdleCommand(stateMachine);
         }
 
         public void Update()
@@ -47,6 +43,14 @@ namespace Legend_of_the_Power_Rangers
             currentKeyboardState = Keyboard.GetState();
             Keys[] pressedKeys = currentKeyboardState.GetPressedKeys();
             var currentPressedKeySet = new HashSet<Keys>(pressedKeys);
+
+            foreach (Keys key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
+            {
+                if (currentPressedKeySet.Contains(key))
+                {
+                    keyCommandMappings[key].Execute();
+                }
+            }
 
             foreach (Keys key in pressedKeys)
             {
@@ -56,15 +60,6 @@ namespace Legend_of_the_Power_Rangers
                     command.Execute();
                 }
             }
-
-            foreach (var key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
-            {
-                if (currentPressedKeySet.Contains(key))
-                {
-                    keyCommandMappings[key].Execute();
-                }
-            }
-
 
             previousKeyboardState = currentKeyboardState;
         }

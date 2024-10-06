@@ -11,7 +11,8 @@ namespace Legend_of_the_Power_Rangers
         private int totalFrames;
         private int nextSpriteDistance;
         private int currentLinkLocation;
-        private float scaleFactor = 3f;
+        private Rectangle sourceRectangle;
+
         public LinkDownSprite(Texture2D texture)
         {
             linkTexture = texture;
@@ -19,14 +20,15 @@ namespace Legend_of_the_Power_Rangers
             totalFrames = 10;
             currentLinkLocation = 0;
             nextSpriteDistance = 28;
+
+            sourceRectangle = new Rectangle(0, currentLinkLocation, 14, 16);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
+        public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)
         {
-            Rectangle sourceRectangle = new Rectangle(0, currentLinkLocation, 14, 16);
-            spriteBatch.Draw(linkTexture, position, sourceRectangle, color, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
-
+            spriteBatch.Draw(linkTexture, destinationRectangle, sourceRectangle, color);
         }
+
         public void Update(GameTime gameTime)
         {
             currentFrame++;
@@ -35,6 +37,8 @@ namespace Legend_of_the_Power_Rangers
                 currentLinkLocation = currentLinkLocation + nextSpriteDistance;
                 nextSpriteDistance = nextSpriteDistance * -1;
                 currentFrame = 0;
+
+                sourceRectangle = new Rectangle(0, currentLinkLocation, 14, 16);
             }
         }
     }

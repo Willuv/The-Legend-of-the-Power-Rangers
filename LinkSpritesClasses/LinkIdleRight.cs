@@ -7,18 +7,19 @@ namespace Legend_of_the_Power_Rangers
     public class LinkIdleRight : ILinkSprite
     {
         private Texture2D linkTexture;
-        private float scaleFactor = 3f;
+        private Rectangle sourceRectangle;
+
         public LinkIdleRight(Texture2D texture)
         {
             linkTexture = texture;
+            sourceRectangle = new Rectangle(0, 0, 14, 16);
         }
 
-        public void Draw(SpriteBatch spriteBatch, Vector2 position, Color color)
+        public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)
         {
-            Rectangle sourceRectangle = new Rectangle(0, 0, 14, 16);
-            spriteBatch.Draw(linkTexture, position, sourceRectangle, color, 0f, Vector2.Zero, scaleFactor, SpriteEffects.None, 0f);
-
+            spriteBatch.Draw(linkTexture, destinationRectangle, sourceRectangle, color);
         }
+
         public void Update(GameTime gameTime)
         {
         }

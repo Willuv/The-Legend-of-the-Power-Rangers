@@ -149,7 +149,8 @@ namespace Legend_of_the_Power_Rangers
             keyboardController.Update();
 
             link.Update(gameTime);
-            linkItemFactory.Update(gameTime, link.GetPosition(), link.GetDirection());
+            //commented out because we arent using position anymore
+            //linkItemFactory.Update(gameTime, link.GetPosition(), link.GetDirection());
             enemy.Update(gameTime);
             linkDecorator.Update(gameTime);
             if (item == null)
@@ -174,8 +175,9 @@ namespace Legend_of_the_Power_Rangers
             item.Draw(itemTexture, spriteBatch);
             block.Draw(blockTexture, spriteBatch);
             base.Draw(gameTime);
-            
+
             spriteBatch.End();
         }
+
     }
 }

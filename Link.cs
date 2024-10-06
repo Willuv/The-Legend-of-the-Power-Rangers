@@ -1,29 +1,32 @@
 ﻿using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
-using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 public class Link
 {
     private LinkStateMachine stateMachine;
     private ILinkSprite currentSprite;
-    private Vector2 position;
+    private Rectangle destinationRectangle;
+    private const int LinkWidth = 48;  // Assuming each sprite has a width of 32 pixels
+    private const int LinkHeight = 48; // Assuming each sprite has a height of 32 pixels
 
     public Link()
     {
         stateMachine = new LinkStateMachine();
-        position = new Vector2(200, 200);
+        // Initialize the destination rectangle with a size of LinkWidth x LinkHeight
+        destinationRectangle = new Rectangle(200, 200, LinkWidth, LinkHeight);
         currentSprite = stateMachine.GetCurrentSprite();
     }
 
     public void UpdatePosition(Vector2 movement)
     {
-        position += movement;
+        destinationRectangle.X += (int)movement.X;
+        destinationRectangle.Y += (int)movement.Y;
     }
 
-    public Vector2 GetPosition()
+    public Rectangle GetDestinationRectangle()
     {
-        return position;
+        return destinationRectangle;
     }
 
     public LinkStateMachine GetStateMachine()
@@ -31,7 +34,7 @@ public class Link
         return stateMachine;
     }
 
-    public LinkDirection GetDirection()
+    public LinkStateMachine.LinkDirection GetDirection()
     {
         return stateMachine.GetCurrentDirection();
     }
@@ -57,10 +60,10 @@ public class Link
         currentSprite.Update(gameTime);
     }
 
-
     public virtual void Draw(SpriteBatch spriteBatch)
     {
         currentSprite = stateMachine.GetCurrentSprite();
-        currentSprite.Draw(spriteBatch, position, Color.White);
+        // Draw the sprite using the destination rectangle
+        currentSprite.Draw(spriteBatch, destinationRectangle, Color.White);
     }
 }
