@@ -10,6 +10,7 @@ namespace Legend_of_the_Power_Rangers
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
+        private readonly LinkIdleCommand idleCommand;
 
         public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Game1 game)
         {
@@ -36,6 +37,7 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.Q, new QuitCommand(game) },
                 { Keys.R, new ResetCommand(game) }
             };
+            idleCommand = new LinkIdleCommand(stateMachine);
         }
 
         public void Update()
@@ -50,6 +52,7 @@ namespace Legend_of_the_Power_Rangers
                 {
                     keyCommandMappings[key].Execute();
                 }
+
             }
 
             foreach (Keys key in pressedKeys)
@@ -59,6 +62,11 @@ namespace Legend_of_the_Power_Rangers
                     ICommand command = keyCommandMappings[key];
                     command.Execute();
                 }
+            }
+
+            if (pressedKeys.Length == 0)
+            {
+                idleCommand.Execute();
             }
 
             previousKeyboardState = currentKeyboardState;

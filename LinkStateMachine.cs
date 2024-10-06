@@ -24,7 +24,7 @@ namespace Legend_of_the_Power_Rangers
         private const float MovementSpeed = 2f;
 
         private double actionTimeRemaining; 
-        private const double ActionDuration = 0.5; // 0.5 seconds (adjust as necessary)
+        private const double ActionDuration = 0.5;
 
         public LinkStateMachine()
         {
@@ -55,7 +55,6 @@ namespace Legend_of_the_Power_Rangers
                 currentAction = newAction;
                 ChangeActionState();
 
-                // Set the action timer if it's an attack or item action
                 if (newAction == LinkAction.Attack || newAction == LinkAction.Item)
                 {
                     actionTimeRemaining = ActionDuration;

@@ -1,6 +1,7 @@
 ﻿using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using System.Diagnostics;
 
 public class Link
 {
@@ -41,7 +42,6 @@ public class Link
 
     public virtual void Update(GameTime gameTime)
     {
-        // Update the state machine's action timer
         stateMachine.UpdateActionTimer(gameTime);
 
         Vector2 movement = stateMachine.UpdateMovement();
@@ -51,9 +51,10 @@ public class Link
         {
             UpdatePosition(movement);
         }
-        else if (!stateMachine.IsActionLocked()) // Only switch to idle if no action is locked
+        else if (!stateMachine.IsActionLocked())
         {
             stateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
+            Debug.WriteLine("IDLE");
         }
 
         currentSprite = stateMachine.GetCurrentSprite();
