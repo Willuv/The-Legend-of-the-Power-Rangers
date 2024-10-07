@@ -12,7 +12,7 @@ namespace Legend_of_the_Power_Rangers
         public LinkIdleDown(Texture2D texture)
         {
             linkTexture = texture;
-            sourceRectangle = new Rectangle(88, 0, 14, 16);
+            sourceRectangle = new Rectangle(0, 0, 14, 16);
         }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)
