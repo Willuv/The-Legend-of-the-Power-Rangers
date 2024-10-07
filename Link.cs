@@ -7,7 +7,7 @@ public class Link
 {
     private LinkStateMachine stateMachine;
     private ILinkSprite currentSprite;
-    private Rectangle destinationRectangle;
+    public Rectangle destinationRectangle;
     private const int LinkWidth = 48;  // Assuming each sprite has a width of 32 pixels
     private const int LinkHeight = 48; // Assuming each sprite has a height of 32 pixels
 
