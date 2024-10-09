@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework.Input;
+using Legend_of_the_Power_Rangers.Collision;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -21,7 +22,6 @@ namespace Legend_of_the_Power_Rangers
         private IBlock block = new BlockStatue1();
         private Texture2D blockTexture;
 
-
         private int itemIndex;
         private int blockIndex; 
         private int enemyIndex = 0;
@@ -37,6 +37,9 @@ namespace Legend_of_the_Power_Rangers
                                         new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()};
 
         private string[] enemyTypes = { "RedOcto", "BlueOcto", "RedGorya", "BlueGorya", "RedMoblin", "DarkMoblin", "RedKnight" , "BlueKnight", "RedCentaur", "BlueCentaur", "DragonBoss" };
+
+        private List<ICollision> loadedObjects;
+        private CollisionManager collisionManager;
 
         public Game1()
         {
@@ -83,6 +86,12 @@ namespace Legend_of_the_Power_Rangers
             blockTexture = Content.Load<Texture2D>("Blocks");
             itemIndex = 0;
             blockIndex = 0;
+
+            loadedObjects = new();
+            //add objects in current room here?
+            SortingMachine.QuickSort(loadedObjects);
+
+            collisionManager = new();
         }
 
 
@@ -160,6 +169,8 @@ namespace Legend_of_the_Power_Rangers
             item.Update(gameTime);
             block.Update(gameTime);
             base.Update(gameTime);
+
+            collisionManager.Update(gameTime, loadedObjects);
         }
 
         protected override void Draw(GameTime gameTime)
