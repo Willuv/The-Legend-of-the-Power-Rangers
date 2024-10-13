@@ -11,11 +11,13 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
     {
         public MoveLinkLeft() { }
 
-        public static void Execute(ICollision link, ICollision nonmovingBlock, CollisionDirection direction)
+        public void Execute(ICollision link, ICollision nonMovingBlock, CollisionDirection direction)
         {
-            Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, nonmovingBlock.DestinationRectangle);
-            int shift = overlap.Width;
-            
+            (link, nonMovingBlock) = CollisionCaster.CastObjects(link, nonMovingBlock);
+            Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, nonMovingBlock.DestinationRectangle);
+            Rectangle newDestination = link.DestinationRectangle; // Get the current rectangle
+            newDestination.X -= overlap.Width; // Move it left by the overlap width
+            link.DestinationRectangle = newDestination;
         }
     }
 }

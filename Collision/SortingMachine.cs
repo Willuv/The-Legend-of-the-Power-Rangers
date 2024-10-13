@@ -42,9 +42,28 @@ namespace Legend_of_the_Power_Rangers.Collision
             return sortedList;
         }
 
-        public static void BubbleSort(List<Object> list)
+        public static void BubbleSort(List<ICollision> list)
         {
+            int n = list.Count;
+            bool swapped;
 
+            for (int i = 0; i < n - 1; i++)
+            {
+                swapped = false;
+                for (int j = 0; j < n - 1 - i; j++)
+                {
+                    if (list[j].DestinationRectangle.X > list[j + 1].DestinationRectangle.X)
+                    {
+                        ICollision temp = list[j];
+                        list[j] = list[j + 1];
+                        list[j + 1] = temp;
+
+                        swapped = true;
+                    }
+                }
+                if (!swapped)
+                    break;
+            }
         }
     }
 }
