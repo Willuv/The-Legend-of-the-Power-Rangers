@@ -32,11 +32,6 @@ public class Link : ICollision
         destinationRectangle.Y += (int)movement.Y;
     }
 
-    public Rectangle GetDestinationRectangle()
-    {
-        return destinationRectangle;
-    }
-
     public LinkStateMachine GetStateMachine()
     {
         return stateMachine;

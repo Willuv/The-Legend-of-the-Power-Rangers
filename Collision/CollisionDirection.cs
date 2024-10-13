@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using Microsoft.Xna.Framework;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace Legend_of_the_Power_Rangers.Collision
 {
-    public interface ICollision
+    public enum CollisionDirection
     {
-        ObjectType ObjectType { get; }
-        Rectangle DestinationRectangle { get; set; }
+        Left,
+        Right,
+        Top,
+        Bottom
     }
 }

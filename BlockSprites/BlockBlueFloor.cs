@@ -7,9 +7,8 @@ namespace Legend_of_the_Power_Rangers
 {
     public class BlockBlueFloor : IBlock
     {
-        private Vector2 position = new Vector2(400, 340);
         private Rectangle sourceRectangle = new Rectangle(160, 16, 16, 16);
-        private Rectangle destinationRectangle = new Rectangle(400, 340, 16, 16); //MAX change this to work w everything else
+        private Rectangle destinationRectangle = new Rectangle(400, 340, 16, 16);
         public Rectangle DestinationRectangle
         {
             get { return destinationRectangle; }
@@ -24,7 +23,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, sourceRectangle, Color.White);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

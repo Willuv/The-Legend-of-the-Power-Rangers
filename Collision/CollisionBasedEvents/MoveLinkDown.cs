@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
 {
-    public class MoveLinkLeft : IEvent
+    public class MoveLinkDown : IEvent
     {
-        public MoveLinkLeft() { }
+        public MoveLinkDown() { }
 
         public void Execute(ICollision link, ICollision nonMovingBlock, CollisionDirection direction)
         {
@@ -18,7 +18,7 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
             Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, nonMovingBlock.DestinationRectangle);
             Rectangle newDestination = link.DestinationRectangle;
            
-            newDestination.X -= overlap.Width;
+            newDestination.Y += overlap.Height;
             link.DestinationRectangle = newDestination;
         }
     }
