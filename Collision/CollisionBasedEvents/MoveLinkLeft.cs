@@ -11,7 +11,7 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
     {
         public MoveLinkLeft() { }
 
-        public void Execute(ICollision link, ICollision nonmovingBlock, CollisionDirection direction)
+        public static void Execute(ICollision link, ICollision nonmovingBlock, CollisionDirection direction)
         {
             Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, nonmovingBlock.DestinationRectangle);
             int shift = overlap.Width;

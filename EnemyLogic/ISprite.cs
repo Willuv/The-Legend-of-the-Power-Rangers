@@ -1,3 +1,4 @@
+using Legend_of_the_Power_Rangers.Collision;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -5,7 +6,7 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Legend_of_the_Power_Rangers
 {
-public interface ISprite
+public interface ISprite : ICollision
 {
     void Update(GameTime gameTime);
     void Draw(SpriteBatch spriteBatch, Vector2 position);

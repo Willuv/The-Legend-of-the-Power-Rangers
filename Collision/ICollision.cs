@@ -18,6 +18,6 @@ namespace Legend_of_the_Power_Rangers.Collision
     public interface ICollision
     {
         ObjectType ObjectType { get; }
-        Rectangle DestinationRectangle { get; set; }
+        Rectangle DestinationRectangle { get; }
     }
 }

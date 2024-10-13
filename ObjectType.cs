@@ -8,6 +8,6 @@ namespace Legend_of_the_Power_Rangers
 {
     public enum ObjectType
     {
-        Link, BlockBlueFloor
+        Link, Block, Item, Enemy
     }
 }

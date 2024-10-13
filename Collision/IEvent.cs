@@ -8,6 +8,6 @@ namespace Legend_of_the_Power_Rangers.Collision
 {
     public interface IEvent
     {
-        void Execute(ICollision object1, ICollision object2, CollisionDirection direction);
+        static void Execute(ICollision object1, ICollision object2, CollisionDirection direction);
     }
 }
