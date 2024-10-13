@@ -16,6 +16,7 @@ public class Link : ICollision
         get { return destinationRectangle; }
         set { destinationRectangle = value; }
     }
+    public ObjectType objectType { get { return ObjectType.Link; } }
 
     public Link()
     {
