@@ -10,7 +10,7 @@ namespace Legend_of_the_Power_Rangers.Collision
     {
         public static string Generate(ObjectType type1, ObjectType type2, CollisionDirection direction)
         {
-            return $"{"type1"}-{"type2"}-{"direction"}";
+            return $"{type1}-{type2}-{direction}";
         }
         public static string Generate(ObjectType type1, BlockType type2, CollisionDirection direction)
         {

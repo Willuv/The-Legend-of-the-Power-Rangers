@@ -1,4 +1,5 @@
 ﻿using Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents;
+using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,12 +30,10 @@ namespace Legend_of_the_Power_Rangers.Collision
             
             if (eventList.TryGetValue(key, out var eventCommand)) {
                 eventCommand.Execute(object1, object2, direction);
+            } else
+            {
+                throw new InvalidOperationException("Collision scenario not found in eventList.");
             }
-        }
-
-        public void ReportError()
-        {
-
         }
     }
 }

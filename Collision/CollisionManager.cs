@@ -64,7 +64,7 @@ namespace Legend_of_the_Power_Rangers.Collision
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Bottom);
                 } else
                 {
-                    allCollisionsHandler.ReportError(); //maybe not needed but want to debug if there are any mistakes
+                    throw new InvalidOperationException("An error occurred in CollisionManager.");
                 }
             } else if (intersection.Height > intersection.Width)
             {
@@ -79,11 +79,11 @@ namespace Legend_of_the_Power_Rangers.Collision
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Right);
                 } else
                 {
-                    allCollisionsHandler.ReportError();
+                    throw new InvalidOperationException("An error occurred in CollisionManager.");
                 }
             } else
             {
-                allCollisionsHandler.ReportError();
+                throw new InvalidOperationException("An error occurred in CollisionManager.");
             }
         }
     }

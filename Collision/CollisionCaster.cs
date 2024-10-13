@@ -29,7 +29,7 @@ namespace Legend_of_the_Power_Rangers.Collision
                 //case ObjectType.Enemy:
                 //  return CastEnemy((ISprite)obj);
                 default:
-                    return obj;
+                    throw new InvalidOperationException("An error occurred in casting object type.");
 
             }
         }
@@ -42,7 +42,7 @@ namespace Legend_of_the_Power_Rangers.Collision
                     return (BlockBlueFloor)obj;
                 //add more
                 default:
-                    return obj;
+                    throw new InvalidOperationException("An error occurred in casting block type.");
             }
         }
     }
