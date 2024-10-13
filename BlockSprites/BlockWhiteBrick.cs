@@ -7,9 +7,8 @@ namespace Legend_of_the_Power_Rangers
 {
     public class BlockWhiteBrick : IBlock
     {
-        private Vector2 position = new Vector2(400, 340);
-
-        private Rectangle rectangle = new Rectangle(128, 32, 16, 16);
+        public Rectangle position = new Rectangle(400, 340, 16, 16);
+        public Rectangle rectangle = new Rectangle(128, 32, 16, 16);
         public void Update(GameTime gameTime)
         {
 
