@@ -56,11 +56,13 @@ public class Link : ICollision
         else if (!stateMachine.IsActionLocked())
         {
             stateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
-            Debug.WriteLine("IDLE");
         }
 
         currentSprite = stateMachine.GetCurrentSprite();
         currentSprite.Update(gameTime);
+
+        Debug.WriteLine($"Link position: {destinationRectangle.X}, {destinationRectangle.Y}");
+
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)

@@ -52,7 +52,8 @@ namespace Legend_of_the_Power_Rangers
         {
             base.Initialize();
             LoadContent();
-            block = BlockList[0];
+            //block = BlockList[0];
+            block = BlockList[9];
             item = ItemList[0];
             //Alex add enemy = EnemyList[0];
         }
@@ -88,6 +89,8 @@ namespace Legend_of_the_Power_Rangers
             blockIndex = 0;
 
             loadedObjects = new();
+            loadedObjects.Add(link);
+            loadedObjects.Add(BlockList[9]);
             //add objects in current room here?
             SortingMachine.QuickSort(loadedObjects);
 

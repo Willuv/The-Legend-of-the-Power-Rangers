@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static System.Collections.Specialized.BitVector32;
@@ -19,11 +20,11 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
-
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
+            Debug.WriteLine($"Block position: {destinationRectangle.X}, {destinationRectangle.Y}");
         }
     }
 }

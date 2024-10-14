@@ -43,6 +43,7 @@ namespace Legend_of_the_Power_Rangers.Collision
                 //add more
                 default:
                     throw new InvalidOperationException("An error occurred in casting block type.");
+                    //error happened here, why?
             }
         }
     }

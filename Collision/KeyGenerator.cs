@@ -8,18 +8,27 @@ namespace Legend_of_the_Power_Rangers.Collision
 {
     public class KeyGenerator
     {
-        public static string Generate(ObjectType type1, ObjectType type2, CollisionDirection direction)
+        public static string Generate(ICollision obj1, ICollision obj2, CollisionDirection direction)
         {
-            return $"{type1}-{type2}-{direction}";
+            string type1 = GetObjectTypeKey(obj1);
+            string type2 = GetObjectTypeKey(obj2);
+
+            return $"{type1}{type2}{direction}";
         }
-        public static string Generate(ObjectType type1, BlockType type2, CollisionDirection direction)
+
+        private static string GetObjectTypeKey(ICollision obj)
         {
-            return $"{"type1"}-{"type2"}-{"direction"}";
+            if (obj is Link link) 
+                return $"Type:{link.ObjectType}";
+            if (obj is IBlock block)
+                return $"Type:{block.BlockType}";
+            //if (obj is IItem item)
+            //    return $"Type:{item.ItemType}";
+            //if (obj is ISprite enemy)
+            //return $"Type:{enemy.EnemyType}";
+
+            //add these back when enemies and items are added
+            return obj.ObjectType.ToString(); //just in case
         }
-        //public static string GenerateKey(ObjectType type1, BlockType type2, CollisionDirection direction)
-        //{
-        //    return $"{"type1"}-{"type2"}-{"direction"}";
-        //}
-        //add once items and enemies are implemented
     }
 }

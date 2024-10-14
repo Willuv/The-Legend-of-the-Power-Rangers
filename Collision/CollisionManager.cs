@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -29,7 +30,7 @@ namespace Legend_of_the_Power_Rangers.Collision
         {
             for (int i = 0; i < loadedObjects.Count - 1; i++)
             {
-                for (int j = 1; j < loadedObjects.Count; j++)
+                for (int j = i + 1; j < loadedObjects.Count; j++)
                 {
                     ICollision object1 = loadedObjects[i];
                     ICollision object2 = loadedObjects[j];
@@ -41,6 +42,7 @@ namespace Legend_of_the_Power_Rangers.Collision
 
                     if (object1.DestinationRectangle.Intersects(object2.DestinationRectangle))
                     {
+                        Debug.WriteLine("Rectangles intersect.");
                         HandleCollision(object1, object2);
                     }
                 }
@@ -64,7 +66,7 @@ namespace Legend_of_the_Power_Rangers.Collision
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Bottom);
                 } else
                 {
-                    throw new InvalidOperationException("An error occurred in CollisionManager.");
+                    Debug.WriteLine("object 1 is not top or bottom.");
                 }
             } else if (intersection.Height > intersection.Width)
             {
@@ -79,11 +81,11 @@ namespace Legend_of_the_Power_Rangers.Collision
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Right);
                 } else
                 {
-                    throw new InvalidOperationException("An error occurred in CollisionManager.");
+                    Debug.WriteLine("object1 is not left or right.");
                 }
             } else
             {
-                throw new InvalidOperationException("An error occurred in CollisionManager.");
+                Debug.WriteLine("Square overlap");
             }
         }
     }
