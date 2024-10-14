@@ -10,8 +10,8 @@ public class Link : ICollision
     private ILinkSprite currentSprite;
 
     private const float ScaleFactor = 3.0f;
-    private const int LinkWidth = 48;  // Assuming each sprite has a width of 32 pixels
-    private const int LinkHeight = 48; // Assuming each sprite has a height of 32 pixels
+    private const int LinkWidth = 48;
+    private const int LinkHeight = 48;
     private Rectangle destinationRectangle;
     public Rectangle DestinationRectangle
     {
