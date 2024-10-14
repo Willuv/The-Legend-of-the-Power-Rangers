@@ -24,20 +24,20 @@ namespace Legend_of_the_Power_Rangers
         public Texture2D bossSpritesheet;
 
         private int itemIndex;
-        private int blockIndex; 
+        private int blockIndex;
         private int enemyIndex;
-        
+
         private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(),
                                     new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
                                     new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(), new ItemFairy(),
                                     new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()};
 
-        private IBlock[] BlockList = {new BlockStatue1(), new BlockStatue2(), new BlockSquare(), new BlockPush(), 
-                                        new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(), 
-                                        new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(), 
+        private IBlock[] BlockList = {new BlockStatue1(), new BlockStatue2(), new BlockSquare(), new BlockPush(),
+                                        new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(),
+                                        new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(),
                                         new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()};
 
-        private string[] enemyTypes = { "RedOcto", "BlueOcto", "RedGorya", "BlueGorya", "RedMoblin", "DarkMoblin", "RedKnight" , "BlueKnight", "RedCentaur", "BlueCentaur", "DragonBoss" };
+        private string[] enemyTypes = { "RedOcto", "BlueOcto", "RedGorya", "BlueGorya", "RedMoblin", "DarkMoblin", "RedKnight", "BlueKnight", "RedCentaur", "BlueCentaur", "DragonBoss" };
 
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;
@@ -64,7 +64,7 @@ namespace Legend_of_the_Power_Rangers
             sprites.Add(new GelBigGray());
             sprites.Add(new WallMaster());
         }
-        
+
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -104,11 +104,8 @@ namespace Legend_of_the_Power_Rangers
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
 
-            EnemySpriteFactory.Instance.LoadAllTextures(Content);
-            enemy = EnemySpriteFactory.CreateEnemy(new Vector2(200, 200), enemyTypes[1]);
 
 
-            
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
 
@@ -166,24 +163,6 @@ namespace Legend_of_the_Power_Rangers
             }
             else if (enemyIndex < 0)
             {
-                enemyIndex = enemyTypes.Length - 1;
-            }
-            string newType = enemyTypes[enemyIndex];
-            
-            if (newType == "DragonBoss")
-            {
-                enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), newType);
-            }
-            else
-            {
-                if (enemy.enemyType == "DragonBoss")
-                {
-                    enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), newType);
-                }
-                else
-                {
-                    enemy.ChangeType(newType);
-                }
                 enemyIndex = sprites.Count - 1;
 
             }
@@ -197,8 +176,7 @@ namespace Legend_of_the_Power_Rangers
 
             //commented out because we arent using position anymoreq
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
-            enemy.Update(gameTime);
-
+            sprites[enemyIndex].Update(gameTime);
             linkDecorator.Update(gameTime);
             if (item == null)
             {

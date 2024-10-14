@@ -22,7 +22,7 @@ namespace Legend_of_the_Power_Rangers
         {
 
         }
-        public voisd Draw(Texture2D texture, SpriteBatch spriteBatch)
+        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
         }
