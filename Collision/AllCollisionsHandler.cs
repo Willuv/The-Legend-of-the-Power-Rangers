@@ -32,9 +32,6 @@ namespace Legend_of_the_Power_Rangers.Collision
         public void Handle(ICollision object1, ICollision object2, CollisionDirection direction)
         {
             string key = KeyGenerator.Generate(object1, object2, direction);
-
-            //Casting here instead of each event
-            (object1, object2) = CollisionCaster.CastObjects(object1, object2);
             
             if (eventList.TryGetValue(key, out var eventCommand)) {
                 Debug.WriteLine("Command allegedly run");
