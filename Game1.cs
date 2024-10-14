@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System.Security.Cryptography.X509Certificates;
-using Microsoft.Xna.Framework.Input;
 using Legend_of_the_Power_Rangers.Collision;
 
 namespace Legend_of_the_Power_Rangers
@@ -107,7 +105,7 @@ namespace Legend_of_the_Power_Rangers
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
 
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
-            enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), enemyTypes[1]);
+            enemy = EnemySpriteFactory.CreateEnemy(new Vector2(200, 200), enemyTypes[1]);
 
 
             
@@ -127,7 +125,6 @@ namespace Legend_of_the_Power_Rangers
             SortingMachine.QuickSort(loadedObjects);
 
             collisionManager = new();
-        }
 
 
             enemyIndex = 0;
