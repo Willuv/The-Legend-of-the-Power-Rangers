@@ -52,8 +52,8 @@ namespace Legend_of_the_Power_Rangers
         {
             base.Initialize();
             LoadContent();
-            block = BlockList[0];
-            block = BlockList[9];
+            //block = BlockList[0];
+            block = BlockList[9]; //temporary, to test bluefloor
             item = ItemList[0];
             //Alex add enemy = EnemyList[0];
         }
