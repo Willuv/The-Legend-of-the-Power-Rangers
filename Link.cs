@@ -24,7 +24,7 @@ public class Link
         destinationRectangle = new Rectangle(
             destinationRectangle.X,
             destinationRectangle.Y,
-            (int)(sourceRectangle.Width * ScaleFactor),  
+            (int)(sourceRectangle.Width * ScaleFactor),
             (int)(sourceRectangle.Height * ScaleFactor)
         );
     }
@@ -75,6 +75,7 @@ public class Link
     public virtual void Draw(SpriteBatch spriteBatch)
     {
         currentSprite = stateMachine.GetCurrentSprite();
+
         currentSprite.Draw(spriteBatch, destinationRectangle, Color.White);
     }
 }
