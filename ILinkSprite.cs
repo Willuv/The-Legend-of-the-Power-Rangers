@@ -5,4 +5,5 @@ public interface ILinkSprite
 {
     void Update(GameTime gameTime);
     void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color);
+    Rectangle SourceRectangle { get; }
 }

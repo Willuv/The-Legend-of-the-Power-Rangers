@@ -33,6 +33,8 @@ namespace Legend_of_the_Power_Rangers
                     return CreateMovingSprite(direction);
                 case LinkStateMachine.LinkAction.Attack:
                     return CreateAttackSprite(direction);
+                case LinkStateMachine.LinkAction.Item:
+                    return CreateItemSprite(direction);
                 default:
                     return CreateIdleSprite(direction);
             }
@@ -88,5 +90,23 @@ namespace Legend_of_the_Power_Rangers
                     return new LinkAttackRightSprite(linkSpriteSheet);
             }
         }
+
+        private ILinkSprite CreateItemSprite(LinkStateMachine.LinkDirection direction)
+        {
+            switch (direction)
+            {
+                case LinkStateMachine.LinkDirection.Right:
+                    return new LinkItemRightSprite(linkSpriteSheet);
+                case LinkStateMachine.LinkDirection.Left:
+                    return new LinkItemLeftSprite(linkSpriteSheet);
+                case LinkStateMachine.LinkDirection.Up:
+                    return new LinkItemUpSprite(linkSpriteSheet);
+                case LinkStateMachine.LinkDirection.Down:
+                    return new LinkItemDownSprite(linkSpriteSheet);
+                default:
+                    return new LinkItemRightSprite(linkSpriteSheet);
+            }
+        }
     }
 }
+

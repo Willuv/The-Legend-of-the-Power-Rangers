@@ -10,7 +10,7 @@ namespace Legend_of_the_Power_Rangers
         private int currentFrame;
         private int totalFrames;
         private int currentLinkLocation;
-        private Rectangle sourceRectangle;
+        public Rectangle SourceRectangle { get; private set; }
 
 
         public LinkItemRightSprite(Texture2D texture)
@@ -19,12 +19,12 @@ namespace Legend_of_the_Power_Rangers
             currentFrame = 0;
             totalFrames = 10;
             currentLinkLocation = 58;
-            sourceRectangle = new Rectangle(87, currentLinkLocation, 17, 17);
+            SourceRectangle = new Rectangle(87, currentLinkLocation, 17, 17);
         }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)
         {
-            spriteBatch.Draw(linkTexture, destinationRectangle, sourceRectangle, color);
+            spriteBatch.Draw(linkTexture, destinationRectangle, SourceRectangle, color);
         }
         public void Update(GameTime gameTime)
         {
