@@ -2,14 +2,21 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Diagnostics;
+using Legend_of_the_Power_Rangers.Collision;
 
-public class Link
+public class Link : ICollision
 {
     private LinkStateMachine stateMachine;
     private ILinkSprite currentSprite;
-    public Rectangle destinationRectangle;
     private const int LinkWidth = 48;  // Assuming each sprite has a width of 32 pixels
     private const int LinkHeight = 48; // Assuming each sprite has a height of 32 pixels
+    private Rectangle destinationRectangle;
+    public Rectangle DestinationRectangle
+    {
+        get { return destinationRectangle; }
+        set { destinationRectangle = value; }
+    }
+    public ObjectType ObjectType { get { return ObjectType.Link; } }
 
     public Link()
     {
@@ -23,11 +30,6 @@ public class Link
     {
         destinationRectangle.X += (int)movement.X;
         destinationRectangle.Y += (int)movement.Y;
-    }
-
-    public Rectangle GetDestinationRectangle()
-    {
-        return destinationRectangle;
     }
 
     public LinkStateMachine GetStateMachine()
@@ -54,11 +56,13 @@ public class Link
         else if (!stateMachine.IsActionLocked())
         {
             stateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
-            Debug.WriteLine("IDLE");
         }
 
         currentSprite = stateMachine.GetCurrentSprite();
         currentSprite.Update(gameTime);
+
+        Debug.WriteLine($"Link position: {destinationRectangle.X}, {destinationRectangle.Y}");
+
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)
