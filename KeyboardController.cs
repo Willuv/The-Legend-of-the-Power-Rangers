@@ -2,21 +2,15 @@
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 
 namespace Legend_of_the_Power_Rangers
 {
     public class KeyboardController : IController<Keys>
     {
         private readonly Dictionary<Keys, ICommand> keyCommandMappings;
-        private readonly HashSet<Keys> pressedMovementKeys;
-        private readonly HashSet<Keys> processedActionKeys;
+        private KeyboardState currentKeyboardState;
+        private KeyboardState previousKeyboardState;
         private readonly LinkIdleCommand idleCommand;
-        private Keys lastDirectionKey;
-        private bool isAttackKeyPressed;
 
         public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Game1 game)
         {
@@ -44,76 +38,38 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.R, new ResetCommand(game) }
             };
             idleCommand = new LinkIdleCommand(stateMachine);
-            lastDirectionKey = Keys.None;
-
-            pressedMovementKeys = new HashSet<Keys>();
-            processedActionKeys = new HashSet<Keys>();
-
-
-            isAttackKeyPressed = false; 
         }
 
         public void Update()
         {
-            Keys[] pressedKeys = Keyboard.GetState().GetPressedKeys();
+            currentKeyboardState = Keyboard.GetState();
+            Keys[] pressedKeys = currentKeyboardState.GetPressedKeys();
+            var currentPressedKeySet = new HashSet<Keys>(pressedKeys);
+
+            foreach (Keys key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
+            {
+                if (currentPressedKeySet.Contains(key))
+                {
+                    keyCommandMappings[key].Execute();
+                }
+
+            }
 
             foreach (Keys key in pressedKeys)
             {
-                if (keyCommandMappings.ContainsKey(key))
+                if (!previousKeyboardState.IsKeyDown(key) && keyCommandMappings.ContainsKey(key))
                 {
-                    if (key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D)
-                    {
-                        if (!pressedMovementKeys.Contains(key))
-                        {
-                            pressedMovementKeys.Add(key);
-                            lastDirectionKey = key;
-                            keyCommandMappings[key].Execute();
-                        }
-                    }
-                    else
-                    {
-                        if (!processedActionKeys.Contains(key))
-                        {
-                            keyCommandMappings[key].Execute();
-                            processedActionKeys.Add(key);
-                        }
-                    }
+                    ICommand command = keyCommandMappings[key];
+                    command.Execute();
                 }
             }
 
-            foreach (Keys key in pressedMovementKeys.ToList())
-            {
-                if (!pressedKeys.Contains(key))
-                {
-                    pressedMovementKeys.Remove(key);
-                    if (key == lastDirectionKey)
-                    {
-                        if (pressedMovementKeys.Count > 0)
-                        {
-                            lastDirectionKey = pressedMovementKeys.Last();
-                            keyCommandMappings[lastDirectionKey].Execute();
-                        }
-                        else
-                        {
-                            idleCommand.Execute();
-                            lastDirectionKey = Keys.None;
-                        }
-                    }
-                }
-            }
-
-            foreach (Keys key in processedActionKeys.ToList())
-            {
-                if (!pressedKeys.Contains(key))
-                {
-                    processedActionKeys.Remove(key);
-                }
-            }
-
-            if (pressedMovementKeys.Count == 0 && lastDirectionKey == Keys.None)
+            if (pressedKeys.Length == 0)
             {
                 idleCommand.Execute();
             }
+
+            previousKeyboardState = currentKeyboardState;
         }
 
         public void RegisterCommand(Keys key, ICommand command)

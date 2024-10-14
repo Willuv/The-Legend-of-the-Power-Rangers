@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework.Input;
+using Legend_of_the_Power_Rangers.Collision;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -19,9 +20,11 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemTexture;
         private IBlock block = new BlockStatue1();
         private Texture2D blockTexture;
+
         private List<ISprite> sprites = new List<ISprite>();
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
+
         private int itemIndex;
         private int blockIndex; 
         private int enemyIndex;
@@ -35,6 +38,12 @@ namespace Legend_of_the_Power_Rangers
                                         new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(), 
                                         new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(), 
                                         new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()};
+
+        private string[] enemyTypes = { "RedOcto", "BlueOcto", "RedGorya", "BlueGorya", "RedMoblin", "DarkMoblin", "RedKnight" , "BlueKnight", "RedCentaur", "BlueCentaur", "DragonBoss" };
+
+        private List<ICollision> loadedObjects;
+        private CollisionManager collisionManager;
+
 
         private void InitializeEnemies()
         {
@@ -57,6 +66,7 @@ namespace Legend_of_the_Power_Rangers
             sprites.Add(new GelBigGray());
             sprites.Add(new WallMaster());
         }
+        
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -68,7 +78,8 @@ namespace Legend_of_the_Power_Rangers
         {
             base.Initialize();
             LoadContent();
-            block = BlockList[0];
+            //block = BlockList[0];
+            block = BlockList[9]; //temporary, to test bluefloor
             item = ItemList[0];
         }
 
@@ -86,19 +97,39 @@ namespace Legend_of_the_Power_Rangers
             Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
             itemTexture = Content.Load<Texture2D>("Items");
+
+            LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
+
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
-            link = new Link(linkSpriteSheet);
+            link = new Link();
             linkDecorator = new LinkDecorator(link);
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
+
+            EnemySpriteFactory.Instance.LoadAllTextures(Content);
+            enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), enemyTypes[1]);
+
+
             
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
+
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
 
             itemIndex = 0;
             blockIndex = 0;
+
+            loadedObjects = new();
+            //these add calls are for testing collision. will be gone for real sprint
+            loadedObjects.Add(link);
+            loadedObjects.Add(BlockList[9]);
+            SortingMachine.QuickSort(loadedObjects);
+
+            collisionManager = new();
+        }
+
+
             enemyIndex = 0;
         }
         public void ChangeItem(int direction)
@@ -138,7 +169,26 @@ namespace Legend_of_the_Power_Rangers
             }
             else if (enemyIndex < 0)
             {
+                enemyIndex = enemyTypes.Length - 1;
+            }
+            string newType = enemyTypes[enemyIndex];
+            
+            if (newType == "DragonBoss")
+            {
+                enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), newType);
+            }
+            else
+            {
+                if (enemy.enemyType == "DragonBoss")
+                {
+                    enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), newType);
+                }
+                else
+                {
+                    enemy.ChangeType(newType);
+                }
                 enemyIndex = sprites.Count - 1;
+
             }
         }
 
@@ -147,10 +197,11 @@ namespace Legend_of_the_Power_Rangers
             keyboardController.Update();
 
             link.Update(gameTime);
-            linkItemFactory.Update(gameTime, link.GetPosition(), link.GetDirection());
-            sprites[enemyIndex].Update(gameTime);
-            
-            base.Update(gameTime);
+
+            //commented out because we arent using position anymoreq
+            linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
+            enemy.Update(gameTime);
+
             linkDecorator.Update(gameTime);
             if (item == null)
             {
@@ -159,6 +210,8 @@ namespace Legend_of_the_Power_Rangers
             item.Update(gameTime);
             block.Update(gameTime);
             base.Update(gameTime);
+
+            collisionManager.Update(gameTime, loadedObjects);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -177,5 +230,6 @@ namespace Legend_of_the_Power_Rangers
 
             spriteBatch.End();
         }
+
     }
 }

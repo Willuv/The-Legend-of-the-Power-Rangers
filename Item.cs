@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
+using Legend_of_the_Power_Rangers;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
@@ -22,7 +23,7 @@ namespace Legend_of_the_Power_Rangers
             Boomerang, Arrow, Sword, Bomb, Candle
         }
 
-        public Item(ItemType type, Vector2 position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
+        public Item(ItemType type, Rectangle position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
         {
             switch (type)
             {

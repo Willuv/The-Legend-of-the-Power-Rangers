@@ -7,6 +7,7 @@ namespace Legend_of_the_Power_Rangers
 {
     public class ItemBluePotion : IItem
     {
+
         public Rectangle position = new Rectangle(370, 300, 16, 16);
 
         public Rectangle rectangle = new Rectangle(360, 40, 13, 16);
