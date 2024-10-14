@@ -14,7 +14,7 @@ public class LinkItemFactory
     private readonly List<Item> ActiveItems;
 	private readonly List<int> toRemove;
 	private readonly int toRemoveIndex;
-	private Vector2 position;
+	private Rectangle position;
 	private LinkDirection direction;
 	public LinkItemFactory(Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
 	{
@@ -48,7 +48,7 @@ public class LinkItemFactory
 			}
 		//}
 	}
-	public void Update(GameTime gametime, Vector2 position, LinkDirection linkDirection)
+	public void Update(GameTime gametime, Rectangle position, LinkDirection linkDirection)
 	{
 		this.position = position;
 		this.direction = linkDirection;
