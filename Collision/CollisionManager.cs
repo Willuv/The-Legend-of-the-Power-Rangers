@@ -56,11 +56,11 @@ namespace Legend_of_the_Power_Rangers.Collision
             if (intersection.Width > intersection.Height)
             {
                 //collision is from top or from bottom
-                if (object1.DestinationRectangle.Top > object2.DestinationRectangle.Top)
+                if (object1.DestinationRectangle.Top < object2.DestinationRectangle.Top)
                 {
                     //object 1 is on top
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Top);
-                } else if (object1.DestinationRectangle.Bottom < object2.DestinationRectangle.Bottom)
+                } else if (object1.DestinationRectangle.Bottom > object2.DestinationRectangle.Bottom)
                 {
                     //object 1 is on bottom
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Bottom);
