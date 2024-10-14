@@ -6,14 +6,22 @@ namespace Legend_of_the_Power_Rangers
     public class LinkAttackRightSprite : IAttackSprite
     {
         private Texture2D linkTexture;
-        private Vector2 swordOffset;
         private int currentFrame;
         private int totalFrames;
-        private int nextSpriteDistance;
         private int spriteWidth;
         private int spriteHeight;
-        private int currentLinkLocation;
-        private int spriteStart;
+        private Rectangle[] frameRectangles;
+        public Rectangle SourceRectangle
+        {
+            get
+            {
+                if (currentFrame < 10)
+                    return frameRectangles[0];
+                else
+                    return frameRectangles[1];
+            }
+        }
+
         private bool isAnimationPlaying;
 
         public LinkAttackRightSprite(Texture2D texture)
@@ -21,51 +29,37 @@ namespace Legend_of_the_Power_Rangers
             linkTexture = texture;
             currentFrame = 0;
             totalFrames = 20;
-            spriteWidth = 15;
+            spriteWidth = 17;
             spriteHeight = 16;
-            spriteStart = 87;
-            currentLinkLocation = 59;
-            nextSpriteDistance = 28;
-            swordOffset = new Vector2(0, 0);
             isAnimationPlaying = true;
+
+            frameRectangles = new Rectangle[2];
+            frameRectangles[0] = new Rectangle(88, 59, spriteWidth, spriteHeight);
+            frameRectangles[1] = new Rectangle(82, 88, spriteWidth + 11, spriteHeight);
         }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)
         {
-            Rectangle sourceRectangle = new Rectangle(spriteStart, currentLinkLocation, spriteWidth, spriteHeight);
+            Rectangle sourceRectangle;
 
-            int expandedWidth = destinationRectangle.Width;
-            int expandedX = destinationRectangle.X;
-
-            if (currentFrame >= 10 && currentFrame <= totalFrames)
+            if (currentFrame < 10)
             {
-                expandedWidth += 22;
+                sourceRectangle = frameRectangles[0];
+            }
+            else
+            {
+                sourceRectangle = frameRectangles[1];
             }
 
-            Rectangle adjustedDestinationRectangle = new Rectangle(
-                expandedX + (int)swordOffset.X,
-                destinationRectangle.Y,
-                expandedWidth,
-                destinationRectangle.Height
-            );
-
-            spriteBatch.Draw(linkTexture, adjustedDestinationRectangle, sourceRectangle, color);
+            spriteBatch.Draw(linkTexture, destinationRectangle, sourceRectangle, color);
         }
 
         public void Update(GameTime gameTime)
         {
             currentFrame++;
 
-            if (currentFrame == 10)
-            {
-                currentLinkLocation += nextSpriteDistance;
-                swordOffset.X = 22;
-            }
-
             if (currentFrame > totalFrames)
             {
-                currentLinkLocation -= nextSpriteDistance;
-                swordOffset.X = 0;
                 currentFrame = 0;
                 isAnimationPlaying = false;
             }

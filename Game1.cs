@@ -161,6 +161,7 @@ namespace Legend_of_the_Power_Rangers
             keyboardController.Update();
 
             link.Update(gameTime);
+
             //commented out because we arent using position anymoreq
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
             enemy.Update(gameTime);

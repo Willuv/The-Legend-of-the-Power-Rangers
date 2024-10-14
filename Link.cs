@@ -1,6 +1,6 @@
 ﻿using Legend_of_the_Power_Rangers;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 using Legend_of_the_Power_Rangers.Collision;
 
@@ -8,6 +8,8 @@ public class Link : ICollision
 {
     private LinkStateMachine stateMachine;
     private ILinkSprite currentSprite;
+
+    private const float ScaleFactor = 3.0f;
     private const int LinkWidth = 48;  // Assuming each sprite has a width of 32 pixels
     private const int LinkHeight = 48; // Assuming each sprite has a height of 32 pixels
     private Rectangle destinationRectangle;
@@ -21,9 +23,20 @@ public class Link : ICollision
     public Link()
     {
         stateMachine = new LinkStateMachine();
-        // Initialize the destination rectangle with a size of LinkWidth x LinkHeight
-        destinationRectangle = new Rectangle(200, 200, LinkWidth, LinkHeight);
         currentSprite = stateMachine.GetCurrentSprite();
+        UpdateDestinationRectangle();
+    }
+
+    private void UpdateDestinationRectangle()
+    {
+        Rectangle sourceRectangle = currentSprite.SourceRectangle;
+
+        destinationRectangle = new Rectangle(
+            destinationRectangle.X,
+            destinationRectangle.Y,
+            (int)(sourceRectangle.Width * ScaleFactor),
+            (int)(sourceRectangle.Height * ScaleFactor)
+        );
     }
 
     public void UpdatePosition(Vector2 movement)
@@ -61,6 +74,7 @@ public class Link : ICollision
         currentSprite = stateMachine.GetCurrentSprite();
         currentSprite.Update(gameTime);
 
+        UpdateDestinationRectangle();
         Debug.WriteLine($"Link position: {destinationRectangle.X}, {destinationRectangle.Y}");
 
     }
@@ -68,7 +82,7 @@ public class Link : ICollision
     public virtual void Draw(SpriteBatch spriteBatch)
     {
         currentSprite = stateMachine.GetCurrentSprite();
-        // Draw the sprite using the destination rectangle
+
         currentSprite.Draw(spriteBatch, destinationRectangle, Color.White);
     }
 }

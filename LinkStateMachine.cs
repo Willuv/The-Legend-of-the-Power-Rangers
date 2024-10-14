@@ -89,7 +89,6 @@ namespace Legend_of_the_Power_Rangers
 
         public void UpdateActionTimer(GameTime gameTime)
         {
-            // Decrease the timer based on elapsed time
             if (actionTimeRemaining > 0)
             {
                 actionTimeRemaining -= gameTime.ElapsedGameTime.TotalSeconds;
