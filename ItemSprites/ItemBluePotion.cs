@@ -7,9 +7,10 @@ namespace Legend_of_the_Power_Rangers
 {
     public class ItemBluePotion : IItem
     {
-        public Vector2 position = new Vector2(370, 300); //make it rectangle
 
-        private Rectangle rectangle = new Rectangle(360, 40, 13, 16);
+        public Rectangle position = new Rectangle(370, 300, 16, 16);
+
+        public Rectangle rectangle = new Rectangle(360, 40, 13, 16);
         public void Update(GameTime gameTime)
         {
 

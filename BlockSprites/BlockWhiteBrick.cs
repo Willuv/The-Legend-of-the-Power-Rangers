@@ -17,6 +17,7 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Block; } }
         public BlockType BlockType { get { return BlockType.WhiteBrick; } }
 
+
         public void Update(GameTime gameTime)
         {
 

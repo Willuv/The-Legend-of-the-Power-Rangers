@@ -7,6 +7,7 @@ namespace Legend_of_the_Power_Rangers
 {
     public class BlockKeyHole : IBlock
     {
+
         private Rectangle sourceRectangle = new Rectangle(96, 0, 16, 16);
         private Rectangle destinationRectangle = new Rectangle(400, 340, 16, 16);
         public Rectangle DestinationRectangle

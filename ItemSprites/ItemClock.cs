@@ -7,9 +7,8 @@ namespace Legend_of_the_Power_Rangers
 {
     public class ItemClock : IItem
     {
-        private Vector2 position = new Vector2(370, 300);
-
-        private Rectangle rectangle = new Rectangle(360, 0, 13, 16);
+        public Rectangle position = new Rectangle(370, 300, 16, 16);
+        public Rectangle rectangle = new Rectangle(360, 0, 13, 16);
         public void Update(GameTime gameTime)
         {
 

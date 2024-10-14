@@ -7,9 +7,9 @@ namespace Legend_of_the_Power_Rangers
 {
     public class ItemBlueCandle : IItem
     {
-        private Vector2 position = new Vector2(370, 300);
+        public Rectangle position = new Rectangle(370, 300, 16, 16);
 
-        private Rectangle rectangle = new Rectangle(120, 0, 16, 16);
+        public Rectangle rectangle = new Rectangle(120, 0, 16, 16);
         public void Update(GameTime gameTime)
         {
 
