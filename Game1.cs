@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Legend_of_the_Power_Rangers.Collision;
+using Legend_of_the_Power_Rangers.Enemies;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -19,7 +20,7 @@ namespace Legend_of_the_Power_Rangers
         private IBlock block = new BlockStatue1();
         private Texture2D blockTexture;
 
-        private List<ISprite> sprites = new List<ISprite>();
+        private List<IEnemy> sprites = new List<IEnemy>();
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
 
@@ -36,8 +37,6 @@ namespace Legend_of_the_Power_Rangers
                                         new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(),
                                         new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(),
                                         new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()};
-
-        private string[] enemyTypes = { "RedOcto", "BlueOcto", "RedGorya", "BlueGorya", "RedMoblin", "DarkMoblin", "RedKnight", "BlueKnight", "RedCentaur", "BlueCentaur", "DragonBoss" };
 
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;

@@ -1,15 +1,21 @@
 using System;
+using Legend_of_the_Power_Rangers.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BlueCentaur : ISprite
+    public class BlueCentaur : IEnemy
     {
         //private Texture2D texture;
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
+        public Rectangle DestinationRectangle
+        {
+            get { return destinationRectangle; }
+            set { destinationRectangle = value; }
+        }
         private int currentFrameIndex;
         private float scale = 2.0f;
         private double timeSinceLastToggle;
@@ -22,7 +28,10 @@ namespace Legend_of_the_Power_Rangers
         private Random random = new Random();
         private Vector2 position;
         Vector2 initialPosition  = new Vector2(100, 100);
-        
+
+        public ObjectType ObjectType { get { return ObjectType.Enemy; } }
+        public EnemyType EnemyType { get { return EnemyType.BlueCentaur; } }
+
         public BlueCentaur()
         {
             //this.texture = spritesheet;

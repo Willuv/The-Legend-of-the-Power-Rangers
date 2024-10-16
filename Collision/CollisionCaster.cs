@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using Legend_of_the_Power_Rangers.Enemies;
 
 namespace Legend_of_the_Power_Rangers.Collision
 {
@@ -26,8 +27,8 @@ namespace Legend_of_the_Power_Rangers.Collision
                     return CastBlock((IBlock)obj);
                 //case ObjectType.Item:
                 //  return CastItem((IItem)obj);
-                //case ObjectType.Enemy:
-                //  return CastEnemy((ISprite)obj);
+                case ObjectType.Enemy:
+                    return CastEnemy((IEnemy)obj);
                 default:
                     throw new InvalidOperationException("An error occurred in casting object type.");
 
@@ -46,5 +47,15 @@ namespace Legend_of_the_Power_Rangers.Collision
                     //error happened here, why?
             }
         }
-    }
+
+        //public static IItem CastItem(IItem obj) 
+
+        public static IEnemy CastEnemy(IEnemy obj)
+        {
+            switch (obj.EnemyType)
+            {
+
+            }
+            return null; //stop yelling
+        }
 }

@@ -1,14 +1,20 @@
 using System;
+using Legend_of_the_Power_Rangers.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class Skeleton : ISprite
+    public class Skeleton : IEnemy
     {
         //private Texture2D texture;
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
+        public Rectangle DestinationRectangle
+        {
+            get { return destinationRectangle; }
+            set { destinationRectangle = value; }
+        }
         private int currentFrameIndex;
         private Vector2 direction;
         private float scale = 2.0f;
@@ -21,6 +27,9 @@ namespace Legend_of_the_Power_Rangers
         private Random random = new Random();
         private Vector2 position;
         Vector2 initialPosition  = new Vector2(100, 100);
+
+        public ObjectType ObjectType { get { return ObjectType.Enemy; } }
+        public EnemyType EnemyType { get { return EnemyType.Skeleton; } }
 
         public Skeleton()
         {
