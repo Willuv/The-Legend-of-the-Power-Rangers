@@ -64,10 +64,16 @@ namespace Legend_of_the_Power_Rangers
 
         public Vector2 UpdateMovement()
         {
+            if (IsActionLocked())
+            {
+                return Vector2.Zero;
+            }
+
             Vector2 movement = Vector2.Zero;
 
             if (currentAction == LinkAction.Moving)
             {
+                Debug.WriteLine($"Moving");
                 switch (currentDirection)
                 {
                     case LinkDirection.Up:

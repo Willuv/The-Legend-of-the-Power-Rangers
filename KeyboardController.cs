@@ -50,9 +50,12 @@ namespace Legend_of_the_Power_Rangers
             {
                 if (currentPressedKeySet.Contains(key))
                 {
-                    keyCommandMappings[key].Execute();
+                    if (keyCommandMappings.TryGetValue(key, out var command))
+                    {
+                        command.Execute();
+                    }
+                    break;
                 }
-
             }
 
             foreach (Keys key in pressedKeys)
@@ -71,6 +74,7 @@ namespace Legend_of_the_Power_Rangers
 
             previousKeyboardState = currentKeyboardState;
         }
+
 
         public void RegisterCommand(Keys key, ICommand command)
         {
