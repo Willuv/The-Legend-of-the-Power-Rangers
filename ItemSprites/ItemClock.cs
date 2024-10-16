@@ -1,4 +1,5 @@
 using System;
+using Legend_of_the_Power_Rangers.ItemSprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static System.Collections.Specialized.BitVector32;
@@ -14,6 +15,10 @@ namespace Legend_of_the_Power_Rangers
             get {return rectangle;}
             set {rectangle = value;}
         }
+
+        public ObjectType ObjectType { get { return ObjectType.Item; } }
+        public ItemType ItemType { get { return ItemType.Clock; } }
+
         public void Update(GameTime gameTime)
         {
 
