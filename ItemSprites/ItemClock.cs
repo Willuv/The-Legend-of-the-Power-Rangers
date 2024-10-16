@@ -9,6 +9,11 @@ namespace Legend_of_the_Power_Rangers
     {
         public Rectangle position = new Rectangle(370, 300, 16, 16);
         public Rectangle rectangle = new Rectangle(360, 0, 13, 16);
+        public Rectangle DestinationRectangle
+        {
+            get {return rectangle;}
+            set {rectangle = value;}
+        }
         public void Update(GameTime gameTime)
         {
 
