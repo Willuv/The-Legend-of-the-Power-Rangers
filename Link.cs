@@ -31,13 +31,38 @@ public class Link : ICollision
     {
         Rectangle sourceRectangle = currentSprite.SourceRectangle;
 
+        int newWidth = (int)(sourceRectangle.Width * ScaleFactor);
+        int newHeight = (int)(sourceRectangle.Height * ScaleFactor);
+
+        LinkStateMachine.LinkAction currentAction = stateMachine.GetCurrentAction();
+        LinkStateMachine.LinkDirection currentDirection = stateMachine.GetCurrentDirection();
+
+        int xOffset = 0;
+        int yOffset = 0;
+
+        switch (currentDirection)
+        {
+            case LinkStateMachine.LinkDirection.Up:
+                yOffset = destinationRectangle.Height - newHeight;
+                break;
+
+            case LinkStateMachine.LinkDirection.Left:
+                xOffset = destinationRectangle.Width - newWidth;
+                break;
+
+            case LinkStateMachine.LinkDirection.Right:
+            case LinkStateMachine.LinkDirection.Down:
+                break;
+        }
+        
         destinationRectangle = new Rectangle(
-            destinationRectangle.X,
-            destinationRectangle.Y,
-            (int)(sourceRectangle.Width * ScaleFactor),
-            (int)(sourceRectangle.Height * ScaleFactor)
+            destinationRectangle.X + xOffset,
+            destinationRectangle.Y + yOffset,
+            newWidth,
+            newHeight
         );
     }
+
 
     public void UpdatePosition(Vector2 movement)
     {

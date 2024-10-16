@@ -18,6 +18,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Execute()
         {
+
             this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
             this.linkItemFactory.CreateItem(Item.ItemType.Boomerang);
         }
