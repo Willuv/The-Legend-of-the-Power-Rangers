@@ -6,8 +6,8 @@ using System.Linq;
 using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
-using Legend_of_the_Power_Rangers;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
+using Legend_of_the_Power_Rangers.LinkSpritesClasses;
 
 namespace Legend_of_the_Power_Rangers
 {
