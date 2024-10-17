@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Legend_of_the_Power_Rangers.Collision;
-using Legend_of_the_Power_Rangers.Enemies;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -75,8 +74,7 @@ namespace Legend_of_the_Power_Rangers
         {
             base.Initialize();
             LoadContent();
-            //block = BlockList[0];
-            block = BlockList[9]; //temporary, to test bluefloor
+            block = BlockList[0];
             item = ItemList[0];
         }
 
@@ -116,10 +114,13 @@ namespace Legend_of_the_Power_Rangers
 
             loadedObjects = new();
             //these add calls are for testing collision. will be gone for real sprint
+            InitializeEnemies(); //also remove later
             loadedObjects.Add(link);
-            loadedObjects.Add(BlockList[9]);
+            loadedObjects.Add(sprites[0]);
+            loadedObjects.Add(sprites[6]); //should be dragon boss for testing
+            
+            //keep these
             SortingMachine.QuickSort(loadedObjects);
-
             collisionManager = new();
 
 

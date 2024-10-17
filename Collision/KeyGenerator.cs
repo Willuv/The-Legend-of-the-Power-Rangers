@@ -20,12 +20,11 @@ namespace Legend_of_the_Power_Rangers.Collision
         {
             if (obj is IBlock block)
                 return block.BlockType.ToString();
-            //if (obj is IItem item)
-            //    return $"Type:{item.ItemType}";
-            //if (obj is ISprite enemy)
-            //return $"Type:{enemy.EnemyType}";
+            if (obj is IItem item)
+                return $"Type:{item.ItemType}";
+            if (obj is IEnemy enemy)
+            return $"Type:{enemy.EnemyType}";
 
-            //add these back when enemies and items are added
             return obj.ObjectType.ToString(); //just in case
         }
     }
