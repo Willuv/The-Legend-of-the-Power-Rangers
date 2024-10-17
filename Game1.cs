@@ -116,6 +116,7 @@ namespace Legend_of_the_Power_Rangers
             //these add calls are for testing collision. will be gone for real sprint
             InitializeEnemies(); //also remove later
             loadedObjects.Add(link);
+            loadedObjects.Add(BlockList[9]);
             loadedObjects.Add(sprites[0]);
             loadedObjects.Add(sprites[6]); //should be dragon boss for testing
             
