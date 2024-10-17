@@ -14,8 +14,6 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
 
         public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
         {
-            (link, enemy) = CollisionCaster.CastObjects(link, enemy);
-
             Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, enemy.DestinationRectangle);
             Rectangle newDestination = link.DestinationRectangle;
             newDestination.X -= overlap.Width;
