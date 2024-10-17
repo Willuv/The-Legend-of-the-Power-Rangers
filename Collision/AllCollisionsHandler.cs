@@ -1,4 +1,5 @@
 ﻿using Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents;
+using Legend_of_the_Power_Rangers.Enemies;
 using Microsoft.VisualStudio.TestPlatform.ObjectModel;
 using System;
 using System.Collections.Generic;
@@ -14,26 +15,7 @@ namespace Legend_of_the_Power_Rangers.Collision
         private readonly Dictionary<string, IEvent> eventList;
         public AllCollisionsHandler()
         {
-            eventList = new Dictionary<string, IEvent>();
-            InitializeEventList();
-        }
-
-        private void InitializeEventList()
-        {
-            //link vs blocks
-            eventList.Add(KeyGenerator.Generate(new Link(), new BlockBlueFloor(), CollisionDirection.Left), new MoveLinkLeft());
-            eventList.Add(KeyGenerator.Generate(new Link(), new BlockBlueFloor(), CollisionDirection.Top), new MoveLinkUp());
-            eventList.Add(KeyGenerator.Generate(new Link(), new BlockBlueFloor(), CollisionDirection.Right), new MoveLinkRight());
-            eventList.Add(KeyGenerator.Generate(new Link(), new BlockBlueFloor(), CollisionDirection.Bottom), new MoveLinkDown());
-            //eventList.Add(KeyGenerator.Generate(new Link(), new BlockPush(), CollisionDirection.Left), new SlowLinkAndPushBlockRight());
-
-            //link vs items
-
-            //link vs enemies
-            eventList.Add(KeyGenerator.Generate(new Link(), new DragonBoss(null, null), CollisionDirection.Left), new MoveLinkLeftAndGetHurt());
-            eventList.Add(KeyGenerator.Generate(new Link(), new RedOcto(), CollisionDirection.Left), new MoveLinkLeftAndGetHurt());
-            //will need more obviously
-            // a lot of these are placeholders to test
+            eventList = EventListBuilder.BuildList();
         }
 
         public void Handle(ICollision object1, ICollision object2, CollisionDirection direction)
