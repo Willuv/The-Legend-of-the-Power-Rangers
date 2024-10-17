@@ -17,6 +17,13 @@ namespace Legend_of_the_Power_Rangers
             set {rectangle = value;}
         }
 
+        bool pickedUp = false;
+        public bool PickedUp
+        {
+            get { return pickedUp; }
+            set { pickedUp = value; }
+        }
+
         public ObjectType ObjectType { get { return ObjectType.Item; } }
         public ItemType ItemType { get { return ItemType.Compass; } }
 

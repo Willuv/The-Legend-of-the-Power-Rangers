@@ -20,6 +20,12 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Item; } }
         public ItemType ItemType { get { return ItemType.Rupee; } }
 
+        bool pickedUp = false;
+        public bool PickedUp
+        {
+            get { return pickedUp; }
+            set { pickedUp = value; }
+        }
 
         private int change = 1;
 

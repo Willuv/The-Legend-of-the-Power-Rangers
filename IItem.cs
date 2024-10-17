@@ -10,6 +10,7 @@ namespace Legend_of_the_Power_Rangers
     public interface IItem : ICollision
     {
         ItemType ItemType { get; }
+        bool PickedUp { get; set; }
         void Update(GameTime gameTime);
         void Draw(Texture2D texture, SpriteBatch spriteBatch);
     }

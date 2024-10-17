@@ -20,6 +20,13 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Item; } }
         public ItemType ItemType { get { return ItemType.Heart; } }
 
+        bool pickedUp = false;
+        public bool PickedUp
+        {
+            get { return pickedUp; }
+            set { pickedUp = value; }
+        }
+
         public void Update(GameTime gameTime)
         {
             //no code
