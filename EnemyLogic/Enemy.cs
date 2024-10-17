@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class Enemy : ISprite
+    public class Enemy //not used
     {
         public Vector2 position;
         //protected Texture2D texture;

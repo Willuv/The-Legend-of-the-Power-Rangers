@@ -19,7 +19,7 @@ namespace Legend_of_the_Power_Rangers
         private IBlock block = new BlockStatue1();
         private Texture2D blockTexture;
 
-        private List<ISprite> sprites = new List<ISprite>();
+        private List<IEnemy> sprites = new List<IEnemy>();
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
 
@@ -36,8 +36,6 @@ namespace Legend_of_the_Power_Rangers
                                         new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(),
                                         new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(),
                                         new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()};
-
-        private string[] enemyTypes = { "RedOcto", "BlueOcto", "RedGorya", "BlueGorya", "RedMoblin", "DarkMoblin", "RedKnight", "BlueKnight", "RedCentaur", "BlueCentaur", "DragonBoss" };
 
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;
@@ -76,8 +74,7 @@ namespace Legend_of_the_Power_Rangers
         {
             base.Initialize();
             LoadContent();
-            //block = BlockList[0];
-            block = BlockList[9]; //temporary, to test bluefloor
+            block = BlockList[0];
             item = ItemList[0];
         }
 
@@ -117,10 +114,13 @@ namespace Legend_of_the_Power_Rangers
 
             loadedObjects = new();
             //these add calls are for testing collision. will be gone for real sprint
+            InitializeEnemies(); //also remove later
             loadedObjects.Add(link);
-            loadedObjects.Add(BlockList[9]);
+            loadedObjects.Add(sprites[0]);
+            loadedObjects.Add(sprites[6]); //should be dragon boss for testing
+            
+            //keep these
             SortingMachine.QuickSort(loadedObjects);
-
             collisionManager = new();
 
 

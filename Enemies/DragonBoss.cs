@@ -3,18 +3,24 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Legend_of_the_Power_Rangers.Enemies;
 
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class DragonBoss : ISprite
+    public class DragonBoss : IEnemy
     {
         //private Texture2D texture;
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
+        public Rectangle DestinationRectangle
+        {
+            get { return destinationRectangle; }
+            set { destinationRectangle = value; }
+        }
         private Texture2D projectileTexture;
         private Rectangle projectileSourceRectangle;
-        private List<Tuple<EnemySprite, Vector2>> projectiles;
+        private List<Tuple<DragonProjectile, Vector2>> projectiles;
         private double projectileFireTimer = 0;
         private double projectileFireInterval = 1;
         private int currentFrameIndex;
@@ -37,7 +43,10 @@ namespace Legend_of_the_Power_Rangers
         private Random random = new Random();
         private Vector2 position;
         Vector2 initialPosition  = new Vector2(200, 150);
-        public Texture2D bossSpritesheet; 
+        public Texture2D bossSpritesheet;
+
+        public ObjectType ObjectType { get { return ObjectType.Enemy; } }
+        public EnemyType EnemyType { get { return EnemyType.DragonBoss; } }
 
         public DragonBoss(Texture2D spritesheet, Texture2D projectileTexture)
         {
@@ -48,7 +57,7 @@ namespace Legend_of_the_Power_Rangers
             projectileSourceRectangle = new Rectangle(330, 0, spriteWidth, spriteHeight); // Specific coordinates and size for projectile
             SetRandomDirection();
             InitializeFrames();
-            projectiles = new List<Tuple<EnemySprite, Vector2>>();
+            projectiles = new List<Tuple<DragonProjectile, Vector2>>();
             UpdateDestinationRectangle();
         }
 
@@ -135,10 +144,10 @@ namespace Legend_of_the_Power_Rangers
         foreach (var direction in directions)
         {
             direction.Normalize(); // Normalize for consistent speed in all directions
-            EnemySprite projectile = new EnemySprite(projectileTexture, projectileSourceRectangle);
+            DragonProjectile projectile = new DragonProjectile(projectileTexture, projectileSourceRectangle);
             projectile.Position = new Vector2(position.X + xOffset - 13, position.Y + yOffset - 13); // Start at boss's position w/ Offset
             projectile.Direction = direction; // Set the movement direction
-            projectiles.Add(new Tuple<EnemySprite, Vector2>(projectile, projectile.Position));
+            projectiles.Add(new Tuple<DragonProjectile, Vector2>(projectile, projectile.Position));
         }
     }
 
