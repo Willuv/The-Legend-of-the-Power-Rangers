@@ -96,12 +96,15 @@ namespace Legend_of_the_Power_Rangers
             LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
 
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
+
             link = new Link();
+            LinkManager.SetLink(link);
+
             linkDecorator = new LinkDecorator(link);
+            LinkManager.SetLink(linkDecorator);
+
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
-
-
 
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
@@ -113,20 +116,17 @@ namespace Legend_of_the_Power_Rangers
             blockIndex = 0;
 
             loadedObjects = new();
-            //these add calls are for testing collision. will be gone for real sprint
-            InitializeEnemies(); //also remove later
+            InitializeEnemies();
             loadedObjects.Add(link);
-            loadedObjects.Add(BlockList[9]);
             loadedObjects.Add(sprites[0]);
-            loadedObjects.Add(sprites[6]); //should be dragon boss for testing
-            
-            //keep these
+            loadedObjects.Add(sprites[6]);
+
             SortingMachine.QuickSort(loadedObjects);
             collisionManager = new();
 
-
             enemyIndex = 0;
         }
+
         public void ChangeItem(int direction)
         {
             itemIndex += direction;
@@ -173,7 +173,7 @@ namespace Legend_of_the_Power_Rangers
         {
             keyboardController.Update();
 
-            link.Update(gameTime);
+            LinkManager.GetLink().Update(gameTime);
 
             //commented out because we arent using position anymoreq
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
@@ -195,7 +195,7 @@ namespace Legend_of_the_Power_Rangers
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin();
 
-            link.Draw(spriteBatch);
+            LinkManager.GetLink().Draw(spriteBatch);
             linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
 
