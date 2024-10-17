@@ -21,7 +21,10 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
             newDestination.X -= overlap.Width;
             link.DestinationRectangle = newDestination;
 
-            //LinkBecomeDamagedCommand linkGetsHurt = new(new LinkDecorator((Link)link));
+            LinkDecorator decoratedLink = (LinkDecorator)LinkManager.GetLink();
+
+            LinkBecomeDamagedCommand linkGetsHurt = new LinkBecomeDamagedCommand(decoratedLink);
+            linkGetsHurt.Execute();
         }
     }
 }
