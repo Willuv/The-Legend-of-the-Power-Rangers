@@ -22,10 +22,12 @@ namespace Legend_of_the_Power_Rangers
         private List<IEnemy> sprites = new List<IEnemy>();
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
+        public Texture2D projectileSpriteSheet;
 
         private int itemIndex;
         private int blockIndex;
         private int enemyIndex;
+        
 
         private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(),
                                     new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
@@ -43,7 +45,7 @@ namespace Legend_of_the_Power_Rangers
 
         private void InitializeEnemies()
         {
-            sprites.Add(new RedOcto());
+            sprites.Add(new RedOcto(projectileSpriteSheet));
             sprites.Add(new BlueOcto());
             sprites.Add(new BlueCentaur());
             sprites.Add(new BlueGorya());
@@ -89,10 +91,10 @@ namespace Legend_of_the_Power_Rangers
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
-            Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
+            projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
             itemTexture = Content.Load<Texture2D>("Items");
-
+            
             LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
 
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
