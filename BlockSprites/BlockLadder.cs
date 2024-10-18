@@ -9,7 +9,7 @@ namespace Legend_of_the_Power_Rangers
     {
 
         private Rectangle sourceRectangle = new Rectangle(144, 32, 16, 16);
-        private Rectangle destinationRectangle = new Rectangle(400, 340, 16, 16);
+        private Rectangle destinationRectangle = new Rectangle(450, 340, 48, 48);
         public Rectangle DestinationRectangle
         {
             get { return destinationRectangle; }
