@@ -9,7 +9,7 @@ namespace Legend_of_the_Power_Rangers
     public class BlockBlueFloor : IBlock
     {
         private Rectangle sourceRectangle = new Rectangle(160, 16, 16, 16);
-        private Rectangle destinationRectangle = new Rectangle(400, 340, 16, 16);
+        private Rectangle destinationRectangle = new Rectangle(450, 340, 48, 48);
         
         public Rectangle DestinationRectangle
         {
