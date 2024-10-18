@@ -120,6 +120,8 @@ namespace Legend_of_the_Power_Rangers
             loadedObjects.Add(link);
             loadedObjects.Add(sprites[0]);
             loadedObjects.Add(sprites[6]);
+            loadedObjects.Add(BlockList[9]);
+
 
             SortingMachine.QuickSort(loadedObjects);
             collisionManager = new();
