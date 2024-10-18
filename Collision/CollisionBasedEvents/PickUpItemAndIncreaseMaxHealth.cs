@@ -8,9 +8,9 @@ using System.Diagnostics;
 
 namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
 {
-    public class PickUpItem : IEvent
+    public class PickUpItemAndIncreaseMaxHealth : IEvent
     {
-        public PickUpItem() { }
+        public PickUpItemAndIncreaseMaxHealth() { }
 
         public void Execute(ICollision link, ICollision item, CollisionDirection direction)
         {
@@ -19,6 +19,7 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
                 actualItem.PickedUp = true;
                 //some command to add to link's inventory
                 Debug.WriteLine("Item picked up");
+                //some command to increase max health when health is implemented
             }
         }
     }
