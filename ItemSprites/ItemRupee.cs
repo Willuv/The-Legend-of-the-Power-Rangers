@@ -9,7 +9,6 @@ namespace Legend_of_the_Power_Rangers
     public class ItemRupee : IItem
     {
         public Rectangle destinationRectangle = new Rectangle(370, 300, 32, 32);
-
         public Rectangle sourceRectangle = new Rectangle(160, 120, 16, 16);
         public Rectangle DestinationRectangle
         {
@@ -53,9 +52,9 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
-        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(ItemSpriteFactory.Instance.GetItemSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

@@ -34,6 +34,8 @@ namespace Legend_of_the_Power_Rangers
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;
         private BlockManager blockManager;
+        private ItemManager itemManager;
+
 
         public Game1()
         {
@@ -89,6 +91,8 @@ namespace Legend_of_the_Power_Rangers
             Texture2D blockTexture = Content.Load<Texture2D>("Blocks");
 
             BlockSpriteFactory.Instance.SetBlockSpritesheet(blockTexture);
+            ItemSpriteFactory.Instance.SetItemSpritesheet(itemTexture);
+
 
             LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockTexture);
@@ -108,8 +112,15 @@ namespace Legend_of_the_Power_Rangers
             };
             blockManager = new BlockManager(blockTypes);
 
+            var itemTypes = new List<string>
+            {
+                "Compass", "Map", "Key", "HeartContainer", "Triforce", "WoodBoomerang",
+                "Bow", "Heart", "Rupee", "Bomb", "Fairy", "Clock", "BlueCandle", "BluePotion"
+            };
+            itemManager = new ItemManager(itemTypes);
 
-            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, this);
+
+            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
 
             itemIndex = 0;
 
@@ -129,20 +140,6 @@ namespace Legend_of_the_Power_Rangers
             }
 
             collisionManager = new CollisionManager();
-        }
-
-        public void ChangeItem(int direction)
-        {
-            itemIndex += direction;
-            if (itemIndex >= ItemList.Length)
-            {
-                itemIndex = 0;
-            }
-            if (itemIndex < 0)
-            {
-                itemIndex = ItemList.Length - 1;
-            }
-            item = ItemList[itemIndex];
         }
 
         public void ChangeEnemy(int direction)
@@ -169,13 +166,8 @@ namespace Legend_of_the_Power_Rangers
                 sprites[enemyIndex].Update(gameTime);
             }
             linkDecorator.Update(gameTime);
-
-            if (item != null)
-            {
-                item.Update(gameTime);
-            }
-
-            blockManager.Update(gameTime); // Update the BlockManager
+            blockManager.Update(gameTime);
+            itemManager.Update(gameTime);
             collisionManager.Update(gameTime, loadedObjects);
 
             base.Update(gameTime);
@@ -195,12 +187,8 @@ namespace Legend_of_the_Power_Rangers
                 sprites[enemyIndex].Draw(enemySpritesheet, spriteBatch);
             }
 
-            if (item != null)
-            {
-                item.Draw(itemTexture, spriteBatch);
-            }
-
-            blockManager.Draw(spriteBatch); // Draw the BlockManager
+            itemManager.Draw(spriteBatch);
+            blockManager.Draw(spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

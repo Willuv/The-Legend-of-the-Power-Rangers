@@ -25,10 +25,8 @@ namespace Legend_of_the_Power_Rangers
 
         public void ChangeBlock(int direction)
         {
-            // Change the current block index based on the direction
             currentBlockIndex += direction;
 
-            // Wrap around logic
             if (currentBlockIndex >= blocks.Count)
             {
                 currentBlockIndex = 0;
