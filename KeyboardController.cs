@@ -12,7 +12,7 @@ namespace Legend_of_the_Power_Rangers
         private KeyboardState previousKeyboardState;
         private readonly LinkIdleCommand idleCommand;
 
-        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Game1 game)
+        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager ,Game1 game)
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {
@@ -28,8 +28,8 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.D4, new LinkItem4Command(stateMachine, linkItemFactory) },
                 { Keys.D5, new LinkItem5Command(stateMachine, linkItemFactory) },
                 { Keys.E, new LinkBecomeDamagedCommand(linkDecorator) },
-                { Keys.T, new BlockPreviousCommand(game) },
-                { Keys.Y, new BlockNextCommand(game) },
+                { Keys.T, new BlockPreviousCommand(blockManager) },
+                { Keys.Y, new BlockNextCommand(blockManager) },
                 { Keys.U, new ItemShowPreviousCommand(game) },
                 { Keys.I, new ItemShowNextCommand(game) },
                 { Keys.O, new NPCShowPreviousCommand(game) },

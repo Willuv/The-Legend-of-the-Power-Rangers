@@ -9,15 +9,15 @@ namespace Legend_of_the_Power_Rangers
 {
     public class BlockNextCommand : ICommand
     {
-        private int direction = 1;
+        private readonly BlockManager blockManager;
 
         private readonly Game1 game1;
-        public BlockNextCommand(Game1 game) {
-            game1 = game;
+        public BlockNextCommand(BlockManager blockManager) {
+            this.blockManager = blockManager;
         }
         public void Execute()
         {
-            game1.ChangeBlock(direction);
+            blockManager.ChangeBlock(1);
         }
     }
 }
