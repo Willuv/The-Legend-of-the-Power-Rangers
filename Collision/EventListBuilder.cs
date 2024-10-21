@@ -1,5 +1,4 @@
-﻿using Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents;
-using Legend_of_the_Power_Rangers.Enemies;
+﻿using Legend_of_the_Power_Rangers.Enemies;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +6,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Legend_of_the_Power_Rangers.Collision
+namespace Legend_of_the_Power_Rangers
 {
     internal class EventListBuilder
     {

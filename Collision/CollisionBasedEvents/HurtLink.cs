@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
-namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
+namespace Legend_of_the_Power_Rangers
 {
     public class HurtLink : IEvent
     {
