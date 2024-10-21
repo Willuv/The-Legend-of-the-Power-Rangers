@@ -28,7 +28,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
-
+        }
         public void Draw(SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(ItemSpriteFactory.Instance.GetItemSpritesheet(), destinationRectangle, sourceRectangle, Color.White);

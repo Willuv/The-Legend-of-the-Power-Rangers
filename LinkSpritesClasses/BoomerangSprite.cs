@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using Legend_of_the_Power_Rangers.LinkSpritesClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
@@ -27,6 +28,8 @@ namespace Legend_of_the_Power_Rangers
 
         float rotation;
 
+        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
+        public LinkItemType LinkItemType { get { return LinkItemType.Boomerang; } }
 
         public BoomerangSprite(Texture2D texture, Rectangle position, LinkDirection direction)
         {
