@@ -13,6 +13,7 @@ namespace Legend_of_the_Power_Rangers
         private Link link;
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
+        private MouseController mouseController;
         private LinkItemFactory linkItemFactory;
         private IItem item = new ItemCompass();
         private Texture2D itemTexture;
@@ -105,6 +106,7 @@ namespace Legend_of_the_Power_Rangers
 
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
+            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
 
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
@@ -172,6 +174,7 @@ namespace Legend_of_the_Power_Rangers
         protected override void Update(GameTime gameTime)
         {
             keyboardController.Update();
+            mouseController.Update();
 
             LinkManager.GetLink().Update(gameTime);
 
