@@ -23,6 +23,7 @@ namespace Legend_of_the_Power_Rangers
         private Link link;
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
+        private MouseController mouseController;
         private LinkItemFactory linkItemFactory;
         private IItem item;
         private Texture2D itemTexture;
@@ -112,14 +113,8 @@ namespace Legend_of_the_Power_Rangers
             LinkManager.SetLink(linkDecorator);
             
 
-            var blockTypes = new List<string>
-            {
-                "Statue1", "Statue2", "Square", "Push", "Fire",
-                "BlueGap", "Stairs", "WhiteBrick", "Ladder",
-                "BlueFloor", "BlueSand", "BombedWall", "Diamond",
-                "KeyHole", "OpenDoor", "Wall"
-            };
-            blockManager = new BlockManager(blockTypes);
+            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
+            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
 
             var itemTypes = new List<string>
             {
@@ -134,7 +129,6 @@ namespace Legend_of_the_Power_Rangers
 
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
-            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
 
             itemIndex = 0;
 
@@ -172,6 +166,8 @@ namespace Legend_of_the_Power_Rangers
         protected override void Update(GameTime gameTime)
         {
             keyboardController.Update();
+            mouseController.Update();
+
             LinkManager.GetLink().Update(gameTime);
 
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
