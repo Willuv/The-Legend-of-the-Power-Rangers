@@ -5,8 +5,11 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework.Input;
 using Legend_of_the_Power_Rangers.LevelCreation;
-using IronXL;
 using Legend_of_the_Power_Rangers.Collision;
+using ExcelDataReader;
+using System.IO;
+using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
+
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -14,6 +17,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private Level level;
         private Link link;
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
@@ -22,6 +26,9 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemTexture;
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
+        private FileStream stream;
+
+        private IBlock block = new BlockStatue1();
 
         private List<IEnemy> sprites = new List<IEnemy>();
         private int itemIndex;
@@ -35,6 +42,14 @@ namespace Legend_of_the_Power_Rangers
             new ItemFairy(), new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()
         };
 
+        private IBlock[] BlockList = 
+            {
+            new BlockStatue1(), new BlockStatue2(), new BlockSquare(), new BlockPush(),
+            new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(),
+            new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(),
+            new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()
+        };
+
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;
         private BlockManager blockManager;
@@ -44,14 +59,19 @@ namespace Legend_of_the_Power_Rangers
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 880;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         public void ResetGame()
         {
+            stream.Close();
             base.Initialize();
             LoadContent();
+            block = BlockList[0];
             item = ItemList[0];
         }
 
@@ -77,33 +97,23 @@ namespace Legend_of_the_Power_Rangers
             sprites.Add(new WallMaster());
         }
 
-        public Game1()
-        {
-            IronXL.License.LicenseKey = "IRONSUITE.CHRISTIANXCOLON.YAHOO.COM.12850-47AB22AD2C-FGSFM44ZPOVNHK-WJVBN7ODMNO5-KMK32EYKXELS-GHR4NJN6IWNC-2LXZ3GUFTOM7-3SNA736X2VGP-ERV7KC-TAQRNFXO22ONUA-DEPLOYMENT.TRIAL-OCG5VF.TRIAL.EXPIRES.15.NOV.2024";
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-        }
-
-        public void ResetGame()
-        {
-            base.Initialize();
-            LoadContent();
-            block = BlockList[0];
-            item = ItemList[0];
-        }
-
-        protected override void Initialize()
-        {
-            base.Initialize();
-            InitializeEnemies();
-        }
-
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            WorkBook dungeonBook = WorkBook.Load("C:\\Users\\chris\\Source\\Repos\\The-Legend-of-the-Power-Rangers\\Content\\LinkDungeon1.xlsx");
+            IExcelDataReader reader = null;
+            try
+            {
+                stream = File.Open("C:\\Users\\chris\\Source\\Repos\\The-Legend-of-the-Power-Rangers\\Content\\LinkDungeon1.xlsx", FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException e)
+            {
+            
+            }
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            reader = ExcelReaderFactory.CreateReader(stream);
+            System.Data.DataSet dungeonBook = reader.AsDataSet();
+
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
@@ -144,6 +154,7 @@ namespace Legend_of_the_Power_Rangers
 
 
             level = new Level(levelSpriteSheet, dungeonBook);
+
 
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
@@ -192,6 +203,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 sprites[enemyIndex].Update(gameTime);
             }
+            level.Update(gameTime);
             linkDecorator.Update(gameTime);
             blockManager.Update(gameTime);
             itemManager.Update(gameTime);
@@ -216,6 +228,7 @@ namespace Legend_of_the_Power_Rangers
 
             itemManager.Draw(spriteBatch);
             blockManager.Draw(spriteBatch);
+            level.Draw(enemySpritesheet, spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

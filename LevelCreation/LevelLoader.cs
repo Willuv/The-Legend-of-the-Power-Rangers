@@ -1,26 +1,81 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
-using IronXL;
+
 
 namespace Legend_of_the_Power_Rangers.LevelCreation
 {
     public class LevelLoader
     {
-        String[,] room;
-        String[] doors;
+        List<IDoor> doors;
+        public List<IDoor> Doors
+        {
+            get { return doors; }
+        }
+        List<Enemy> enemies;
+        public List<Enemy> Enemies
+        {
+            get { return enemies; }
+        }
+        List<IBlock> blocks;
+        public List<IBlock> Blocks
+        {
+            get { return blocks; }
+        }
+        private Dictionary<String, String> BlockDictionary = new Dictionary<string, string>
+        {
+            { "01", "Statue1"},
+            { "02", "Statue2"},
+            { "03", "Square"},
+            { "04", "Push"},
+            { "05", "Fire"},
+            { "06", "BlueGap"},
+            { "07", "Stairs"},
+            { "08", "WhiteBrick"},
+            { "09", "Ladder"},
+            { "10", "BlueFloor"},
+            { "11", "BlueSand"},
+            { "12", "Wall"},
+        };
+        List<IItem> items;
+        public List<IItem> Items
+        {
+            get { return items; }
+        }
+        private Dictionary<String, String> ItemDictionary = new Dictionary<string, string>
+        {
+            { "01", "Compass"},
+            { "02", "Map"},
+            { "03", "Key"},
+            { "04", "HeartContainer"},
+            { "05", "Triforce"},
+            { "06", "WoodBoomerang"},
+            { "07", "Bow"},
+            { "08", "Heart"},
+            { "09", "Rupee"},
+            { "10", "Bomb"},
+            { "11", "Fairy"},
+            { "12", "Clock"},
+            { "13", "BlueCandle"},
+            { "14", "BluePotion"},
+        };
         BlockSpawner blockSpawner;
         DoorMaker doorMaker;
         EnemySpawner enemySpawner;
+
+        Texture2D texture;
         int numRows;
         int numColumns;
         int numDoors;
-        public LevelLoader() {
+        public LevelLoader(Texture2D levelSpriteSheet) {
             /* 
                Higher the layer depth, the more behind
                In order of ascending layer depth
@@ -30,40 +85,76 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             numRows = 7;
             numColumns = 12;
             numDoors = 4;
-            room = new String[numRows, numColumns];
-            doors = new String[numDoors];
 
-            BlockSpawner blockSpawner = new BlockSpawner();
-            DoorMaker doorMaker = new DoorMaker();
-            EnemySpawner enemySpawner = new EnemySpawner();
+            this.texture = levelSpriteSheet;
+
+            blocks = new List<IBlock>();
+            doors = new List<IDoor>();
+            items = new List<IItem>();
+            enemies = new List<Enemy>();
+            blockSpawner = new BlockSpawner();
+            doorMaker = new DoorMaker(levelSpriteSheet);
+            enemySpawner = new EnemySpawner();
         }
-
-        public void Load(WorkSheet levelSheet)
+        public void Load(System.Data.DataTable levelSheet)
         {
-            int rowCount = 0;
-            int columnCount = 0;
-            int doorCount = 0;
+            //unload past room
+            doors.Clear();
+
             // read doors
-            foreach (var cell in levelSheet["A1:D1"])
+            for (int i = 0; i < 4; i++)
             {
-                doorMaker.addDoor(cell.StringValue[4]);
-                doorCount++;
+                if (doorMaker != null)
+                {
+                    doors.Add(doorMaker.CreateDoor(((string)levelSheet.Rows[0][i])[4], i));
+                }
             }
             //reads top-bottom left-right
-            foreach (var cell in levelSheet["A2:G13"])
+            for (int i = 1; i < 12; i++)
             {
-                String blockVal = cell.StringValue[..2];
-                
-                
-                    room[rowCount, columnCount] = cell.StringValue;
-                    rowCount++;
-                    if (rowCount == 7)
+                for (int j = 0; j < 7; j++)
+                {
+                    int currentx = 142 + (110 * j);
+                    int currenty = 160 + (47 * (i-1));
+                    String tileCode = (string)levelSheet.Rows[i][j];
+                    String blockOneCode = tileCode.Substring(1, 2);
+                    String enemyCode = tileCode.Substring(7, 2);
+                    String itemCode = tileCode.Substring(10, 2);
+                    
+
+                    if (blockOneCode != "99")
                     {
-                        rowCount = 0;
-                        columnCount++;
+                        String blockOneString = BlockDictionary[blockOneCode];
+                        IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockOneString);
+                        block.DestinationRectangle = new Rectangle(currentx, currenty, 110, 47);
+                        blocks.Add(block);
+                        if (blockOneString == "Push")
+                        {
+                            IBlock blockTwo = BlockSpriteFactory.Instance.CreateBlock("Square");
+                            blockTwo.DestinationRectangle = new Rectangle(currentx, currenty, 110, 47);
+                            blocks.Add(blockTwo);
+                        } else if (blockOneString == "Fire")
+                        {
+                            IBlock blockTwo = BlockSpriteFactory.Instance.CreateBlock("BlueFloor");
+                            blockTwo.DestinationRectangle = new Rectangle(currentx, currenty, 110, 47);
+                            blocks.Add(blockTwo);
+                        }
                     }
+                    if (enemyCode != "99")
+                    {
+                        String enemyString = BlockDictionary[enemyCode];
+                        //IEnemy enemy =;
+                    }
+                    if (itemCode != "99")
+                    {
+                        String itemString = ItemDictionary[itemCode];
+                        IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
+                        item.DestinationRectangle = new Rectangle(currentx, currenty, 32, 32);
+                        items.Add(item);
+                    }
+                        
+                }
             }
         }
-
     }
 }
