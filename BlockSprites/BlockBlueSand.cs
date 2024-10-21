@@ -8,7 +8,7 @@ namespace Legend_of_the_Power_Rangers
     public class BlockBlueSand : IBlock
     {
         private Rectangle sourceRectangle = new Rectangle(144, 16, 16, 16);
-        private Rectangle destinationRectangle = new Rectangle(400, 340, 16, 16);
+        private Rectangle destinationRectangle = new Rectangle(450, 340, 48, 48);
         public Rectangle DestinationRectangle
         {
             get { return destinationRectangle; }

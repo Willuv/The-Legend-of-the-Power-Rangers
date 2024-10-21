@@ -14,7 +14,17 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
 
         public void Execute(ICollision link, ICollision fire, CollisionDirection direction)
         {
-            LinkBecomeDamagedCommand linkGetsHurt = new(new LinkDecorator((Link)link)); //idk fix this to work with will's version
+            (link, enemy) = CollisionCaster.CastObjects(link, enemy);
+
+            Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, enemy.DestinationRectangle);
+            Rectangle newDestination = link.DestinationRectangle;
+            newDestination.X -= overlap.Width;
+            link.DestinationRectangle = newDestination;
+
+            LinkDecorator decoratedLink = (LinkDecorator)LinkManager.GetLink();
+
+            LinkBecomeDamagedCommand linkGetsHurt = new LinkBecomeDamagedCommand(decoratedLink);
+            linkGetsHurt.Execute();
         }
     }
 }

@@ -9,13 +9,13 @@ namespace Legend_of_the_Power_Rangers
     public class ItemBluePotion : IItem
     {
 
-        public Rectangle position = new Rectangle(370, 300, 16, 16);
+        public Rectangle destinationRectangle = new Rectangle(370, 300, 32, 32);
 
-        public Rectangle rectangle = new Rectangle(360, 40, 13, 16);
+        public Rectangle sourceRectangle = new Rectangle(360, 40, 13, 16);
         public Rectangle DestinationRectangle
         {
-            get {return rectangle;}
-            set {rectangle = value;}
+            get {return destinationRectangle; }
+            set { destinationRectangle = value;}
         }
 
         public ObjectType ObjectType { get { return ObjectType.Item; } }
@@ -34,7 +34,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, rectangle, Color.White);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

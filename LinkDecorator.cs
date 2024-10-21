@@ -1,6 +1,6 @@
 ﻿using Legend_of_the_Power_Rangers;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 public class LinkDecorator : Link
 {
@@ -29,13 +29,11 @@ public class LinkDecorator : Link
 
     public override void Update(GameTime gameTime)
     {
+        baseLink.Update(gameTime);
+
         if (IsDamaged())
         {
             timeDamaged += (float)gameTime.ElapsedGameTime.TotalSeconds;
-        }
-        else
-        {
-            baseLink.Update(gameTime);
         }
     }
 
@@ -45,5 +43,4 @@ public class LinkDecorator : Link
         Color drawColor = IsDamaged() ? damagedColor : Color.White;
         currentSprite.Draw(spriteBatch, baseLink.DestinationRectangle, drawColor);
     }
-
 }
