@@ -18,14 +18,15 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Block; } }
         public BlockType BlockType { get { return BlockType.Wall; } }
 
+        public BlockWall() { }
 
         public void Update(GameTime gameTime)
         {
 
         }
-        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(BlockSpriteFactory.Instance.GetBlockSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }
