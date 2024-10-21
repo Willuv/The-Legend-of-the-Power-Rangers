@@ -29,10 +29,9 @@ namespace Legend_of_the_Power_Rangers
         public void Update(GameTime gameTime)
         {
 
-        }
-        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(ItemSpriteFactory.Instance.GetItemSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

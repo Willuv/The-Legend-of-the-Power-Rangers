@@ -9,8 +9,8 @@ namespace Legend_of_the_Power_Rangers
     public class ItemMap : IItem
     {
         public Rectangle destinationRectangle = new Rectangle(370, 300, 32, 32);
-
         public Rectangle sourceRectangle = new Rectangle(240, 80, 16, 16);
+
         public Rectangle DestinationRectangle
         {
             get {return destinationRectangle; }
@@ -32,9 +32,9 @@ namespace Legend_of_the_Power_Rangers
             //no code
         }
 
-        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(ItemSpriteFactory.Instance.GetItemSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

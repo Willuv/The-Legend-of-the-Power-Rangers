@@ -12,6 +12,6 @@ namespace Legend_of_the_Power_Rangers
         ItemType ItemType { get; }
         bool PickedUp { get; set; }
         void Update(GameTime gameTime);
-        void Draw(Texture2D texture, SpriteBatch spriteBatch);
+        void Draw(SpriteBatch spriteBatch);
     }
 }

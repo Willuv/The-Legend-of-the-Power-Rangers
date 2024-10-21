@@ -6,16 +6,17 @@ using System.Linq;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class ItemShowNextCommand : ICommand
+    public class RoomShowNext : ICommand
     {
-        private readonly ItemManager itemManager;
+        private int direction = 1;
 
-        public ItemShowNextCommand(ItemManager itemManager) {
-            this.itemManager = itemManager;
+        public RoomShowNext()
+        {
+            
         }
         public void Execute()
         {
-            itemManager.ChangeItem(1);
+            
         }
     }
 }
