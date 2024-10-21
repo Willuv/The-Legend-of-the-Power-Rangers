@@ -27,28 +27,24 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
         private FileStream stream;
+        public Texture2D projectileSpriteSheet;
 
         private IBlock block = new BlockStatue1();
 
         private List<IEnemy> sprites = new List<IEnemy>();
         private int itemIndex;
         private int enemyIndex;
+        
 
-        private IItem[] ItemList =
-        {
-            new ItemCompass(), new ItemMap(), new ItemKey(),
-            new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
-            new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(),
-            new ItemFairy(), new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()
-        };
+        private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(),
+                                    new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
+                                    new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(), new ItemFairy(),
+                                    new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()};
 
-        private IBlock[] BlockList = 
-            {
-            new BlockStatue1(), new BlockStatue2(), new BlockSquare(), new BlockPush(),
-            new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(),
-            new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(),
-            new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()
-        };
+        private IBlock[] BlockList = {new BlockStatue1(), new BlockStatue2(), new BlockSquare(), new BlockPush(),
+                                        new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(),
+                                        new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(),
+                                        new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()};
 
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;
@@ -77,7 +73,7 @@ namespace Legend_of_the_Power_Rangers
 
         private void InitializeEnemies()
         {
-            sprites.Add(new RedOcto());
+            sprites.Add(new RedOcto(projectileSpriteSheet));
             sprites.Add(new BlueOcto());
             sprites.Add(new BlueCentaur());
             sprites.Add(new BlueGorya());
@@ -115,7 +111,7 @@ namespace Legend_of_the_Power_Rangers
             System.Data.DataSet dungeonBook = reader.AsDataSet();
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
-            Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
+            projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
             Texture2D levelSpriteSheet = Content.Load<Texture2D>("Level");
             itemTexture = Content.Load<Texture2D>("Items");
@@ -221,10 +217,10 @@ namespace Legend_of_the_Power_Rangers
             linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
 
-            if (enemyIndex < sprites.Count)
-            {
-                sprites[enemyIndex].Draw(enemySpritesheet, spriteBatch);
-            }
+            sprites[enemyIndex].Draw(enemySpritesheet, spriteBatch);
+            item.Draw(itemTexture, spriteBatch);
+            block.Draw(blockTexture, spriteBatch);
+            base.Draw(gameTime);
 
             itemManager.Draw(spriteBatch);
             blockManager.Draw(spriteBatch);

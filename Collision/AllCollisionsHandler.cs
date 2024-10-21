@@ -26,7 +26,7 @@ namespace Legend_of_the_Power_Rangers.Collision
             eventList.Add(KeyGenerator.Generate(new Link(), new BlockBlueFloor(), CollisionDirection.Bottom), new MoveLinkDown());
             //eventList.Add(KeyGenerator.Generate(new Link(), new BlockPush(), CollisionDirection.Left), new SlowLinkAndPushBlockRight());
             eventList.Add(KeyGenerator.Generate(new Link(), new DragonBoss(null, null), CollisionDirection.Left), new MoveLinkLeftAndGetHurt());
-            eventList.Add(KeyGenerator.Generate(new Link(), new RedOcto(), CollisionDirection.Left), new MoveLinkLeftAndGetHurt());
+            eventList.Add(KeyGenerator.Generate(new Link(), new RedOcto(null), CollisionDirection.Left), new MoveLinkLeftAndGetHurt());
             
             //will need more obviously
             // a lot of these are placeholders to test
