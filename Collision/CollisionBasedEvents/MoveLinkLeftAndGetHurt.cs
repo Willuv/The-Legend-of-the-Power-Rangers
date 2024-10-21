@@ -8,9 +8,9 @@ using Microsoft.Xna.Framework;
 
 namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
 {
-    public class HurtLink : IEvent
+    public class MoveLinkLeftAndGetHurt : IEvent
     {
-        public HurtLink() { }
+        public MoveLinkLeftAndGetHurt() { }
 
         public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
         {

@@ -1,4 +1,5 @@
 ﻿using System;
+using Legend_of_the_Power_Rangers.ItemSprites;
 using Legend_of_the_Power_Rangers.LinkSpritesClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -23,6 +24,9 @@ namespace Legend_of_the_Power_Rangers
         Rectangle movement;
         Rectangle sourceRectangle;
         float scaleFactor = 3f;
+
+        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
+        public LinkItemType LinkItemType { get { return LinkItemType.Arrow; } }
 
 
         public ArrowSprite(Texture2D texture, Rectangle position, LinkDirection direction)

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Legend_of_the_Power_Rangers
+namespace Legend_of_the_Power_Rangers.BlockSprites
 {
     public enum BlockType
     {

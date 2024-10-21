@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using Legend_of_the_Power_Rangers.BlockSprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static System.Collections.Specialized.BitVector32;

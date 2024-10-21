@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Net.Http.Headers;
-using Legend_of_the_Power_Rangers.LinkSpritesClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
