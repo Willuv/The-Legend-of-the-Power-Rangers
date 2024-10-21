@@ -23,14 +23,6 @@ namespace Legend_of_the_Power_Rangers
         private int itemIndex;
         private int enemyIndex;
 
-        private IItem[] ItemList =
-        {
-            new ItemCompass(), new ItemMap(), new ItemKey(),
-            new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
-            new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(),
-            new ItemFairy(), new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()
-        };
-
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;
         private BlockManager blockManager;
@@ -48,7 +40,6 @@ namespace Legend_of_the_Power_Rangers
         {
             base.Initialize();
             LoadContent();
-            item = ItemList[0];
         }
 
         private void InitializeEnemies()
