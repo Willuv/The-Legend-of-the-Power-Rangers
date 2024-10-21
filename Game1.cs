@@ -2,8 +2,6 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Legend_of_the_Power_Rangers.Collision;
-
 namespace Legend_of_the_Power_Rangers
 {
     public class Game1 : Game

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
-using Legend_of_the_Power_Rangers.Collision;
 
 public class Link : ICollision
 {
