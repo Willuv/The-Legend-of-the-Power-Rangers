@@ -9,6 +9,7 @@ using Legend_of_the_Power_Rangers.Collision;
 using ExcelDataReader;
 using System.IO;
 using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
+using System.Diagnostics;
 
 
 namespace Legend_of_the_Power_Rangers
@@ -100,11 +101,11 @@ namespace Legend_of_the_Power_Rangers
             IExcelDataReader reader = null;
             try
             {
-                stream = File.Open("C:\\Users\\chris\\Source\\Repos\\The-Legend-of-the-Power-Rangers\\Content\\LinkDungeon1.xlsx", FileMode.Open, FileAccess.Read);
+                stream = File.Open(@"Content/LinkDungeon1.xlsx", FileMode.Open, FileAccess.Read);
             }
             catch (IOException e)
             {
-            
+
             }
             System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
             reader = ExcelReaderFactory.CreateReader(stream);
@@ -195,10 +196,6 @@ namespace Legend_of_the_Power_Rangers
             LinkManager.GetLink().Update(gameTime);
 
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
-            if (enemyIndex < sprites.Count)
-            {
-                sprites[enemyIndex].Update(gameTime);
-            }
             level.Update(gameTime);
             linkDecorator.Update(gameTime);
             blockManager.Update(gameTime);
@@ -218,12 +215,10 @@ namespace Legend_of_the_Power_Rangers
             linkDecorator.Draw(spriteBatch);
 
             sprites[enemyIndex].Draw(enemySpritesheet, spriteBatch);
-            item.Draw(itemTexture, spriteBatch);
-            block.Draw(blockTexture, spriteBatch);
             base.Draw(gameTime);
 
-            itemManager.Draw(spriteBatch);
-            blockManager.Draw(spriteBatch);
+            //itemManager.Draw(spriteBatch);
+            //blockManager.Draw(spriteBatch);
             level.Draw(enemySpritesheet, spriteBatch);
             spriteBatch.End();
 

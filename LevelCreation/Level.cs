@@ -16,13 +16,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int numRooms;
         int currentRoom;
         int loadedRoom;
-        int scaleFactor = 4;
+        int scaleFactor = 5;
         public Level(Texture2D levelSpriteSheet, System.Data.DataSet dungeonBook)
         {
             this.dungeonBook = dungeonBook;
             this.levelSpriteSheet = levelSpriteSheet;
             wallsSource = new Rectangle(0, 0, 255, 175);
-            wallsDestination = new Rectangle(15, 15, 255 * scaleFactor, 201 * scaleFactor);
+            wallsDestination = new Rectangle(5, 5, 255 * scaleFactor, 175 * scaleFactor);
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = dungeonBook.Tables.Count;
             currentRoom = 0;

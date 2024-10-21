@@ -110,12 +110,12 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 }
             }
             //reads top-bottom left-right
-            for (int i = 1; i < 12; i++)
+            for (int i = 1; i < 8; i++)
             {
-                for (int j = 0; j < 7; j++)
+                for (int j = 0; j < 12; j++)
                 {
-                    int currentx = 142 + (110 * j);
-                    int currenty = 160 + (47 * (i-1));
+                    int currentx = 163 + (81 * j);
+                    int currenty = 162 + (81 * (i-1));
                     String tileCode = (string)levelSheet.Rows[i][j];
                     String blockOneCode = tileCode.Substring(1, 2);
                     String enemyCode = tileCode.Substring(7, 2);
@@ -126,19 +126,19 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     {
                         String blockOneString = BlockDictionary[blockOneCode];
                         IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockOneString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 110, 47);
+                        block.DestinationRectangle = new Rectangle(currentx, currenty, 81, 81);
                         blocks.Add(block);
-                        if (blockOneString == "Push")
-                        {
-                            IBlock blockTwo = BlockSpriteFactory.Instance.CreateBlock("Square");
-                            blockTwo.DestinationRectangle = new Rectangle(currentx, currenty, 110, 47);
-                            blocks.Add(blockTwo);
-                        } else if (blockOneString == "Fire")
-                        {
-                            IBlock blockTwo = BlockSpriteFactory.Instance.CreateBlock("BlueFloor");
-                            blockTwo.DestinationRectangle = new Rectangle(currentx, currenty, 110, 47);
-                            blocks.Add(blockTwo);
-                        }
+                        //if (blockOneString == "Push")
+                        //{
+                        //    IBlock blockTwo = BlockSpriteFactory.Instance.CreateBlock("Square");
+                        //    blockTwo.DestinationRectangle = new Rectangle(currentx, currenty, 110, 47);
+                        //   blocks.Add(blockTwo);
+                        //} else if (blockOneString == "Fire")
+                        //{
+                        //    IBlock blockTwo = BlockSpriteFactory.Instance.CreateBlock("BlueFloor");
+                        //    blockTwo.DestinationRectangle = new Rectangle(currentx, currenty, 110, 47);
+                        //    blocks.Add(blockTwo);
+                        //}
                     }
                     if (enemyCode != "99")
                     {
