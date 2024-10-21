@@ -18,33 +18,42 @@ namespace Legend_of_the_Power_Rangers
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
         private LinkItemFactory linkItemFactory;
-        private IItem item = new ItemCompass();
+        private IItem item;
         private Texture2D itemTexture;
-        private IBlock block = new BlockStatue1();
-        private Texture2D blockTexture;
-        private Level level;
-
-        private List<IEnemy> sprites = new List<IEnemy>();
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
 
+        private List<IEnemy> sprites = new List<IEnemy>();
         private int itemIndex;
-        private int blockIndex;
         private int enemyIndex;
 
-        private IItem[] ItemList = {new ItemCompass(), new ItemMap(), new ItemKey(),
-                                    new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
-                                    new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(), new ItemFairy(),
-                                    new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()};
-
-        private IBlock[] BlockList = {new BlockStatue1(), new BlockStatue2(), new BlockSquare(), new BlockPush(),
-                                        new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(),
-                                        new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(),
-                                        new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()};
+        private IItem[] ItemList =
+        {
+            new ItemCompass(), new ItemMap(), new ItemKey(),
+            new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
+            new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(),
+            new ItemFairy(), new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()
+        };
 
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;
+        private BlockManager blockManager;
+        private ItemManager itemManager;
 
+
+        public Game1()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+        }
+
+        public void ResetGame()
+        {
+            base.Initialize();
+            LoadContent();
+            item = ItemList[0];
+        }
 
         private void InitializeEnemies()
         {
@@ -100,10 +109,16 @@ namespace Legend_of_the_Power_Rangers
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
             Texture2D levelSpriteSheet = Content.Load<Texture2D>("Level");
             itemTexture = Content.Load<Texture2D>("Items");
+            enemySpritesheet = Content.Load<Texture2D>("Enemies");
+            bossSpritesheet = Content.Load<Texture2D>("Bosses");
+            Texture2D blockTexture = Content.Load<Texture2D>("Blocks");
+
+            BlockSpriteFactory.Instance.SetBlockSpritesheet(blockTexture);
+            ItemSpriteFactory.Instance.SetItemSpritesheet(itemTexture);
+
 
             LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
-
-            linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
+            linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockTexture);
 
             link = new Link();
             LinkManager.SetLink(link);
@@ -111,60 +126,47 @@ namespace Legend_of_the_Power_Rangers
             linkDecorator = new LinkDecorator(link);
             LinkManager.SetLink(linkDecorator);
 
+            var blockTypes = new List<string>
+            {
+                "Statue1", "Statue2", "Square", "Push", "Fire",
+                "BlueGap", "Stairs", "WhiteBrick", "Ladder",
+                "BlueFloor", "BlueSand", "BombedWall", "Diamond",
+                "KeyHole", "OpenDoor", "Wall"
+            };
+            blockManager = new BlockManager(blockTypes);
 
-            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
+            var itemTypes = new List<string>
+            {
+                "Compass", "Map", "Key", "HeartContainer", "Triforce", "WoodBoomerang",
+                "Bow", "Heart", "Rupee", "Bomb", "Fairy", "Clock", "BlueCandle", "BluePotion"
+            };
+            itemManager = new ItemManager(itemTypes);
 
-            enemySpritesheet = Content.Load<Texture2D>("Enemies");
-            bossSpritesheet = Content.Load<Texture2D>("Bosses");
 
             level = new Level(levelSpriteSheet, dungeonBook);
 
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
+            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
 
             itemIndex = 0;
-            blockIndex = 0;
 
             loadedObjects = new();
             InitializeEnemies();
             loadedObjects.Add(link);
             loadedObjects.Add(sprites[0]);
-            loadedObjects.Add(sprites[6]);
-            loadedObjects.Add(BlockList[9]);
+            loadedObjects.Add(sprites[6]); 
 
-
-            SortingMachine.QuickSort(loadedObjects);
-            collisionManager = new();
-
-            enemyIndex = 0;
-        }
-
-        public void ChangeItem(int direction)
-        {
-            itemIndex += direction;
-            if (itemIndex >= ItemList.Length)
+            //Very ugly way to do this for now
+            foreach (var block in blockManager.GetBlocks())
             {
-                itemIndex = 0;
+                if (block is BlockBlueFloor)
+                {
+                    loadedObjects.Add(block);
+                }
             }
-            if (itemIndex < 0)
-            {
-                itemIndex = ItemList.Length - 1;
-            }
-            item = ItemList[itemIndex];
-        }
 
-        public void ChangeBlock(int direction)
-        {
-            blockIndex += direction;
-            if (blockIndex >= BlockList.Length)
-            {
-                blockIndex = 0;
-            }
-            if (blockIndex < 0)
-            {
-                blockIndex = BlockList.Length - 1;
-            }
-            block = BlockList[blockIndex];
+            collisionManager = new CollisionManager();
         }
 
         public void ChangeEnemy(int direction)
@@ -177,30 +179,25 @@ namespace Legend_of_the_Power_Rangers
             else if (enemyIndex < 0)
             {
                 enemyIndex = sprites.Count - 1;
-
             }
         }
 
         protected override void Update(GameTime gameTime)
         {
             keyboardController.Update();
-
             LinkManager.GetLink().Update(gameTime);
 
-            //commented out because we arent using position anymoreq
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
-            sprites[enemyIndex].Update(gameTime);
-            linkDecorator.Update(gameTime);
-            if (item == null)
+            if (enemyIndex < sprites.Count)
             {
-                throw new InvalidOperationException("item not initialized");
+                sprites[enemyIndex].Update(gameTime);
             }
-            level.Update(gameTime);
-            item.Update(gameTime);
-            block.Update(gameTime);
-            base.Update(gameTime);
-
+            linkDecorator.Update(gameTime);
+            blockManager.Update(gameTime);
+            itemManager.Update(gameTime);
             collisionManager.Update(gameTime, loadedObjects);
+
+            base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
@@ -212,16 +209,16 @@ namespace Legend_of_the_Power_Rangers
             linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
 
-            sprites[enemyIndex].Draw(enemySpritesheet, spriteBatch);
-            item.Draw(itemTexture, spriteBatch);
-            block.Draw(blockTexture, spriteBatch);
+            if (enemyIndex < sprites.Count)
+            {
+                sprites[enemyIndex].Draw(enemySpritesheet, spriteBatch);
+            }
 
-            level.Draw(spriteBatch);
+            itemManager.Draw(spriteBatch);
+            blockManager.Draw(spriteBatch);
+            spriteBatch.End();
 
             base.Draw(gameTime);
-            
-            spriteBatch.End();
         }
-
     }
 }

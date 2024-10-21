@@ -9,6 +9,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle sourceRectangle = new Rectangle(160, 32, 16, 16);
         private Rectangle destinationRectangle = new Rectangle(450, 340, 48, 48);
+
         public Rectangle DestinationRectangle
         {
             get { return destinationRectangle; }
@@ -16,6 +17,8 @@ namespace Legend_of_the_Power_Rangers
         }
         public ObjectType ObjectType { get { return ObjectType.Block; } }
         public BlockType BlockType { get { return BlockType.Fire; } }
+
+        public BlockFire() { }
 
         private int change = 1;
 
@@ -48,9 +51,9 @@ namespace Legend_of_the_Power_Rangers
                 change -= 1;
             }
         }
-        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(BlockSpriteFactory.Instance.GetBlockSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

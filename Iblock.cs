@@ -1,8 +1,6 @@
 using Legend_of_the_Power_Rangers.Collision;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -10,6 +8,6 @@ namespace Legend_of_the_Power_Rangers
     {
         BlockType BlockType { get; }
         void Update(GameTime gameTime);
-        void Draw(Texture2D texture, SpriteBatch spriteBatch);
+        void Draw(SpriteBatch spriteBatch);
     }
 }
