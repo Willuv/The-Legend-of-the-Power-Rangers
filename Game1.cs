@@ -4,11 +4,15 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework.Input;
+using Legend_of_the_Power_Rangers.LevelCreation;
+using IronXL;
 
 namespace Legend_of_the_Power_Rangers
 {
     public class Game1 : Game
     {
+        
+
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
         private Link link;
@@ -20,7 +24,7 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemTexture;
         private IBlock block = new BlockStatue1();
         private Texture2D blockTexture;
-
+        private Level level;
 
         private int itemIndex;
         private int blockIndex; 
@@ -40,6 +44,7 @@ namespace Legend_of_the_Power_Rangers
 
         public Game1()
         {
+            IronXL.License.LicenseKey = "IRONSUITE.CHRISTIANXCOLON.YAHOO.COM.12850-47AB22AD2C-FGSFM44ZPOVNHK-WJVBN7ODMNO5-KMK32EYKXELS-GHR4NJN6IWNC-2LXZ3GUFTOM7-3SNA736X2VGP-ERV7KC-TAQRNFXO22ONUA-DEPLOYMENT.TRIAL-OCG5VF.TRIAL.EXPIRES.15.NOV.2024";
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
@@ -63,9 +68,11 @@ namespace Legend_of_the_Power_Rangers
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            WorkBook dungeonBook = WorkBook.Load("C:\\Users\\chris\\Source\\Repos\\The-Legend-of-the-Power-Rangers\\Content\\LinkDungeon1.xlsx");
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
+            Texture2D levelSpriteSheet = Content.Load<Texture2D>("Level");
             itemTexture = Content.Load<Texture2D>("Items");
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
             link = new Link(linkSpriteSheet);
@@ -75,6 +82,8 @@ namespace Legend_of_the_Power_Rangers
             
             EnemySpriteFactory.Instance.LoadAllTextures(Content);
             enemy = EnemyFactory.CreateEnemy(new Vector2(200, 200), enemyTypes[1]);
+
+            level = new Level(levelSpriteSheet, dungeonBook);
 
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
@@ -154,6 +163,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 throw new InvalidOperationException("item not initialized");
             }
+            level.Update(gameTime);
             item.Update(gameTime);
             block.Update(gameTime);
             base.Update(gameTime);
@@ -171,8 +181,13 @@ namespace Legend_of_the_Power_Rangers
 
             item.Draw(itemTexture, spriteBatch);
             block.Draw(blockTexture, spriteBatch);
+
+            level.Draw(spriteBatch);
+
             base.Draw(gameTime);
+
             
+
             spriteBatch.End();
         }
     }
