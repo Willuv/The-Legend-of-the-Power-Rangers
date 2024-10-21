@@ -22,37 +22,39 @@ namespace Legend_of_the_Power_Rangers
         {
             projectileTexture = texture;
             this.position = position;
-            totalFrames = 40; // How long the projectile lasts
+            totalFrames = 40; // Time the projectile lasts
             currentFrame = 0;
             finished = false;
 
             SetDirection(direction);
         }
 
-        // Aligning the projectile based on RedOcto's direction
         public void SetDirection(Vector2 direction)
         {
+            int centerX = position.Width / 2;
+            int centerY = position.Height / 2;
+            // offset uses magic numbers to align with sprite
             if (direction.X < 0) // Left
             {
-                offset = new Rectangle(-50, 15, 0, 0);
+                offset = new Rectangle(centerX-50, centerY+5, 0, 0);
                 movement.X = -4;
                 sourceRectangle = new Rectangle(150, 8, 15, 5);
             }
             else if (direction.X > 0) // Right
             {
-                offset = new Rectangle(50, 15, 0, 0);
+                offset = new Rectangle(centerX+20, centerY+5, 0, 0);
                 movement.X = 4;
                 sourceRectangle = new Rectangle(210, 8, 15, 5);
             }
             else if (direction.Y < 0) // Up
             {
-                offset = new Rectangle(15, -50, 0, 0);
+                offset = new Rectangle(centerX+1, centerY-45, 0, 0);
                 movement.Y = -4;
                 sourceRectangle = new Rectangle(185, 3, 5, 15);
             }
             else if (direction.Y > 0) // Down
             {
-                offset = new Rectangle(15, 50, 0, 0);
+                offset = new Rectangle(centerX+1, centerY+20, 0, 0);
                 movement.Y = 4;
                 sourceRectangle = new Rectangle(125, 3, 5, 15);
             }

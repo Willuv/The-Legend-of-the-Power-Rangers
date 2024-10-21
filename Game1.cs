@@ -46,7 +46,7 @@ namespace Legend_of_the_Power_Rangers
         private void InitializeEnemies()
         {
             sprites.Add(new RedOcto(projectileSpriteSheet));
-            sprites.Add(new BlueOcto());
+            sprites.Add(new BlueOcto(projectileSpriteSheet));
             sprites.Add(new BlueCentaur());
             sprites.Add(new BlueGorya());
             sprites.Add(new BlueKnight());
@@ -78,6 +78,9 @@ namespace Legend_of_the_Power_Rangers
             LoadContent();
             block = BlockList[0];
             item = ItemList[0];
+            
+            sprites[enemyIndex].DestinationRectangle = new Rectangle(300, 200, sprites[enemyIndex].DestinationRectangle.Width, sprites[enemyIndex].DestinationRectangle.Height);
+            
         }
 
         protected override void Initialize()
@@ -116,6 +119,7 @@ namespace Legend_of_the_Power_Rangers
 
             itemIndex = 0;
             blockIndex = 0;
+            //enemyIndex = 0;
 
             loadedObjects = new();
             InitializeEnemies();
@@ -126,7 +130,6 @@ namespace Legend_of_the_Power_Rangers
             SortingMachine.QuickSort(loadedObjects);
             collisionManager = new();
 
-            enemyIndex = 0;
         }
 
         public void ChangeItem(int direction)
