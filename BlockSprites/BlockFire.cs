@@ -7,9 +7,16 @@ namespace Legend_of_the_Power_Rangers
 {
     public class BlockFire : IBlock
     {
-        private Vector2 position = new Vector2(400, 340);
+        private Rectangle sourceRectangle = new Rectangle(160, 32, 16, 16);
+        private Rectangle destinationRectangle = new Rectangle(450, 340, 48, 48);
+        public Rectangle DestinationRectangle
+        {
+            get { return destinationRectangle; }
+            set { destinationRectangle = value; }
+        }
+        public ObjectType ObjectType { get { return ObjectType.Block; } }
+        public BlockType BlockType { get { return BlockType.Fire; } }
 
-        private Rectangle rectangle = new Rectangle(160, 32, 16, 16);
         private int change = 1;
 
         private bool reverse = false;
@@ -18,7 +25,7 @@ namespace Legend_of_the_Power_Rangers
             int time = 8;
             if (change <= time/2)
             {
-                rectangle = new Rectangle(160, 32, 16, 16);
+                sourceRectangle = new Rectangle(160, 32, 16, 16);
                 if (change == 1)
                 {
                     reverse = false;
@@ -26,7 +33,7 @@ namespace Legend_of_the_Power_Rangers
             }
             else if (change >= time/2 && change <= time)
             {
-                rectangle = new Rectangle(176, 32, 16, 16);
+                sourceRectangle = new Rectangle(176, 32, 16, 16);
                 if (change == time)
                 {
                     reverse = true;
@@ -43,7 +50,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, rectangle, Color.White);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

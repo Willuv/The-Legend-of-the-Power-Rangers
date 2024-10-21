@@ -15,12 +15,10 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Execute()
         {
-            if (!stateMachine.IsAttacking())
+            if (!stateMachine.IsActionLocked())
             {
                 stateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
             }
-            stateMachine.ChangeDirection(LinkStateMachine.LinkDirection.Idle);
-
         }
     }
 }

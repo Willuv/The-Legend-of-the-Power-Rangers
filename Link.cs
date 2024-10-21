@@ -1,77 +1,113 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.AccessControl;
-using System.Text;
-using System.Threading.Tasks;
-using static Legend_of_the_Power_Rangers.LinkStateMachine;
+using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
+using Legend_of_the_Power_Rangers.Collision;
 
-namespace Legend_of_the_Power_Rangers
+public class Link : ICollision
 {
-    public class Link
+    private LinkStateMachine stateMachine;
+    private ILinkSprite currentSprite;
+
+    private const float ScaleFactor = 3.0f;
+    private const int LinkWidth = 48;
+    private const int LinkHeight = 48;
+    private Rectangle destinationRectangle;
+    public Rectangle DestinationRectangle
     {
-        private Texture2D linkSpriteSheet;
-        private Texture2D itemSpriteSheet;
-        private Texture2D projectileSpriteSheet;
-        private LinkStateMachine stateMachine;
-        private ILinkSprite currentSprite;
-        private Vector2 position;
+        get { return destinationRectangle; }
+        set { destinationRectangle = value; }
+    }
+    public ObjectType ObjectType { get { return ObjectType.Link; } }
 
-        public Link(Texture2D spriteSheet)
-        {
-            linkSpriteSheet = spriteSheet;
-            stateMachine = new LinkStateMachine(linkSpriteSheet, itemSpriteSheet, projectileSpriteSheet);
-            position = new Vector2(200, 200);
-            currentSprite = stateMachine.GetCurrentSprite();
-        }
+    public Link()
+    {
+        stateMachine = new LinkStateMachine();
+        currentSprite = stateMachine.GetCurrentSprite();
+        UpdateDestinationRectangle();
+    }
 
-        public void UpdatePosition(Vector2 movement)
-        {
-            position += movement;
-        }
-        public Vector2 GetPosition()
-        {
-            return position;
-        }
+    private void UpdateDestinationRectangle()
+    {
+        Rectangle sourceRectangle = currentSprite.SourceRectangle;
 
-        public Texture2D GetLinkSpriteSheet()
-        {
-            return linkSpriteSheet;
-        }
+        int newWidth = (int)(sourceRectangle.Width * ScaleFactor);
+        int newHeight = (int)(sourceRectangle.Height * ScaleFactor);
 
-        public LinkStateMachine GetStateMachine()
-        {
-            return stateMachine;
-        }
+        LinkStateMachine.LinkAction currentAction = stateMachine.GetCurrentAction();
+        LinkStateMachine.LinkDirection currentDirection = stateMachine.GetCurrentDirection();
 
-        public LinkDirection GetDirection()
-        {
-            return stateMachine.GetLastDirection();
-        }
+        int xOffset = 0;
+        int yOffset = 0;
 
-        public virtual void Update(GameTime gameTime)
+        switch (currentDirection)
         {
-            Vector2 movement = stateMachine.UpdateMovement();
+            case LinkStateMachine.LinkDirection.Up:
+                yOffset = destinationRectangle.Height - newHeight;
+                break;
+
+            case LinkStateMachine.LinkDirection.Left:
+                xOffset = destinationRectangle.Width - newWidth;
+                break;
+
+            case LinkStateMachine.LinkDirection.Right:
+            case LinkStateMachine.LinkDirection.Down:
+                break;
+        }
+        
+        destinationRectangle = new Rectangle(
+            destinationRectangle.X + xOffset,
+            destinationRectangle.Y + yOffset,
+            newWidth,
+            newHeight
+        );
+    }
+
+
+    public void UpdatePosition(Vector2 movement)
+    {
+        destinationRectangle.X += (int)movement.X;
+        destinationRectangle.Y += (int)movement.Y;
+    }
+
+    public LinkStateMachine GetStateMachine()
+    {
+        return stateMachine;
+    }
+
+    public LinkStateMachine.LinkDirection GetDirection()
+    {
+        return stateMachine.GetCurrentDirection();
+    }
+
+    public virtual void Update(GameTime gameTime)
+    {
+        stateMachine.UpdateActionTimer(gameTime);
+
+        Vector2 movement = stateMachine.UpdateMovement();
+        bool isMoving = (movement != Vector2.Zero);
+
+        if (isMoving)
+        {
             UpdatePosition(movement);
-            stateMachine.UpdateAnimation(gameTime);
-
-            if (stateMachine.GetCurrentDirection() != LinkStateMachine.LinkDirection.Idle || stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle)
-            {
-                var currentSprite = stateMachine.GetCurrentSprite();
-                currentSprite.Update(gameTime);
-            }
         }
-
-        public virtual void Draw(SpriteBatch spriteBatch)
+        else if (!stateMachine.IsActionLocked())
         {
-            currentSprite = stateMachine.GetCurrentSprite();
-
-            if (stateMachine.GetCurrentAction() != LinkStateMachine.LinkAction.Idle)
-            {
-                currentSprite.Draw(spriteBatch, position, Color.White);
-            }
+            stateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
         }
+
+        currentSprite = stateMachine.GetCurrentSprite();
+        currentSprite.Update(gameTime);
+
+        UpdateDestinationRectangle();
+        Debug.WriteLine($"Link position: {destinationRectangle.X}, {destinationRectangle.Y}");
+
+    }
+
+    public virtual void Draw(SpriteBatch spriteBatch)
+    {
+        currentSprite = stateMachine.GetCurrentSprite();
+
+        currentSprite.Draw(spriteBatch, destinationRectangle, Color.White);
     }
 }

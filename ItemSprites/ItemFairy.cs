@@ -1,4 +1,5 @@
 using System;
+using Legend_of_the_Power_Rangers.ItemSprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static System.Collections.Specialized.BitVector32;
@@ -7,9 +8,18 @@ namespace Legend_of_the_Power_Rangers
 {
     public class ItemFairy : IItem
     {
-        private Vector2 position = new Vector2(370, 300);
+        public Rectangle destinationRectangle = new Rectangle(370, 300, 32, 32);
 
-        private Rectangle rectangle = new Rectangle(120, 40, 16, 16);
+        public Rectangle sourceRectangle = new Rectangle(120, 40, 16, 16);
+        public Rectangle DestinationRectangle
+        {
+            get {return destinationRectangle; }
+            set { destinationRectangle = value;}
+        }
+
+        public ObjectType ObjectType { get { return ObjectType.Item; } }
+        public ItemType ItemType { get { return ItemType.Fairy; } }
+
 
         private int change = 1;
 
@@ -19,7 +29,7 @@ namespace Legend_of_the_Power_Rangers
             int time = 8;
             if (change <= time/2)
             {
-                rectangle = new Rectangle(120, 40, 16, 16);
+                sourceRectangle = new Rectangle(120, 40, 16, 16);
                 if (change == 1)
                 {
                     reverse = false;
@@ -27,7 +37,7 @@ namespace Legend_of_the_Power_Rangers
             }
             else if (change >= time/2 && change <= time)
             {
-                rectangle = new Rectangle(160, 40, 16, 16);
+                sourceRectangle = new Rectangle(160, 40, 16, 16);
                 if (change == time)
                 {
                     reverse = true;
@@ -45,7 +55,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, rectangle, Color.White);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

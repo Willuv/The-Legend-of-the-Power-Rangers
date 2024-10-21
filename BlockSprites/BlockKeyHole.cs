@@ -7,16 +7,24 @@ namespace Legend_of_the_Power_Rangers
 {
     public class BlockKeyHole : IBlock
     {
-        private Vector2 position = new Vector2(400, 340);
 
-        private Rectangle rectangle = new Rectangle(96, 0, 16, 16);
+        private Rectangle sourceRectangle = new Rectangle(96, 0, 16, 16);
+        private Rectangle destinationRectangle = new Rectangle(450, 340, 48, 48);
+        public Rectangle DestinationRectangle
+        {
+            get { return destinationRectangle; }
+            set { destinationRectangle = value; }
+        }
+        public ObjectType ObjectType { get { return ObjectType.Block; } }
+        public BlockType BlockType { get { return BlockType.KeyHole; } }
+
         public void Update(GameTime gameTime)
         {
 
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, rectangle, Color.White);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }

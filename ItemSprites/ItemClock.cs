@@ -1,4 +1,5 @@
 using System;
+using Legend_of_the_Power_Rangers.ItemSprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static System.Collections.Specialized.BitVector32;
@@ -7,16 +8,24 @@ namespace Legend_of_the_Power_Rangers
 {
     public class ItemClock : IItem
     {
-        private Vector2 position = new Vector2(370, 300);
+        public Rectangle destinationRectangle = new Rectangle(370, 300, 32, 32);
+        public Rectangle sourceRectangle = new Rectangle(360, 0, 13, 16);
+        public Rectangle DestinationRectangle
+        {
+            get {return destinationRectangle; }
+            set { destinationRectangle = value;}
+        }
 
-        private Rectangle rectangle = new Rectangle(360, 0, 13, 16);
+        public ObjectType ObjectType { get { return ObjectType.Item; } }
+        public ItemType ItemType { get { return ItemType.Clock; } }
+
         public void Update(GameTime gameTime)
         {
 
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, position, rectangle, Color.White);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White);
         }
     }
 }
