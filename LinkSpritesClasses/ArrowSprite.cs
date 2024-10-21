@@ -1,5 +1,4 @@
 ﻿using System;
-using Legend_of_the_Power_Rangers.ItemSprites;
 using Legend_of_the_Power_Rangers.LinkSpritesClasses;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
