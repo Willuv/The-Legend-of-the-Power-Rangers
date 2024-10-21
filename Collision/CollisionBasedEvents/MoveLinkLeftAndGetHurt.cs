@@ -12,10 +12,8 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
     {
         public HurtLink() { }
 
-        public void Execute(ICollision link, ICollision fire, CollisionDirection direction)
+        public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
         {
-            (link, enemy) = CollisionCaster.CastObjects(link, enemy);
-
             Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, enemy.DestinationRectangle);
             Rectangle newDestination = link.DestinationRectangle;
             newDestination.X -= overlap.Width;
@@ -23,7 +21,7 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
 
             LinkDecorator decoratedLink = (LinkDecorator)LinkManager.GetLink();
 
-            LinkBecomeDamagedCommand linkGetsHurt = new LinkBecomeDamagedCommand(decoratedLink);
+            LinkBecomeDamagedCommand linkGetsHurt = new(decoratedLink);
             linkGetsHurt.Execute();
         }
     }
