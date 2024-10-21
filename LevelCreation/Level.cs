@@ -1,7 +1,10 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Microsoft.VisualBasic.FileIO;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace Legend_of_the_Power_Rangers.LevelCreation
@@ -9,7 +12,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
     public class Level
     {
         LevelLoader loader;
-        System.Data.DataSet dungeonBook;
         Texture2D levelSpriteSheet;
         Rectangle wallsSource;
         Rectangle wallsDestination;
@@ -17,17 +19,18 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int currentRoom;
         int loadedRoom;
         int scaleFactor = 5;
-        public Level(Texture2D levelSpriteSheet, System.Data.DataSet dungeonBook)
+        private StreamReader reader;
+        public Level(Texture2D levelSpriteSheet, StreamReader reader)
         {
-            this.dungeonBook = dungeonBook;
+            this.reader = reader;
             this.levelSpriteSheet = levelSpriteSheet;
             wallsSource = new Rectangle(0, 0, 255, 175);
             wallsDestination = new Rectangle(5, 5, 255 * scaleFactor, 175 * scaleFactor);
             loader = new LevelLoader(levelSpriteSheet);
-            numRooms = dungeonBook.Tables.Count;
+            numRooms = 19;
             currentRoom = 0;
             loadedRoom = 0;
-            loader.Load(dungeonBook.Tables[currentRoom]);
+            loader.Load(reader);
         }
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
@@ -40,7 +43,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 block.Draw(spriteBatch);
             }
-            foreach (Enemy enemy in loader.Enemies)
+            foreach (IEnemy enemy in loader.Enemies)
             {
                 enemy.Draw(enemySpritesheet, spriteBatch);
             }
@@ -51,7 +54,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             
             if (currentRoom != loadedRoom)
             {
-                loader.Load(dungeonBook.Tables[currentRoom]);
+                loader.Load(reader);
                 
                 loadedRoom = currentRoom;
             }
@@ -63,7 +66,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 block.Update(gametime);
             }
-            foreach (Enemy enemy in loader.Enemies)
+            foreach (IEnemy enemy in loader.Enemies)
             {
                 enemy.Update(gametime);
             }
@@ -79,7 +82,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 currentRoom = numRooms - 1;
             }
-
+            reader = new StreamReader(@"Content\LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }
 }

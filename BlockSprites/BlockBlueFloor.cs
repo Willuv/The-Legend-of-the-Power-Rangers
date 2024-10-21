@@ -23,7 +23,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(BlockSpriteFactory.Instance.GetBlockSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(BlockSpriteFactory.Instance.GetBlockSpritesheet(), destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(0,0), SpriteEffects.None, 0.9f);
         }
     }
 }
