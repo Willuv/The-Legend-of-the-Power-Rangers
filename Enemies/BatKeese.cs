@@ -24,7 +24,6 @@ namespace Legend_of_the_Power_Rangers
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
-        private int currentFrameIndex;
         private Random random = new Random();
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }

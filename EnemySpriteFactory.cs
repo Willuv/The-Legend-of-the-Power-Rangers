@@ -43,7 +43,7 @@ namespace Legend_of_the_Power_Rangers
                 case "04":
                     return new BlueKnight();
                 case "05":
-                    return new BlueOcto();
+                    return new BlueOcto(projectileSpriteSheet);
                 case "06":
                     return new DarkMoblin();
                 case "07":

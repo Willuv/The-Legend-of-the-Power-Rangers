@@ -83,21 +83,6 @@ namespace Legend_of_the_Power_Rangers
             sprites.Add(new WallMaster());
         }
 
-        public Game1()
-        {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
-            IsMouseVisible = true;
-        }
-
-        public void ResetGame()
-        {
-            base.Initialize();
-            LoadContent();
-            block = BlockList[0];
-            item = ItemList[0];
-        }
-
         protected override void Initialize()
         {
             base.Initialize();
