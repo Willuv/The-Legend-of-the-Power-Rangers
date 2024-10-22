@@ -21,6 +21,7 @@ namespace Legend_of_the_Power_Rangers
         private Link link;
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
+        private MouseController mouseController;
         private LinkItemFactory linkItemFactory;
         private IItem item;
         private Texture2D itemTexture;
@@ -33,22 +34,6 @@ namespace Legend_of_the_Power_Rangers
         private List<IEnemy> sprites = new List<IEnemy>();
         private int itemIndex;
         private int enemyIndex;
-
-        private IItem[] ItemList =
-        {
-            new ItemCompass(), new ItemMap(), new ItemKey(),
-            new ItemHeartContainer(), new ItemTriforce(), new ItemWoodBoomerang(),
-            new ItemBow(), new ItemHeart(), new ItemRupee(), new ItemBomb(),
-            new ItemFairy(), new ItemClock(), new ItemBlueCandle(), new ItemBluePotion()
-        };
-
-        private IBlock[] BlockList = 
-            {
-            new BlockStatue1(), new BlockStatue2(), new BlockSquare(), new BlockPush(),
-            new BlockFire(), new BlockBlueGap(), new BlockStairs(), new BlockWhiteBrick(),
-            new BlockLadder(), new BlockBlueFloor(), new BlockBlueSand(), new BlockWall(), new BlockOpenDoor(),
-            new BlockBombedWall(), new BlockKeyHole(), new BlockDiamond()
-        };
 
         private List<ICollision> loadedObjects;
         private CollisionManager collisionManager;
@@ -71,8 +56,6 @@ namespace Legend_of_the_Power_Rangers
             stream.Close();
             base.Initialize();
             LoadContent();
-            block = BlockList[0];
-            item = ItemList[0];
         }
 
         private void InitializeEnemies()
@@ -152,13 +135,11 @@ namespace Legend_of_the_Power_Rangers
             };
             itemManager = new ItemManager(itemTypes);
 
-
             level = new Level(levelSpriteSheet, dungeonBook);
 
-
-            itemTexture = Content.Load<Texture2D>("Items");
-            blockTexture = Content.Load<Texture2D>("Blocks");
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
+            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
+
 
             itemIndex = 0;
 
@@ -196,6 +177,8 @@ namespace Legend_of_the_Power_Rangers
         protected override void Update(GameTime gameTime)
         {
             keyboardController.Update();
+            mouseController.Update();
+
             LinkManager.GetLink().Update(gameTime);
 
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
