@@ -51,7 +51,7 @@ namespace Legend_of_the_Power_Rangers
                 sourceRectangle = frameRectangles[1];
             }
 
-            spriteBatch.Draw(linkTexture, destinationRectangle, sourceRectangle, color);
+            spriteBatch.Draw(linkTexture, destinationRectangle, sourceRectangle, color, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.1f);
         }
 
         public void Update(GameTime gameTime)

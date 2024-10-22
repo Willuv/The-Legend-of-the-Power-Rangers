@@ -7,7 +7,6 @@ namespace Legend_of_the_Power_Rangers
 {
     public class BatKeese : IEnemy
     {
-        //private Texture2D texture;
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
         public Rectangle DestinationRectangle
@@ -17,28 +16,24 @@ namespace Legend_of_the_Power_Rangers
         }
         private int currentFrameIndex;
         private Vector2 direction;
-        private float scale = 2.0f;
+         private float speed = 100f;
+        //private float scale = 2.0f;
+
         private double timeSinceLastToggle;
         private const double millisecondsPerToggle = 100;
-        private float speed = 33f;
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
         private Random random = new Random();
-        private Vector2 position;
-        Vector2 initialPosition  = new Vector2(100, 100);
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.BatKeese; } }
 
         public BatKeese()
         {
-            //this.texture = spritesheet;
-            this.position = initialPosition;
+            DestinationRectangle = new Rectangle(300, 100, 44, 30); // Default positon
             InitializeFrames();
             SetRandomDirection();
-            UpdateDestinationRectangle();
-
         }
         private void InitializeFrames()
         {
@@ -80,15 +75,9 @@ namespace Legend_of_the_Power_Rangers
                 currentFrameIndex = (currentFrameIndex + 1) % 2; // % sourceRectangle.Length
                 timeSinceLastToggle = 0;
             }
-            position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            UpdateDestinationRectangle();
-
-        }
-        private void UpdateDestinationRectangle()
-        {
-            int width = (int)(sourceRectangle[currentFrameIndex].Width * scale);
-            int height = (int)(sourceRectangle[currentFrameIndex].Height * scale);
-            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, width, height);
+            // Update destinationRectangle based on direction and speed
+            destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {

@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)
         {
-            spriteBatch.Draw(linkTexture, destinationRectangle, SourceRectangle, color);
+            spriteBatch.Draw(linkTexture, destinationRectangle, SourceRectangle, color, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.1f);
         }
 
         public void Update(GameTime gameTime)

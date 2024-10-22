@@ -9,7 +9,7 @@ public class Link : ICollision
     private LinkStateMachine stateMachine;
     private ILinkSprite currentSprite;
 
-    private const float ScaleFactor = 3.0f;
+    private const float ScaleFactor = 4.2f;
     private const int LinkWidth = 48;
     private const int LinkHeight = 48;
     private Rectangle destinationRectangle;

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Legend_of_the_Power_Rangers.LevelCreation;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 
@@ -10,12 +11,12 @@ namespace Legend_of_the_Power_Rangers
         private MouseState currentMouseState;
         private MouseState previousMouseState;
 
-        public MouseController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Game1 game)
+        public MouseController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Level level, Game1 game)
         {
             mouseCommandMappings = new Dictionary<MouseButton, ICommand>
             {
-                { MouseButton.Left, new RoomShowPrevious() },
-                { MouseButton.Right, new RoomShowNext() }, 
+                { MouseButton.Left, new RoomShowPrevious(level) },
+                { MouseButton.Right, new RoomShowNext(level) }, 
             };
         }
 
