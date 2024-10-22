@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Security.Cryptography.X509Certificates;
 using Microsoft.Xna.Framework.Input;
 using Legend_of_the_Power_Rangers.LevelCreation;
-using Legend_of_the_Power_Rangers.Collision;
 using ExcelDataReader;
 using System.IO;
 using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
@@ -156,10 +155,7 @@ namespace Legend_of_the_Power_Rangers
             //Very ugly way to do this for now
             foreach (var block in blockManager.GetBlocks())
             {
-                if (block is BlockBlueFloor)
-                {
-                    loadedObjects.Add(block);
-                }
+                loadedObjects.Add(block);
             }
             foreach (var item in itemManager.GetItems())
             {

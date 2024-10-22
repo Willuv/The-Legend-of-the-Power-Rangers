@@ -50,7 +50,7 @@ namespace Legend_of_the_Power_Rangers
             BlueCentaur blueCentaur = new();
             BlueGorya blueGorya = new();
             BlueKnight blueKnight = new();
-            BlueOcto blueOcto = new();
+            BlueOcto blueOcto = new(null);
             DarkMoblin darkMoblin = new();
             DragonBoss dragonBoss = new(null, null);
             DragonProjectile dragonProjectile = new(null, new Microsoft.Xna.Framework.Rectangle());
@@ -62,7 +62,7 @@ namespace Legend_of_the_Power_Rangers
             RedGorya redGorya = new();
             RedKnight redKnight = new();
             RedMoblin redMoblin = new();
-            RedOcto redOcto = new();
+            RedOcto redOcto = new(null);
             Skeleton skeleton = new();
             WallMaster wallMaster = new();
             MoveLinkDown moveLinkDown = new();

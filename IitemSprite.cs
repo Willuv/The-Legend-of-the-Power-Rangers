@@ -7,9 +7,8 @@ using Legend_of_the_Power_Rangers.LinkSpritesClasses;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public interface IitemSprite : ICollision
+    public interface IitemSprite //needs to add collision later
     {
-        LinkItemType LinkItemType { get; }
         void Update(GameTime gametime);
         void Draw(SpriteBatch spriteBatch);
         bool GetState();
