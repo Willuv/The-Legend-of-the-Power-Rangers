@@ -33,12 +33,8 @@ namespace Legend_of_the_Power_Rangers
 
         private static (ICollision obj1, ICollision obj2, CollisionDirection dir) EnsureOrder(ICollision object1, ICollision object2, CollisionDirection direction)
         {
-            if (object1 is IBlock || object1 is IItem)
+            if (object1 is IBlock || object1 is IItem || (object1 is IEnemy && object2 is Link))
             {
-                //int dir = (int)direction;
-                //dir += 2;
-                //dir %= 4;
-                //direction = (CollisionDirection)dir;
                 direction = ReverseDirection(direction);
                 return (object2, object1, direction);
             }

@@ -42,6 +42,8 @@ namespace Legend_of_the_Power_Rangers
                     if (object1 is IEnemy && object2 is IItem) continue;
                     if (object1 is IItem && object2 is IEnemy) continue;
                     if (object1 is IEnemy && object2 is BlockSquare) continue;
+                    if (object1 is Link && object2 is BlockSquare) continue;
+                    if (object1 is BlockSquare && object2 is Link) continue;
                     if (object1 is BlockSquare && object2 is IEnemy) continue;
 
                     if (object2.DestinationRectangle.Left > object1.DestinationRectangle.Right)
@@ -62,6 +64,7 @@ namespace Legend_of_the_Power_Rangers
             //Debug.WriteLine($"Collision detected between {object1} and {object2} in direction");
             Rectangle intersection = Rectangle.Intersect(object1.DestinationRectangle,
                                                         object2.DestinationRectangle);
+            Debug.WriteLine($"width={intersection.Width}, height={intersection.Height}");
             if (intersection.Width > intersection.Height)
             {
                 //collision is from top or from bottom

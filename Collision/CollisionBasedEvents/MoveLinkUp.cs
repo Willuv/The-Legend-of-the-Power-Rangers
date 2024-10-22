@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -18,6 +19,7 @@ namespace Legend_of_the_Power_Rangers
            
             newDestination.Y -= overlap.Height;
             link.DestinationRectangle = newDestination;
+            Debug.WriteLine("MoveLinkUp is called");
         }
     }
 }

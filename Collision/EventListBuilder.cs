@@ -113,10 +113,10 @@ namespace Legend_of_the_Power_Rangers
             //list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Right), moveLinkLeftAndPushBlockRight);
             //list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Bottom), moveLinkLeftAndPushBlockRight);
             //push will be added once we know exactly how it will work
-            list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Bottom), moveLinkDown);
+            //list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Bottom), moveLinkDown);
             list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Left), moveLinkLeft);
             list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Top), moveLinkUp);
             list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Right), moveLinkRight);
