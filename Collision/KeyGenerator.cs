@@ -8,24 +8,24 @@ namespace Legend_of_the_Power_Rangers
 {
     public class KeyGenerator
     {
-        public static string Generate(ICollision obj1, ICollision obj2, CollisionDirection direction)
+        public static (int, int, CollisionDirection) Generate(ICollision obj1, ICollision obj2, CollisionDirection direction)
         {
-            string type1 = GetObjectTypeKey(obj1);
-            string type2 = GetObjectTypeKey(obj2);
+            int type1 = GetObjectTypeKey(obj1);
+            int type2 = GetObjectTypeKey(obj2);
 
-            return $"{type1}{type2}{direction}";
+            return (type1, type2, direction);
         }
 
-        private static string GetObjectTypeKey(ICollision obj)
+        private static int GetObjectTypeKey(ICollision obj)
         {
             if (obj is IBlock block)
-                return $"Type:{block.BlockType}";
+                return block.GetHashCode();
             if (obj is IItem item)
-                return $"Type:{item.ItemType}";
+                return item.GetHashCode();
             if (obj is IEnemy enemy)
-            return $"Type:{enemy.EnemyType}";
+                return enemy.GetHashCode();
 
-            return obj.ObjectType.ToString(); //just in case
+            return obj.GetHashCode(); //just in case
         }
     }
 }

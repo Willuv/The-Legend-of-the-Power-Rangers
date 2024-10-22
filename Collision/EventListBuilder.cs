@@ -10,9 +10,9 @@ namespace Legend_of_the_Power_Rangers
 {
     internal class EventListBuilder
     {
-        public static Dictionary<string, IEvent> BuildList()
+        public static Dictionary<(int, int, CollisionDirection), IEvent> BuildList()
         {
-            Dictionary<string, IEvent> list = new();
+            Dictionary<(int, int, CollisionDirection), IEvent> list = new();
 
             //as ugly as this is, the alternative is creating a new instance for every list.add call
             Link link = new();

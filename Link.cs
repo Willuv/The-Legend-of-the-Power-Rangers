@@ -99,8 +99,6 @@ public class Link : ICollision
         currentSprite.Update(gameTime);
 
         UpdateDestinationRectangle();
-        Debug.WriteLine($"Link position: {destinationRectangle.X}, {destinationRectangle.Y}");
-
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)

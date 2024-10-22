@@ -10,7 +10,7 @@ namespace Legend_of_the_Power_Rangers
 {
     public class AllCollisionsHandler
     {
-        private readonly Dictionary<string, IEvent> eventList;
+        private readonly Dictionary<(int, int, CollisionDirection), IEvent> eventList;
         public AllCollisionsHandler()
         {
             eventList = EventListBuilder.BuildList();
@@ -18,10 +18,9 @@ namespace Legend_of_the_Power_Rangers
 
         public void Handle(ICollision object1, ICollision object2, CollisionDirection direction)
         {
-            string key = KeyGenerator.Generate(object1, object2, direction);
+            (int, int, CollisionDirection) key = KeyGenerator.Generate(object1, object2, direction);
             
             if (eventList.TryGetValue(key, out var eventCommand)) {
-                Debug.WriteLine("Command allegedly run");
                 eventCommand.Execute(object1, object2, direction);
             } else
             {

@@ -20,7 +20,7 @@ namespace Legend_of_the_Power_Rangers
         public void Update(GameTime gameTime, List<ICollision> loadedObjects)
         {
             //Sort
-            SortingMachine.QuickSort(loadedObjects);
+            SortingMachine.BubbleSort(loadedObjects);
 
             //Sweep
             Sweep(loadedObjects);
@@ -42,7 +42,6 @@ namespace Legend_of_the_Power_Rangers
 
                     if (object1.DestinationRectangle.Intersects(object2.DestinationRectangle))
                     {
-                        Debug.WriteLine("Rectangles intersect.");
                         HandleCollision(object1, object2);
                     }
                 }
@@ -83,9 +82,6 @@ namespace Legend_of_the_Power_Rangers
                 {
                     Debug.WriteLine("object1 is not left or right.");
                 }
-            } else
-            {
-                Debug.WriteLine("Square overlap");
             }
         }
     }

@@ -65,8 +65,6 @@ namespace Legend_of_the_Power_Rangers
                 if (!swapped)
                     break;
             }
-
-            Debug.WriteLine(list);
         }
     }
 }
