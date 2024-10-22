@@ -37,8 +37,8 @@ namespace Legend_of_the_Power_Rangers
         private int itemIndex;
         private int enemyIndex;
 
-        private List<ICollision> loadedObjects;
-        private CollisionManager collisionManager;
+        //private List<ICollision> loadedObjects;
+        //private CollisionManager collisionManager;
         private BlockManager blockManager;
         private ItemManager itemManager;
 
@@ -124,19 +124,19 @@ namespace Legend_of_the_Power_Rangers
 
             itemIndex = 0;
 
-            loadedObjects = new();
-            loadedObjects.Add(link);
+            //loadedObjects = new();
+            //loadedObjects.Add(link);
 
-            foreach (var obj in level.GetRoomObjects())
-            {
-                loadedObjects.Add((ICollision)obj); // Assuming all objects implement ICollision
+            //foreach (var obj in level.GetRoomObjects())
+            //{
+            //    loadedObjects.Add((ICollision)obj); // Assuming all objects implement ICollision
 
-            }
-            foreach (var obj in loadedObjects)
-            {
-                Debug.WriteLine($"Loaded Object: {obj.GetType().Name}");
-            }
-            collisionManager = new CollisionManager();
+            //}
+            //foreach (var obj in loadedObjects)
+            //{
+            //    Debug.WriteLine($"Loaded Object: {obj.GetType().Name}");
+            //}
+            //collisionManager = new CollisionManager();
         }
 
         public void ChangeEnemy(int direction)
@@ -162,7 +162,7 @@ namespace Legend_of_the_Power_Rangers
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
             level.Update(gameTime);
             linkDecorator.Update(gameTime);
-            collisionManager.Update(gameTime, loadedObjects);
+            //collisionManager.Update(gameTime, loadedObjects);
 
             base.Update(gameTime);
         }

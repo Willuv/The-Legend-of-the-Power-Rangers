@@ -22,8 +22,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int loadedRoom;
         int scaleFactor = 5;
         private StreamReader reader;
-        //private CollisionManager collisionManager;
-        //private List<ICollision> loadedObjects;
+        private CollisionManager collisionManager;
+        private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, StreamReader reader, String ContentPath)
         {
             this.reader = reader;
@@ -36,12 +36,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             currentRoom = 0;
             loadedRoom = 0;
             loader.Load(reader);
-
+            loadedObjects = GetRoomObjects();
+            collisionManager = new();
         }
 
-        public List<object> GetRoomObjects()
+        public List<ICollision> GetRoomObjects()
         {
-            List<object> roomObjects = new List<object>();
+            List<ICollision> roomObjects = new();
 
             // Add blocks, enemies, and items to the list
             roomObjects.AddRange(loader.Blocks);
@@ -80,6 +81,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 loader.Load(reader);
                 
                 loadedRoom = currentRoom;
+
+                //changing the loaded objects based on current room
+                loadedObjects = GetRoomObjects();
             }
             foreach (IItem item in loader.Items)
             {
@@ -93,7 +97,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 enemy.Update(gametime);
             }
-            //collisionManager.Update(gametime, loadedObjects);
+            collisionManager.Update(gametime, loadedObjects);
         }
         public void ChangeLevel(int direction)
         {
@@ -107,6 +111,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 currentRoom = numRooms - 1;
             }
             loader.DeloadRoom();
+            loadedObjects.Clear();
             reader = new StreamReader(ContentPath+ "\\LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }
