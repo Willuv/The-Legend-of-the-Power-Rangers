@@ -1,4 +1,7 @@
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using Legend_of_the_Power_Rangers.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -6,7 +9,6 @@ namespace Legend_of_the_Power_Rangers
 {
     public class RedOcto : IEnemy
     {
-        //private Texture2D texture;
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
         public Rectangle DestinationRectangle
@@ -14,29 +16,41 @@ namespace Legend_of_the_Power_Rangers
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
         }
-        private int currentFrameIndex;
+        
         private Vector2 direction;
-        private float scale = 2.0f;
+        private float speed = 100f;
+        private int scale = 2;
+        
         private double timeSinceLastToggle;
         private const double millisecondsPerToggle = 200;
-        private float speed = 33f;
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
+        private int currentFrameIndex;
         private Random random = new Random();
-        private Vector2 position;
-        Vector2 initialPosition  = new Vector2(100, 100);
+        
+        private List<OctoProjectile> projectiles;
+        private double projectileTimer;
+        private const double projectileInterval = 2.0; // Shoot every 2 seconds
+        private Texture2D projectileTexture;
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.RedOcto; } }
 
-        public RedOcto()
+        public RedOcto(Texture2D projectileTexture, Rectangle? spawnRectangle = null)
         {
-            //this.texture = spritesheet;
-            this.position = initialPosition;
+            this.projectileTexture = projectileTexture;
             InitializeFrames();
             SetRandomDirection();
-            UpdateDestinationRectangle();
+            projectiles = new List<OctoProjectile>();
+            if (spawnRectangle.HasValue)
+            {
+                DestinationRectangle = spawnRectangle.Value;
+            }
+            else
+            {
+                DestinationRectangle = new Rectangle(300, 100, 15 * scale, 15 * scale); // Default position
+            }
         }
 
         private void InitializeFrames()
@@ -99,20 +113,39 @@ namespace Legend_of_the_Power_Rangers
                 timeSinceLastToggle = 0;
             }
 
-            position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            UpdateDestinationRectangle();
-        }
+            // Update destinationRectangle based on direction and speed
+            destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            // Update projectiles
+            foreach (var projectile in projectiles)
+            {
+                projectile.Update(gameTime);
+            }
+            projectiles.RemoveAll(p => p.GetState());
 
-        private void UpdateDestinationRectangle()
+            // Fire projectile
+            projectileTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            if (projectileTimer >= projectileInterval)
+            {
+                FireProjectile();
+                projectileTimer = 0;
+            }
+        }
+        private void FireProjectile()
         {
-            int width = (int)(sourceRectangle[currentFrameIndex].Width * scale);
-            int height = (int)(sourceRectangle[currentFrameIndex].Height * scale);
-            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, width, height);
+            var projectileRectangle = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 15, 7);
+            OctoProjectile projectile = new OctoProjectile(projectileTexture, projectileRectangle, direction);
+            projectiles.Add(projectile);
         }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+
+            foreach (var projectile in projectiles)
+            {
+                projectile.Draw(spriteBatch);
+            }
         }
     }
 }

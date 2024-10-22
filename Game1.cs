@@ -2,12 +2,24 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.Xna.Framework.Input;
+using Legend_of_the_Power_Rangers.LevelCreation;
+using Legend_of_the_Power_Rangers.Collision;
+using ExcelDataReader;
+using System.IO;
+using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
+using System.Diagnostics;
+using Microsoft.VisualBasic.FileIO;
+
+
 namespace Legend_of_the_Power_Rangers
 {
     public class Game1 : Game
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private Level level;
         private Link link;
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
@@ -17,6 +29,10 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemTexture;
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
+        private StreamReader reader;
+        public Texture2D projectileSpriteSheet;
+
+        private IBlock block = new BlockStatue1();
 
         private List<IEnemy> sprites = new List<IEnemy>();
         private int itemIndex;
@@ -31,20 +47,24 @@ namespace Legend_of_the_Power_Rangers
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 880;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         public void ResetGame()
         {
+            reader.Close();
             base.Initialize();
             LoadContent();
         }
 
         private void InitializeEnemies()
         {
-            sprites.Add(new RedOcto());
-            sprites.Add(new BlueOcto());
+            sprites.Add(new RedOcto(projectileSpriteSheet));
+            sprites.Add(new BlueOcto(projectileSpriteSheet));
             sprites.Add(new BlueCentaur());
             sprites.Add(new BlueGorya());
             sprites.Add(new BlueKnight());
@@ -73,8 +93,14 @@ namespace Legend_of_the_Power_Rangers
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            String path = Content.RootDirectory;
+
+            reader = new StreamReader(path + "\\LinkDungeon1 - Room1.csv");
+
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
-            Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
+            projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
+            Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
+            Texture2D levelSpriteSheet = Content.Load<Texture2D>("Level");
             itemTexture = Content.Load<Texture2D>("Items");
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
@@ -82,7 +108,9 @@ namespace Legend_of_the_Power_Rangers
 
             BlockSpriteFactory.Instance.SetBlockSpritesheet(blockTexture);
             ItemSpriteFactory.Instance.SetItemSpritesheet(itemTexture);
-
+            EnemySpriteFactory.Instance.SetEnemySpritesheet(enemySpritesheet);
+            EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
+            EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpritesheet);
 
             LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockTexture);
@@ -109,8 +137,12 @@ namespace Legend_of_the_Power_Rangers
             };
             itemManager = new ItemManager(itemTypes);
 
+            
+
+            level = new Level(levelSpriteSheet, reader, path);
+
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
-            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
+            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, level, this);
 
 
             itemIndex = 0;
@@ -158,13 +190,8 @@ namespace Legend_of_the_Power_Rangers
             LinkManager.GetLink().Update(gameTime);
 
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
-            if (enemyIndex < sprites.Count)
-            {
-                sprites[enemyIndex].Update(gameTime);
-            }
+            level.Update(gameTime);
             linkDecorator.Update(gameTime);
-            blockManager.Update(gameTime);
-            itemManager.Update(gameTime);
             collisionManager.Update(gameTime, loadedObjects);
 
             base.Update(gameTime);
@@ -173,19 +200,15 @@ namespace Legend_of_the_Power_Rangers
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            spriteBatch.Begin();
+            spriteBatch.Begin(SpriteSortMode.BackToFront);
 
             LinkManager.GetLink().Draw(spriteBatch);
             linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
 
-            if (enemyIndex < sprites.Count)
-            {
-                sprites[enemyIndex].Draw(enemySpritesheet, spriteBatch);
-            }
+            base.Draw(gameTime);
 
-            itemManager.Draw(spriteBatch);
-            blockManager.Draw(spriteBatch);
+            level.Draw(enemySpritesheet, spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

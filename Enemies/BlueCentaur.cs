@@ -7,7 +7,6 @@ namespace Legend_of_the_Power_Rangers
 {
     public class BlueCentaur : IEnemy
     {
-        //private Texture2D texture;
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
         public Rectangle DestinationRectangle
@@ -15,29 +14,27 @@ namespace Legend_of_the_Power_Rangers
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
         }
-        private int currentFrameIndex;
-        private float scale = 2.0f;
+
+        private Vector2 direction;
+        private float speed = 125f;
+        //private float scale = 2.0f;
+
         private double timeSinceLastToggle;
         private const double millisecondsPerToggle = 200;
-        private Vector2 direction;
-        private float speed = 33f;
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
+         private int currentFrameIndex;
         private Random random = new Random();
-        private Vector2 position;
-        Vector2 initialPosition  = new Vector2(100, 100);
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.BlueCentaur; } }
 
         public BlueCentaur()
         {
-            //this.texture = spritesheet;
-            this.position = initialPosition;
+            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
             SetRandomDirection();
             InitializeFrames();
-            UpdateDestinationRectangle();
         }
         private void InitializeFrames()
         {
@@ -98,15 +95,9 @@ namespace Legend_of_the_Power_Rangers
                 timeSinceLastToggle = 0;
             }
 
-            // Update position based on direction and speed
-            position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            UpdateDestinationRectangle();
-        }
-        private void UpdateDestinationRectangle()
-        {
-            int width = (int)(sourceRectangle[currentFrameIndex].Width * scale);
-            int height = (int)(sourceRectangle[currentFrameIndex].Height * scale);
-            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, width, height);
+            // Update destinationRectangle based on direction and speed
+            destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {

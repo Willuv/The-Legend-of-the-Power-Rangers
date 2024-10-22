@@ -8,7 +8,7 @@ namespace Legend_of_the_Power_Rangers
     public class BlockLadder : IBlock
     {
 
-        private Rectangle sourceRectangle = new Rectangle(144, 32, 16, 16);
+        private Rectangle sourceRectangle = new Rectangle(144, 32, 15, 15);
         private Rectangle destinationRectangle = new Rectangle(450, 340, 48, 48);
 
         public Rectangle DestinationRectangle
@@ -27,7 +27,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(BlockSpriteFactory.Instance.GetBlockSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(BlockSpriteFactory.Instance.GetBlockSpritesheet(), destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.9f);
         }
     }
 }
