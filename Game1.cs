@@ -93,7 +93,9 @@ namespace Legend_of_the_Power_Rangers
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            reader = new StreamReader("Content\\LinkDungeon1 - Room1.csv");
+            String path = Content.RootDirectory;
+
+            reader = new StreamReader(path + "\\LinkDungeon1 - Room1.csv");
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
@@ -103,7 +105,6 @@ namespace Legend_of_the_Power_Rangers
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
             Texture2D blockTexture = Content.Load<Texture2D>("Blocks");
-            Texture2D oldman = Content.Load<Texture2D>("OIP");
 
             BlockSpriteFactory.Instance.SetBlockSpritesheet(blockTexture);
             ItemSpriteFactory.Instance.SetItemSpritesheet(itemTexture);
@@ -138,7 +139,7 @@ namespace Legend_of_the_Power_Rangers
 
             
 
-            level = new Level(levelSpriteSheet, reader);
+            level = new Level(levelSpriteSheet, reader, path);
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
             mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, level, this);

@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Mime;
 
 namespace Legend_of_the_Power_Rangers.LevelCreation
 {
@@ -15,14 +16,16 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         Texture2D levelSpriteSheet;
         Rectangle wallsSource;
         Rectangle wallsDestination;
+        private String ContentPath;
         int numRooms;
         int currentRoom;
         int loadedRoom;
         int scaleFactor = 5;
         private StreamReader reader;
-        public Level(Texture2D levelSpriteSheet, StreamReader reader)
+        public Level(Texture2D levelSpriteSheet, StreamReader reader, String ContentPath)
         {
             this.reader = reader;
+            this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
             wallsSource = new Rectangle(0, 0, 255, 175);
             wallsDestination = new Rectangle(5, 5, 255 * scaleFactor, 175 * scaleFactor);
@@ -86,8 +89,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 currentRoom = numRooms - 1;
             }
-            loader.DeloadRoom(); 
-            reader = new StreamReader(@"Content\LinkDungeon1 - Room" + currentRoom + ".csv");
+            loader.DeloadRoom();
+            reader = new StreamReader(ContentPath+ "\\LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }
 }
