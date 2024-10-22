@@ -141,10 +141,8 @@ namespace Legend_of_the_Power_Rangers
             level = new Level(levelSpriteSheet, reader);
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
-            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, level, this);
+            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
 
-            itemTexture = Content.Load<Texture2D>("Items");
-            blockTexture = Content.Load<Texture2D>("Blocks");
 
             itemIndex = 0;
 
