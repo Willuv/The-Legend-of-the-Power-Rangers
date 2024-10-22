@@ -1,5 +1,3 @@
-using Legend_of_the_Power_Rangers.Collision;
-using Legend_of_the_Power_Rangers.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;

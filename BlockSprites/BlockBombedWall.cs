@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
             set { destinationRectangle = value; }
         }
         public ObjectType ObjectType { get { return ObjectType.Block; } }
-        public BlockType BlockType { get { return BlockType.BlueFloor; } }
+        public BlockType BlockType { get { return BlockType.BombedWall; } }
 
         public BlockBombedWall() { }
 

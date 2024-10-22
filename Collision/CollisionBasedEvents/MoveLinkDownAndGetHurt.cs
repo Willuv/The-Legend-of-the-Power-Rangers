@@ -8,15 +8,15 @@ using Microsoft.Xna.Framework;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class MoveLinkLeftAndGetHurt : IEvent
+    public class MoveLinkDownAndGetHurt : IEvent
     {
-        public MoveLinkLeftAndGetHurt() { }
+        public MoveLinkDownAndGetHurt() { }
 
         public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
         {
             Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, enemy.DestinationRectangle);
             Rectangle newDestination = link.DestinationRectangle;
-            newDestination.X -= overlap.Width;
+            newDestination.Y += overlap.Height;
             link.DestinationRectangle = newDestination;
 
             LinkStateMachine linkStateMachine = ((Link)link).GetStateMachine();

@@ -4,10 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
-using Legend_of_the_Power_Rangers.Enemies;
-using Legend_of_the_Power_Rangers.ItemSprites;
-
-namespace Legend_of_the_Power_Rangers.Collision
+namespace Legend_of_the_Power_Rangers
 {
     public class CollisionCaster
     {

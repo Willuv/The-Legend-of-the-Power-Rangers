@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Legend_of_the_Power_Rangers.Collision
+namespace Legend_of_the_Power_Rangers
 {
 
     public class CollisionManager
@@ -20,7 +20,7 @@ namespace Legend_of_the_Power_Rangers.Collision
         public void Update(GameTime gameTime, List<ICollision> loadedObjects)
         {
             //Sort
-            SortingMachine.QuickSort(loadedObjects);
+            SortingMachine.BubbleSort(loadedObjects);
 
             //Sweep
             Sweep(loadedObjects);
@@ -42,7 +42,6 @@ namespace Legend_of_the_Power_Rangers.Collision
 
                     if (object1.DestinationRectangle.Intersects(object2.DestinationRectangle))
                     {
-                        Debug.WriteLine("Rectangles intersect.");
                         HandleCollision(object1, object2);
                     }
                 }
@@ -83,9 +82,6 @@ namespace Legend_of_the_Power_Rangers.Collision
                 {
                     Debug.WriteLine("object1 is not left or right.");
                 }
-            } else
-            {
-                Debug.WriteLine("Square overlap");
             }
         }
     }

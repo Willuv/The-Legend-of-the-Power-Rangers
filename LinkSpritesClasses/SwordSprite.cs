@@ -61,6 +61,8 @@ namespace Legend_of_the_Power_Rangers
         }
         int scaleFactor = 3;
 
+        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
+        public LinkItemType LinkItemType { get { return LinkItemType.Arrow; } }
 
         public SwordSprite(Texture2D texture, Rectangle position, LinkDirection direction)
         {

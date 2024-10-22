@@ -2,7 +2,7 @@ using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Legend_of_the_Power_Rangers.Enemies
+namespace Legend_of_the_Power_Rangers
 {
     public class DragonProjectile : IEnemy // Used for DragonBoss Projectiles
     {

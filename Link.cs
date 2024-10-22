@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
-using Legend_of_the_Power_Rangers.Collision;
 
 public class Link : ICollision
 {
@@ -100,8 +99,6 @@ public class Link : ICollision
         currentSprite.Update(gameTime);
 
         UpdateDestinationRectangle();
-        //Debug.WriteLine($"Link position: {destinationRectangle.X}, {destinationRectangle.Y}");
-
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)

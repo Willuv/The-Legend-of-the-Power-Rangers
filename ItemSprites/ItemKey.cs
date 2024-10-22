@@ -1,5 +1,4 @@
 using System;
-using Legend_of_the_Power_Rangers.ItemSprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static System.Collections.Specialized.BitVector32;
@@ -19,7 +18,17 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Item; } }
         public ItemType ItemType { get { return ItemType.Key; } }
 
-        public void Update(GameTime gameTime) { }
+        bool pickedUp = false;
+        public bool PickedUp
+        {
+            get { return pickedUp; }
+            set { pickedUp = value; }
+        }
+
+        public void Update(GameTime gameTime)
+        {
+            //no code
+        }
 
         public void Draw(SpriteBatch spriteBatch)
         {

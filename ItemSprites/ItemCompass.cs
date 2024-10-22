@@ -1,5 +1,4 @@
 using System;
-using Legend_of_the_Power_Rangers.ItemSprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using static System.Collections.Specialized.BitVector32;
@@ -16,6 +15,13 @@ namespace Legend_of_the_Power_Rangers
         {
             get {return destinationRectangle; }
             set { destinationRectangle = value;}
+        }
+
+        bool pickedUp = false;
+        public bool PickedUp
+        {
+            get { return pickedUp; }
+            set { pickedUp = value; }
         }
 
         public ObjectType ObjectType { get { return ObjectType.Item; } }

@@ -24,6 +24,9 @@ namespace Legend_of_the_Power_Rangers
         Rectangle sourceRectangle;
         float scaleFactor = 3f;
 
+        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
+        public LinkItemType LinkItemType { get { return LinkItemType.Arrow; } }
+
 
         public ArrowSprite(Texture2D texture, Rectangle position, LinkDirection direction)
         {

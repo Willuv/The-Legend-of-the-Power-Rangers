@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
+namespace Legend_of_the_Power_Rangers
 {
     public class MoveLinkDown : IEvent
     {
@@ -13,8 +13,6 @@ namespace Legend_of_the_Power_Rangers.Collision.CollisionBasedEvents
 
         public void Execute(ICollision link, ICollision nonMovingBlock, CollisionDirection direction)
         {
-            (link, nonMovingBlock) = CollisionCaster.CastObjects(link, nonMovingBlock);
-
             Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, nonMovingBlock.DestinationRectangle);
             Rectangle newDestination = link.DestinationRectangle;
            

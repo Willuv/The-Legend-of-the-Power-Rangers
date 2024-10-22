@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Legend_of_the_Power_Rangers.Collision
+namespace Legend_of_the_Power_Rangers
 {
     /*
      * SortingMachine is a class dedicating to sorting collidable
@@ -65,8 +65,6 @@ namespace Legend_of_the_Power_Rangers.Collision
                 if (!swapped)
                     break;
             }
-
-            Debug.WriteLine(list);
         }
     }
 }

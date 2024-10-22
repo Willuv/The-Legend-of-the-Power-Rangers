@@ -7,7 +7,6 @@ using System.Security.AccessControl;
 using System.Text;
 using System.Threading.Tasks;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
-using Legend_of_the_Power_Rangers.LinkSpritesClasses;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -18,28 +17,28 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D projectileSpriteSheet;
         private Texture2D blockSpriteSheet; 
         private IitemSprite item;
-        public enum ItemType
+        public enum CreationLinkItemType
         {
             Boomerang, Arrow, Sword, Bomb, Candle
         }
 
-        public Item(ItemType type, Rectangle position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
+        public Item(CreationLinkItemType type, Rectangle position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
         {
             switch (type)
             {
-                case ItemType.Bomb:
+                case CreationLinkItemType.Bomb:
                     item = new BombSprite(itemSpriteSheet, position, direction);
                     break;
-                case ItemType.Arrow:
+                case CreationLinkItemType.Arrow:
                     item = new ArrowSprite(projectileSpriteSheet, position, direction);
                     break;
-                case ItemType.Sword:
+                case CreationLinkItemType.Sword:
                     item = new SwordSprite(projectileSpriteSheet, position, direction);
                     break;
-                case ItemType.Boomerang:
+                case CreationLinkItemType.Boomerang:
                     item = new BoomerangSprite(itemSpriteSheet, position, direction);
                     break;
-                case ItemType.Candle:
+                case CreationLinkItemType.Candle:
                     item = new CandleSprite(blockSpriteSheet, position, direction);
                     break;
             }

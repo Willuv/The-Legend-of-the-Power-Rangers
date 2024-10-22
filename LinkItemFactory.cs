@@ -24,26 +24,26 @@ public class LinkItemFactory
 		this.projectileSpriteSheet = projectileSpriteSheet;
 		this.blockSpriteSheet = blockSpriteSheet;
 	}
-	public void CreateItem(ItemType type)
+	public void CreateItem(CreationLinkItemType type)
 	{
 		//if (ActiveItems.Count == 0)
 		//{
 			switch (type)
 			{
-				case ItemType.Bomb:
-					ActiveItems.Add(new Item(ItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
+				case CreationLinkItemType.Bomb:
+					ActiveItems.Add(new Item(CreationLinkItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
 					break;
-				case ItemType.Arrow:
-					ActiveItems.Add(new Item(ItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
+				case CreationLinkItemType.Arrow:
+					ActiveItems.Add(new Item(CreationLinkItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
 					break;
-				case ItemType.Sword:
-					ActiveItems.Add(new Item(ItemType.Sword, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
+				case CreationLinkItemType.Sword:
+					ActiveItems.Add(new Item(CreationLinkItemType.Sword, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
 					break;
-				case ItemType.Boomerang:
-					ActiveItems.Add(new Item(ItemType.Boomerang, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
+				case CreationLinkItemType.Boomerang:
+					ActiveItems.Add(new Item(CreationLinkItemType.Boomerang, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
 					break;
-				case ItemType.Candle:
-					ActiveItems.Add(new Item(ItemType.Candle, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
+				case CreationLinkItemType.Candle:
+					ActiveItems.Add(new Item(CreationLinkItemType.Candle, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
 					break;
 			}
 		//}

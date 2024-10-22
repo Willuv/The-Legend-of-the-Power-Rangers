@@ -73,7 +73,6 @@ namespace Legend_of_the_Power_Rangers
 
             if (currentAction == LinkAction.Moving)
             {
-                Debug.WriteLine($"Moving");
                 switch (currentDirection)
                 {
                     case LinkDirection.Up:

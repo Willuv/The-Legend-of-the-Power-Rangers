@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Legend_of_the_Power_Rangers.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
