@@ -136,7 +136,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     int currentx = 165 + (80 * j);
                     int currenty = 162 + (81 * (i-1));
                     String tileCode = splitLine[j];
-                    Debug.WriteLine(tileCode);
+                    //Debug.WriteLine(tileCode);
                     String blockOneCode = tileCode.Substring(1, 2);
                     String enemyCode = tileCode.Substring(7, 2);
                     String itemCode = tileCode.Substring(10, 2);
