@@ -19,7 +19,7 @@ namespace Legend_of_the_Power_Rangers
         private static string GetObjectTypeKey(ICollision obj)
         {
             if (obj is IBlock block)
-                return block.BlockType.ToString();
+                return $"Type:{block.BlockType}";
             if (obj is IItem item)
                 return $"Type:{item.ItemType}";
             if (obj is IEnemy enemy)

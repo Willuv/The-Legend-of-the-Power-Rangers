@@ -129,6 +129,10 @@ namespace Legend_of_the_Power_Rangers
                     loadedObjects.Add(block);
                 }
             }
+            foreach (var item in itemManager.GetItems())
+            {
+                loadedObjects.Add(item);
+            }
 
             collisionManager = new CollisionManager();
         }
