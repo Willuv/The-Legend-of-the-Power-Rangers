@@ -1,8 +1,8 @@
-# Legend of the Power Rangers - Sprint 2
+# Legend of the Power Rangers - Sprint 3
 
 ## Overview
 
-This README provides information about our game project **Legend of the Power Rangers** for Sprint 2.
+This README provides information about our game project **Legend of the Power Rangers** for Sprint 3.
 
 ## Controls
 
@@ -12,33 +12,23 @@ This README provides information about our game project **Legend of the Power Ra
 - **1, 2, 3...**: Select different items (placeholder for future menu system).
 - **E**: Cause Link to take damage.
   
-### Block/Obstacle Controls
-- **T / Y**: Cycle between the current block/obstacle being displayed (stationary, no interactions).
-
-### Item Controls
-- **U / I**: Cycle between items (items move and animate but do not interact).
-
-### Enemy/NPC Controls
-- **O / P**: Cycle between enemies or NPCs (they move and animate but do not interact).
+### Mouse Control
+-- **Left/Right Click**: Cycle Through Items
 
 ### Other Controls
 - **Q**: Quit the game.
 - **R**: Reset the game to the initial state.
+- **E**: Take Damage
 
 ## Features Implemented
 - **Object Categories**:
-  - Player (Link)
-  - Blocks/Obstacles
-  - Items
-  - Enemies/NPCs
+  - All dungeon rooms except for 1
+  - Collision events for many of the games features
+    
 - **Basic Gameplay Mechanics**:
   - Movement for all objects.
   - State changes for Link and other objects.
   - Sprite animation for different objects.
-- **Object List Cycling**: Ability to cycle through blocks, items, and enemies with keyboard inputs.
-- **Command Pattern**: Used for handling user input to separate input from object behavior.
-- **State Pattern**: Implemented for object state management (e.g., Link's direction, attack, damage).
+  - Collision for different objects
+  - Cycling between rooms
 
-## Known Bugs
-- When attacking, if Link attempts to move at the same time he becomes stuck in place
-- When attacking, if link is already holding a movement key and holds attack he will continuously attack
