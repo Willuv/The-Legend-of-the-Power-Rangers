@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Legend_of_the_Power_Rangers.Enemies;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -8,7 +9,6 @@ namespace Legend_of_the_Power_Rangers
 {
     public class RedOcto : IEnemy
     {
-        //private Texture2D texture;
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
         public Rectangle DestinationRectangle
@@ -16,18 +16,19 @@ namespace Legend_of_the_Power_Rangers
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
         }
-        private int currentFrameIndex;
+        
         private Vector2 direction;
-        private float scale = 2.0f;
+        private float speed = 100f;
+        private int scale = 2;
+        
         private double timeSinceLastToggle;
         private const double millisecondsPerToggle = 200;
-        private float speed = 33f;
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
+        private int currentFrameIndex;
         private Random random = new Random();
-        private Vector2 position;
-        Vector2 initialPosition  = new Vector2(300, 100);
+        
         private List<OctoProjectile> projectiles;
         private double projectileTimer;
         private const double projectileInterval = 2.0; // Shoot every 2 seconds
@@ -36,15 +37,20 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.RedOcto; } }
 
-        public RedOcto(Texture2D projectileTexture)
+        public RedOcto(Texture2D projectileTexture, Rectangle? spawnRectangle = null)
         {
-            //this.texture = spritesheet;
-            this.position = initialPosition;
             this.projectileTexture = projectileTexture;
             InitializeFrames();
             SetRandomDirection();
             projectiles = new List<OctoProjectile>();
-            UpdateDestinationRectangle();
+            if (spawnRectangle.HasValue)
+            {
+                DestinationRectangle = spawnRectangle.Value;
+            }
+            else
+            {
+                DestinationRectangle = new Rectangle(300, 100, 15 * scale, 15 * scale); // Default position
+            }
         }
 
         private void InitializeFrames()
@@ -107,8 +113,9 @@ namespace Legend_of_the_Power_Rangers
                 timeSinceLastToggle = 0;
             }
 
-            position += direction * speed * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            UpdateDestinationRectangle();
+            // Update destinationRectangle based on direction and speed
+            destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
             // Update projectiles
             foreach (var projectile in projectiles)
             {
@@ -116,7 +123,7 @@ namespace Legend_of_the_Power_Rangers
             }
             projectiles.RemoveAll(p => p.GetState());
 
-            // Fire a projectile every 2 seconds
+            // Fire projectile
             projectileTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (projectileTimer >= projectileInterval)
             {
@@ -126,17 +133,9 @@ namespace Legend_of_the_Power_Rangers
         }
         private void FireProjectile()
         {
-            // OctoProjectile newProjectile = new OctoProjectile(projectileTexture, position, direction);
-            // projectiles.Add(newProjectile);
-            var projectilePosition = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 15, 5); // Example starting position
-            OctoProjectile projectile = new OctoProjectile(projectileTexture, projectilePosition, direction);
+            var projectileRectangle = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 15, 7);
+            OctoProjectile projectile = new OctoProjectile(projectileTexture, projectileRectangle, direction);
             projectiles.Add(projectile);
-        }
-        private void UpdateDestinationRectangle()
-        {
-            int width = (int)(sourceRectangle[currentFrameIndex].Width * scale);
-            int height = (int)(sourceRectangle[currentFrameIndex].Height * scale);
-            destinationRectangle = new Rectangle((int)destinationRectangle.X, (int)destinationRectangle.Y, width, height);
         }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)

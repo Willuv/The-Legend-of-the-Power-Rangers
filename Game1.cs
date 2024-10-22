@@ -64,7 +64,7 @@ namespace Legend_of_the_Power_Rangers
         private void InitializeEnemies()
         {
             sprites.Add(new RedOcto(projectileSpriteSheet));
-            sprites.Add(new BlueOcto());
+            sprites.Add(new BlueOcto(projectileSpriteSheet));
             sprites.Add(new BlueCentaur());
             sprites.Add(new BlueGorya());
             sprites.Add(new BlueKnight());
@@ -81,6 +81,27 @@ namespace Legend_of_the_Power_Rangers
             sprites.Add(new GelBigGreen());
             sprites.Add(new GelBigGray());
             sprites.Add(new WallMaster());
+        }
+
+        public Game1()
+        {
+            graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
+            IsMouseVisible = true;
+        }
+
+        public void ResetGame()
+        {
+            base.Initialize();
+            LoadContent();
+            block = BlockList[0];
+            item = ItemList[0];
+        }
+
+        protected override void Initialize()
+        {
+            base.Initialize();
+            InitializeEnemies();
         }
 
         protected override void LoadContent()
