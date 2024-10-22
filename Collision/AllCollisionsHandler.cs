@@ -21,8 +21,10 @@ namespace Legend_of_the_Power_Rangers
             (int, int, CollisionDirection) key = KeyGenerator.Generate(object1, object2, direction);
             
             if (eventList.TryGetValue(key, out var eventCommand)) {
+                Debug.WriteLine($"Collision");
                 eventCommand.Execute(object1, object2, direction);
-            } else
+            }
+            else
             {
                 Debug.WriteLine("Collision scenario not found in eventList.");
             }

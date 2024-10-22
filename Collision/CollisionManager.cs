@@ -50,6 +50,7 @@ namespace Legend_of_the_Power_Rangers
 
         private void HandleCollision(ICollision object1, ICollision object2)
         {
+            Debug.WriteLine($"Collision detected between {object1} and {object2} in direction");
             Rectangle intersection = Rectangle.Intersect(object1.DestinationRectangle,
                                                         object2.DestinationRectangle);
             if (intersection.Width > intersection.Height)
@@ -65,7 +66,7 @@ namespace Legend_of_the_Power_Rangers
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Bottom);
                 } else
                 {
-                    Debug.WriteLine("object 1 is not top or bottom.");
+                    //Debug.WriteLine("object 1 is not top or bottom.");
                 }
             } else if (intersection.Height > intersection.Width)
             {
@@ -80,7 +81,7 @@ namespace Legend_of_the_Power_Rangers
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Right);
                 } else
                 {
-                    Debug.WriteLine("object1 is not left or right.");
+                    //Debug.WriteLine("object1 is not left or right.");
                 }
             }
         }

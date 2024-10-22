@@ -37,13 +37,20 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedRoom = 0;
             loader.Load(reader);
 
-            //Jake's last minute attempt to fix collision with the new level loading system
-            //collisionManager = new();
-            //loadedObjects = new();
-            //loadedObjects.AddRange(loader.Blocks);
-            //loadedObjects.AddRange(loader.Items);
-            //loadedObjects.AddRange(loader.Enemies);
         }
+
+        public List<object> GetRoomObjects()
+        {
+            List<object> roomObjects = new List<object>();
+
+            // Add blocks, enemies, and items to the list
+            roomObjects.AddRange(loader.Blocks);
+            roomObjects.AddRange(loader.Enemies);
+            roomObjects.AddRange(loader.Items);
+
+            return roomObjects;
+        }
+
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
