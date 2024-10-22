@@ -37,6 +37,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedRoom = 0;
             loader.Load(reader);
             loadedObjects = GetRoomObjects();
+            loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
         }
 
@@ -84,6 +85,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
                 //changing the loaded objects based on current room
                 loadedObjects = GetRoomObjects();
+                loadedObjects.Add(LinkManager.GetLink());
             }
             foreach (IItem item in loader.Items)
             {
@@ -112,6 +114,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             loader.DeloadRoom();
             loadedObjects.Clear();
+            loadedObjects.Add(LinkManager.GetLink());
             reader = new StreamReader(ContentPath+ "\\LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }

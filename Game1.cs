@@ -96,7 +96,7 @@ namespace Legend_of_the_Power_Rangers
             LinkManager.SetLink(link);
 
             linkDecorator = new LinkDecorator(link);
-            LinkManager.SetLink(linkDecorator);
+            //LinkManager.SetLink(linkDecorator);
 
             var blockTypes = new List<string>
             {

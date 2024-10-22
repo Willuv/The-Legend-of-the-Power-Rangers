@@ -9,21 +9,31 @@ namespace Legend_of_the_Power_Rangers
     public class KeyGenerator
     {
         public static (int, int, CollisionDirection) Generate(ICollision obj1, ICollision obj2, CollisionDirection direction)
-        {
+        {   
             int type1 = GetObjectTypeKey(obj1);
             int type2 = GetObjectTypeKey(obj2);
+
+            if (type1 > type2)
+            {
+               //ensuring consistent order
+                return (type2, type1, direction);
+            }
 
             return (type1, type2, direction);
         }
 
         private static int GetObjectTypeKey(ICollision obj)
         {
+            int blockOffset = 1000; // Any large value to avoid enum overlap
+            int itemOffset = 2000;
+            int enemyOffset = 3000;
+
             if (obj is IBlock block)
-                return block.GetHashCode();
+                return (int)block.BlockType + blockOffset;
             if (obj is IItem item)
-                return item.GetHashCode();
+                return (int)item.ItemType + itemOffset;
             if (obj is IEnemy enemy)
-                return enemy.GetHashCode();
+                return (int)enemy.EnemyType + enemyOffset;
 
             return obj.GetHashCode(); //just in case
         }
