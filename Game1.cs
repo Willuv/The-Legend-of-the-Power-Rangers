@@ -2,7 +2,14 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Security.Cryptography.X509Certificates;
+using Microsoft.Xna.Framework.Input;
+using Legend_of_the_Power_Rangers.LevelCreation;
 using Legend_of_the_Power_Rangers.Collision;
+using ExcelDataReader;
+using System.IO;
+using Microsoft.VisualStudio.TestPlatform.PlatformAbstractions.Interfaces;
+
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -10,6 +17,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private GraphicsDeviceManager graphics;
         private SpriteBatch spriteBatch;
+        private Level level;
         private Link link;
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
@@ -19,6 +27,9 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemTexture;
         private Texture2D enemySpritesheet;
         public Texture2D bossSpritesheet;
+        private FileStream stream;
+
+        private IBlock block = new BlockStatue1();
 
         private List<IEnemy> sprites = new List<IEnemy>();
         private int itemIndex;
@@ -33,12 +44,16 @@ namespace Legend_of_the_Power_Rangers
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            graphics.PreferredBackBufferHeight = 880;
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.ApplyChanges();
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
 
         public void ResetGame()
         {
+            stream.Close();
             base.Initialize();
             LoadContent();
         }
@@ -65,18 +80,27 @@ namespace Legend_of_the_Power_Rangers
             sprites.Add(new WallMaster());
         }
 
-        protected override void Initialize()
-        {
-            base.Initialize();
-            InitializeEnemies();
-        }
-
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
+            IExcelDataReader reader = null;
+            try
+            {
+                stream = File.Open("C:\\Users\\chris\\Source\\Repos\\The-Legend-of-the-Power-Rangers\\Content\\LinkDungeon1.xlsx", FileMode.Open, FileAccess.Read);
+            }
+            catch (IOException e)
+            {
+            
+            }
+            System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
+            reader = ExcelReaderFactory.CreateReader(stream);
+            System.Data.DataSet dungeonBook = reader.AsDataSet();
+
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
+            Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
+            Texture2D levelSpriteSheet = Content.Load<Texture2D>("Level");
             itemTexture = Content.Load<Texture2D>("Items");
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
@@ -110,6 +134,8 @@ namespace Legend_of_the_Power_Rangers
                 "Bow", "Heart", "Rupee", "Bomb", "Fairy", "Clock", "BlueCandle", "BluePotion"
             };
             itemManager = new ItemManager(itemTypes);
+
+            level = new Level(levelSpriteSheet, dungeonBook);
 
             keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
             mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
@@ -160,6 +186,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 sprites[enemyIndex].Update(gameTime);
             }
+            level.Update(gameTime);
             linkDecorator.Update(gameTime);
             blockManager.Update(gameTime);
             itemManager.Update(gameTime);
@@ -184,6 +211,7 @@ namespace Legend_of_the_Power_Rangers
 
             itemManager.Draw(spriteBatch);
             blockManager.Draw(spriteBatch);
+            level.Draw(enemySpritesheet, spriteBatch);
             spriteBatch.End();
 
             base.Draw(gameTime);

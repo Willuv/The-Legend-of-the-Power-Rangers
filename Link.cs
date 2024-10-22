@@ -100,7 +100,7 @@ public class Link : ICollision
         currentSprite.Update(gameTime);
 
         UpdateDestinationRectangle();
-        Debug.WriteLine($"Link position: {destinationRectangle.X}, {destinationRectangle.Y}");
+        //Debug.WriteLine($"Link position: {destinationRectangle.X}, {destinationRectangle.Y}");
 
     }
 

@@ -8,7 +8,7 @@ namespace Legend_of_the_Power_Rangers
     public class BlockLadder : IBlock
     {
 
-        private Rectangle sourceRectangle = new Rectangle(144, 32, 16, 16);
+        private Rectangle sourceRectangle = new Rectangle(144, 32, 15, 15);
         private Rectangle destinationRectangle = new Rectangle(450, 340, 48, 48);
 
         public Rectangle DestinationRectangle
