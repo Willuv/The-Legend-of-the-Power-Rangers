@@ -93,10 +93,13 @@ namespace Legend_of_the_Power_Rangers
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
 
             link = new Link();
-            LinkManager.SetLink(link);
+            LinkManager.Initialize(link);
 
             linkDecorator = new LinkDecorator(link);
-            //LinkManager.SetLink(linkDecorator);
+            LinkManager.SetLinkDecorator(linkDecorator);
+
+            LinkManager.SetLink(link);
+
 
             var blockTypes = new List<string>
             {
@@ -158,10 +161,11 @@ namespace Legend_of_the_Power_Rangers
             mouseController.Update();
 
             LinkManager.GetLink().Update(gameTime);
+            linkDecorator.Update(gameTime);
+
 
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
             level.Update(gameTime);
-            linkDecorator.Update(gameTime);
             //collisionManager.Update(gameTime, loadedObjects);
 
             base.Update(gameTime);
@@ -172,11 +176,9 @@ namespace Legend_of_the_Power_Rangers
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(SpriteSortMode.BackToFront);
 
-            LinkManager.GetLink().Draw(spriteBatch);
-            linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
+            linkItemFactory.Draw(spriteBatch);
 
-            base.Draw(gameTime);
 
             level.Draw(enemySpritesheet, spriteBatch);
             spriteBatch.End();
