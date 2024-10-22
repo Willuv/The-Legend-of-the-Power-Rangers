@@ -61,9 +61,17 @@ namespace Legend_of_the_Power_Rangers
                 case "13":
                     return new Skeleton();
                 case "14":
-                    // WILL BE TRAP
+                    return new GelSmallBlack();
                 case "15":
                     return new WallMaster();
+                case "16":
+                    return new GelBigGray();
+                case "17":
+                    return new GelBigGreen();
+                case "18":
+                    return new GelSmallTeal();
+                case "19":
+                    // Trap
                 case "98":
                     return new OldMan();
                 default:
