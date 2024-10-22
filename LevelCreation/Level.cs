@@ -22,6 +22,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int loadedRoom;
         int scaleFactor = 5;
         private StreamReader reader;
+        //private CollisionManager collisionManager;
+        //private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, StreamReader reader, String ContentPath)
         {
             this.reader = reader;
@@ -34,6 +36,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             currentRoom = 0;
             loadedRoom = 0;
             loader.Load(reader);
+
+            //Jake's last minute attempt to fix collision with the new level loading system
+            //collisionManager = new();
+            //loadedObjects = new();
+            //loadedObjects.AddRange(loader.Blocks);
+            //loadedObjects.AddRange(loader.Items);
+            //loadedObjects.AddRange(loader.Enemies);
         }
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
@@ -77,6 +86,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 enemy.Update(gametime);
             }
+            //collisionManager.Update(gametime, loadedObjects);
         }
         public void ChangeLevel(int direction)
         {
