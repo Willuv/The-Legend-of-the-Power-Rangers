@@ -27,14 +27,18 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             wallsSource = new Rectangle(0, 0, 255, 175);
             wallsDestination = new Rectangle(5, 5, 255 * scaleFactor, 175 * scaleFactor);
             loader = new LevelLoader(levelSpriteSheet);
-            numRooms = 19;
+            numRooms = 18;
             currentRoom = 0;
             loadedRoom = 0;
             loader.Load(reader);
         }
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White);
+            spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
+            foreach (IDoor door in loader.Doors)
+            {
+                door.Draw(spriteBatch);
+            }
             foreach (IItem item in loader.Items)
             {
                 item.Draw(spriteBatch);
@@ -76,12 +80,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             currentRoom += direction;
             if (currentRoom >= numRooms)
             {
-                currentRoom = 0;
+                currentRoom = 1;
             }
-            if (currentRoom < 0)
+            if (currentRoom < 1)
             {
                 currentRoom = numRooms - 1;
             }
+            loader.DeloadRoom(); 
             reader = new StreamReader(@"Content\LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }

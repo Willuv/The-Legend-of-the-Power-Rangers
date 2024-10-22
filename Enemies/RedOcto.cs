@@ -128,7 +128,7 @@ namespace Legend_of_the_Power_Rangers
         {
             // OctoProjectile newProjectile = new OctoProjectile(projectileTexture, position, direction);
             // projectiles.Add(newProjectile);
-            var projectilePosition = new Rectangle((int)position.X, (int)position.Y, 15, 5); // Example starting position
+            var projectilePosition = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 15, 5); // Example starting position
             OctoProjectile projectile = new OctoProjectile(projectileTexture, projectilePosition, direction);
             projectiles.Add(projectile);
         }
@@ -136,7 +136,7 @@ namespace Legend_of_the_Power_Rangers
         {
             int width = (int)(sourceRectangle[currentFrameIndex].Width * scale);
             int height = (int)(sourceRectangle[currentFrameIndex].Height * scale);
-            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, width, height);
+            destinationRectangle = new Rectangle((int)destinationRectangle.X, (int)destinationRectangle.Y, width, height);
         }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)

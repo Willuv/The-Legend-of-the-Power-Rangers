@@ -30,7 +30,7 @@ namespace Legend_of_the_Power_Rangers
             bossSpriteSheet = spritesheet;
         }
 
-        public IEnemy CreateBlock(string enemyType)
+        public IEnemy CreateEnemy(string enemyType)
         {
             switch (enemyType)
             {
@@ -47,7 +47,7 @@ namespace Legend_of_the_Power_Rangers
                 case "06":
                     return new DarkMoblin();
                 case "07":
-                    return new DragonBoss(enemySpriteSheet, projectileSpriteSheet);
+                    return new DragonBoss(bossSpriteSheet, projectileSpriteSheet);
                 case "08":
                     return new RedCentaur();
                 case "09":
@@ -64,6 +64,8 @@ namespace Legend_of_the_Power_Rangers
                     // WILL BE TRAP
                 case "15":
                     return new WallMaster();
+                case "98":
+                    return new OldMan();
                 default:
                     throw new ArgumentException($"Block type {enemyType} not recognized");
             }

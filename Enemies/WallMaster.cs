@@ -103,7 +103,7 @@ namespace Legend_of_the_Power_Rangers
         {
             int width = (int)(sourceRectangle[currentFrameIndex].Width * scale);
             int height = (int)(sourceRectangle[currentFrameIndex].Height * scale);
-            destinationRectangle = new Rectangle((int)position.X, (int)position.Y, width, height);
+            destinationRectangle = new Rectangle(destinationRectangle.X, (int)destinationRectangle.Y, width, height);
         }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)

@@ -87,7 +87,7 @@ namespace Legend_of_the_Power_Rangers
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            reader = new StreamReader("Content\\LinkDungeon1 - Test Room.csv");
+            reader = new StreamReader("Content\\LinkDungeon1 - Room1.csv");
 
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
@@ -97,11 +97,13 @@ namespace Legend_of_the_Power_Rangers
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
             Texture2D blockTexture = Content.Load<Texture2D>("Blocks");
+            Texture2D oldman = Content.Load<Texture2D>("OIP");
 
             BlockSpriteFactory.Instance.SetBlockSpritesheet(blockTexture);
             ItemSpriteFactory.Instance.SetItemSpritesheet(itemTexture);
             EnemySpriteFactory.Instance.SetEnemySpritesheet(enemySpritesheet);
             EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
+            EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpritesheet);
 
             LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
             linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockTexture);
@@ -111,10 +113,15 @@ namespace Legend_of_the_Power_Rangers
 
             linkDecorator = new LinkDecorator(link);
             LinkManager.SetLink(linkDecorator);
-            
 
-            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
-            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, this);
+            var blockTypes = new List<string>
+            {
+                "Statue1", "Statue2", "Square", "Push", "Fire",
+                "BlueGap", "Stairs", "WhiteBrick", "Ladder",
+                "BlueFloor", "BlueSand", "BombedWall", "Diamond",
+                "KeyHole", "OpenDoor", "Wall"
+            };
+            blockManager = new BlockManager(blockTypes);
 
             var itemTypes = new List<string>
             {
@@ -123,9 +130,12 @@ namespace Legend_of_the_Power_Rangers
             };
             itemManager = new ItemManager(itemTypes);
 
+            
 
             level = new Level(levelSpriteSheet, reader);
 
+            keyboardController = new KeyboardController(link.GetStateMachine(), linkItemFactory, linkDecorator, blockManager, itemManager, this);
+            mouseController = new MouseController(link.GetStateMachine(), linkItemFactory, linkDecorator, level, this);
 
             itemTexture = Content.Load<Texture2D>("Items");
             blockTexture = Content.Load<Texture2D>("Blocks");
@@ -187,7 +197,6 @@ namespace Legend_of_the_Power_Rangers
             linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
 
-            sprites[enemyIndex].Draw(enemySpritesheet, spriteBatch);
             base.Draw(gameTime);
 
             level.Draw(enemySpritesheet, spriteBatch);
