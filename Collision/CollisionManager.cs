@@ -64,7 +64,6 @@ namespace Legend_of_the_Power_Rangers
             //Debug.WriteLine($"Collision detected between {object1} and {object2} in direction");
             Rectangle intersection = Rectangle.Intersect(object1.DestinationRectangle,
                                                         object2.DestinationRectangle);
-            Debug.WriteLine($"width={intersection.Width}, height={intersection.Height}");
             if (intersection.Width > intersection.Height)
             {
                 //collision is from top or from bottom

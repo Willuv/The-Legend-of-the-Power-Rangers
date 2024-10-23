@@ -18,11 +18,10 @@ namespace Legend_of_the_Power_Rangers
 
         public void Handle(ICollision object1, ICollision object2, CollisionDirection direction)
         {
+            (object1, object2, direction) = EnsureOrder(object1, object2, direction);
             (int, int, CollisionDirection) key = KeyGenerator.Generate(object1, object2, direction);
-            Debug.WriteLine(key);
             
             if (eventList.TryGetValue(key, out var eventCommand)) {
-                (object1, object2, direction) = EnsureOrder(object1, object2, direction);
                 eventCommand.Execute(object1, object2, direction);
             }
             else
