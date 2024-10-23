@@ -30,19 +30,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
             wallsSource = new Rectangle(0, 0, 255, 175);
-            wallsDestination = new Rectangle(5, 5, 255 * scaleFactor, 175 * scaleFactor);
+            wallsDestination = new Rectangle(0, 0, 255 * scaleFactor, 175 * scaleFactor);
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = 18;
             currentRoom = 0;
             loadedRoom = 0;
             loader.Load(reader);
 
-            //Jake's last minute attempt to fix collision with the new level loading system
-            //collisionManager = new();
-            //loadedObjects = new();
-            //loadedObjects.AddRange(loader.Blocks);
-            //loadedObjects.AddRange(loader.Items);
-            //loadedObjects.AddRange(loader.Enemies);
         }
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
