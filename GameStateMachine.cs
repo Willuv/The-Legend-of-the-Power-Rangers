@@ -64,7 +64,11 @@ namespace Legend_of_the_Power_Rangers
         {
             // Initialize gameplay elements
             link = new Link();
+            LinkManager.Initialize(link);
             linkDecorator = new LinkDecorator(link);
+            LinkManager.SetLinkDecorator(linkDecorator);
+            LinkManager.SetLink(link);
+
             keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
             mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.level, game);
         }
@@ -132,6 +136,7 @@ namespace Legend_of_the_Power_Rangers
             mouseController.Update();
             link.Update(gameTime);
             linkDecorator.Update(gameTime);
+            game.linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
             game.level.Update(gameTime);
         }
 
@@ -165,8 +170,8 @@ namespace Legend_of_the_Power_Rangers
         private void DrawGameplay()
         {
             game.level.Draw(game.enemySpritesheet, spriteBatch);
-            linkDecorator.Draw(spriteBatch);
             game.linkItemFactory.Draw(spriteBatch);
+            linkDecorator.Draw(spriteBatch);
         }
     }
 }

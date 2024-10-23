@@ -163,7 +163,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                         item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 50, 50);
                         items.Add(item);
                     }
-                        
+
                 }
             }
         }

@@ -39,8 +39,8 @@ namespace Legend_of_the_Power_Rangers
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // Load assets
-            this.itemSpriteSheet = Content.Load<Texture2D>("Items");
-            this.enemySpritesheet = Content.Load<Texture2D>("Enemies");
+            itemSpriteSheet = Content.Load<Texture2D>("Items");
+            enemySpritesheet = Content.Load<Texture2D>("Enemies");
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
             Texture2D levelSpriteSheet = Content.Load<Texture2D>("Level");
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
@@ -49,8 +49,8 @@ namespace Legend_of_the_Power_Rangers
 
             // Set up factories
             BlockSpriteFactory.Instance.SetBlockSpritesheet(blockSpriteSheet);
-            ItemSpriteFactory.Instance.SetItemSpritesheet(this.itemSpriteSheet);
-            EnemySpriteFactory.Instance.SetEnemySpritesheet(this.enemySpritesheet);
+            ItemSpriteFactory.Instance.SetItemSpritesheet(itemSpriteSheet);
+            EnemySpriteFactory.Instance.SetEnemySpritesheet(enemySpritesheet);
             LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
 
