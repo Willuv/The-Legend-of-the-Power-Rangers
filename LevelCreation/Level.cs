@@ -22,8 +22,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int loadedRoom;
         int scaleFactor = 5;
         private StreamReader reader;
-        //private CollisionManager collisionManager;
-        //private List<ICollision> loadedObjects;
+        private CollisionManager collisionManager;
+        private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, StreamReader reader, String ContentPath)
         {
             this.reader = reader;
@@ -36,14 +36,23 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             currentRoom = 0;
             loadedRoom = 0;
             loader.Load(reader);
-
-            //Jake's last minute attempt to fix collision with the new level loading system
-            //collisionManager = new();
-            //loadedObjects = new();
-            //loadedObjects.AddRange(loader.Blocks);
-            //loadedObjects.AddRange(loader.Items);
-            //loadedObjects.AddRange(loader.Enemies);
+            loadedObjects = GetRoomObjects();
+            loadedObjects.Add(LinkManager.GetLink());
+            collisionManager = new();
         }
+
+        public List<ICollision> GetRoomObjects()
+        {
+            List<ICollision> roomObjects = new();
+
+            // Add blocks, enemies, and items to the list
+            roomObjects.AddRange(loader.Blocks);
+            roomObjects.AddRange(loader.Enemies);
+            roomObjects.AddRange(loader.Items);
+
+            return roomObjects;
+        }
+
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
@@ -73,6 +82,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 loader.Load(reader);
                 
                 loadedRoom = currentRoom;
+
+                //changing the loaded objects based on current room
+                loadedObjects = GetRoomObjects();
+                loadedObjects.Add(LinkManager.GetLink());
             }
             foreach (IItem item in loader.Items)
             {
@@ -86,7 +99,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 enemy.Update(gametime);
             }
-            //collisionManager.Update(gametime, loadedObjects);
+            collisionManager.Update(gametime, loadedObjects);
         }
         public void ChangeLevel(int direction)
         {
@@ -100,6 +113,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 currentRoom = numRooms - 1;
             }
             loader.DeloadRoom();
+            loadedObjects.Clear();
+            loadedObjects.Add(LinkManager.GetLink());
             reader = new StreamReader(ContentPath+ "\\LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }

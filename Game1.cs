@@ -37,8 +37,8 @@ namespace Legend_of_the_Power_Rangers
         private int itemIndex;
         private int enemyIndex;
 
-        private List<ICollision> loadedObjects;
-        private CollisionManager collisionManager;
+        //private List<ICollision> loadedObjects;
+        //private CollisionManager collisionManager;
         private BlockManager blockManager;
         private ItemManager itemManager;
 
@@ -60,32 +60,11 @@ namespace Legend_of_the_Power_Rangers
             LoadContent();
         }
 
-        private void InitializeEnemies()
-        {
-            sprites.Add(new RedOcto(projectileSpriteSheet));
-            sprites.Add(new BlueOcto(projectileSpriteSheet));
-            sprites.Add(new BlueCentaur());
-            sprites.Add(new BlueGorya());
-            sprites.Add(new BlueKnight());
-            sprites.Add(new DarkMoblin());
-            sprites.Add(new DragonBoss(bossSpritesheet, enemySpritesheet));
-            sprites.Add(new RedCentaur());
-            sprites.Add(new RedGorya());
-            sprites.Add(new RedKnight());
-            sprites.Add(new RedMoblin());
-            sprites.Add(new BatKeese());
-            sprites.Add(new Skeleton());
-            sprites.Add(new GelSmallBlack());
-            sprites.Add(new GelSmallTeal());
-            sprites.Add(new GelBigGreen());
-            sprites.Add(new GelBigGray());
-            sprites.Add(new WallMaster());
-        }
+    
 
         protected override void Initialize()
         {
             base.Initialize();
-            InitializeEnemies();
         }
 
         protected override void LoadContent()
@@ -103,22 +82,24 @@ namespace Legend_of_the_Power_Rangers
             itemTexture = Content.Load<Texture2D>("Items");
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             bossSpritesheet = Content.Load<Texture2D>("Bosses");
-            Texture2D blockTexture = Content.Load<Texture2D>("Blocks");
 
-            BlockSpriteFactory.Instance.SetBlockSpritesheet(blockTexture);
+            BlockSpriteFactory.Instance.SetBlockSpritesheet(blockSpriteSheet);
             ItemSpriteFactory.Instance.SetItemSpritesheet(itemTexture);
             EnemySpriteFactory.Instance.SetEnemySpritesheet(enemySpritesheet);
             EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpritesheet);
 
             LinkSpriteFactory.Instance.SetSpriteSheet(linkSpriteSheet);
-            linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockTexture);
+            linkItemFactory = new LinkItemFactory(itemTexture, projectileSpriteSheet, blockSpriteSheet);
 
             link = new Link();
-            LinkManager.SetLink(link);
+            LinkManager.Initialize(link);
 
             linkDecorator = new LinkDecorator(link);
-            LinkManager.SetLink(linkDecorator);
+            LinkManager.SetLinkDecorator(linkDecorator);
+
+            LinkManager.SetLink(link);
+
 
             var blockTypes = new List<string>
             {
@@ -146,23 +127,19 @@ namespace Legend_of_the_Power_Rangers
 
             itemIndex = 0;
 
-            loadedObjects = new();
-            InitializeEnemies();
-            loadedObjects.Add(link);
-            loadedObjects.Add(sprites[0]);
-            loadedObjects.Add(sprites[6]); 
+            //loadedObjects = new();
+            //loadedObjects.Add(link);
 
-            //Very ugly way to do this for now
-            foreach (var block in blockManager.GetBlocks())
-            {
-                loadedObjects.Add(block);
-            }
-            foreach (var item in itemManager.GetItems())
-            {
-                loadedObjects.Add(item);
-            }
+            //foreach (var obj in level.GetRoomObjects())
+            //{
+            //    loadedObjects.Add((ICollision)obj); // Assuming all objects implement ICollision
 
-            collisionManager = new CollisionManager();
+            //}
+            //foreach (var obj in loadedObjects)
+            //{
+            //    Debug.WriteLine($"Loaded Object: {obj.GetType().Name}");
+            //}
+            //collisionManager = new CollisionManager();
         }
 
         public void ChangeEnemy(int direction)
@@ -184,11 +161,12 @@ namespace Legend_of_the_Power_Rangers
             mouseController.Update();
 
             LinkManager.GetLink().Update(gameTime);
+            linkDecorator.Update(gameTime);
+
 
             linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
             level.Update(gameTime);
-            linkDecorator.Update(gameTime);
-            collisionManager.Update(gameTime, loadedObjects);
+            //collisionManager.Update(gameTime, loadedObjects);
 
             base.Update(gameTime);
         }
@@ -198,11 +176,9 @@ namespace Legend_of_the_Power_Rangers
             GraphicsDevice.Clear(Color.CornflowerBlue);
             spriteBatch.Begin(SpriteSortMode.BackToFront);
 
-            LinkManager.GetLink().Draw(spriteBatch);
-            linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
+            linkItemFactory.Draw(spriteBatch);
 
-            base.Draw(gameTime);
 
             level.Draw(enemySpritesheet, spriteBatch);
             spriteBatch.End();
