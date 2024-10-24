@@ -18,7 +18,6 @@ namespace Legend_of_the_Power_Rangers
         public LinkItemFactory linkItemFactory;
         public Level level;
         public StreamReader reader;
-
         private GameStateMachine gameStateMachine;
 
         public Game1()
@@ -54,7 +53,6 @@ namespace Legend_of_the_Power_Rangers
             EnemySpriteFactory.Instance.SetEnemySpritesheet(enemySpritesheet);
             LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
-
             linkItemFactory = new LinkItemFactory(itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 
             // Initialize Managers
@@ -72,13 +70,14 @@ namespace Legend_of_the_Power_Rangers
 
         protected override void Update(GameTime gameTime)
         {
-            gameStateMachine.Update(gameTime);
+
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
             gameStateMachine.Draw(gameTime);
             base.Draw(gameTime);
         }

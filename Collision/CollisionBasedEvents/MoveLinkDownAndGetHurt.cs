@@ -22,7 +22,7 @@ namespace Legend_of_the_Power_Rangers
             LinkStateMachine linkStateMachine = ((Link)link).GetStateMachine();
             linkStateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
 
-            LinkDecorator decoratedLink = (LinkDecorator)LinkManager.GetLink();
+            LinkDecorator decoratedLink = LinkManager.GetLinkDecorator();
             LinkBecomeDamagedCommand linkGetsHurt = new LinkBecomeDamagedCommand(decoratedLink);
             linkGetsHurt.Execute();
         }

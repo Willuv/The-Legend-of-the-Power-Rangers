@@ -35,6 +35,17 @@ namespace Legend_of_the_Power_Rangers
                     ICollision object1 = loadedObjects[i];
                     ICollision object2 = loadedObjects[j];
 
+                    //temp checks to see if collision error is a case we care about or not
+                    if (object1 is IBlock && object2 is IBlock) continue;
+                    if (object1 is IItem && object2 is IBlock) continue;
+                    if (object1 is IBlock && object2 is IItem) continue;
+                    if (object1 is IEnemy && object2 is IItem) continue;
+                    if (object1 is IItem && object2 is IEnemy) continue;
+                    if (object1 is IEnemy && object2 is BlockSquare) continue;
+                    if (object1 is Link && object2 is BlockSquare) continue;
+                    if (object1 is BlockSquare && object2 is Link) continue;
+                    if (object1 is BlockSquare && object2 is IEnemy) continue;
+
                     if (object2.DestinationRectangle.Left > object1.DestinationRectangle.Right)
                     {
                         break; //object 2 doesn't overlap at all
@@ -50,6 +61,7 @@ namespace Legend_of_the_Power_Rangers
 
         private void HandleCollision(ICollision object1, ICollision object2)
         {
+            //Debug.WriteLine($"Collision detected between {object1} and {object2} in direction");
             Rectangle intersection = Rectangle.Intersect(object1.DestinationRectangle,
                                                         object2.DestinationRectangle);
             if (intersection.Width > intersection.Height)
@@ -65,7 +77,7 @@ namespace Legend_of_the_Power_Rangers
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Bottom);
                 } else
                 {
-                    Debug.WriteLine("object 1 is not top or bottom.");
+                    //Debug.WriteLine("object 1 is not top or bottom.");
                 }
             } else if (intersection.Height > intersection.Width)
             {
@@ -80,7 +92,7 @@ namespace Legend_of_the_Power_Rangers
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Right);
                 } else
                 {
-                    Debug.WriteLine("object1 is not left or right.");
+                    //Debug.WriteLine("object1 is not left or right.");
                 }
             }
         }

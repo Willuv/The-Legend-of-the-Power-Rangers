@@ -18,13 +18,43 @@ namespace Legend_of_the_Power_Rangers
 
         public void Handle(ICollision object1, ICollision object2, CollisionDirection direction)
         {
+            (object1, object2, direction) = EnsureOrder(object1, object2, direction);
             (int, int, CollisionDirection) key = KeyGenerator.Generate(object1, object2, direction);
             
             if (eventList.TryGetValue(key, out var eventCommand)) {
                 eventCommand.Execute(object1, object2, direction);
-            } else
+            }
+            else
             {
-                Debug.WriteLine("Collision scenario not found in eventList.");
+                Debug.WriteLine($"{object1}{object2}{direction} not found in eventList.");
+            }
+        }
+
+        private static (ICollision obj1, ICollision obj2, CollisionDirection dir) EnsureOrder(ICollision object1, ICollision object2, CollisionDirection direction)
+        {
+            if (object1 is IBlock || object1 is IItem || (object1 is IEnemy && object2 is Link))
+            {
+                direction = ReverseDirection(direction);
+                return (object2, object1, direction);
+            }
+            
+            return (object1, object2, direction);
+        }
+
+        private static CollisionDirection ReverseDirection(CollisionDirection direction)
+        {
+            switch (direction)
+            {
+                case CollisionDirection.Left:
+                    return CollisionDirection.Right;
+                case CollisionDirection.Right:
+                    return CollisionDirection.Left;
+                case CollisionDirection.Top:
+                    return CollisionDirection.Bottom;
+                case CollisionDirection.Bottom:
+                    return CollisionDirection.Top;
+                default:
+                    return direction;
             }
         }
     }
