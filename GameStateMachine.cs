@@ -161,7 +161,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin();
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             switch (currentState)
             {
                 case GameState.Gameplay:

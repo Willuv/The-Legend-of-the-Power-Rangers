@@ -66,15 +66,15 @@ namespace Legend_of_the_Power_Rangers
 
         protected override void Update(GameTime gameTime)
         {
-            gameStateMachine.Update(gameTime);w
+            gameStateMachine.Update(gameTime);
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             gameStateMachine.Draw(gameTime);
+
             base.Draw(gameTime);
         }
     }
