@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -81,62 +82,77 @@ namespace Legend_of_the_Power_Rangers
             PickUpMap pickUpMap = new();
             PickUpKey pickUpKey = new();
             PickUpTriforce pickUpTriforce = new();
+            MoveEnemyLeft moveEnemyLeft = new();
+            MoveEnemyUp moveEnemyUp = new();
+            MoveEnemyRight moveEnemyRight = new();
+            MoveEnemyDown moveEnemyDown = new();
 
-            //link vs blocks
-            list.Add(KeyGenerator.Generate(link, blockBlueFloor, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockBlueFloor, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockBlueFloor, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockBlueFloor, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockBlueSand, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockBlueSand, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockBlueSand, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockBlueSand, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockBombedWall, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockBombedWall, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockBombedWall, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockBombedWall, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockDiamond, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockDiamond, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockDiamond, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockDiamond, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockFire, CollisionDirection.Left), hurtLink);
-            list.Add(KeyGenerator.Generate(link, blockFire, CollisionDirection.Top), hurtLink);
-            list.Add(KeyGenerator.Generate(link, blockFire, CollisionDirection.Right), hurtLink);
-            list.Add(KeyGenerator.Generate(link, blockFire, CollisionDirection.Bottom), hurtLink);
-            list.Add(KeyGenerator.Generate(link, blockKeyHole, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockKeyHole, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockKeyHole, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockKeyHole, CollisionDirection.Bottom), moveLinkDown);
-            //can walk through open doors for now
-            list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Left), moveLinkLeftAndPushBlockRight);
-            //list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Top), moveLinkLeftAndPushBlockRight);
-            //list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Right), moveLinkLeftAndPushBlockRight);
-            //list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Bottom), moveLinkLeftAndPushBlockRight);
-            //push will be added once we know exactly how it will work
-            //list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Left), moveLinkLeft);
-            //list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Top), moveLinkUp);
-            //list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Right), moveLinkRight);
-            //list.Add(KeyGenerator.Generate(link, blockSquare, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockStatue1, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockStatue1, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockStatue1, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockStatue1, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockStatue2, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockStatue2, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockStatue2, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockStatue2, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockWall, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockWall, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockWall, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockWall, CollisionDirection.Bottom), moveLinkDown);
-            list.Add(KeyGenerator.Generate(link, blockWhiteBrick, CollisionDirection.Left), moveLinkLeft);
-            list.Add(KeyGenerator.Generate(link, blockWhiteBrick, CollisionDirection.Top), moveLinkUp);
-            list.Add(KeyGenerator.Generate(link, blockWhiteBrick, CollisionDirection.Right), moveLinkRight);
-            list.Add(KeyGenerator.Generate(link, blockWhiteBrick, CollisionDirection.Bottom), moveLinkDown);
+            List<ICollision> objects = new() {
+                link, batKeese, blueCentaur, blueGorya, blueKnight, blueOcto, darkMoblin, dragonBoss, dragonProjectile,
+                gelBigGray, gelBigGreen, gelSmallBlack, gelSmallTeal, redCentaur, redGorya, redKnight, 
+                redMoblin, redOcto, skeleton, wallMaster 
+            };
+            List<ICollision> blocks = new() {
+                blockBlueFloor, blockBlueGap, blockBombedWall, blockDiamond, blockKeyHole, blockLadder,
+                blockOpenDoor, blockStairs, blockStatue1, blockStatue2, blockWall, blockWhiteBrick
+            };
+            List<IEvent> movementEvents = new() { 
+                moveLinkLeft, moveLinkUp, moveLinkRight, moveLinkDown, moveEnemyLeft, moveEnemyUp, 
+                moveEnemyRight, moveEnemyDown 
+            };
+            
+
+            AddEventsAgainstUnmovableBlocks(list, objects, blocks, movementEvents);
+
+            ////link vs blocks
+            //list.Add(KeyGenerator.Generate(link, blockBlueFloor, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockBlueFloor, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockBlueFloor, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockBlueFloor, CollisionDirection.Bottom), moveLinkDown);
+            ////sand is walkable
+            //list.Add(KeyGenerator.Generate(link, blockBombedWall, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockBombedWall, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockBombedWall, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockBombedWall, CollisionDirection.Bottom), moveLinkDown);
+            //list.Add(KeyGenerator.Generate(link, blockDiamond, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockDiamond, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockDiamond, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockDiamond, CollisionDirection.Bottom), moveLinkDown);
+            //list.Add(KeyGenerator.Generate(link, blockFire, CollisionDirection.Left), hurtLink);
+            //list.Add(KeyGenerator.Generate(link, blockFire, CollisionDirection.Top), hurtLink);
+            //list.Add(KeyGenerator.Generate(link, blockFire, CollisionDirection.Right), hurtLink);
+            //list.Add(KeyGenerator.Generate(link, blockFire, CollisionDirection.Bottom), hurtLink);
+            //list.Add(KeyGenerator.Generate(link, blockKeyHole, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockKeyHole, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockKeyHole, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockKeyHole, CollisionDirection.Bottom), moveLinkDown);
+            ////can walk through open doors for now
+            //list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Left), moveLinkLeftAndPushBlockRight);
+            ////list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Top), moveLinkLeftAndPushBlockRight);
+            ////list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Right), moveLinkLeftAndPushBlockRight);
+            ////list.Add(KeyGenerator.Generate(link, blockPush, CollisionDirection.Bottom), moveLinkLeftAndPushBlockRight);
+            ////push will be added once we know exactly how it will work
+            ////square is walkable
+            //list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockStairs, CollisionDirection.Bottom), moveLinkDown);
+            //list.Add(KeyGenerator.Generate(link, blockStatue1, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockStatue1, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockStatue1, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockStatue1, CollisionDirection.Bottom), moveLinkDown);
+            //list.Add(KeyGenerator.Generate(link, blockStatue2, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockStatue2, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockStatue2, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockStatue2, CollisionDirection.Bottom), moveLinkDown);
+            //list.Add(KeyGenerator.Generate(link, blockWall, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockWall, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockWall, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockWall, CollisionDirection.Bottom), moveLinkDown);
+            //list.Add(KeyGenerator.Generate(link, blockWhiteBrick, CollisionDirection.Left), moveLinkLeft);
+            //list.Add(KeyGenerator.Generate(link, blockWhiteBrick, CollisionDirection.Top), moveLinkUp);
+            //list.Add(KeyGenerator.Generate(link, blockWhiteBrick, CollisionDirection.Right), moveLinkRight);
+            //list.Add(KeyGenerator.Generate(link, blockWhiteBrick, CollisionDirection.Bottom), moveLinkDown);
 
             //link vs items
             list.Add(KeyGenerator.Generate(link, itemBomb, CollisionDirection.Left), pickUpItem);
@@ -264,6 +280,29 @@ namespace Legend_of_the_Power_Rangers
             //link items vs enemies
 
             return list;
+        }
+
+        private static void AddEventsAgainstUnmovableBlocks(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> objects, List<ICollision> blocks, List<IEvent> events)
+        {
+            foreach (ICollision obj in objects)
+            {
+                foreach (ICollision block in blocks)
+                {
+                    if (obj is Link)
+                    {
+                        eventList.Add(KeyGenerator.Generate(obj, block, CollisionDirection.Left), events[0]);
+                        eventList.Add(KeyGenerator.Generate(obj, block, CollisionDirection.Top), events[1]);
+                        eventList.Add(KeyGenerator.Generate(obj, block, CollisionDirection.Right), events[2]);
+                        eventList.Add(KeyGenerator.Generate(obj, block, CollisionDirection.Bottom), events[3]);
+                    } else
+                    {
+                        eventList.Add(KeyGenerator.Generate(obj, block, CollisionDirection.Left), events[4]);
+                        eventList.Add(KeyGenerator.Generate(obj, block, CollisionDirection.Top), events[5]);
+                        eventList.Add(KeyGenerator.Generate(obj, block, CollisionDirection.Right), events[6]);
+                        eventList.Add(KeyGenerator.Generate(obj, block, CollisionDirection.Bottom), events[7]);
+                    }   
+                }
+            }
         }
     }
 }
