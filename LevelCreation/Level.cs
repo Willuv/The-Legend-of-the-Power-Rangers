@@ -45,13 +45,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 door.Draw(spriteBatch);
             }
-            foreach (IItem item in loader.Items)
-            {
-                item.Draw(spriteBatch);
-            }
             foreach (IBlock block in loader.Blocks)
             {
                 block.Draw(spriteBatch);
+            }
+            foreach (IItem item in loader.Items)
+            {
+                item.Draw(spriteBatch);
             }
             foreach (IEnemy enemy in loader.Enemies)
             {

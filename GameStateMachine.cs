@@ -1,6 +1,8 @@
 ﻿using Legend_of_the_Power_Rangers.LevelCreation;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.IO;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -25,7 +27,6 @@ namespace Legend_of_the_Power_Rangers
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
         private MouseController mouseController;
-        private Level level;
 
         public GameStateMachine(Game1 game, SpriteBatch spriteBatch)
         {
@@ -100,9 +101,21 @@ namespace Legend_of_the_Power_Rangers
 
         public void ResetGame()
         {
-            // Reset game to initial state
-            InitializeGameplayState();  // Reinitialize the gameplay state
+            InitializeGameplayState();  // Reinitialize gameplay elements
+            ResetLevel();  // Call the new method to reset the level
             ChangeState(GameState.Gameplay);  // Set the current state to Gameplay
+        }
+
+        private void ResetLevel()
+        {
+            // Reload the level from the first room or initial state
+            string initialRoomPath = game.Content.RootDirectory + "\\LinkDungeon1 - Room1.csv";
+            game.reader = new StreamReader(initialRoomPath);
+            game.level = new Level(game.levelSpriteSheet, game.reader, game.Content.RootDirectory);
+
+            // Reset other related elements (e.g., blocks, items, etc.)
+            game.blockManager = new BlockManager(new List<string> { "Statue1", "Statue2" });
+            game.itemManager = new ItemManager(new List<string> { "Compass", "Map" });
         }
 
         public void Update(GameTime gameTime)

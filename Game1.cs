@@ -12,6 +12,7 @@ namespace Legend_of_the_Power_Rangers
         private SpriteBatch spriteBatch;
         public Texture2D itemSpriteSheet;
         public Texture2D enemySpritesheet;
+        public Texture2D levelSpriteSheet;
         public BlockManager blockManager;
         public ItemManager itemManager;
         public LinkItemFactory linkItemFactory;
@@ -42,7 +43,7 @@ namespace Legend_of_the_Power_Rangers
             itemSpriteSheet = Content.Load<Texture2D>("Items");
             enemySpritesheet = Content.Load<Texture2D>("Enemies");
             Texture2D blockSpriteSheet = Content.Load<Texture2D>("Blocks");
-            Texture2D levelSpriteSheet = Content.Load<Texture2D>("Level");
+            levelSpriteSheet = Content.Load<Texture2D>("Level");
             Texture2D linkSpriteSheet = Content.Load<Texture2D>("Link Sprites");
             Texture2D projectileSpriteSheet = Content.Load<Texture2D>("Projectiles");
             Texture2D bossSpriteSheet = Content.Load<Texture2D>("Bosses");
