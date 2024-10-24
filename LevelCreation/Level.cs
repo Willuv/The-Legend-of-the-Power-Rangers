@@ -44,7 +44,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         public List<ICollision> GetRoomObjects()
         {
             List<ICollision> roomObjects = new();
-
             // Add blocks, enemies, and items to the list
             roomObjects.AddRange(loader.Blocks);
             roomObjects.AddRange(loader.Enemies);

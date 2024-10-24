@@ -59,18 +59,14 @@ namespace Legend_of_the_Power_Rangers
             blockManager = new BlockManager(new List<string> { "Statue1", "Statue2", /* ... */ });
             itemManager = new ItemManager(new List<string> { "Compass", "Map", /* ... */ });
 
-            // Initialize level
-            string path = Content.RootDirectory;
-            reader = new StreamReader(path + "\\LinkDungeon1 - Room1.csv");
-            this.level = new Level(levelSpriteSheet, reader, path);
-
             // Initialize state machine
             gameStateMachine = new GameStateMachine(this, spriteBatch);
         }
 
+
         protected override void Update(GameTime gameTime)
         {
-
+            gameStateMachine.Update(gameTime);w
             base.Update(gameTime);
         }
 
