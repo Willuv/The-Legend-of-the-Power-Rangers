@@ -53,7 +53,7 @@ public class Link : ICollision
             case LinkStateMachine.LinkDirection.Down:
                 break;
         }
-        
+
         destinationRectangle = new Rectangle(
             destinationRectangle.X + xOffset,
             destinationRectangle.Y + yOffset,

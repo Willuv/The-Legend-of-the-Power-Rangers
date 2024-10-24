@@ -133,8 +133,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 for (int j = 0; j < 12; j++)
                 {
                     splitLine = CSVParser.Split(line);
-                    int currentx = 165 + (80 * j);
-                    int currenty = 162 + (81 * (i-1));
+
+                    int currentx = 160 + (80 * j);
+                    int currenty = 157 + (81 * (i-1));
                     String tileCode = splitLine[j];
                     //Debug.WriteLine(tileCode);
                     String blockOneCode = tileCode.Substring(1, 2);
@@ -162,7 +163,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                         item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 50, 50);
                         items.Add(item);
                     }
-                        
+
                 }
             }
         }
