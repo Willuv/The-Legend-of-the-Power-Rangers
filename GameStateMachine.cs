@@ -21,9 +21,8 @@ namespace Legend_of_the_Power_Rangers
         private GameState currentState;
         private Game1 game;
         private SpriteBatch spriteBatch;
-        public Level level; // Make it public to access from Game1 if needed
+        public Level level;
 
-        // State-specific objects
         private Link link;
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
@@ -64,18 +63,39 @@ namespace Legend_of_the_Power_Rangers
 
         private void InitializeGameplayState()
         {
-            // Step 1: Initialize Link and its decorator first
-            link = new Link(); // Assign to class-level variable
+            // Load assets only if they haven't been loaded already
+            if (game.itemSpriteSheet == null) game.itemSpriteSheet = game.Content.Load<Texture2D>("Items");
+            if (game.enemySpritesheet == null) game.enemySpritesheet = game.Content.Load<Texture2D>("Enemies");
+            Texture2D blockSpriteSheet = game.Content.Load<Texture2D>("Blocks");
+            game.levelSpriteSheet = game.Content.Load<Texture2D>("Level");
+            Texture2D linkSpriteSheet = game.Content.Load<Texture2D>("Link Sprites");
+            Texture2D projectileSpriteSheet = game.Content.Load<Texture2D>("Projectiles");
+            Texture2D bossSpriteSheet = game.Content.Load<Texture2D>("Bosses");
+
+            // Set up factories
+            BlockSpriteFactory.Instance.SetBlockSpritesheet(blockSpriteSheet);
+            ItemSpriteFactory.Instance.SetItemSpritesheet(game.itemSpriteSheet);
+            EnemySpriteFactory.Instance.SetEnemySpritesheet(game.enemySpritesheet);
+            LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
+            EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
+            game.linkItemFactory = new LinkItemFactory(game.itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+
+            // Initialize managers if they are null
+            game.blockManager ??= new BlockManager(new List<string> { "Statue1", "Statue2" });
+            game.itemManager ??= new ItemManager(new List<string> { "Compass", "Map" });
+
+            // Initialize Link and its decorator
+            link = new Link();
             LinkManager.Initialize(link);
-            linkDecorator = new LinkDecorator(link); // Assign to class-level variable
+            linkDecorator = new LinkDecorator(link);
             LinkManager.SetLinkDecorator(linkDecorator);
 
-            // Step 2: Initialize the level
+            // Load the level
             string path = game.Content.RootDirectory;
-            StreamReader reader = new StreamReader(path + "\\LinkDungeon1 - Room1.csv");
-            level = new Level(game.levelSpriteSheet, reader, path); // Level is now initialized in GameStateMachine
+            game.reader = new StreamReader(path + "\\LinkDungeon1 - Room1.csv");
+            level = new Level(game.levelSpriteSheet, game.reader, path);
 
-            // Step 3: Set up controllers
+            // Set up controllers
             keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
             mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
         }
@@ -107,19 +127,18 @@ namespace Legend_of_the_Power_Rangers
 
         public void ResetGame()
         {
-            InitializeGameplayState();  // Reinitialize gameplay elements
-            ResetLevel();  // Call the new method to reset the level
-            ChangeState(GameState.Gameplay);  // Set the current state to Gameplay
+            InitializeGameplayState();
+            ResetLevel();
+            ChangeState(GameState.Gameplay);
         }
 
         private void ResetLevel()
         {
-            // Reload the level from the first room or initial state
             string initialRoomPath = game.Content.RootDirectory + "\\LinkDungeon1 - Room1.csv";
             game.reader = new StreamReader(initialRoomPath);
-            level = new Level(game.levelSpriteSheet, game.reader, game.Content.RootDirectory); // Use class-level variable
+            level = new Level(game.levelSpriteSheet, game.reader, game.Content.RootDirectory);
 
-            // Reset other related elements (e.g., blocks, items, etc.)
+            // Reset other elements like blocks and items
             game.blockManager = new BlockManager(new List<string> { "Statue1", "Statue2" });
             game.itemManager = new ItemManager(new List<string> { "Compass", "Map" });
         }
@@ -132,7 +151,7 @@ namespace Legend_of_the_Power_Rangers
                     UpdateGameplay(gameTime);
                     break;
                 case GameState.Paused:
-                    // Handle paused state update (if any)
+                    // Handle paused state update
                     break;
                 case GameState.ItemSelection:
                     // Handle item selection update
@@ -156,7 +175,7 @@ namespace Legend_of_the_Power_Rangers
             link.Update(gameTime);
             linkDecorator.Update(gameTime);
             game.linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
-            level.Update(gameTime); // Use the class-level variable
+            level.Update(gameTime);
         }
 
         public void Draw(GameTime gameTime)
@@ -188,7 +207,7 @@ namespace Legend_of_the_Power_Rangers
 
         private void DrawGameplay()
         {
-            level.Draw(game.enemySpritesheet, spriteBatch); // Use the class-level variable
+            level.Draw(game.enemySpritesheet, spriteBatch);
             game.linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
         }
