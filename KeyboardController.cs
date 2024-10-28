@@ -12,7 +12,7 @@ namespace Legend_of_the_Power_Rangers
         private KeyboardState previousKeyboardState;
         private readonly LinkIdleCommand idleCommand;
 
-        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager ,Game1 game)
+        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager ,Game1 game, GameStateMachine gameStateMachine)
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {
@@ -32,10 +32,10 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.Y, new BlockNextCommand(blockManager) },
                 { Keys.U, new ItemShowPreviousCommand(itemManager) },
                 { Keys.I, new ItemShowNextCommand(itemManager) },
-                { Keys.O, new NPCShowPreviousCommand(game) },
-                { Keys.P, new NPCShowNextCommand(game) },
+                //{ Keys.O, new NPCShowPreviousCommand(game) },
+                //{ Keys.P, new NPCShowNextCommand(game) },
                 { Keys.Q, new QuitCommand(game) },
-                { Keys.R, new ResetCommand(game) }
+                { Keys.R, new ResetCommand(gameStateMachine) }
             };
             idleCommand = new LinkIdleCommand(stateMachine);
         }

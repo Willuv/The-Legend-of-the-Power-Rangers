@@ -30,7 +30,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
             wallsSource = new Rectangle(0, 0, 255, 175);
-            wallsDestination = new Rectangle(5, 5, 255 * scaleFactor, 175 * scaleFactor);
+            wallsDestination = new Rectangle(0, 0, 255 * scaleFactor, 175 * scaleFactor);
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = 18;
             currentRoom = 0;
@@ -44,13 +44,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         public List<ICollision> GetRoomObjects()
         {
             List<ICollision> roomObjects = new();
-
             // Add blocks, enemies, and items to the list
             roomObjects.AddRange(loader.Blocks);
             roomObjects.AddRange(loader.Enemies);
             roomObjects.AddRange(loader.Items);
 
             return roomObjects;
+
         }
 
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
@@ -60,13 +60,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 door.Draw(spriteBatch);
             }
-            foreach (IItem item in loader.Items)
-            {
-                item.Draw(spriteBatch);
-            }
             foreach (IBlock block in loader.Blocks)
             {
                 block.Draw(spriteBatch);
+            }
+            foreach (IItem item in loader.Items)
+            {
+                item.Draw(spriteBatch);
             }
             foreach (IEnemy enemy in loader.Enemies)
             {

@@ -12,6 +12,7 @@ public class Link : ICollision
     private const int LinkWidth = 48;
     private const int LinkHeight = 48;
     private Rectangle destinationRectangle;
+
     public Rectangle DestinationRectangle
     {
         get { return destinationRectangle; }
@@ -53,7 +54,7 @@ public class Link : ICollision
             case LinkStateMachine.LinkDirection.Down:
                 break;
         }
-        
+
         destinationRectangle = new Rectangle(
             destinationRectangle.X + xOffset,
             destinationRectangle.Y + yOffset,
