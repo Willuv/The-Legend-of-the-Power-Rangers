@@ -10,6 +10,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private static Link currentLink;
         private static LinkDecorator currentDecorator;
+        private static LinkInventory currentInventory;
 
 
         public static void Initialize(Link startingLink)
@@ -35,6 +36,16 @@ namespace Legend_of_the_Power_Rangers
         public static LinkDecorator GetLinkDecorator()
         {
             return currentDecorator;
+        }
+
+        public static void setLinkInventory(LinkInventory linkInventory)
+        {
+            currentInventory = linkInventory;
+        }
+
+        public static LinkInventory GetLinkInventory()
+        {
+            return currentInventory;
         }
 
     }

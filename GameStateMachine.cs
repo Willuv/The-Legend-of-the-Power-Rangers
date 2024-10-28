@@ -32,7 +32,7 @@ namespace Legend_of_the_Power_Rangers
         {
             this.game = game;
             this.spriteBatch = spriteBatch;
-            InitializeGameplayState(); // Start the game in gameplay state
+            InitializeGameplayState(); // Start the game in gameplay state will change to start state later on
         }
 
         public void ChangeState(GameState newState)
@@ -78,6 +78,8 @@ namespace Legend_of_the_Power_Rangers
             EnemySpriteFactory.Instance.SetEnemySpritesheet(game.enemySpritesheet);
             LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
+            EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
+
             game.linkItemFactory = new LinkItemFactory(game.itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 
             // Initialize managers if they are null
