@@ -6,7 +6,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class SwordSprite : IitemSprite
+    public class SwordSprite : ILinkItemSprite
     {
         private Texture2D swordTexture;
         int totalFrames;
@@ -62,7 +62,7 @@ namespace Legend_of_the_Power_Rangers
         int scaleFactor = 3;
 
         public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
-        public LinkItemType LinkItemType { get { return LinkItemType.Arrow; } }
+        public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Arrow; } }
 
         public SwordSprite(Texture2D texture, Rectangle position, LinkDirection direction)
         {

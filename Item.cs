@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D itemSpriteSheet;
         private Texture2D projectileSpriteSheet;
         private Texture2D blockSpriteSheet; 
-        private IitemSprite item;
+        private ILinkItemSprite item;
         public enum CreationLinkItemType
         {
             Boomerang, Arrow, Sword, Bomb, Candle
