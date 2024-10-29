@@ -12,14 +12,13 @@ namespace Legend_of_the_Power_Rangers
     {
         public MoveEnemyLeft() { }
 
-        public void Execute(ICollision link, ICollision nonMovingBlock, CollisionDirection direction)
+        public void Execute(ICollision enemy, ICollision nonMovingBlock, CollisionDirection direction)
         {
-            Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, nonMovingBlock.DestinationRectangle);
-            Rectangle newDestination = link.DestinationRectangle;
+            Rectangle overlap = Rectangle.Intersect(enemy.DestinationRectangle, nonMovingBlock.DestinationRectangle);
+            Rectangle newDestination = enemy.DestinationRectangle;
            
             newDestination.X -= overlap.Width;
-            link.DestinationRectangle = newDestination;
-            Debug.WriteLine("MoveLinkLeft is called");
+            enemy.DestinationRectangle = newDestination;
         }
     }
 }

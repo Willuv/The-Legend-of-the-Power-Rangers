@@ -6,7 +6,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class ArrowSprite : ILinkItemSprite
+    public class ArrowSprite : ILinkItemSprite, IDamaging
     {
         private Texture2D arrowTexture;
         int totalFrames;

@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics;
 
-public class Link : ICollision
+public class Link : ICollision, IDamaging
 {
     private LinkStateMachine stateMachine;
     private ILinkSprite currentSprite;

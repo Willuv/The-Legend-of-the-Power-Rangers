@@ -3,22 +3,27 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
-using static Legend_of_the_Power_Rangers.Item;
+using System.Diagnostics;
+using static Legend_of_the_Power_Rangers.LinkItem;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
-public class LinkItemFactory
+public class LinkItemFactory : IDamaging
 {
 	private readonly Texture2D itemSpriteSheet;
     private readonly Texture2D projectileSpriteSheet;
     private readonly Texture2D blockSpriteSheet;
-    private readonly List<Item> ActiveItems;
+    private readonly List<LinkItem> ActiveItems;
 	private readonly List<int> toRemove;
 	private readonly int toRemoveIndex;
 	private Rectangle position;
 	private LinkDirection direction;
-	public LinkItemFactory(Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
+
+	//for collision
+    public event ObjectEventHandler OnObjectCreated = delegate { };
+    public event ObjectEventHandler OnObjectRemoved = delegate { };
+    public LinkItemFactory(Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
 	{
-		this.ActiveItems = new List<Item>();
+		this.ActiveItems = new List<LinkItem>();
 		this.toRemove = new List<int>();
 		this.itemSpriteSheet = itemSpriteSheet;
 		this.projectileSpriteSheet = projectileSpriteSheet;
@@ -26,33 +31,38 @@ public class LinkItemFactory
 	}
 	public void CreateItem(CreationLinkItemType type)
 	{
-		//if (ActiveItems.Count == 0)
-		//{
-			switch (type)
-			{
-				case CreationLinkItemType.Bomb:
-					ActiveItems.Add(new Item(CreationLinkItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
-					break;
-				case CreationLinkItemType.Arrow:
-					ActiveItems.Add(new Item(CreationLinkItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
-					break;
-				case CreationLinkItemType.Sword:
-					ActiveItems.Add(new Item(CreationLinkItemType.Sword, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
-					break;
-				case CreationLinkItemType.Boomerang:
-					ActiveItems.Add(new Item(CreationLinkItemType.Boomerang, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
-					break;
-				case CreationLinkItemType.Candle:
-					ActiveItems.Add(new Item(CreationLinkItemType.Candle, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet));
-					break;
-			}
-		//}
-	}
+        LinkItem item = null;
+		switch (type)
+		{
+			case CreationLinkItemType.Bomb:
+				item = new(CreationLinkItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+				break;
+			case CreationLinkItemType.Arrow:
+				item = new(CreationLinkItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+				break;
+			case CreationLinkItemType.Sword:
+                item = new(CreationLinkItemType.Sword, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+				break;
+			case CreationLinkItemType.Boomerang:
+                item = new(CreationLinkItemType.Boomerang, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+				break;
+			case CreationLinkItemType.Candle:
+                item = new(CreationLinkItemType.Candle, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+				break;
+        }
+
+        ActiveItems.Add(item);
+		ICollision collidable = item.CollisionObject;
+		if (item == null) Debug.WriteLine("item is null");
+		if (collidable == null) Debug.WriteLine("collidable is null");
+        DelegateManager.RaiseObjectCreated(collidable);
+		Debug.WriteLine("Object creation invoked");
+    }
 	public void Update(GameTime gametime, Rectangle position, LinkDirection linkDirection)
 	{
 		this.position = position;
 		this.direction = linkDirection;
-		foreach (Item item in ActiveItems)
+		foreach (LinkItem item in ActiveItems)
 		{
 			item.Update(gametime);
 			if (item.GetState())
@@ -64,14 +74,17 @@ public class LinkItemFactory
 		{
 			if (removeIndex < ActiveItems.Count)
 			{
-				ActiveItems.RemoveAt(removeIndex);
-			}
+				ICollision collidable = ActiveItems[removeIndex] as ICollision;
+				DelegateManager.RaiseObjectRemoved(collidable);
+                ActiveItems.RemoveAt(removeIndex);
+				Debug.WriteLine("Object removal invoked");
+            }
 		}
 		toRemove.Clear();
 	}
 	public void Draw(SpriteBatch spritebatch)
 	{
-		foreach (Item item in ActiveItems)
+		foreach (LinkItem item in ActiveItems)
 		{
 			item.Draw(spritebatch);
 		}

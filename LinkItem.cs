@@ -10,7 +10,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class Item
+    public class LinkItem
     {
 
         private Texture2D itemSpriteSheet;
@@ -22,7 +22,7 @@ namespace Legend_of_the_Power_Rangers
             Boomerang, Arrow, Sword, Bomb, Candle
         }
 
-        public Item(CreationLinkItemType type, Rectangle position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
+        public LinkItem(CreationLinkItemType type, Rectangle position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
         {
             switch (type)
             {
@@ -58,5 +58,8 @@ namespace Legend_of_the_Power_Rangers
         {
             return item.GetState();
         }
+
+        //for collision. returns the item as ICollision so we don't have to go multiple classes deep
+        public ICollision CollisionObject => item as ICollision;
     }
 }

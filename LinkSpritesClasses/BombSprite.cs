@@ -7,7 +7,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BombSprite : ILinkItemSprite
+    public class BombSprite : ILinkItemSprite, IDamaging
 	{
 		private Texture2D bombTexture;
         int totalFrames;

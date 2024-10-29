@@ -7,7 +7,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BoomerangSprite : ILinkItemSprite
+    public class BoomerangSprite : ILinkItemSprite, IDamaging
     {
         private Texture2D boomerangTexture;
         int totalFrames;

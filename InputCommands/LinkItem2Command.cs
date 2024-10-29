@@ -19,7 +19,7 @@ namespace Legend_of_the_Power_Rangers
         public void Execute()
         {
             this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
-            this.linkItemFactory.CreateItem(Item.CreationLinkItemType.Arrow);
+            this.linkItemFactory.CreateItem(LinkItem.CreationLinkItemType.Arrow);
         }
     }
 }
