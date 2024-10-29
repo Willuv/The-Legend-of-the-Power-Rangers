@@ -20,7 +20,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int numRooms;
         int currentRoom;
         int loadedRoom;
-        int scaleFactor = 5;
+        int scaleFactor = 4;
         private StreamReader reader;
         private CollisionManager collisionManager;
         private List<ICollision> loadedObjects;
@@ -30,7 +30,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
             wallsSource = new Rectangle(0, 0, 255, 175);
-            wallsDestination = new Rectangle(0, 124, 255 * scaleFactor, 175 * scaleFactor);
+            wallsDestination = new Rectangle(0, 192, 255 * scaleFactor, 175 * scaleFactor);
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = 18;
             currentRoom = 0;

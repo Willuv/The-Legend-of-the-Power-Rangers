@@ -21,8 +21,8 @@ namespace Legend_of_the_Power_Rangers
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
-            graphics.PreferredBackBufferWidth = 1275;
-            graphics.PreferredBackBufferHeight = 1115;
+            graphics.PreferredBackBufferWidth = 1020;
+            graphics.PreferredBackBufferHeight = 892;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
