@@ -135,7 +135,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     splitLine = CSVParser.Split(line);
 
                     int currentx = 160 + (80 * j);
-                    int currenty = 157 + (81 * (i-1));
+                    int currenty = 281 + (81 * (i-1));
                     String tileCode = splitLine[j];
                     //Debug.WriteLine(tileCode);
                     String blockOneCode = tileCode.Substring(1, 2);

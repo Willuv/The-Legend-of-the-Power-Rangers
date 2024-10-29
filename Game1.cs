@@ -22,7 +22,7 @@ namespace Legend_of_the_Power_Rangers
         {
             graphics = new GraphicsDeviceManager(this);
             graphics.PreferredBackBufferWidth = 1275;
-            graphics.PreferredBackBufferHeight = 875;
+            graphics.PreferredBackBufferHeight = 1115;
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
         }
