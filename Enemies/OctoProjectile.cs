@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class OctoProjectile : IitemSprite
+    public class OctoProjectile
     {
         private Texture2D projectileTexture;
         private Rectangle sourceRectangle;
