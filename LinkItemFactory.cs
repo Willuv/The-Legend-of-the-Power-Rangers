@@ -62,7 +62,7 @@ public class LinkItemFactory
 		foreach (LinkItem item in ActiveItems)
 		{
 			item.Update(gametime);
-			if (item.GetState())
+			if (item.GetState() || item.DamagingObject.HasHitWall)
 			{
 				toRemove.Add(ActiveItems.IndexOf(item));
 			}

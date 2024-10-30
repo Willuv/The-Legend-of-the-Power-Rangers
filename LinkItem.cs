@@ -61,5 +61,6 @@ namespace Legend_of_the_Power_Rangers
 
         //for collision. returns the item as ICollision so we don't have to go multiple classes deep
         public ICollision CollisionObject => item as ICollision;
+        public IDamaging DamagingObject => item as IDamaging;
     }
 }
