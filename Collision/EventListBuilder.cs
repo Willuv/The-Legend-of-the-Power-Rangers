@@ -31,6 +31,13 @@ namespace Legend_of_the_Power_Rangers
                 new BlockKeyHole(), new BlockLadder(), new BlockOpenDoor(), new BlockStairs(), 
                 new BlockStatue1(), new BlockStatue2(), new BlockWall(), new BlockWhiteBrick()
             };
+            List<ICollision> otherBlocks = new()
+            {
+                new BlockPush() //will add stairs and other odd cases
+            };
+            List<ICollision> allCollidableBlocks = new();
+            allCollidableBlocks.AddRange(unmoveableBlocks);
+            allCollidableBlocks.AddRange(otherBlocks);
             List<IEvent> movementEvents = new() {
                 new MoveLinkLeft(), new MoveLinkUp(), new MoveLinkRight(), new MoveLinkDown(),
                 new MoveEnemyLeft(), new MoveEnemyUp(), new MoveEnemyRight(), new MoveEnemyDown()
@@ -46,6 +53,11 @@ namespace Legend_of_the_Power_Rangers
                 new ArrowSprite(null, r, 0), new BombSprite(null, r, 0), new BoomerangSprite(null, r, 0),
                 new CandleSprite(null, r, 0), new SwordSprite(null, r, 0)
             };
+            List<ICollision> allProjectiles = new()
+            {
+                //add enemy projectiles
+            };
+            allProjectiles.AddRange(linkAttackObjects);
             List<IEvent> enemyDamageLinkEvents = new()
             {
                 new MoveLinkLeftAndGetHurt(), new MoveLinkUpAndGetHurt(),
@@ -53,10 +65,11 @@ namespace Legend_of_the_Power_Rangers
             };
             
             
-            //link and enemies vs blocks
+            //things vs blocks
             AddEntitiesAgainstUnmovableBlocksEvents(list, link, enemies, unmoveableBlocks, movementEvents);
             //AddUniqueBlockEvents(list, link, enemies, uniqueBlocksAndEvents);
             //uniqueBlocksAndEvents can be a dictionary?
+            AddProjectilesAgainstBlocksEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());
 
             //link vs items
             AddLinkPickupItemEvents(list, link, pickupableItems, new PickUpItem());
@@ -110,14 +123,28 @@ namespace Legend_of_the_Power_Rangers
 
         private static void AddLinkDamagingEnemyEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> linkAttackObjects, List<ICollision> enemies, IEvent damageEnemy)
         {
-            foreach(ICollision attack in linkAttackObjects)
+            foreach (ICollision attack in linkAttackObjects)
             {
-                foreach(ICollision enemy in enemies)
+                foreach (ICollision enemy in enemies)
                 {
                     eventList.Add(KeyGenerator.Generate(attack, enemy, CollisionDirection.Left), damageEnemy);
                     eventList.Add(KeyGenerator.Generate(attack, enemy, CollisionDirection.Top), damageEnemy);
                     eventList.Add(KeyGenerator.Generate(attack, enemy, CollisionDirection.Right), damageEnemy);
                     eventList.Add(KeyGenerator.Generate(attack, enemy, CollisionDirection.Bottom), damageEnemy);
+                }
+            }
+        }
+
+        private static void AddProjectilesAgainstBlocksEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> projectiles, List<ICollision> blocks, IEvent projectileVanish)
+        {
+            foreach (ICollision projectile in projectiles)
+            {
+                foreach (ICollision block in blocks)
+                {
+                    eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Left), projectileVanish);
+                    eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Top), projectileVanish);
+                    eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Right), projectileVanish);
+                    eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Bottom), projectileVanish);
                 }
             }
         }

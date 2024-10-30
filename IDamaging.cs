@@ -5,9 +5,8 @@ using Microsoft.Xna.Framework.Input;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public delegate void ObjectEventHandler(ICollision obj);
-
     public interface IDamaging
     {
+        bool HasHitWall { get; set; }
     }
 }

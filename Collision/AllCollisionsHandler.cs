@@ -26,7 +26,7 @@ namespace Legend_of_the_Power_Rangers
             }
             else
             {
-                //Debug.WriteLine($"{object1}{object2}{direction} not found in eventList.");
+                Debug.WriteLine($"{object1}{object2}{direction} not found in eventList.");
             }
         }
 

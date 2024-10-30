@@ -7,7 +7,7 @@ using System.Diagnostics;
 using static Legend_of_the_Power_Rangers.LinkItem;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
-public class LinkItemFactory : IDamaging
+public class LinkItemFactory
 {
 	private readonly Texture2D itemSpriteSheet;
     private readonly Texture2D projectileSpriteSheet;
@@ -18,9 +18,6 @@ public class LinkItemFactory : IDamaging
 	private Rectangle position;
 	private LinkDirection direction;
 
-	//for collision
-    public event ObjectEventHandler OnObjectCreated = delegate { };
-    public event ObjectEventHandler OnObjectRemoved = delegate { };
     public LinkItemFactory(Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
 	{
 		this.ActiveItems = new List<LinkItem>();
@@ -74,7 +71,7 @@ public class LinkItemFactory : IDamaging
 		{
 			if (removeIndex < ActiveItems.Count)
 			{
-				ICollision collidable = ActiveItems[removeIndex] as ICollision;
+				ICollision collidable = ActiveItems[removeIndex].CollisionObject;
 				DelegateManager.RaiseObjectRemoved(collidable);
                 ActiveItems.RemoveAt(removeIndex);
 				Debug.WriteLine("Object removal invoked");

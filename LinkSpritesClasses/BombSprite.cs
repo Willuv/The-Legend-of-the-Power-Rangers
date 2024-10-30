@@ -31,6 +31,12 @@ namespace Legend_of_the_Power_Rangers
 
         public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
         public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Bomb; } }
+        private bool hasHitWall = false;
+        public bool HasHitWall
+        {
+            get { return hasHitWall; }
+            set { hasHitWall = value; }
+        }
 
         public BombSprite(Texture2D texture, Rectangle position, LinkDirection direction)
 		{

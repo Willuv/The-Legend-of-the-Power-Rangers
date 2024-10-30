@@ -62,7 +62,13 @@ namespace Legend_of_the_Power_Rangers
         int scaleFactor = 3;
 
         public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
-        public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Arrow; } }
+        public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.ThrownSword; } }
+        private bool hasHitWall = false;
+        public bool HasHitWall
+        {
+            get { return hasHitWall; }
+            set { hasHitWall = value; }
+        }
 
         public SwordSprite(Texture2D texture, Rectangle position, LinkDirection direction)
         {
