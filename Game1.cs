@@ -48,7 +48,7 @@ namespace Legend_of_the_Power_Rangers
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
             gameStateMachine.Draw(gameTime);
 
             base.Draw(gameTime);

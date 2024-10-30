@@ -13,6 +13,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
     public class Level
     {
         int[,] map;
+        IWall[] walls;
         LevelLoader loader;
         Texture2D levelSpriteSheet;
         Rectangle wallsSource;
@@ -49,13 +50,23 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 { -1, -1, 4, -1, -1, -1},
                 { -1, 2, 1, 3, -1, -1}
             };
+            walls = CreateWalls();
             Debug.WriteLine(map[currentRoomRow, currentRoomColumn]);
             loader.Load(reader);
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
         }
+        private static IWall[] CreateWalls()
+        {
+            IWall[] walls = new IWall[8];
+            for (int i = 0; i < walls.Length; i++)
+            {
+                walls[i] = new Wall(i);
+            }
 
+            return walls;
+        }
         public List<ICollision> GetRoomObjects()
         {
             List<ICollision> roomObjects = new();
@@ -73,12 +84,15 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         {
             if (currentRoom != 18)
             {
-                spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
-            }
-            
-            foreach (IDoor door in loader.Doors)
-            {
-                door.Draw(spriteBatch);
+                foreach (IWall wall in walls)
+                {
+                    wall.Draw(spriteBatch, levelSpriteSheet);
+                }
+                //spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
+                foreach (IDoor door in loader.Doors)
+                {
+                    door.Draw(spriteBatch);
+                }
             }
             foreach (IBlock block in loader.Blocks)
             {
@@ -86,7 +100,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             foreach (IItem item in loader.Items)
             {
-                item.Draw(spriteBatch);
+                    item.Draw(spriteBatch);
             }
             foreach (IEnemy enemy in loader.Enemies)
             {
@@ -96,7 +110,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
         public void Update(GameTime gametime) 
         {
-            
+            List<int> toRemove = new List<int>();
             if (currentRoom != loadedRoom)
             {
                 loader.Load(reader);
@@ -110,7 +124,16 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             foreach (IItem item in loader.Items)
             {
                 item.Update(gametime);
+                if (item.PickedUp)
+                {
+                    toRemove.Add(loader.Items.IndexOf(item));
+                }
             }
+            foreach (int removeIndex in toRemove)
+            {
+                loader.Items.RemoveAt(removeIndex);
+            }
+            toRemove.Clear();
             foreach (IBlock block in loader.Blocks)
             {
                 block.Update(gametime);
@@ -130,7 +153,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             if (currentRoom < 0)
             {
-                currentRoom = numRooms - 1;
+                currentRoom = numRooms;
             }
             loader.DeloadRoom();
             loadedObjects.Clear();
