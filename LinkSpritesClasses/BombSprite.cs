@@ -7,7 +7,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BombSprite : ILinkItemSprite
+    public class BombSprite : ILinkItemSprite, IDamaging
 	{
 		private Texture2D bombTexture;
         int totalFrames;
@@ -31,6 +31,12 @@ namespace Legend_of_the_Power_Rangers
 
         public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
         public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Bomb; } }
+        private bool hasHitWall = false;
+        public bool HasHitWall
+        {
+            get { return hasHitWall; }
+            set { hasHitWall = value; }
+        }
 
         public BombSprite(Texture2D texture, Rectangle position, LinkDirection direction)
 		{

@@ -19,7 +19,6 @@ namespace Legend_of_the_Power_Rangers
            
             newDestination.Y -= overlap.Height;
             link.DestinationRectangle = newDestination;
-            Debug.WriteLine("MoveLinkUp is called");
         }
     }
 }

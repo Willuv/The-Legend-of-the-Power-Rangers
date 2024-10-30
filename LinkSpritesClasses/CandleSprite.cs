@@ -7,7 +7,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class CandleSprite : ILinkItemSprite
+    public class CandleSprite : ILinkItemSprite, IDamaging
     {
         private Texture2D candleTexture;
         int totalFrames;
@@ -30,6 +30,12 @@ namespace Legend_of_the_Power_Rangers
 
         public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
         public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Candle; } }
+        private bool hasHitWall = false;
+        public bool HasHitWall
+        {
+            get { return hasHitWall; }
+            set { hasHitWall = value; }
+        }
 
         public CandleSprite(Texture2D texture, Rectangle position, LinkDirection direction)
         {

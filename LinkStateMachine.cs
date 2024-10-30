@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using static Legend_of_the_Power_Rangers.LinkStateMachine;
-using static Legend_of_the_Power_Rangers.Item;
+using static Legend_of_the_Power_Rangers.LinkItem;
 using System.Diagnostics;
 
 namespace Legend_of_the_Power_Rangers
