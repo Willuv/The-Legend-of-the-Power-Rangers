@@ -26,7 +26,7 @@ namespace Legend_of_the_Power_Rangers
                 new RedCentaur(), new RedGorya(), new RedKnight(), new RedMoblin(), new RedOcto(null), 
                 new Skeleton(), new WallMaster()
             };
-            List<ICollision> unmoveableBlocks = new() {
+            List<ICollision> unmovableBlocks = new() {
                 new BlockBlueFloor(), new BlockBlueGap(), new BlockBombedWall(), new BlockDiamond(), 
                 new BlockKeyHole(), new BlockLadder(), new BlockOpenDoor(), new BlockStairs(), 
                 new BlockStatue1(), new BlockStatue2(), new BlockWall(), new BlockWhiteBrick()
@@ -36,7 +36,7 @@ namespace Legend_of_the_Power_Rangers
                 new BlockPush() //will add stairs and other odd cases
             };
             List<ICollision> allCollidableBlocks = new();
-            allCollidableBlocks.AddRange(unmoveableBlocks);
+            allCollidableBlocks.AddRange(unmovableBlocks);
             allCollidableBlocks.AddRange(otherBlocks);
             List<IEvent> movementEvents = new() {
                 new MoveLinkLeft(), new MoveLinkUp(), new MoveLinkRight(), new MoveLinkDown(),
@@ -66,7 +66,7 @@ namespace Legend_of_the_Power_Rangers
             
             
             //things vs blocks
-            AddEntitiesAgainstUnmovableBlocksEvents(list, link, enemies, unmoveableBlocks, movementEvents);
+            AddEntitiesAgainstUnmovableBlocksEvents(list, link, enemies, unmovableBlocks, movementEvents);
             //AddUniqueBlockEvents(list, link, enemies, uniqueBlocksAndEvents);
             //uniqueBlocksAndEvents can be a dictionary?
             AddProjectilesAgainstBlocksEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());

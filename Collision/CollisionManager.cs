@@ -38,13 +38,6 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Update(GameTime gameTime, List<ICollision> loadedObjects)
         {
-            //foreach (ICollision collidable in loadedObjects)
-            //{
-            //    if (collidable is IDamaging damagingItem)
-            //    {
-
-            //    }
-            //}
             this.loadedObjects = loadedObjects;
 
             //Sort

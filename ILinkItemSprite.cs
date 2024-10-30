@@ -9,7 +9,7 @@ namespace Legend_of_the_Power_Rangers
 {
     public interface ILinkItemSprite : ICollision
     {
-        LinkAttackItemType LinkAttackItemType { get; }
+        ProjectileType ProjectileType { get; }
         void Update(GameTime gametime);
         void Draw(SpriteBatch spriteBatch);
         bool GetState();

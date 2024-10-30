@@ -29,8 +29,8 @@ namespace Legend_of_the_Power_Rangers
         Rectangle position;
         int scaleFactor = 3;
 
-        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
-        public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Bomb; } }
+        public ObjectType ObjectType { get { return ObjectType.Projectile; } }
+        public ProjectileType ProjectileType { get { return ProjectileType.Bomb; } }
         private bool hasHitWall = false;
         public bool HasHitWall
         {

@@ -28,8 +28,8 @@ namespace Legend_of_the_Power_Rangers
 
         float rotation;
 
-        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
-        public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Boomerang; } }
+        public ObjectType ObjectType { get { return ObjectType.Projectile; } }
+        public ProjectileType ProjectileType { get { return ProjectileType.Boomerang; } }
         private bool hasHitWall = false;
         public bool HasHitWall
         {

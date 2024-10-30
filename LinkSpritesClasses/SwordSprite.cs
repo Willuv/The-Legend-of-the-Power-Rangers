@@ -61,8 +61,8 @@ namespace Legend_of_the_Power_Rangers
         }
         int scaleFactor = 3;
 
-        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
-        public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.ThrownSword; } }
+        public ObjectType ObjectType { get { return ObjectType.Projectile; } }
+        public ProjectileType ProjectileType { get { return ProjectileType.ThrownSword; } }
         private bool hasHitWall = false;
         public bool HasHitWall
         {
