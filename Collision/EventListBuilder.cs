@@ -17,7 +17,7 @@ namespace Legend_of_the_Power_Rangers
             Dictionary<(int, int, CollisionDirection), IEvent> list = new();
 
             Link link = LinkManager.GetLink();
-            Rectangle r = new Rectangle();
+            Rectangle r = new(); //instead of declaring new rectangle for everything that needs one
 
             List<ICollision> enemies = new() {
                 new BatKeese(), new BlueCentaur(), new BlueGorya(), new BlueKnight(), new BlueOcto(null), 
@@ -70,7 +70,6 @@ namespace Legend_of_the_Power_Rangers
             //AddUniqueBlockEvents(list, link, enemies, uniqueBlocksAndEvents);
             //uniqueBlocksAndEvents can be a dictionary?
             AddProjectilesAgainstBlocksEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());
-
             //link vs items
             AddLinkPickupItemEvents(list, link, pickupableItems, new PickUpItem());
 
@@ -141,10 +140,13 @@ namespace Legend_of_the_Power_Rangers
             {
                 foreach (ICollision block in blocks)
                 {
-                    eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Left), projectileVanish);
-                    eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Top), projectileVanish);
-                    eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Right), projectileVanish);
-                    eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Bottom), projectileVanish);
+                    if (block is not BlockBlueGap)
+                    {
+                        eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Left), projectileVanish);
+                        eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Top), projectileVanish);
+                        eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Right), projectileVanish);
+                        eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Bottom), projectileVanish);
+                    }
                 }
             }
         }
