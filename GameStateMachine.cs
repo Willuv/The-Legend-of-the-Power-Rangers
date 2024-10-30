@@ -78,6 +78,7 @@ namespace Legend_of_the_Power_Rangers
             EnemySpriteFactory.Instance.SetEnemySpritesheet(game.enemySpritesheet);
             LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
+            EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
             game.linkItemFactory = new LinkItemFactory(game.itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 
             // Initialize managers if they are null

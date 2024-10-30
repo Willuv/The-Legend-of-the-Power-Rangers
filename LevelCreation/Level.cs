@@ -12,6 +12,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 {
     public class Level
     {
+        int[,] map;
         LevelLoader loader;
         Texture2D levelSpriteSheet;
         Rectangle wallsSource;
@@ -19,6 +20,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         private String ContentPath;
         int numRooms;
         int currentRoom;
+        int currentRoomRow;
+        int currentRoomColumn;
         int loadedRoom;
         int scaleFactor = 5;
         private StreamReader reader;
@@ -35,6 +38,18 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             numRooms = 18;
             currentRoom = 0;
             loadedRoom = 0;
+            currentRoomRow = 5;
+            currentRoomColumn = 2;
+            map = new int[,]
+            {
+                { 18, 17, 16, -1, -1, -1},
+                { -1, -1, 13, -1, -1, -1},
+                { 10, 9, 8, 11, 12, -1},
+                { -1, 6, 5, 7, -1, -1},
+                { -1, -1, 4, -1, -1, -1},
+                { -1, 2, 1, 3, -1, -1}
+            };
+            Debug.WriteLine(map[currentRoomRow, currentRoomColumn]);
             loader.Load(reader);
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
@@ -48,6 +63,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             roomObjects.AddRange(loader.Blocks);
             roomObjects.AddRange(loader.Enemies);
             roomObjects.AddRange(loader.Items);
+            //roomObjects.AddRange(loader.Doors);
 
             return roomObjects;
 
@@ -55,7 +71,11 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
+            if (currentRoom != 18)
+            {
+                spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
+            }
+            
             foreach (IDoor door in loader.Doors)
             {
                 door.Draw(spriteBatch);
@@ -101,21 +121,44 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             collisionManager.Update(gametime, loadedObjects);
         }
-        public void ChangeLevel(int direction)
+        public void MouseChangeLevel(int direction)
         {
             currentRoom += direction;
             if (currentRoom >= numRooms)
             {
-                currentRoom = 1;
+                currentRoom = 0;
             }
-            if (currentRoom < 1)
+            if (currentRoom < 0)
             {
                 currentRoom = numRooms - 1;
             }
             loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            reader = new StreamReader(ContentPath+ "\\LinkDungeon1 - Room" + currentRoom + ".csv");
+            reader = new StreamReader(ContentPath + "\\LinkDungeon1 - Room" + currentRoom + ".csv");
+        }
+        public void ChangeLevel(String direction)
+        {
+            switch (direction) 
+            {
+                case ("Left"):
+                    currentRoomColumn--;
+                    break;
+                case ("Right"):
+                    currentRoomColumn++;
+                    break;
+                case ("Up"):
+                    currentRoomRow--;
+                    break;
+                case ("Down"):
+                    currentRoomRow--;
+                    break;
+            }
+            loader.DeloadRoom();
+            loadedObjects.Clear();
+            loadedObjects.Add(LinkManager.GetLink());
+            currentRoom = map[currentRoomRow, currentRoomColumn];
+            reader = new StreamReader(ContentPath + "\\LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }
 }
