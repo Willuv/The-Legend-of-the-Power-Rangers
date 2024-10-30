@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class Skeleton : IEnemy
+    public class Skeleton : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -80,7 +80,15 @@ namespace Legend_of_the_Power_Rangers
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
-
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
+        }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);

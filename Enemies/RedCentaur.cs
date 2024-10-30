@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class RedCentaur : IEnemy
+    public class RedCentaur : Enemy,IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -18,7 +18,7 @@ namespace Legend_of_the_Power_Rangers
         private Vector2 direction;
         private float speed = 100f;
         //private float scale = 2.0f;
-        
+
         private double timeSinceLastToggle;
         private const double millisecondsPerToggle = 200;
         private double directionChangeTimer;
@@ -103,6 +103,16 @@ namespace Legend_of_the_Power_Rangers
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }

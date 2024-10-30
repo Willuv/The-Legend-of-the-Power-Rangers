@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BlueGorya : IEnemy
+    public class BlueGorya : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -30,11 +30,12 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.BlueGorya; } }
 
-        public BlueGorya()
+        public BlueGorya() : base()
         {
             DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
             InitializeFrames();
             SetRandomDirection();
+            OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
         private void InitializeFrames()
         {
@@ -98,10 +99,25 @@ namespace Legend_of_the_Power_Rangers
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            base.Update(gameTime);
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
+            }
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }
