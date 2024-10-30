@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BlueOcto : IEnemy
+    public class BlueOcto : Enemy, IEnemy 
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -43,6 +43,7 @@ namespace Legend_of_the_Power_Rangers
             SetRandomDirection();
             projectiles = new List<OctoProjectile>();
             DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
+            OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
         private void InitializeFrames()
         {
@@ -118,6 +119,7 @@ namespace Legend_of_the_Power_Rangers
                 FireProjectile();
                 projectileTimer = 0;
             }
+            base.Update(gameTime);
         }
         private void FireProjectile()
         {
@@ -132,6 +134,20 @@ namespace Legend_of_the_Power_Rangers
             foreach (var projectile in projectiles)
             {
                 projectile.Draw(spriteBatch);
+            }
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
+            }
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
         }
     }

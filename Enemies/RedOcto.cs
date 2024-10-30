@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class RedOcto : IEnemy
+    public class RedOcto : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -33,11 +33,13 @@ namespace Legend_of_the_Power_Rangers
         private double projectileTimer;
         private const double projectileInterval = 2.0; // Shoot every 2 seconds
         private Texture2D projectileTexture;
+        private double drawTimer;
+        private const double drawDelay = 500;
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.RedOcto; } }
 
-        public RedOcto(Texture2D projectileTexture, Rectangle? spawnRectangle = null)
+        public RedOcto(Texture2D projectileTexture, Rectangle? spawnRectangle = null) : base()
         {
             this.projectileTexture = projectileTexture;
             InitializeFrames();
@@ -51,6 +53,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 DestinationRectangle = new Rectangle(300, 100, 15 * scale, 15 * scale); // Default position
             }
+            OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
 
         private void InitializeFrames()
@@ -102,26 +105,22 @@ namespace Legend_of_the_Power_Rangers
                 SetRandomDirection();
                 directionChangeTimer = 0;
             }
-
+            drawTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
             timeSinceLastToggle += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastToggle >= millisecondsPerToggle)
             {
+                
                 if (currentFrameIndex == frameIndex1)
                     currentFrameIndex = frameIndex2;
                 else
                     currentFrameIndex = frameIndex1;
+                
                 timeSinceLastToggle = 0;
             }
 
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
-            // Update projectiles
-            foreach (var projectile in projectiles)
-            {
-                projectile.Update(gameTime);
-            }
-            projectiles.RemoveAll(p => p.GetState());
 
             // Fire projectile
             projectileTimer += gameTime.ElapsedGameTime.TotalSeconds;
@@ -130,12 +129,30 @@ namespace Legend_of_the_Power_Rangers
                 FireProjectile();
                 projectileTimer = 0;
             }
+            // Update projectiles
+            foreach (var projectile in projectiles)
+            {
+                projectile.Update(gameTime);
+            }
+            projectiles.RemoveAll(p => p.GetState());
+            base.Update(gameTime);
         }
         private void FireProjectile()
         {
             var projectileRectangle = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 15, 7);
             OctoProjectile projectile = new OctoProjectile(projectileTexture, projectileRectangle, direction);
             projectiles.Add(projectile);
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+                //TriggerDeath();
+            }
         }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
@@ -145,6 +162,10 @@ namespace Legend_of_the_Power_Rangers
             foreach (var projectile in projectiles)
             {
                 projectile.Draw(spriteBatch);
+            }
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
             }
         }
     }

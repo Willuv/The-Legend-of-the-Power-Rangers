@@ -8,7 +8,7 @@ using Legend_of_the_Power_Rangers.Enemies;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class DragonBoss : IEnemy
+    public class DragonBoss : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -60,6 +60,7 @@ namespace Legend_of_the_Power_Rangers
             SetRandomDirection();
             InitializeFrames();
             projectiles = new List<Tuple<DragonProjectile, Vector2>>();
+            OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
 
         private void InitializeFrames()
@@ -151,6 +152,16 @@ namespace Legend_of_the_Power_Rangers
             foreach (var projectile in projectiles) // Draw projectiles
             {
                 projectile.Item1.Draw(texture, spriteBatch);
+            }
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
         }
     }

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers.Enemies
 {
-    public class DragonProjectile : IEnemy // Used for DragonBoss Projectiles
+    public class DragonProjectile : Enemy,IEnemy // Used for DragonBoss Projectiles
     {
         private Texture2D texture;
         private Rectangle sourceRectangle;
@@ -45,6 +45,16 @@ namespace Legend_of_the_Power_Rangers.Enemies
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White); ;
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }
