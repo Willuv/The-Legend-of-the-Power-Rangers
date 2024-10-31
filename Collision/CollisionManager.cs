@@ -12,13 +12,41 @@ namespace Legend_of_the_Power_Rangers
 
     public class CollisionManager
     {
-        AllCollisionsHandler allCollisionsHandler;
+        private readonly AllCollisionsHandler allCollisionsHandler;
+        private List<ICollision> loadedObjects;
         public CollisionManager()
         {
             allCollisionsHandler = new();
+            loadedObjects = new();
+
+            DelegateManager.OnObjectCreated += (obj) =>
+            {
+                if (obj != null)
+                {
+                    loadedObjects.Add(obj);
+                    Debug.WriteLine("projectile added");
+                }
+            };
+            DelegateManager.OnObjectRemoved += (obj) =>
+            {
+                if (obj != null)
+                {
+                    loadedObjects.Remove(obj);
+                    Debug.WriteLine("projectile removed");
+                }
+            };
         }
         public void Update(GameTime gameTime, List<ICollision> loadedObjects)
         {
+            //foreach (ICollision collidable in loadedObjects)
+            //{
+            //    if (collidable is IDamaging damagingItem)
+            //    {
+
+            //    }
+            //}
+            this.loadedObjects = loadedObjects;
+
             //Sort
             SortingMachine.BubbleSort(loadedObjects);
 

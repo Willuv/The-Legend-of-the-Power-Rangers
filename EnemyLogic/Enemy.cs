@@ -4,99 +4,99 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class Enemy //not used
+    public class Enemy
     {
-        public Vector2 position;
-        //protected Texture2D texture;
-        protected Rectangle[] sourceRectangles;
-        protected int currentFrameIndex = 0;
-        private double millisecondsPerToggle = 200;
-        private double timeSinceLastFrame = 0;
+        public Rectangle DestinationRectangle { get; set; }
+        private Rectangle[] sourceRectangles;
         public bool IsAlive { get; set; } = true;
-        private bool isSpawning = true;
-        private bool hasBeenUpdated = false;
+        protected bool IsSpawning { get; set; }
+        protected bool IsDying { get; set; }
 
-        public Enemy(Texture2D texture)
+        private double frameDisplayTime = 400; // Time between frames
+        private double totalFrameTime = 0;
+        private int currentFrameIndex = 0;
+
+        public Enemy()
         {
-            //this.texture = texture;
             InitializeFrames();
+            DestinationRectangle = new Rectangle(300, 100, sourceRectangles[0].Width * 3, sourceRectangles[0].Height * 3);  // X/Y are reset later
         }
-
         private void InitializeFrames()
         {
             sourceRectangles = new Rectangle[]
             {
-                new Rectangle(400, 240, 16, 16), // Spawn frame 1
-                new Rectangle(400, 256, 16, 16), // Spawn frame 2
-                new Rectangle(415, 240, 16, 16), // Death frame 1
-                new Rectangle(415, 256, 16, 16)  // Death frame 2
+                new Rectangle(390, 235, 25, 25), // Spawn frame 1
+                new Rectangle(387, 265, 25, 25), // Spawn frame 2
+                new Rectangle(415, 235, 25, 25), // Death frame 1
+                new Rectangle(415, 265, 22, 25)  // Death frame 2
             };
-            currentFrameIndex = 0; // Start w/ frame one of spawn
         }
+
+        public void OnSelected(int X, int Y)
+        {
+            IsSpawning = true;
+            IsAlive = true;
+            currentFrameIndex = 0;  // Start at spawn frame 1
+            DestinationRectangle = new Rectangle(DestinationRectangle.X - 8, Y - 25, sourceRectangles[0].Width * 3, sourceRectangles[0].Height * 3);  // X-8,Y-25 center the animation
+        }
+
+        public void TriggerDeath(int X, int Y)
+        {
+            IsAlive = false;
+            IsDying = true;
+            currentFrameIndex = 2;  // Start at death frame 1
+            DestinationRectangle = new Rectangle(X - 8, Y - 25, sourceRectangles[2].Width * 3, sourceRectangles[2].Height * 3);  // // X-8/Y-25 center the animation
+        }
+
+        //testing purposes from Jake
+        // public void TriggerDeath()
+        // {
+        //     IsAlive = false;
+        //     IsDying = true;
+        //     currentFrameIndex = 2;  // Start at death frame 1
+        //     int X = DestinationRectangle.X;
+        //     int Y = DestinationRectangle.Y;
+        //     DestinationRectangle = new Rectangle(X - 8, Y - 25, sourceRectangles[2].Width * 3, sourceRectangles[2].Height * 3);  // // X-8/Y-25 center the animation
+        // }
 
         public void Update(GameTime gameTime)
         {
-            if (!hasBeenUpdated)
-            {
-                // Start spawn animation
-                isSpawning = true;
-                currentFrameIndex = 0;
-                hasBeenUpdated = true;
-            }
+            totalFrameTime += gameTime.ElapsedGameTime.TotalMilliseconds;
 
-            if (isSpawning)
+            if (IsSpawning)
             {
-                timeSinceLastFrame += gameTime.ElapsedGameTime.TotalMilliseconds;
-                if (timeSinceLastFrame >= millisecondsPerToggle)
+                if (totalFrameTime >= frameDisplayTime)
                 {
-                    timeSinceLastFrame = 0;
+                    totalFrameTime = 0;
                     currentFrameIndex++;
-                    if (currentFrameIndex >= 2) 
+
+                    // Stop after frame 0 and 1
+                    if (currentFrameIndex >= 2)
                     {
-                        isSpawning = false;
-                        currentFrameIndex = 0; // Reset
+                        IsSpawning = false; // Spawning done
+                        //currentFrameIndex = 0;  // Reset frame (maybe needed)
                     }
                 }
             }
-            else if (!IsAlive)
+            else if (IsDying)
             {
-                HandleDeathAnimation(gameTime);
-            }
-        }
-
-        private void HandleDeathAnimation(GameTime gameTime)
-        {
-            // Death animation logic
-            if (currentFrameIndex < 2 || currentFrameIndex > 3)
-                currentFrameIndex = 2;
-            
-            timeSinceLastFrame += gameTime.ElapsedGameTime.TotalMilliseconds;
-            if (timeSinceLastFrame >= millisecondsPerToggle)
-            {
-                timeSinceLastFrame = 0;
-                currentFrameIndex++;
-                if (currentFrameIndex > 3)  // End of death animation
+                if (totalFrameTime >= frameDisplayTime)
                 {
-                    currentFrameIndex = 3;  // Hold on last frame
+                    totalFrameTime = 0;
+                    currentFrameIndex++;
+
+                    // Stop after frame 2 and 3
+                    if (currentFrameIndex > 3)
+                    {
+                        currentFrameIndex = 3;
+                        IsDying = false;  // Dying done
+                    }
                 }
             }
         }
-
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            if (IsAlive)
-                spriteBatch.Draw(texture, position, sourceRectangles[currentFrameIndex], Color.White);
-        }
-
-        public void TriggerDeath()
-        {
-            IsAlive = false;
-            currentFrameIndex = 2; // Start death animation
-        }
-        public void OnSelected()
-        {
-            isSpawning = true; 
-            currentFrameIndex = 0;
+            spriteBatch.Draw(texture, DestinationRectangle, sourceRectangles[currentFrameIndex], Color.White);
         }
     }
 }
