@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class DragonProjectile : IEnemy // Used for DragonBoss Projectiles
+    public class DragonProjectile : IEnemyProjectile // Used for DragonBoss Projectiles
     {
         private Texture2D texture;
         private Rectangle sourceRectangle;
@@ -19,8 +19,14 @@ namespace Legend_of_the_Power_Rangers
         private float speed = 200f; // Speed
         private float scale = 2.0f; // Scale
 
-        public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.DragonProjectile; } }
+        public ObjectType ObjectType { get { return ObjectType.EnemyProjectile; } }
+        public EnemyProjectileType EnemyProjectileType { get { return EnemyProjectileType.DragonBoss; } }
+        private bool hasHitWall = false;
+        public bool HasHitWall
+        {
+            get { return hasHitWall; }
+            set { hasHitWall = value; }
+        }
 
         public DragonProjectile(Texture2D texture, Rectangle sourceRectangle)
         {

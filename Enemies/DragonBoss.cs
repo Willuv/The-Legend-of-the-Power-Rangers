@@ -137,6 +137,8 @@ namespace Legend_of_the_Power_Rangers
         {
             direction.Normalize(); // Normalize for consistent speed in all directions
             DragonProjectile projectile = new DragonProjectile(projectileTexture, projectileSourceRectangle);
+            DelegateManager.RaiseObjectCreated(projectile);
+            //alex please add a way for projectiles to disappear after time - Jake
             projectile.Position = new Vector2(destinationRectangle.X + xOffset - 13, destinationRectangle.Y + yOffset - 13); // Start at boss's position w/ Offset
             projectile.Direction = direction; // Set the movement direction
             projectiles.Add(new Tuple<DragonProjectile, Vector2>(projectile, projectile.Position));

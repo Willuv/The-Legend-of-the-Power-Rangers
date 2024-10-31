@@ -7,7 +7,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class CandleSprite : ILinkItemSprite, IDamaging
+    public class CandleSprite : ILinkItemSprite
     {
         private Texture2D candleTexture;
         int totalFrames;
@@ -28,8 +28,8 @@ namespace Legend_of_the_Power_Rangers
 
         float scaleFactor = 3f;
 
-        public ObjectType ObjectType { get { return ObjectType.Projectile; } }
-        public ProjectileType ProjectileType { get { return ProjectileType.Candle; } }
+        public ObjectType ObjectType { get { return ObjectType.LinkProjectile; } }
+        public LinkProjectileType LinkProjectileType { get { return LinkProjectileType.Candle; } }
         private bool hasHitWall = false;
         public bool HasHitWall
         {
