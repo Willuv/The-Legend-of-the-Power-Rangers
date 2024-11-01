@@ -48,6 +48,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             roomObjects.AddRange(loader.Blocks);
             roomObjects.AddRange(loader.Enemies);
             roomObjects.AddRange(loader.Items);
+            //roomObjects.AddRange(loader.Doors);
 
             return roomObjects;
 

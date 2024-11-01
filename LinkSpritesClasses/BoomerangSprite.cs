@@ -7,7 +7,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BoomerangSprite : ILinkItemSprite, IDamaging
+    public class BoomerangSprite : ILinkItemSprite
     {
         private Texture2D boomerangTexture;
         int totalFrames;
@@ -28,8 +28,8 @@ namespace Legend_of_the_Power_Rangers
 
         float rotation;
 
-        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
-        public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Boomerang; } }
+        public ObjectType ObjectType { get { return ObjectType.LinkProjectile; } }
+        public LinkProjectileType LinkProjectileType { get { return LinkProjectileType.Boomerang; } }
         private bool hasHitWall = false;
         public bool HasHitWall
         {

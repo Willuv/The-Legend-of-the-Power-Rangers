@@ -21,12 +21,12 @@ namespace Legend_of_the_Power_Rangers
 
             List<ICollision> enemies = new() {
                 new BatKeese(), new BlueCentaur(), new BlueGorya(), new BlueKnight(), new BlueOcto(null), 
-                new DarkMoblin(), new DragonBoss(null, null), new DragonProjectile(null, r),
+                new DarkMoblin(), new DragonBoss(null, null), 
                 new GelBigGray(), new GelBigGreen(), new GelSmallBlack(), new GelSmallTeal(), 
                 new RedCentaur(), new RedGorya(), new RedKnight(), new RedMoblin(), new RedOcto(null), 
                 new Skeleton(), new WallMaster()
             };
-            List<ICollision> unmoveableBlocks = new() {
+            List<ICollision> unmovableBlocks = new() {
                 new BlockBlueFloor(), new BlockBlueGap(), new BlockBombedWall(), new BlockDiamond(), 
                 new BlockKeyHole(), new BlockLadder(), new BlockOpenDoor(), new BlockStairs(), 
                 new BlockStatue1(), new BlockStatue2(), new BlockWall(), new BlockWhiteBrick()
@@ -36,7 +36,7 @@ namespace Legend_of_the_Power_Rangers
                 new BlockPush() //will add stairs and other odd cases
             };
             List<ICollision> allCollidableBlocks = new();
-            allCollidableBlocks.AddRange(unmoveableBlocks);
+            allCollidableBlocks.AddRange(unmovableBlocks);
             allCollidableBlocks.AddRange(otherBlocks);
             List<IEvent> movementEvents = new() {
                 new MoveLinkLeft(), new MoveLinkUp(), new MoveLinkRight(), new MoveLinkDown(),
@@ -53,11 +53,13 @@ namespace Legend_of_the_Power_Rangers
                 new ArrowSprite(null, r, 0), new BombSprite(null, r, 0), new BoomerangSprite(null, r, 0),
                 new CandleSprite(null, r, 0), new SwordSprite(null, r, 0)
             };
-            List<ICollision> allProjectiles = new()
+            List<ICollision> enemyProjectiles = new()
             {
-                //add enemy projectiles
+                new DragonProjectile(null, r) //add octo
             };
+            List<ICollision> allProjectiles = new();
             allProjectiles.AddRange(linkAttackObjects);
+            allProjectiles.AddRange(enemyProjectiles);
             List<IEvent> enemyDamageLinkEvents = new()
             {
                 new MoveLinkLeftAndGetHurt(), new MoveLinkUpAndGetHurt(),
@@ -66,7 +68,7 @@ namespace Legend_of_the_Power_Rangers
             
             
             //things vs blocks
-            AddEntitiesAgainstUnmovableBlocksEvents(list, link, enemies, unmoveableBlocks, movementEvents);
+            AddEntitiesAgainstUnmovableBlocksEvents(list, link, enemies, unmovableBlocks, movementEvents);
             //AddUniqueBlockEvents(list, link, enemies, uniqueBlocksAndEvents);
             //uniqueBlocksAndEvents can be a dictionary?
             AddProjectilesAgainstBlocksEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());
@@ -75,6 +77,7 @@ namespace Legend_of_the_Power_Rangers
 
             //link vs enemies
             AddEnemyDamagingLinkEvents(list, link, enemies, enemyDamageLinkEvents);
+            AddEnemyProjectileDamagingLinkEvents(list, link, enemyProjectiles, new HurtLink());
             AddLinkDamagingEnemyEvents(list, linkAttackObjects, enemies, new HurtEnemy());
 
             return list;
@@ -120,6 +123,17 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
+        private static void AddEnemyProjectileDamagingLinkEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, Link link, List<ICollision> enemyProjectiles, IEvent damageLink)
+        {
+            foreach (ICollision projectile in enemyProjectiles)
+            {
+                eventList.Add(KeyGenerator.Generate(projectile, link, CollisionDirection.Left), damageLink);
+                eventList.Add(KeyGenerator.Generate(projectile, link, CollisionDirection.Top), damageLink);
+                eventList.Add(KeyGenerator.Generate(projectile, link, CollisionDirection.Right), damageLink);
+                eventList.Add(KeyGenerator.Generate(projectile, link, CollisionDirection.Bottom), damageLink);
+            }
+        }
+
         private static void AddLinkDamagingEnemyEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> linkAttackObjects, List<ICollision> enemies, IEvent damageEnemy)
         {
             foreach (ICollision attack in linkAttackObjects)
@@ -140,7 +154,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 foreach (ICollision block in blocks)
                 {
-                    if (block is not BlockBlueGap)
+                    if (block is not BlockBlueGap) //projectiles go over the water
                     {
                         eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Left), projectileVanish);
                         eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Top), projectileVanish);
