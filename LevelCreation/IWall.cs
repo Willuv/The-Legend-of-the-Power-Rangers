@@ -3,5 +3,5 @@
 public interface IWall
 {
     void Draw(SpriteBatch spriteBatch, Texture2D levelSpriteSheet);
-    void DetermineRectangles();
+    void DetermineRectangles(int xPos, int yPos);
 }

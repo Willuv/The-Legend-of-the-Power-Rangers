@@ -9,12 +9,14 @@ internal class holeDoor : IDoor
     private Rectangle destinationRectangle;
     private int doorNum;
     private int scaleFactor = 4;
+    private bool blownUp;
     public holeDoor(Texture2D spriteSheet, int doorNum)
     {
         this.doorNum = doorNum;
         this.spriteSheet = spriteSheet;
         this.sourceRectangle = new Rectangle(294, (33 * doorNum), 31, 31);
         determineDestination();
+        blownUp = false;
     }
     public void determineDestination()
     {

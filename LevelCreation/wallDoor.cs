@@ -16,7 +16,6 @@ internal class wallDoor : IDoor
         this.sourceRectangle = new Rectangle(294, (33 * doorNum), 31, 31);
         determineDestination();
     }
-
     public void determineDestination()
     {
         switch (doorNum)

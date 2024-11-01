@@ -12,6 +12,7 @@ namespace Legend_of_the_Power_Rangers
         public Texture2D itemSpriteSheet;
         public Texture2D enemySpritesheet;
         public Texture2D levelSpriteSheet;
+        //public Camera camera;
         public BlockManager blockManager;
         public ItemManager itemManager;
         public LinkItemFactory linkItemFactory;

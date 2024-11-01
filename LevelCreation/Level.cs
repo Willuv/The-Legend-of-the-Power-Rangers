@@ -33,8 +33,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             this.reader = reader;
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
-            wallsSource = new Rectangle(0, 0, 255, 175);
-            wallsDestination = new Rectangle(0, 192, 255 * scaleFactor, 175 * scaleFactor);
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = 18;
             currentRoom = 0;
@@ -51,18 +49,17 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 { -1, 2, 1, 3, -1, -1}
             };
             walls = CreateWalls();
-            Debug.WriteLine(map[currentRoomRow, currentRoomColumn]);
             loader.Load(reader);
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
         }
-        private static IWall[] CreateWalls()
+        private IWall[] CreateWalls()
         {
             IWall[] walls = new IWall[8];
             for (int i = 0; i < walls.Length; i++)
             {
-                walls[i] = new Wall(i);
+                walls[i] = new Wall(i, currentRoomRow, currentRoomColumn);
             }
 
             return walls;
@@ -88,7 +85,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 {
                     wall.Draw(spriteBatch, levelSpriteSheet);
                 }
-                //spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
                 foreach (IDoor door in loader.Doors)
                 {
                     door.Draw(spriteBatch);
