@@ -7,9 +7,9 @@ using Legend_of_the_Power_Rangers.LinkSpritesClasses;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public interface ILinkItemSprite : ICollision
+    public interface ILinkItemSprite : ICollision, IDamaging
     {
-        LinkAttackItemType LinkAttackItemType { get; }
+        LinkProjectileType LinkProjectileType { get; }
         void Update(GameTime gametime);
         void Draw(SpriteBatch spriteBatch);
         bool GetState();

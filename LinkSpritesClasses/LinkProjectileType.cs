@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Legend_of_the_Power_Rangers.LinkSpritesClasses
 {
-    public enum LinkAttackItemType
+    public enum LinkProjectileType
     {
         Arrow, Bomb, Boomerang, Candle, ThrownSword, HeldSword
     }
