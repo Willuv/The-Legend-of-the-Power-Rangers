@@ -27,11 +27,16 @@ namespace Legend_of_the_Power_Rangers
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
         private MouseController mouseController;
+        private AudioManager audioManager;
 
         public GameStateMachine(Game1 game, SpriteBatch spriteBatch)
         {
             this.game = game;
             this.spriteBatch = spriteBatch;
+
+            audioManager = AudioManager.Instance;
+            audioManager.Initialize(game.Content);
+
             InitializeGameplayState(); // Start the game in gameplay state will change to start state later on
         }
 

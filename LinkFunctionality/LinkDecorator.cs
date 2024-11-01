@@ -1,6 +1,7 @@
 ﻿using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 public class LinkDecorator : Link
 {
@@ -19,7 +20,12 @@ public class LinkDecorator : Link
 
     public void TakeDamage()
     {
+        Debug.WriteLine("[LinkDecorator] Damage taken! Triggering visual feedback.");
+        baseLink.LoseHealth();
         timeDamaged = 0f;
+
+        Debug.WriteLine($"[LinkDecorator] Visual feedback active. Link's health after damage: {baseLink.GetCurrentHealth()}/{baseLink.GetMaxHealth()}");
+
     }
 
     public bool IsDamaged()

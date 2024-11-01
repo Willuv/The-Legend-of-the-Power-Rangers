@@ -32,7 +32,8 @@ public class LinkItemFactory
 		switch (type)
 		{
 			case CreationLinkItemType.Bomb:
-				item = new(CreationLinkItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Bomb_Drop");
+                item = new(CreationLinkItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 				break;
 			case CreationLinkItemType.Arrow:
 				item = new(CreationLinkItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);

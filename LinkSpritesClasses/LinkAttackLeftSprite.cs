@@ -36,6 +36,8 @@ namespace Legend_of_the_Power_Rangers
             frameRectangles = new Rectangle[2];
             frameRectangles[0] = new Rectangle(28, 59, spriteWidth, spriteHeight);
             frameRectangles[1] = new Rectangle(23, 88, spriteWidth + 11, spriteHeight);
+
+            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Sword_Slash");
         }
 
         public void Draw(SpriteBatch spriteBatch, Rectangle destinationRectangle, Color color)

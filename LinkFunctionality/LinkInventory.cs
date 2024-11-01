@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -10,7 +11,6 @@ namespace Legend_of_the_Power_Rangers
 
         public LinkInventory()
         {
-            // Initialize countable items to zero
             itemCounts[ItemType.Rupee] = 0;
             itemCounts[ItemType.Bomb] = 0;
             itemCounts[ItemType.Key] = 0;
@@ -27,6 +27,8 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case ItemType.Fairy:
                 case ItemType.Heart:
+                    LinkManager.GetLink().Heal(2);
+                    break;
                 case ItemType.HeartContainer:
                     break;
                 default:
