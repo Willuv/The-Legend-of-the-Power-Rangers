@@ -1,6 +1,7 @@
 ﻿using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Diagnostics;
 
 public class Link : ICollision
@@ -12,6 +13,8 @@ public class Link : ICollision
     private const int LinkWidth = 48;
     private const int LinkHeight = 48;
     private Rectangle destinationRectangle;
+    private const int MaxHealth = 6;
+    private int currentHealth = MaxHealth;
 
     public Rectangle DestinationRectangle
     {
@@ -25,6 +28,26 @@ public class Link : ICollision
         stateMachine = new LinkStateMachine();
         currentSprite = stateMachine.GetCurrentSprite();
         UpdateDestinationRectangle();
+    }
+
+    public void LoseHealth()
+    {
+        currentHealth = Math.Max(0, currentHealth - 1);
+    }
+
+    public void Heal(int amount)
+    {
+        currentHealth = Math.Min(MaxHealth, currentHealth + amount);
+    }
+
+    public int GetCurrentHealth()
+    {
+        return currentHealth;
+    }
+
+    public int GetMaxHealth()
+    {
+        return MaxHealth;
     }
 
     private void UpdateDestinationRectangle()

@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Legend_of_the_Power_Rangers.InputCommands;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -32,8 +33,7 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.Y, new BlockNextCommand(blockManager) },
                 { Keys.U, new ItemShowPreviousCommand(itemManager) },
                 { Keys.I, new ItemShowNextCommand(itemManager) },
-                //{ Keys.O, new NPCShowPreviousCommand(game) },
-                //{ Keys.P, new NPCShowNextCommand(game) },
+                { Keys.M, new MuteUnmuteGameCommand()},
                 { Keys.Q, new QuitCommand(game) },
                 { Keys.R, new ResetCommand(gameStateMachine) }
             };

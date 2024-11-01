@@ -1,6 +1,7 @@
 ﻿using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Diagnostics;
 
 public class LinkDecorator : Link
 {
@@ -19,7 +20,9 @@ public class LinkDecorator : Link
 
     public void TakeDamage()
     {
+        baseLink.LoseHealth();
         timeDamaged = 0f;
+        if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Link_Hurt");
     }
 
     public bool IsDamaged()
