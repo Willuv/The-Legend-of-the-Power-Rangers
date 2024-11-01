@@ -20,12 +20,9 @@ public class LinkDecorator : Link
 
     public void TakeDamage()
     {
-        Debug.WriteLine("[LinkDecorator] Damage taken! Triggering visual feedback.");
         baseLink.LoseHealth();
         timeDamaged = 0f;
-
-        Debug.WriteLine($"[LinkDecorator] Visual feedback active. Link's health after damage: {baseLink.GetCurrentHealth()}/{baseLink.GetMaxHealth()}");
-
+        if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Link_Hurt");
     }
 
     public bool IsDamaged()
