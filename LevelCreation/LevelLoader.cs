@@ -134,8 +134,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 {
                     splitLine = CSVParser.Split(line);
 
-                    int currentx = 160 + (80 * j);
-                    int currenty = 157 + (81 * (i-1));
+                    int currentx = 128 + (64 * j);
+                    int currenty = 320 + (64 * (i-1));
                     String tileCode = splitLine[j];
                     //Debug.WriteLine(tileCode);
                     String blockOneCode = tileCode.Substring(1, 2);
@@ -147,20 +147,20 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     {
                         String blockOneString = BlockDictionary[blockOneCode];
                         IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockOneString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 80, 81);
+                        block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
                         blocks.Add(block);
                     }
                     if (enemyCode != "99")
                     {
                         IEnemy enemy = EnemySpriteFactory.Instance.CreateEnemy(enemyCode);
-                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, 50, 50);
+                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, 40, 40);
                         enemies.Add(enemy);
                     }
                     if (itemCode != "99")
                     {
                         String itemString = ItemDictionary[itemCode];
                         IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
-                        item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 50, 50);
+                        item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 40, 40);
                         items.Add(item);
                     }
 

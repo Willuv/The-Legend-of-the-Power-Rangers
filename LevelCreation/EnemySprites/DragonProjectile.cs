@@ -52,5 +52,15 @@ namespace Legend_of_the_Power_Rangers
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, Color.White); ;
         }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
+        }
     }
 }

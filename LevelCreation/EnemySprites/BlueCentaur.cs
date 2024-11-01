@@ -1,10 +1,11 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class GelSmallTeal : IEnemy
+    public class BlueCentaur : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -13,36 +14,50 @@ namespace Legend_of_the_Power_Rangers
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
         }
-        
+
         private Vector2 direction;
-        private float speed = 115f;
+        private float speed = 125f;
         //private float scale = 2.0f;
 
         private double timeSinceLastToggle;
-        private const double millisecondsPerToggle = 50;
+        private const double millisecondsPerToggle = 200;
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
-        private int currentFrameIndex;
+         private int currentFrameIndex;
         private Random random = new Random();
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.GelSmallTeal; } }
+        public EnemyType EnemyType { get { return EnemyType.BlueCentaur; } }
 
-        public GelSmallTeal()
+        public BlueCentaur() : base()
         {
-            InitializeFrames();
+            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
             SetRandomDirection();
-            DestinationRectangle = new Rectangle(300, 100, 36, 36); // Default positon
+            InitializeFrames();
+            OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
-
         private void InitializeFrames()
         {
-            sourceRectangle = new Rectangle[50];
-            int xOffset = 400;
-            sourceRectangle[0] = new Rectangle(xOffset, 175, 18, 18); // Frame 1
-            sourceRectangle[1] = new Rectangle(xOffset, 205, 18, 18); // Frame 2
+            sourceRectangle = new Rectangle[64];
+            int xOffset = 120;
+            int yOffset = 240;
+            int spriteWidth = 15;
+            int spriteHeight = 15;
+            for (int direction = 0; direction < 4; direction++) // 4 directions
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    int baseIndex = direction * 8 + i;
+                    sourceRectangle[baseIndex] = new Rectangle(
+                        xOffset + i * spriteWidth,
+                        yOffset + direction * spriteHeight,
+                        spriteWidth,
+                        spriteHeight);
+                }
+            }
         }
+
         private void SetRandomDirection()
         {
             Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
@@ -69,20 +84,40 @@ namespace Legend_of_the_Power_Rangers
                 SetRandomDirection();
                 directionChangeTimer = 0;
             }
-
+            
             timeSinceLastToggle += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastToggle >= millisecondsPerToggle)
             {
-                currentFrameIndex = (currentFrameIndex + 1) % 2; // % sourceRectangle.Length
+                if (currentFrameIndex == frameIndex1)
+                    currentFrameIndex = frameIndex2;
+                else
+                    currentFrameIndex = frameIndex1;
+
                 timeSinceLastToggle = 0;
             }
+
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            base.Update(gameTime);
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
+            }
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }

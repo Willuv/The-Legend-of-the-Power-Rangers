@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BlueCentaur : IEnemy
+    public class RedKnight : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
         }
 
         private Vector2 direction;
-        private float speed = 125f;
+        private float speed = 100f;
         //private float scale = 2.0f;
 
         private double timeSinceLastToggle;
@@ -24,23 +24,23 @@ namespace Legend_of_the_Power_Rangers
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
-         private int currentFrameIndex;
+        private int currentFrameIndex;
         private Random random = new Random();
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.BlueCentaur; } }
+        public EnemyType EnemyType { get { return EnemyType.RedKnight; } }
 
-        public BlueCentaur()
+        public RedKnight()
         {
-            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
-            SetRandomDirection();
             InitializeFrames();
+            SetRandomDirection();
+            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
         }
         private void InitializeFrames()
         {
             sourceRectangle = new Rectangle[64];
-            int xOffset = 120;
-            int yOffset = 240;
+            int xOffset = 0;
+            int yOffset = 180;
             int spriteWidth = 15;
             int spriteHeight = 15;
             for (int direction = 0; direction < 4; direction++) // 4 directions
@@ -102,6 +102,16 @@ namespace Legend_of_the_Power_Rangers
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }

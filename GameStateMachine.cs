@@ -22,7 +22,7 @@ namespace Legend_of_the_Power_Rangers
         private Game1 game;
         private SpriteBatch spriteBatch;
         public Level level;
-
+        private HUD hud;
         private Link link;
         private LinkDecorator linkDecorator;
         private KeyboardController keyboardController;
@@ -32,7 +32,7 @@ namespace Legend_of_the_Power_Rangers
         {
             this.game = game;
             this.spriteBatch = spriteBatch;
-            InitializeGameplayState(); // Start the game in gameplay state
+            InitializeGameplayState(); // Start the game in gameplay state will change to start state later on
         }
 
         public void ChangeState(GameState newState)
@@ -66,6 +66,12 @@ namespace Legend_of_the_Power_Rangers
             // Load assets only if they haven't been loaded already
             if (game.itemSpriteSheet == null) game.itemSpriteSheet = game.Content.Load<Texture2D>("Items");
             if (game.enemySpritesheet == null) game.enemySpritesheet = game.Content.Load<Texture2D>("Enemies");
+            if (hud == null)
+            {
+                Texture2D hudTexture = game.Content.Load<Texture2D>("HUD");
+                Rectangle hudDestinationRectangle = new Rectangle(0, 0, 1020, 192);
+                hud = new HUD(game.GraphicsDevice, hudTexture, hudDestinationRectangle);
+            }
             Texture2D blockSpriteSheet = game.Content.Load<Texture2D>("Blocks");
             game.levelSpriteSheet = game.Content.Load<Texture2D>("Level");
             Texture2D linkSpriteSheet = game.Content.Load<Texture2D>("Link Sprites");
@@ -78,6 +84,8 @@ namespace Legend_of_the_Power_Rangers
             EnemySpriteFactory.Instance.SetEnemySpritesheet(game.enemySpritesheet);
             LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
+            EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
+
             game.linkItemFactory = new LinkItemFactory(game.itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 
             // Initialize managers if they are null
@@ -185,6 +193,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 case GameState.Gameplay:
                     DrawGameplay();
+                    hud.Draw();
                     break;
                 case GameState.Paused:
                     // Draw paused screen

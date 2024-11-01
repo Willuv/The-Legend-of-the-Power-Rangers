@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class GelSmallBlack : IEnemy
+    public class GelSmallTeal : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -25,22 +25,23 @@ namespace Legend_of_the_Power_Rangers
         private int frameIndex2;
         private int currentFrameIndex;
         private Random random = new Random();
-        
-        public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.GelSmallBlack; } }
 
-        public GelSmallBlack()
+        public ObjectType ObjectType { get { return ObjectType.Enemy; } }
+        public EnemyType EnemyType { get { return EnemyType.GelSmallTeal; } }
+
+        public GelSmallTeal()
         {
             InitializeFrames();
             SetRandomDirection();
-            DestinationRectangle = new Rectangle(300, 100, 44, 36); // Default positon
+            DestinationRectangle = new Rectangle(300, 100, 36, 36); // Default positon
         }
+
         private void InitializeFrames()
         {
             sourceRectangle = new Rectangle[50];
-            int xOffset = 415;
-            sourceRectangle[0] = new Rectangle(xOffset, 175, 22, 18); // Frame 1
-            sourceRectangle[1] = new Rectangle(xOffset, 205, 22, 18); // Frame 2
+            int xOffset = 400;
+            sourceRectangle[0] = new Rectangle(xOffset, 175, 18, 18); // Frame 1
+            sourceRectangle[1] = new Rectangle(xOffset, 205, 18, 18); // Frame 2
         }
         private void SetRandomDirection()
         {
@@ -79,10 +80,19 @@ namespace Legend_of_the_Power_Rangers
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
-
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }

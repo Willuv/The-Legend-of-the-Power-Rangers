@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class GelBigGray : IEnemy
+    public class BatKeese : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -13,34 +13,35 @@ namespace Legend_of_the_Power_Rangers
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
         }
-
+        private int currentFrameIndex;
         private Vector2 direction;
-        private float speed = 115f;
+         private float speed = 100f;
         //private float scale = 2.0f;
 
         private double timeSinceLastToggle;
-        private const double millisecondsPerToggle = 75;
+        private const double millisecondsPerToggle = 100;
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
-        private int currentFrameIndex;
         private Random random = new Random();
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.GelBigGray; } }
+        public EnemyType EnemyType { get { return EnemyType.BatKeese; } }
 
-        public GelBigGray()
+        public BatKeese() : base()
         {
-            DestinationRectangle = new Rectangle(300, 100, 40, 44); // Default positon
+            DestinationRectangle = new Rectangle(300, 100, 44, 30); // Default positon
+            OnSelected(destinationRectangle.X, destinationRectangle.Y);
             InitializeFrames();
             SetRandomDirection();
+            
         }
         private void InitializeFrames()
         {
             sourceRectangle = new Rectangle[50];
-            int xOffset = 360;
-            sourceRectangle[0] = new Rectangle(xOffset, 175, 20, 22); // First frame
-            sourceRectangle[1] = new Rectangle(xOffset, 205, 20, 22); // Second frame
+            int yOffset = 270;
+            sourceRectangle[0] = new Rectangle(230, yOffset, 22, 15); // Frame 1
+            sourceRectangle[1] = new Rectangle(255, yOffset, 22, 15); // Frame 2
         }
         private void SetRandomDirection()
         {
@@ -78,11 +79,26 @@ namespace Legend_of_the_Power_Rangers
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            base.Update(gameTime);
         }
-
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
+            
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
+            }
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }

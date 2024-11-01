@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class RedGorya : IEnemy
+    public class BlueKnight : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
         }
 
         private Vector2 direction;
-        private float speed = 100f;
+        private float speed = 125f;
         //private float scale = 2.0f;
 
         private double timeSinceLastToggle;
@@ -24,24 +24,24 @@ namespace Legend_of_the_Power_Rangers
         private double directionChangeTimer;
         private int frameIndex1;
         private int frameIndex2;
-        private int currentFrameIndex;
+         private int currentFrameIndex;
         private Random random = new Random();
 
-
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.RedGorya; } }
+        public EnemyType EnemyType { get { return EnemyType.BlueKnight; } }
 
-        public RedGorya()
+        public BlueKnight() : base()
         {
+            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
             InitializeFrames();
             SetRandomDirection();
-            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
+            OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
         private void InitializeFrames()
         {
             sourceRectangle = new Rectangle[64];
-            int xOffset = 0;
-            int yOffset = 60;
+            int xOffset = 120;
+            int yOffset = 180;
             int spriteWidth = 15;
             int spriteHeight = 15;
             for (int direction = 0; direction < 4; direction++) // 4 directions
@@ -57,7 +57,6 @@ namespace Legend_of_the_Power_Rangers
                 }
             }
         }
-
         private void SetRandomDirection()
         {
             Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
@@ -99,10 +98,26 @@ namespace Legend_of_the_Power_Rangers
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            base.Update(gameTime);
         }
+
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
+            }
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }

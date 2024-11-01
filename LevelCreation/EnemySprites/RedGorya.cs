@@ -1,11 +1,11 @@
 using System;
-using System.Collections.Generic;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BlueOcto : IEnemy
+    public class RedGorya : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -16,8 +16,8 @@ namespace Legend_of_the_Power_Rangers
         }
 
         private Vector2 direction;
-        private float speed = 125f;
-        //private float scale = 2;
+        private float speed = 100f;
+        //private float scale = 2.0f;
 
         private double timeSinceLastToggle;
         private const double millisecondsPerToggle = 200;
@@ -27,29 +27,23 @@ namespace Legend_of_the_Power_Rangers
         private int currentFrameIndex;
         private Random random = new Random();
 
-         private List<OctoProjectile> projectiles;
-        private double projectileTimer;
-        private const double projectileInterval = 1.5; // 1.5 second timer
-        private Texture2D projectileTexture;
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.BlueOcto; } }
+        public EnemyType EnemyType { get { return EnemyType.RedGorya; } }
 
-        public BlueOcto(Texture2D projectileTexture)
+        public RedGorya()
         {
-            this.projectileTexture = projectileTexture;
             InitializeFrames();
             SetRandomDirection();
-            projectiles = new List<OctoProjectile>();
             DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
         }
         private void InitializeFrames()
         {
             sourceRectangle = new Rectangle[64];
-            int xOffset = 120;
-            int yOffset = 0;
+            int xOffset = 0;
+            int yOffset = 60;
             int spriteWidth = 15;
-            int spriteHeight = 15; 
+            int spriteHeight = 15;
             for (int direction = 0; direction < 4; direction++) // 4 directions
             {
                 for (int i = 0; i < 16; i++)
@@ -63,6 +57,7 @@ namespace Legend_of_the_Power_Rangers
                 }
             }
         }
+
         private void SetRandomDirection()
         {
             Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
@@ -100,37 +95,23 @@ namespace Legend_of_the_Power_Rangers
 
                 timeSinceLastToggle = 0;
             }
+
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
-            // Update projectiles
-            foreach (var projectile in projectiles)
-            {
-                projectile.Update(gameTime);
-            }
-            projectiles.RemoveAll(p => p.GetState());
-
-            // Fire projectile
-            projectileTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (projectileTimer >= projectileInterval)
-            {
-                FireProjectile();
-                projectileTimer = 0;
-            }
-        }
-        private void FireProjectile()
-        {
-            var projectileRectangle = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 15, 7);
-            OctoProjectile projectile = new OctoProjectile(projectileTexture, projectileRectangle, direction);
-            projectiles.Add(projectile);
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
-            
-            foreach (var projectile in projectiles)
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
             {
-                projectile.Draw(spriteBatch);
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
         }
     }

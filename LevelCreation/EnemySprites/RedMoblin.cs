@@ -1,10 +1,11 @@
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class Skeleton : IEnemy
+    public class RedMoblin : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -27,22 +28,36 @@ namespace Legend_of_the_Power_Rangers
         private Random random = new Random();
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.Skeleton; } }
+        public EnemyType EnemyType { get { return EnemyType.RedMoblin; } }
 
-        public Skeleton()
+        public RedMoblin()
         {
             InitializeFrames();
             SetRandomDirection();
-            DestinationRectangle = new Rectangle(300, 100, 44, 36); // Default positon
+            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
         }
 
         private void InitializeFrames()
         {
-            sourceRectangle = new Rectangle[50];
-            int xOffset = 415;
-            sourceRectangle[0] = new Rectangle(xOffset, 120, 22, 18); // First frame
-            sourceRectangle[1] = new Rectangle(xOffset, 150, 22, 18); // Second frame
+            sourceRectangle = new Rectangle[64];
+            int xOffset = 0;
+            int yOffset = 120;
+            int spriteWidth = 15;
+            int spriteHeight = 15;
+            for (int direction = 0; direction < 4; direction++) // 4 directions
+            {
+                for (int i = 0; i < 16; i++)
+                {
+                    int baseIndex = direction * 8 + i;
+                    sourceRectangle[baseIndex] = new Rectangle(
+                        xOffset + i * spriteWidth,
+                        yOffset + direction * spriteHeight,
+                        spriteWidth,
+                        spriteHeight);
+                }
+            }
         }
+
         private void SetRandomDirection()
         {
             Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
@@ -69,13 +84,18 @@ namespace Legend_of_the_Power_Rangers
                 SetRandomDirection();
                 directionChangeTimer = 0;
             }
-
+            
             timeSinceLastToggle += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastToggle >= millisecondsPerToggle)
             {
-                currentFrameIndex = (currentFrameIndex + 1) % 2; // % sourceRectangle.Length
+                if (currentFrameIndex == frameIndex1)
+                    currentFrameIndex = frameIndex2;
+                else
+                    currentFrameIndex = frameIndex1;
+
                 timeSinceLastToggle = 0;
             }
+
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
@@ -84,6 +104,16 @@ namespace Legend_of_the_Power_Rangers
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+        }
+
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class WallMaster : IEnemy
+    public class Skeleton : Enemy, IEnemy
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
@@ -16,58 +16,49 @@ namespace Legend_of_the_Power_Rangers
 
         private Vector2 direction;
         private float speed = 100f;
-        private float scale = 2.0f;
-        private double timeSinceLastToggle;
-        private int currentFrameIndex;
-        private const double millisecondsPerToggle = 400;
-        private double directionChangeTimer;
-        private Random random = new Random();
-        
-        public ObjectType ObjectType { get { return ObjectType.Enemy; } }
-        public EnemyType EnemyType { get { return EnemyType.WallMaster; } }
+        //private float scale = 2.0f;
 
-        public WallMaster()
+        private double timeSinceLastToggle;
+        private const double millisecondsPerToggle = 200;
+        private double directionChangeTimer;
+        private int frameIndex1;
+        private int frameIndex2;
+        private int currentFrameIndex;
+        private Random random = new Random();
+
+        public ObjectType ObjectType { get { return ObjectType.Enemy; } }
+        public EnemyType EnemyType { get { return EnemyType.Skeleton; } }
+
+        public Skeleton()
         {
             InitializeFrames();
             SetRandomDirection();
-            DestinationRectangle = new Rectangle(300, 100, 60, 50); // Default positon
+            DestinationRectangle = new Rectangle(300, 100, 44, 36); // Default positon
         }
 
         private void InitializeFrames()
         {
-            sourceRectangle = new Rectangle[4];
-            int xOffset = 235;
-            int xIncrease = 30;
-
-            // Left direction
-            sourceRectangle[0] = new Rectangle(xOffset, 0, 30, 25);
-            sourceRectangle[1] = new Rectangle(xOffset, xIncrease, 30, 25);
-
-            // Right direction
-            sourceRectangle[2] = new Rectangle(xOffset + xIncrease, 0, 30, 18);
-            sourceRectangle[3] = new Rectangle(xOffset + xIncrease, xIncrease, 30, 18);
+            sourceRectangle = new Rectangle[50];
+            int xOffset = 415;
+            sourceRectangle[0] = new Rectangle(xOffset, 120, 22, 18); // First frame
+            sourceRectangle[1] = new Rectangle(xOffset, 150, 22, 18); // Second frame
         }
-
         private void SetRandomDirection()
         {
-            Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0) };
+            Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
             direction = directions[random.Next(directions.Length)];
             SetDirection(direction);
         }
-
-        public void SetDirection(Vector2 newDirection)
+        public void SetDirection(Vector2 direction)
         {
-            direction = newDirection;
-            if (direction.X < 0)
-            {
-                // Left
-                currentFrameIndex = 0;
-            }
-            else if (direction.X > 0)
-            {
-                // Right 
-                currentFrameIndex = 2;
-            }
+            int directionIndex = 0;
+            if (direction.X < 0) directionIndex = 2;
+            else if (direction.Y < 0) directionIndex = 4;
+            else if (direction.X > 0) directionIndex = 6;
+
+            frameIndex1 = directionIndex;
+            frameIndex2 = frameIndex1 + 16; // 16 is distance between sprites
+            currentFrameIndex = frameIndex1;
         }
 
         public void Update(GameTime gameTime)
@@ -78,27 +69,26 @@ namespace Legend_of_the_Power_Rangers
                 SetRandomDirection();
                 directionChangeTimer = 0;
             }
+
             timeSinceLastToggle += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastToggle >= millisecondsPerToggle)
             {
-                if (direction.X < 0)
-                {
-                    currentFrameIndex = currentFrameIndex == 0 ? 1 : 0;  // Toggle left frames
-                }
-                else if (direction.X > 0)
-                {
-                    currentFrameIndex = currentFrameIndex == 2 ? 3 : 2;  // Toggle right frames
-                }
+                currentFrameIndex = (currentFrameIndex + 1) % 2; // % sourceRectangle.Length
                 timeSinceLastToggle = 0;
             }
-            int width = (int)(sourceRectangle[currentFrameIndex].Width * scale);
-            int height = (int)(sourceRectangle[currentFrameIndex].Height * scale);
-            destinationRectangle = new Rectangle((int)destinationRectangle.X, (int)destinationRectangle.Y, width, height);
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
         }
-
+        int Health = 1;
+        public void TakeDamage(int damage = 1)
+        {
+            Health -= damage;
+            if (Health <= 0)
+            {
+                TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
+        }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
