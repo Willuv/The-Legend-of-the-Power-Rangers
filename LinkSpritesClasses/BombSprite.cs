@@ -14,7 +14,7 @@ namespace Legend_of_the_Power_Rangers
         int currentFrame;
         int width;
         int height;
-        bool blowing;
+        public bool blowing;
         bool finished;
         Rectangle destinationRectangle;
         public Rectangle DestinationRectangle
