@@ -62,8 +62,8 @@ namespace Legend_of_the_Power_Rangers
             allProjectiles.AddRange(enemyProjectiles);
             List<IEvent> enemyDamageLinkEvents = new()
             {
-                new MoveLinkLeftAndGetHurt(), new MoveLinkUpAndGetHurt(),
-                new MoveLinkRightAndGetHurt(), new MoveLinkDownAndGetHurt()
+                new LinkVSEnemyLeft(), new LinkVSEnemyTop(),
+                new LinkVSEnemyRight(), new LinkVSEnemyBottom()
             };
             
             
