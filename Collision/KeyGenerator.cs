@@ -40,8 +40,6 @@ namespace Legend_of_the_Power_Rangers
                 return (int)linkItem.LinkProjectileType + linkProjectileOffset;
             if (obj is IEnemyProjectile enemyProjectile)
                 return (int)enemyProjectile.EnemyProjectileType + enemyProjectileOffset;
-            //if (obj is IAttackSprite attackSprite)
-                //return (int)attackSprite.
 
             return obj.GetHashCode(); //just in case
         }
