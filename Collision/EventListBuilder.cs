@@ -16,15 +16,14 @@ namespace Legend_of_the_Power_Rangers
         {
             Dictionary<(int, int, CollisionDirection), IEvent> list = new();
 
-            Link link = LinkManager.GetLink();
+            List<ICollision> link = new() { LinkManager.GetLink() };
             Rectangle r = new(); //instead of declaring new rectangle for everything that needs one
 
             List<ICollision> enemies = new() {
                 new BatKeese(), new BlueCentaur(), new BlueGorya(), new BlueKnight(), new BlueOcto(null), 
-                new DarkMoblin(), new DragonBoss(null, null), 
-                new GelBigGray(), new GelBigGreen(), new GelSmallBlack(), new GelSmallTeal(), 
-                new RedCentaur(), new RedGorya(), new RedKnight(), new RedMoblin(), new RedOcto(null), 
-                new Skeleton(), new WallMaster()
+                new DarkMoblin(), new DragonBoss(null, null), new GelBigGray(), new GelBigGreen(), 
+                new GelSmallBlack(), new GelSmallTeal(), new RedCentaur(), new RedGorya(), new RedKnight(), 
+                new RedMoblin(), new RedOcto(null), new Skeleton(), new WallMaster()
             };
 
             List<ICollision> unmovableBlocks = new() {
@@ -74,11 +73,20 @@ namespace Legend_of_the_Power_Rangers
                 new LinkVSEnemyRight(), new LinkVSEnemyBottom()
             };
 
+            //custom events
+            List<IEvent> pushableBlockEvents = new()
+            {
+                new LinkVSPushBlockLeft(), new LinkVSPushBlockTop(),
+                new LinkVSPushBlockRight(), new LinkVSPushBlockBottom()
+            };
+
 
             //link vs unmovableblocks
-            AddDirectionalEvents(list, new List<ICollision>() { link }, unmovableBlocks, linkMovementEvents);
+            AddDirectionalEvents(list, link, unmovableBlocks, linkMovementEvents);
             //enemies vs all blocks
             AddDirectionalEvents(list, enemies, allCollidableBlocks, enemyMovementEvents);
+            //link vs pushable blocks
+            AddDirectionalEvents(list, link, new List<ICollision>() { new BlockPush() }, pushableBlockEvents);
             //AddUniqueBlockEvents(list, link, enemies, uniqueBlocksAndEvents);
             //uniqueBlocksAndEvents can be a dictionary?
 
@@ -90,12 +98,12 @@ namespace Legend_of_the_Power_Rangers
             allProjectiles.Add(new BombSprite(null, r, 0));
 
             //link picking up items
-            AddNonDirectionalEvents(list, new List<ICollision>() { link }, pickupableItems, new PickUpItem());
+            AddNonDirectionalEvents(list, link, pickupableItems, new PickUpItem());
 
             //link running into enemies
-            AddDirectionalEvents(list, new List<ICollision>() { link }, enemies, linkEncountersEnemyEvents);
+            AddDirectionalEvents(list, link, enemies, linkEncountersEnemyEvents);
             //link hurt by enemy projectiles
-            AddNonDirectionalEvents(list, new List<ICollision>() { link }, enemyProjectiles, new HurtLink());
+            AddNonDirectionalEvents(list, link, enemyProjectiles, new HurtLink());
             //link projectiles hurting enemies
             AddNonDirectionalEvents(list, linkProjectiles, enemies, new HurtEnemy());
 
