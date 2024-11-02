@@ -16,7 +16,6 @@ internal class wallDoor : IDoor
         this.sourceRectangle = new Rectangle(294, (33 * doorNum), 31, 31);
         determineDestination();
     }
-
     public void determineDestination()
     {
         switch (doorNum)
@@ -35,7 +34,6 @@ internal class wallDoor : IDoor
                 break;
         }
     }
-
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.1f);

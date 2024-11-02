@@ -107,7 +107,6 @@ namespace Legend_of_the_Power_Rangers
             string path = game.Content.RootDirectory;
             game.reader = new StreamReader(path + "\\LinkDungeon1 - Room1.csv");
             level = new Level(game.levelSpriteSheet, game.reader, path);
-
             // Set up controllers
             keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
             mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
@@ -148,7 +147,6 @@ namespace Legend_of_the_Power_Rangers
         private void ResetLevel()
         {
             string initialRoomPath = game.Content.RootDirectory + "\\LinkDungeon1 - Room1.csv";
-            game.reader = new StreamReader(initialRoomPath);
             level = new Level(game.levelSpriteSheet, game.reader, game.Content.RootDirectory);
 
             // Reset other elements like blocks and items
@@ -193,7 +191,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp/*, transformMatrix: */);
             switch (currentState)
             {
                 case GameState.Gameplay:
