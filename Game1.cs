@@ -39,6 +39,8 @@ namespace Legend_of_the_Power_Rangers
 
         //private List<ICollision> loadedObjects;
         //private CollisionManager collisionManager;
+        //test Comment
+
         private BlockManager blockManager;
         private ItemManager itemManager;
 
