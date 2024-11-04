@@ -31,9 +31,10 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.T, new BlockPreviousCommand(blockManager) },
                 { Keys.Y, new BlockNextCommand(blockManager) },
                 { Keys.U, new ItemShowPreviousCommand(itemManager) },
-                { Keys.I, new ItemShowNextCommand(itemManager) },
+                //{ Keys.I, new ItemShowNextCommand(itemManager) },
+                { Keys.I, new SwitchInventoryState(gameStateMachine) },
                 //{ Keys.O, new NPCShowPreviousCommand(game) },
-                //{ Keys.P, new NPCShowNextCommand(game) },
+                { Keys.P, new SwitchState(gameStateMachine) },
                 { Keys.Q, new QuitCommand(game) },
                 { Keys.R, new ResetCommand(gameStateMachine) }
             };
