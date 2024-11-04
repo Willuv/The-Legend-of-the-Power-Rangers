@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Execute() 
         {
-            game1.ChangeEnemy(direction);
+            //game1.ChangeEnemy(direction);
         }
     }
 }

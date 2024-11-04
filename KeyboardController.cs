@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Legend_of_the_Power_Rangers.InputCommands;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -12,7 +13,7 @@ namespace Legend_of_the_Power_Rangers
         private KeyboardState previousKeyboardState;
         private readonly LinkIdleCommand idleCommand;
 
-        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager ,Game1 game)
+        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager ,Game1 game, GameStateMachine gameStateMachine)
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {
@@ -31,11 +32,13 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.T, new BlockPreviousCommand(blockManager) },
                 { Keys.Y, new BlockNextCommand(blockManager) },
                 { Keys.U, new ItemShowPreviousCommand(itemManager) },
-                { Keys.I, new ItemShowNextCommand(itemManager) },
-                { Keys.O, new NPCShowPreviousCommand(game) },
-                { Keys.P, new NPCShowNextCommand(game) },
+                //{ Keys.I, new ItemShowNextCommand(itemManager) },
+                { Keys.I, new SwitchInventoryState(gameStateMachine) },
+                //{ Keys.O, new NPCShowPreviousCommand(game) },
+                { Keys.P, new SwitchState(gameStateMachine) },
+                { Keys.M, new MuteUnmuteGameCommand()},
                 { Keys.Q, new QuitCommand(game) },
-                { Keys.R, new ResetCommand(game) }
+                { Keys.R, new ResetCommand(gameStateMachine) }
             };
             idleCommand = new LinkIdleCommand(stateMachine);
         }
