@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Legend_of_the_Power_Rangers;
+using Microsoft.Xna.Framework.Graphics;
 
 public interface IWall
 {
