@@ -31,11 +31,13 @@ namespace Legend_of_the_Power_Rangers
 
         public void Initialize(ContentManager content)
         {
+            //Done
             soundEffects["Arrow_Boomerang"] = content.Load<SoundEffect>("LOZ_Arrow_Boomerang");
             //Done
             soundEffects["Bomb_Blow"] = content.Load<SoundEffect>("LOZ_Bomb_Blow");
             //Done
             soundEffects["Bomb_Drop"] = content.Load<SoundEffect>("LOZ_Bomb_Drop");
+            //Done
             soundEffects["Boss_Hit"] = content.Load<SoundEffect>("LOZ_Boss_Hit");
             soundEffects["Boss_Scream1"] = content.Load<SoundEffect>("LOZ_Boss_Scream1");
             soundEffects["Boss_Scream2"] = content.Load<SoundEffect>("LOZ_Boss_Scream2");
@@ -43,7 +45,7 @@ namespace Legend_of_the_Power_Rangers
             soundEffects["Candle"] = content.Load<SoundEffect>("LOZ_Candle");
             soundEffects["Door_Unlock"] = content.Load<SoundEffect>("LOZ_Door_Unlock");
             soundEffects["Enemy_Die"] = content.Load<SoundEffect>("LOZ_Enemy_Die");
-            //Need condition if it's aquamentes
+            //Done
             soundEffects["Enemy_Hit"] = content.Load<SoundEffect>("LOZ_Enemy_Hit");
             soundEffects["Fanfare"] = content.Load<SoundEffect>("LOZ_Fanfare");
             //Done
@@ -63,6 +65,7 @@ namespace Legend_of_the_Power_Rangers
             soundEffects["Shield"] = content.Load<SoundEffect>("LOZ_Shield");
             soundEffects["Shore"] = content.Load<SoundEffect>("LOZ_Shore");
             soundEffects["Stairs"] = content.Load<SoundEffect>("LOZ_Stairs");
+            //Done
             soundEffects["Sword_Combined"] = content.Load<SoundEffect>("LOZ_Sword_Combined");
             soundEffects["Sword_Shoot"] = content.Load<SoundEffect>("LOZ_Sword_Shoot");
             //Done

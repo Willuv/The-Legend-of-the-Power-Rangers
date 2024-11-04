@@ -17,6 +17,19 @@ namespace Legend_of_the_Power_Rangers
             if (enemy is IEnemy)
             {
                 //enemy.GetHurt(); for alex to implement
+                if (!AudioManager.Instance.IsMuted())
+                {
+                    if (((IEnemy)enemy).EnemyType != EnemyType.DragonBoss)
+                    {
+                        AudioManager.Instance.PlaySound("Enemy_Hit");
+                    }
+                    else
+                    {
+                        AudioManager.Instance.PlaySound("Boss_Hit");
+
+                    }
+                }
+
                 Debug.WriteLine("Enemy hurt");
             }
         }

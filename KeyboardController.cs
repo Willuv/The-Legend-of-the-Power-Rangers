@@ -12,8 +12,9 @@ namespace Legend_of_the_Power_Rangers
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
         private readonly LinkIdleCommand idleCommand;
+        private Keys activeMovementKey = Keys.None; // Track the active movement key
 
-        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager ,Game1 game, GameStateMachine gameStateMachine)
+        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager, Game1 game, GameStateMachine gameStateMachine)
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {
@@ -32,11 +33,9 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.T, new BlockPreviousCommand(blockManager) },
                 { Keys.Y, new BlockNextCommand(blockManager) },
                 { Keys.U, new ItemShowPreviousCommand(itemManager) },
-                //{ Keys.I, new ItemShowNextCommand(itemManager) },
                 { Keys.I, new SwitchInventoryState(gameStateMachine) },
-                //{ Keys.O, new NPCShowPreviousCommand(game) },
                 { Keys.P, new SwitchState(gameStateMachine) },
-                { Keys.M, new MuteUnmuteGameCommand()},
+                { Keys.M, new MuteUnmuteGameCommand() },
                 { Keys.Q, new QuitCommand(game) },
                 { Keys.R, new ResetCommand(gameStateMachine) }
             };
@@ -49,27 +48,38 @@ namespace Legend_of_the_Power_Rangers
             Keys[] pressedKeys = currentKeyboardState.GetPressedKeys();
             var currentPressedKeySet = new HashSet<Keys>(pressedKeys);
 
+            // Check if active movement key is released
+            if (activeMovementKey != Keys.None && !currentPressedKeySet.Contains(activeMovementKey))
+            {
+                activeMovementKey = Keys.None; // Reset if the active movement key is released
+            }
+
+            // Set active movement key only if none is currently active
             foreach (Keys key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
             {
-                if (currentPressedKeySet.Contains(key))
+                if (currentPressedKeySet.Contains(key) && activeMovementKey == Keys.None)
                 {
-                    if (keyCommandMappings.TryGetValue(key, out var command))
-                    {
-                        command.Execute();
-                    }
-                    break;
+                    activeMovementKey = key;
                 }
             }
 
+            // Execute the command for the active movement key if set
+            if (activeMovementKey != Keys.None && keyCommandMappings.TryGetValue(activeMovementKey, out var movementCommand))
+            {
+                movementCommand.Execute();
+            }
+
+            // Execute non-movement key commands if they're pressed (one-time press)
             foreach (Keys key in pressedKeys)
             {
-                if (!previousKeyboardState.IsKeyDown(key) && keyCommandMappings.ContainsKey(key))
+                if (!previousKeyboardState.IsKeyDown(key) && keyCommandMappings.ContainsKey(key) && !IsMovementKey(key))
                 {
                     ICommand command = keyCommandMappings[key];
                     command.Execute();
                 }
             }
 
+            // Execute idle command if no keys are pressed
             if (pressedKeys.Length == 0)
             {
                 idleCommand.Execute();
@@ -78,6 +88,11 @@ namespace Legend_of_the_Power_Rangers
             previousKeyboardState = currentKeyboardState;
         }
 
+        // Helper method to check if a key is a movement key
+        private bool IsMovementKey(Keys key)
+        {
+            return key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D;
+        }
 
         public void RegisterCommand(Keys key, ICommand command)
         {
