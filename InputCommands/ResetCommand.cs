@@ -9,13 +9,13 @@ namespace Legend_of_the_Power_Rangers
 {
     public class ResetCommand : ICommand
     {
-        GameStateMachine gameStateMachine;
-        public ResetCommand(GameStateMachine gameStateMachine) {
-            this.gameStateMachine = gameStateMachine;
+        Game1 game;
+        public ResetCommand(Game1 game) {
+            this.game = game;
         }
         public void Execute()
         {
-            gameStateMachine.ResetGame();
+            game.ResetGame();
         }
     }
 }

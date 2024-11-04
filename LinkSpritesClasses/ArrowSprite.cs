@@ -6,7 +6,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class ArrowSprite : ILinkItemSprite
+    public class ArrowSprite : IitemSprite
     {
         private Texture2D arrowTexture;
         int totalFrames;
@@ -24,14 +24,8 @@ namespace Legend_of_the_Power_Rangers
         Rectangle sourceRectangle;
         float scaleFactor = 3f;
 
-        public ObjectType ObjectType { get { return ObjectType.LinkProjectile; } }
-        public LinkProjectileType LinkProjectileType { get { return LinkProjectileType.Arrow; } }
-        private bool hasHitWall = false;
-        public bool HasHitWall
-        {
-            get { return hasHitWall; }
-            set { hasHitWall = value; }
-        }
+        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
+        public LinkItemType LinkItemType { get { return LinkItemType.Arrow; } }
 
 
         public ArrowSprite(Texture2D texture, Rectangle position, LinkDirection direction)

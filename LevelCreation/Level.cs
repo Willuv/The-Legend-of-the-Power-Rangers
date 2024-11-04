@@ -12,8 +12,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 {
     public class Level
     {
-        int[,] map;
-        IWall[] walls;
         LevelLoader loader;
         Texture2D levelSpriteSheet;
         Rectangle wallsSource;
@@ -21,10 +19,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         private String ContentPath;
         int numRooms;
         int currentRoom;
-        int currentRoomRow;
-        int currentRoomColumn;
         int loadedRoom;
-        int scaleFactor = 4;
+        int scaleFactor = 5;
         private StreamReader reader;
         private CollisionManager collisionManager;
         private List<ICollision> loadedObjects;
@@ -33,70 +29,44 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             this.reader = reader;
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
+            wallsSource = new Rectangle(0, 0, 255, 175);
+            wallsDestination = new Rectangle(5, 5, 255 * scaleFactor, 175 * scaleFactor);
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = 18;
             currentRoom = 0;
             loadedRoom = 0;
-            currentRoomRow = 5;
-            currentRoomColumn = 2;
-            map = new int[,]
-            {
-                { 18, 17, 16, -1, -1, -1},
-                { -1, -1, 13, -1, -1, -1},
-                { 10, 9, 8, 11, 12, -1},
-                { -1, 6, 5, 7, -1, -1},
-                { -1, -1, 4, -1, -1, -1},
-                { -1, 2, 1, 3, -1, -1}
-            };
-            walls = CreateWalls();
             loader.Load(reader);
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
         }
-        private IWall[] CreateWalls()
-        {
-            IWall[] walls = new IWall[8];
-            for (int i = 0; i < walls.Length; i++)
-            {
-                walls[i] = new Wall(i, currentRoomRow, currentRoomColumn);
-            }
 
-            return walls;
-        }
         public List<ICollision> GetRoomObjects()
         {
             List<ICollision> roomObjects = new();
+
             // Add blocks, enemies, and items to the list
             roomObjects.AddRange(loader.Blocks);
             roomObjects.AddRange(loader.Enemies);
             roomObjects.AddRange(loader.Items);
-            //roomObjects.AddRange(loader.Doors);
 
             return roomObjects;
-
         }
 
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
-            if (currentRoom != 18)
+            spriteBatch.Draw(levelSpriteSheet, wallsDestination, wallsSource, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.2f);
+            foreach (IDoor door in loader.Doors)
             {
-                foreach (IWall wall in walls)
-                {
-                    wall.Draw(spriteBatch, levelSpriteSheet);
-                }
-                foreach (IDoor door in loader.Doors)
-                {
-                    door.Draw(spriteBatch);
-                }
+                door.Draw(spriteBatch);
+            }
+            foreach (IItem item in loader.Items)
+            {
+                item.Draw(spriteBatch);
             }
             foreach (IBlock block in loader.Blocks)
             {
                 block.Draw(spriteBatch);
-            }
-            foreach (IItem item in loader.Items)
-            {
-                    item.Draw(spriteBatch);
             }
             foreach (IEnemy enemy in loader.Enemies)
             {
@@ -106,7 +76,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
         public void Update(GameTime gametime) 
         {
-            List<int> toRemove = new List<int>();
+            
             if (currentRoom != loadedRoom)
             {
                 loader.Load(reader);
@@ -120,16 +90,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             foreach (IItem item in loader.Items)
             {
                 item.Update(gametime);
-                if (item.PickedUp)
-                {
-                    toRemove.Add(loader.Items.IndexOf(item));
-                }
             }
-            foreach (int removeIndex in toRemove)
-            {
-                loader.Items.RemoveAt(removeIndex);
-            }
-            toRemove.Clear();
             foreach (IBlock block in loader.Blocks)
             {
                 block.Update(gametime);
@@ -140,44 +101,21 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             collisionManager.Update(gametime, loadedObjects);
         }
-        public void MouseChangeLevel(int direction)
+        public void ChangeLevel(int direction)
         {
             currentRoom += direction;
             if (currentRoom >= numRooms)
             {
-                currentRoom = 0;
+                currentRoom = 1;
             }
-            if (currentRoom < 0)
+            if (currentRoom < 1)
             {
-                currentRoom = numRooms;
+                currentRoom = numRooms - 1;
             }
             loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            reader = new StreamReader(ContentPath + "\\LinkDungeon1 - Room" + currentRoom + ".csv");
-        }
-        public void ChangeLevel(String direction)
-        {
-            switch (direction) 
-            {
-                case ("Left"):
-                    currentRoomColumn--;
-                    break;
-                case ("Right"):
-                    currentRoomColumn++;
-                    break;
-                case ("Up"):
-                    currentRoomRow--;
-                    break;
-                case ("Down"):
-                    currentRoomRow--;
-                    break;
-            }
-            loader.DeloadRoom();
-            loadedObjects.Clear();
-            loadedObjects.Add(LinkManager.GetLink());
-            currentRoom = map[currentRoomRow, currentRoomColumn];
-            reader = new StreamReader(ContentPath + "\\LinkDungeon1 - Room" + currentRoom + ".csv");
+            reader = new StreamReader(ContentPath+ "\\LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }
 }

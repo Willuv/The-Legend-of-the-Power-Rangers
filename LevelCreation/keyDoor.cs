@@ -8,7 +8,7 @@ internal class keyDoor : IDoor
     private Rectangle sourceRectangle;
     private Rectangle destinationRectangle;
     private int doorNum;
-    private int scaleFactor = 4;
+    private int scaleFactor = 5;
     public keyDoor(Texture2D spriteSheet, int doorNum)
     {
         this.doorNum = doorNum;
@@ -22,16 +22,16 @@ internal class keyDoor : IDoor
         switch (doorNum)
         {
             case 0:
-                destinationRectangle = new Rectangle(443, 192, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(561, 4, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 1:
-                destinationRectangle = new Rectangle(-5, 479, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(1, 363, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 2:
-                destinationRectangle = new Rectangle(895, 479, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(1125, 362, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 3:
-                destinationRectangle = new Rectangle(443, 765, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(562, 725, 33 * scaleFactor, 32 * scaleFactor);
                 break;
         }
     }

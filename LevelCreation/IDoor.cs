@@ -1,7 +1,6 @@
-﻿using Legend_of_the_Power_Rangers;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
-public interface IDoor //add icollision
+public interface IDoor
 {
     void determineDestination();
     void Draw(SpriteBatch spriteBatch);

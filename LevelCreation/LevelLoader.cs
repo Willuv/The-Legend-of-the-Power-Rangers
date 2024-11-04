@@ -72,6 +72,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             { "14", "BluePotion"},
         };
         DoorMaker doorMaker;
+        EnemySpawner enemySpawner;
 
         Texture2D texture;
         int numRows;
@@ -95,6 +96,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             items = new List<IItem>();
             enemies = new List<IEnemy>();
             doorMaker = new DoorMaker(levelSpriteSheet);
+            enemySpawner = new EnemySpawner();
         }
         public void DeloadRoom()
         {
@@ -110,6 +112,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             //unload past room
             doors.Clear();
+
+
+
+            // read doors
             
             line = reader.ReadLine();
             splitLine = CSVParser.Split(line);
@@ -127,43 +133,36 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 for (int j = 0; j < 12; j++)
                 {
                     splitLine = CSVParser.Split(line);
-
-                    int currentx = 128 + (64 * j);
-                    int currenty = 320 + (64 * (i-1));
+                    int currentx = 165 + (80 * j);
+                    int currenty = 162 + (81 * (i-1));
                     String tileCode = splitLine[j];
+                    //Debug.WriteLine(tileCode);
                     String blockOneCode = tileCode.Substring(1, 2);
-                    String blockTwoCode = tileCode.Substring(4, 2);
                     String enemyCode = tileCode.Substring(7, 2);
                     String itemCode = tileCode.Substring(10, 2);
+                    
 
-                    if (blockTwoCode != "99")
-                    {
-                        String blockTwoString = BlockDictionary[blockTwoCode];
-                        IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockTwoString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 80, 81);
-                        blocks.Add(block);
-                    }
                     if (blockOneCode != "99")
                     {
                         String blockOneString = BlockDictionary[blockOneCode];
                         IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockOneString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
+                        block.DestinationRectangle = new Rectangle(currentx, currenty, 80, 81);
                         blocks.Add(block);
                     }
                     if (enemyCode != "99")
                     {
                         IEnemy enemy = EnemySpriteFactory.Instance.CreateEnemy(enemyCode);
-                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, 40, 40);
+                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, 50, 50);
                         enemies.Add(enemy);
                     }
                     if (itemCode != "99")
                     {
                         String itemString = ItemDictionary[itemCode];
                         IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
-                        item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 40, 40);
+                        item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 50, 50);
                         items.Add(item);
                     }
-
+                        
                 }
             }
         }
