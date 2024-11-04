@@ -154,7 +154,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            reader = new StreamReader(ContentPath + "\\LinkDungeon1 - Room" + currentRoom + ".csv");
+            reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
         }
         public void ChangeLevel(String direction)
         {
@@ -177,7 +177,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
             currentRoom = map[currentRoomRow, currentRoomColumn];
-            reader = new StreamReader(ContentPath + "\\LinkDungeon1 - Room" + currentRoom + ".csv");
+            reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
         }
     }
 }
