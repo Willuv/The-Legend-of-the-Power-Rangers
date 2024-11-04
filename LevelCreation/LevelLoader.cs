@@ -48,6 +48,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             { "10", "BlueFloor"},
             { "11", "BlueSand"},
             { "12", "Wall"},
+            { "13", "PushUp"},
+            { "14", "PushLeft"}
         };
         List<IItem> items;
         public List<IItem> Items
@@ -140,7 +142,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     {
                         String blockTwoString = BlockDictionary[blockTwoCode];
                         IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockTwoString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 80, 81);
+                        block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
                         blocks.Add(block);
                     }
                     if (blockOneCode != "99")
