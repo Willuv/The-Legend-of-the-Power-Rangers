@@ -20,8 +20,23 @@ namespace Legend_of_the_Power_Rangers
                 DelegateManager.RaiseObjectRemoved(actualItem);
                 //some command to add to link's inventory
                 //LinkManager.GetLink().PickupItem(actualItem)
-                Debug.WriteLine("Item picked up");
+
+                if (!AudioManager.Instance.IsMuted())
+                {
+                    if ((actualItem.ItemType == ItemType.Heart || actualItem.ItemType == ItemType.Key))
+                    {
+                        AudioManager.Instance.PlaySound("Get_Heart");
+                    }
+                    else if (actualItem.ItemType == ItemType.Rupee)
+                    {
+                        AudioManager.Instance.PlaySound("Get_Rupee");
+                    }
+                    else
+                    {
+                        AudioManager.Instance.PlaySound("Get_Item");
+                    }
+                }
+                }
             }
-        }
     }
 }

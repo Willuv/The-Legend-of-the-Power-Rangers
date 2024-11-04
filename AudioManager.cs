@@ -45,8 +45,11 @@ namespace Legend_of_the_Power_Rangers
             soundEffects["Enemy_Die"] = content.Load<SoundEffect>("LOZ_Enemy_Die");
             soundEffects["Enemy_Hit"] = content.Load<SoundEffect>("LOZ_Enemy_Hit");
             soundEffects["Fanfare"] = content.Load<SoundEffect>("LOZ_Fanfare");
+            //Done
             soundEffects["Get_Heart"] = content.Load<SoundEffect>("LOZ_Get_Heart");
+            //Done
             soundEffects["Get_Item"] = content.Load<SoundEffect>("LOZ_Get_Item");
+            //Done
             soundEffects["Get_Ruppee"] = content.Load<SoundEffect>("LOZ_Get_Rupee");
             soundEffects["Key_Appear"] = content.Load<SoundEffect>("LOZ_Key_Appear");
             soundEffects["Link_Die"] = content.Load<SoundEffect>("LOZ_Link_Die");
@@ -61,7 +64,7 @@ namespace Legend_of_the_Power_Rangers
             soundEffects["Stairs"] = content.Load<SoundEffect>("LOZ_Stairs");
             soundEffects["Sword_Combined"] = content.Load<SoundEffect>("LOZ_Sword_Combined");
             soundEffects["Sword_Shoot"] = content.Load<SoundEffect>("LOZ_Sword_Shoot");
-            //DONE
+            //Done
             soundEffects["Sword_Slash"] = content.Load<SoundEffect>("LOZ_Sword_Slash");
             soundEffects["Text"] = content.Load<SoundEffect>("LOZ_Text");
             soundEffects["Text_Slow"] = content.Load<SoundEffect>("LOZ_Text_Slow");
