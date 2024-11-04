@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Legend_of_the_Power_Rangers.InputCommands;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
@@ -35,6 +36,7 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.I, new SwitchInventoryState(gameStateMachine) },
                 //{ Keys.O, new NPCShowPreviousCommand(game) },
                 { Keys.P, new SwitchState(gameStateMachine) },
+                { Keys.M, new MuteUnmuteGameCommand()},
                 { Keys.Q, new QuitCommand(game) },
                 { Keys.R, new ResetCommand(gameStateMachine) }
             };

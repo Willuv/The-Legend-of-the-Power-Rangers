@@ -24,10 +24,11 @@ namespace Legend_of_the_Power_Rangers
 
         private static int GetObjectTypeKey(ICollision obj)
         {
-            int blockOffset = 1000; // Any large value to avoid enum overlap
+            int blockOffset = 1000; //Any large value to avoid enum overlap
             int itemOffset = 2000;
             int enemyOffset = 3000;
-            int linkItemOffset = 4000;
+            int linkProjectileOffset = 4000;
+            int enemyProjectileOffset = 5000;
 
             if (obj is IBlock block)
                 return (int)block.BlockType + blockOffset;
@@ -35,8 +36,10 @@ namespace Legend_of_the_Power_Rangers
                 return (int)item.ItemType + itemOffset;
             if (obj is IEnemy enemy)
                 return (int)enemy.EnemyType + enemyOffset;
-            if (obj is ILinkItemSprite sprite)
-                return (int)sprite.LinkAttackItemType + linkItemOffset;
+            if (obj is ILinkItemSprite linkItem)
+                return (int)linkItem.LinkProjectileType + linkProjectileOffset;
+            if (obj is IEnemyProjectile enemyProjectile)
+                return (int)enemyProjectile.EnemyProjectileType + enemyProjectileOffset;
 
             return obj.GetHashCode(); //just in case
         }

@@ -7,14 +7,14 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BombSprite : ILinkItemSprite, IDamaging
+    public class BombSprite : ILinkItemSprite
 	{
 		private Texture2D bombTexture;
         int totalFrames;
         int currentFrame;
         int width;
         int height;
-        bool blowing;
+        public bool blowing;
         bool finished;
         Rectangle destinationRectangle;
         public Rectangle DestinationRectangle
@@ -29,8 +29,8 @@ namespace Legend_of_the_Power_Rangers
         Rectangle position;
         int scaleFactor = 3;
 
-        public ObjectType ObjectType { get { return ObjectType.LinkItem; } }
-        public LinkAttackItemType LinkAttackItemType { get { return LinkAttackItemType.Bomb; } }
+        public ObjectType ObjectType { get { return ObjectType.LinkProjectile; } }
+        public LinkProjectileType LinkProjectileType { get { return LinkProjectileType.Bomb; } }
         private bool hasHitWall = false;
         public bool HasHitWall
         {
@@ -51,6 +51,7 @@ namespace Legend_of_the_Power_Rangers
             position.Height = 45;
             this.usedRectangle = new Rectangle(203, 0, 9, 15);
             this.sourceRectangle1 = new Rectangle(84, 119, 7, 6);
+
             switch (direction)
             {
                 case LinkDirection.Left:
@@ -68,6 +69,7 @@ namespace Legend_of_the_Power_Rangers
                 case LinkDirection.Down:
                     offset = new Rectangle(5, 50, 0, 0);
                     offset2 = new Rectangle(-25, 25, 0, 0);
+
                     break;
             }
 		}
@@ -75,6 +77,7 @@ namespace Legend_of_the_Power_Rangers
         {
             destinationRectangle = new Rectangle(position.X + offset.X, position.Y + offset.Y, usedRectangle.Width * scaleFactor, usedRectangle.Height * scaleFactor);
             spriteBatch.Draw(bombTexture, destinationRectangle, usedRectangle, Color.White);
+
         }
         public void Update(GameTime gametime)
         {
@@ -83,6 +86,7 @@ namespace Legend_of_the_Power_Rangers
                 usedRectangle = sourceRectangle1;
                 offset = offset2;
                 scaleFactor = 12;
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Bomb_Blow");
             }
             else if (currentFrame == totalFrames)
             {
