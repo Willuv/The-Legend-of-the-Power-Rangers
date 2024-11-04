@@ -1,0 +1,20 @@
+Readability
+	Author: Christian Colon	
+	Date: 11/04/24 	
+	Sprint 4	
+	CollisionManager.cs	
+	Author of Collision.cs: Jake 
+	10 	
+	CollisionManager is very readable, especially the HandleCollision method. 
+	HandleCollision is full of comments that make each if statement very clear.
+
+Quality
+	Author: Christian Colon	
+	Date: 11/04/2024	
+	Sprint 4
+	CollisionManager.cs	
+	Author of CollisionManager.cs: Jake
+	The code quality is good. There are a few nested ifs, but it feels necessary to a collision manager.
+	Looping through loaded objects with nested ifs and checking for collisions seems to be the best way to do it.
+	I think that the else for debugging in HandleCollision can be removed.
+

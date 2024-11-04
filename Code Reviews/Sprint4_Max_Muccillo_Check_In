@@ -1,0 +1,21 @@
+Readability
+	Max Muccillo
+	11/4/24
+	Sprint 4
+	GameStateMachine.cs
+	Will Ulvin
+	10
+	Will designed the game state machine as a way to reduce the amount of code in game1 and to keep everything organized in one spot. 
+	Will did a good job of making the code in the class readable. 
+
+Quality
+	Max Muccillo
+	11/4/24
+	Sprint 4
+	GameStateMachine.cs
+	Will Ulvin
+	10
+	I've been working in the GameStateMachine file a lot and Will made the code very readable and modular. 
+	The way Will designed this class makes it very easy to add new states due to its modular design. 
+	One change to improve code quality is to create a separate method that loads all the textures and factories. 
+	This way duplicate code won’t be used in other states. 
