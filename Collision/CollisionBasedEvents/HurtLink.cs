@@ -14,7 +14,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
         {
-            LinkDecorator decoratedLink = LinkManager.GetLinkDecorator();
+            LinkDecorator decoratedLink = (LinkDecorator)LinkManager.GetLink();
 
             LinkBecomeDamagedCommand linkGetsHurt = new(decoratedLink);
             linkGetsHurt.Execute();

@@ -12,34 +12,13 @@ namespace Legend_of_the_Power_Rangers
 
     public class CollisionManager
     {
-        private readonly AllCollisionsHandler allCollisionsHandler;
-        private List<ICollision> loadedObjects;
+        AllCollisionsHandler allCollisionsHandler;
         public CollisionManager()
         {
             allCollisionsHandler = new();
-            loadedObjects = new();
-
-            DelegateManager.OnObjectCreated += (obj) =>
-            {
-                if (obj != null)
-                {
-                    loadedObjects.Add(obj);
-                    //Debug.WriteLine("projectile added");
-                }
-            };
-            DelegateManager.OnObjectRemoved += (obj) =>
-            {
-                if (obj != null)
-                {
-                    loadedObjects.Remove(obj);
-                    //Debug.WriteLine("projectile removed");
-                }
-            };
         }
         public void Update(GameTime gameTime, List<ICollision> loadedObjects)
         {
-            this.loadedObjects = loadedObjects;
-
             //Sort
             SortingMachine.BubbleSort(loadedObjects);
 
@@ -55,6 +34,17 @@ namespace Legend_of_the_Power_Rangers
                 {
                     ICollision object1 = loadedObjects[i];
                     ICollision object2 = loadedObjects[j];
+
+                    //temp checks to see if collision error is a case we care about or not
+                    if (object1 is IBlock && object2 is IBlock) continue;
+                    if (object1 is IItem && object2 is IBlock) continue;
+                    if (object1 is IBlock && object2 is IItem) continue;
+                    if (object1 is IEnemy && object2 is IItem) continue;
+                    if (object1 is IItem && object2 is IEnemy) continue;
+                    if (object1 is IEnemy && object2 is BlockSquare) continue;
+                    if (object1 is Link && object2 is BlockSquare) continue;
+                    if (object1 is BlockSquare && object2 is Link) continue;
+                    if (object1 is BlockSquare && object2 is IEnemy) continue;
 
                     if (object2.DestinationRectangle.Left > object1.DestinationRectangle.Right)
                     {

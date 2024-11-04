@@ -1,0 +1,1 @@
+////LinkDecorator.baseLink.GetPosition();
