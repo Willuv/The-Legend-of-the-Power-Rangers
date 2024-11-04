@@ -16,16 +16,16 @@ namespace Legend_of_the_Power_Rangers
         {
             Dictionary<(int, int, CollisionDirection), IEvent> list = new();
 
-            Link link = LinkManager.GetLink();
+            List<ICollision> link = new() { LinkManager.GetLink() };
             Rectangle r = new(); //instead of declaring new rectangle for everything that needs one
 
             List<ICollision> enemies = new() {
                 new BatKeese(), new BlueCentaur(), new BlueGorya(), new BlueKnight(), new BlueOcto(null), 
-                new DarkMoblin(), new DragonBoss(null, null), 
-                new GelBigGray(), new GelBigGreen(), new GelSmallBlack(), new GelSmallTeal(), 
-                new RedCentaur(), new RedGorya(), new RedKnight(), new RedMoblin(), new RedOcto(null), 
-                new Skeleton(), new WallMaster()
+                new DarkMoblin(), new DragonBoss(null, null), new GelBigGray(), new GelBigGreen(), 
+                new GelSmallBlack(), new GelSmallTeal(), new RedCentaur(), new RedGorya(), new RedKnight(), 
+                new RedMoblin(), new RedOcto(null), new Skeleton(), new WallMaster()
             };
+
             List<ICollision> unmovableBlocks = new() {
                 new BlockBlueFloor(), new BlockBlueGap(), new BlockBombedWall(), new BlockDiamond(), 
                 new BlockKeyHole(), new BlockLadder(), new BlockOpenDoor(), new BlockStairs(), 
@@ -38,17 +38,24 @@ namespace Legend_of_the_Power_Rangers
             List<ICollision> allCollidableBlocks = new();
             allCollidableBlocks.AddRange(unmovableBlocks);
             allCollidableBlocks.AddRange(otherBlocks);
-            List<IEvent> movementEvents = new() {
+
+            List<IEvent> linkMovementEvents = new() {
                 new MoveLinkLeft(), new MoveLinkUp(), new MoveLinkRight(), new MoveLinkDown(),
+            };
+            List<IEvent> enemyMovementEvents = new() {
                 new MoveEnemyLeft(), new MoveEnemyUp(), new MoveEnemyRight(), new MoveEnemyDown()
             };
+            List<IEvent> movementEvents = new();
+            movementEvents.AddRange(linkMovementEvents);
+            movementEvents.AddRange(enemyMovementEvents);
+
             List<ICollision> pickupableItems = new()
             {
                 new ItemBomb(), new ItemBow(), new ItemClock(), new ItemCompass(), new ItemFairy(),
                 new ItemHeart(), new ItemHeartContainer(), new ItemKey(), new ItemMap(), new ItemRupee(),
                 new ItemTriforce(), new ItemWoodBoomerang()
             };
-            List<ICollision> linkAttackObjects = new() //will have link sword attack stuff
+            List<ICollision> linkProjectiles = new()
             {
                 new ArrowSprite(null, r, 0), new BombSprite(null, r, 0), new BoomerangSprite(null, r, 0),
                 new CandleSprite(null, r, 0), new SwordSprite(null, r, 0)
@@ -58,111 +65,81 @@ namespace Legend_of_the_Power_Rangers
                 new DragonProjectile(null, r) //add octo
             };
             List<ICollision> allProjectiles = new();
-            allProjectiles.AddRange(linkAttackObjects);
+            allProjectiles.AddRange(linkProjectiles);
             allProjectiles.AddRange(enemyProjectiles);
-            List<IEvent> enemyDamageLinkEvents = new()
+            List<IEvent> linkEncountersEnemyEvents = new()
             {
-                new MoveLinkLeftAndGetHurt(), new MoveLinkUpAndGetHurt(),
-                new MoveLinkRightAndGetHurt(), new MoveLinkDownAndGetHurt()
+                new LinkVSEnemyLeft(), new LinkVSEnemyTop(),
+                new LinkVSEnemyRight(), new LinkVSEnemyBottom()
             };
-            
-            
-            //things vs blocks
-            AddEntitiesAgainstUnmovableBlocksEvents(list, link, enemies, unmovableBlocks, movementEvents);
+
+            //custom events
+            List<IEvent> pushableBlockEvents = new()
+            {
+                new LinkVSPushBlockLeft(), new LinkVSPushBlockTop(),
+                new LinkVSPushBlockRight(), new LinkVSPushBlockBottom()
+            };
+
+
+            //link vs unmovableblocks
+            AddDirectionalEvents(list, link, unmovableBlocks, linkMovementEvents);
+            //enemies vs all blocks
+            AddDirectionalEvents(list, enemies, allCollidableBlocks, enemyMovementEvents);
+            //link vs pushable blocks
+            AddDirectionalEvents(list, link, new List<ICollision>() { new BlockPush() }, pushableBlockEvents);
             //AddUniqueBlockEvents(list, link, enemies, uniqueBlocksAndEvents);
             //uniqueBlocksAndEvents can be a dictionary?
-            AddProjectilesAgainstBlocksEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());
-            //link vs items
-            AddLinkPickupItemEvents(list, link, pickupableItems, new PickUpItem());
 
-            //link vs enemies
-            AddEnemyDamagingLinkEvents(list, link, enemies, enemyDamageLinkEvents);
-            AddEnemyProjectileDamagingLinkEvents(list, link, enemyProjectiles, new HurtLink());
-            AddLinkDamagingEnemyEvents(list, linkAttackObjects, enemies, new HurtEnemy());
+            //projectiles against blocks
+            allCollidableBlocks.Remove(new BlockBlueGap()); //projectiles go over the water
+            allProjectiles.Remove(new BombSprite(null, r, 0)); //bomb is its own case
+            AddNonDirectionalEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());
+            allCollidableBlocks.Add(new BlockBlueGap());
+            allProjectiles.Add(new BombSprite(null, r, 0));
+
+            //link picking up items
+            AddNonDirectionalEvents(list, link, pickupableItems, new PickUpItem());
+
+            //link running into enemies
+            AddDirectionalEvents(list, link, enemies, linkEncountersEnemyEvents);
+            //link hurt by enemy projectiles
+            AddNonDirectionalEvents(list, link, enemyProjectiles, new HurtLink());
+            //link projectiles hurting enemies
+            AddNonDirectionalEvents(list, linkProjectiles, enemies, new HurtEnemy());
 
             return list;
         }
 
-        private static void AddEntitiesAgainstUnmovableBlocksEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, Link link, List<ICollision> enemies, List<ICollision> blocks, List<IEvent> events)
-        {
-            foreach (ICollision block in blocks)
+        private static void AddDirectionalEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> collidables1, List<ICollision> collidables2, List<IEvent> events) {
+            foreach (ICollision obj1 in collidables1)
             {
-                eventList.Add(KeyGenerator.Generate(link, block, CollisionDirection.Left), events[0]);
-                eventList.Add(KeyGenerator.Generate(link, block, CollisionDirection.Top), events[1]);
-                eventList.Add(KeyGenerator.Generate(link, block, CollisionDirection.Right), events[2]);
-                eventList.Add(KeyGenerator.Generate(link, block, CollisionDirection.Bottom), events[3]);
-
-                foreach (ICollision enemy in enemies)
+                foreach (ICollision obj2 in collidables2)
                 {
-                    eventList.Add(KeyGenerator.Generate(enemy, block, CollisionDirection.Left), events[4]);
-                    eventList.Add(KeyGenerator.Generate(enemy, block, CollisionDirection.Top), events[5]);
-                    eventList.Add(KeyGenerator.Generate(enemy, block, CollisionDirection.Right), events[6]);
-                    eventList.Add(KeyGenerator.Generate(enemy, block, CollisionDirection.Bottom), events[7]);
-                }
-            } 
-        }
-
-        private static void AddLinkPickupItemEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, Link link, List<ICollision> items, IEvent pickUpItem)
-        {
-            foreach (ICollision item in items)
-            {
-                eventList.Add(KeyGenerator.Generate(link, item, CollisionDirection.Left), pickUpItem);
-                eventList.Add(KeyGenerator.Generate(link, item, CollisionDirection.Top), pickUpItem);
-                eventList.Add(KeyGenerator.Generate(link, item, CollisionDirection.Bottom), pickUpItem);
-                eventList.Add(KeyGenerator.Generate(link, item, CollisionDirection.Right), pickUpItem);
-            }
-        }
-
-        private static void AddEnemyDamagingLinkEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, Link link, List<ICollision> enemies, List<IEvent> damageLink)
-        {
-            foreach (ICollision enemy in enemies) {
-                eventList.Add(KeyGenerator.Generate(link, enemy, CollisionDirection.Left), damageLink[0]);
-                eventList.Add(KeyGenerator.Generate(link, enemy, CollisionDirection.Top), damageLink[1]);
-                eventList.Add(KeyGenerator.Generate(link, enemy, CollisionDirection.Right), damageLink[2]);
-                eventList.Add(KeyGenerator.Generate(link, enemy, CollisionDirection.Bottom), damageLink[3]);
-            }
-        }
-
-        private static void AddEnemyProjectileDamagingLinkEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, Link link, List<ICollision> enemyProjectiles, IEvent damageLink)
-        {
-            foreach (ICollision projectile in enemyProjectiles)
-            {
-                eventList.Add(KeyGenerator.Generate(projectile, link, CollisionDirection.Left), damageLink);
-                eventList.Add(KeyGenerator.Generate(projectile, link, CollisionDirection.Top), damageLink);
-                eventList.Add(KeyGenerator.Generate(projectile, link, CollisionDirection.Right), damageLink);
-                eventList.Add(KeyGenerator.Generate(projectile, link, CollisionDirection.Bottom), damageLink);
-            }
-        }
-
-        private static void AddLinkDamagingEnemyEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> linkAttackObjects, List<ICollision> enemies, IEvent damageEnemy)
-        {
-            foreach (ICollision attack in linkAttackObjects)
-            {
-                foreach (ICollision enemy in enemies)
-                {
-                    eventList.Add(KeyGenerator.Generate(attack, enemy, CollisionDirection.Left), damageEnemy);
-                    eventList.Add(KeyGenerator.Generate(attack, enemy, CollisionDirection.Top), damageEnemy);
-                    eventList.Add(KeyGenerator.Generate(attack, enemy, CollisionDirection.Right), damageEnemy);
-                    eventList.Add(KeyGenerator.Generate(attack, enemy, CollisionDirection.Bottom), damageEnemy);
+                    eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Left), events[0]);
+                    eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Top), events[1]);
+                    eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Right), events[2]);
+                    eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Bottom), events[3]);
                 }
             }
         }
 
-        private static void AddProjectilesAgainstBlocksEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> projectiles, List<ICollision> blocks, IEvent projectileVanish)
+        private static void AddNonDirectionalEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> collidables1, List<ICollision> collidables2, IEvent oneEvent)
         {
-            foreach (ICollision projectile in projectiles)
+            foreach (ICollision obj1 in collidables1)
             {
-                foreach (ICollision block in blocks)
+                foreach (ICollision obj2 in collidables2)
                 {
-                    if (block is not BlockBlueGap) //projectiles go over the water
-                    {
-                        eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Left), projectileVanish);
-                        eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Top), projectileVanish);
-                        eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Right), projectileVanish);
-                        eventList.Add(KeyGenerator.Generate(projectile, block, CollisionDirection.Bottom), projectileVanish);
-                    }
+                    eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Left), oneEvent);
+                    eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Top), oneEvent);
+                    eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Right), oneEvent);
+                    eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Bottom), oneEvent);
                 }
             }
+        }
+
+        private static void AddUniqueEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> collidables1, List<ICollision> collidables2, List<IEvent> events)
+        {
+            //figure out soon
         }
     }
 }
