@@ -112,6 +112,8 @@ namespace Legend_of_the_Power_Rangers
             // Set up controllers
             keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
             mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
+
+            LinkManager.GetLink().UpdatePosition(new Vector2(510, 700));
         }
 
         private void InitializePausedState()

@@ -43,6 +43,7 @@ namespace Legend_of_the_Power_Rangers
             soundEffects["Candle"] = content.Load<SoundEffect>("LOZ_Candle");
             soundEffects["Door_Unlock"] = content.Load<SoundEffect>("LOZ_Door_Unlock");
             soundEffects["Enemy_Die"] = content.Load<SoundEffect>("LOZ_Enemy_Die");
+            //Need condition if it's aquamentes
             soundEffects["Enemy_Hit"] = content.Load<SoundEffect>("LOZ_Enemy_Hit");
             soundEffects["Fanfare"] = content.Load<SoundEffect>("LOZ_Fanfare");
             //Done
