@@ -160,7 +160,6 @@ namespace Legend_of_the_Power_Rangers
             {
                 game.reader.Close();
             }
-            5
             string initialRoomPath = game.Content.RootDirectory + "\\LinkDungeon1 - Room1.csv";
             game.reader = new StreamReader(initialRoomPath);
 
