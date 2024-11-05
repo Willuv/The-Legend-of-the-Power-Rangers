@@ -12,7 +12,7 @@ namespace Legend_of_the_Power_Rangers
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
         private readonly LinkIdleCommand idleCommand;
-        private Keys activeMovementKey = Keys.None; // Track the active movement key
+        private Keys activeMovementKey = Keys.None;
 
         public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager, Game1 game, GameStateMachine gameStateMachine)
         {
@@ -48,28 +48,32 @@ namespace Legend_of_the_Power_Rangers
             Keys[] pressedKeys = currentKeyboardState.GetPressedKeys();
             var currentPressedKeySet = new HashSet<Keys>(pressedKeys);
 
-            // Check if active movement key is released
             if (activeMovementKey != Keys.None && !currentPressedKeySet.Contains(activeMovementKey))
             {
-                activeMovementKey = Keys.None; // Reset if the active movement key is released
+                activeMovementKey = Keys.None;
             }
 
-            // Set active movement key only if none is currently active
-            foreach (Keys key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
+            if (activeMovementKey == Keys.None)
             {
-                if (currentPressedKeySet.Contains(key) && activeMovementKey == Keys.None)
+                foreach (Keys key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
                 {
-                    activeMovementKey = key;
+                    if (currentPressedKeySet.Contains(key))
+                    {
+                        activeMovementKey = key;
+                        break;
+                    }
                 }
             }
 
-            // Execute the command for the active movement key if set
             if (activeMovementKey != Keys.None && keyCommandMappings.TryGetValue(activeMovementKey, out var movementCommand))
             {
                 movementCommand.Execute();
             }
+            else if (activeMovementKey == Keys.None)
+            {
+                idleCommand.Execute();
+            }
 
-            // Execute non-movement key commands if they're pressed (one-time press)
             foreach (Keys key in pressedKeys)
             {
                 if (!previousKeyboardState.IsKeyDown(key) && keyCommandMappings.ContainsKey(key) && !IsMovementKey(key))
@@ -79,16 +83,9 @@ namespace Legend_of_the_Power_Rangers
                 }
             }
 
-            // Execute idle command if no keys are pressed
-            if (pressedKeys.Length == 0)
-            {
-                idleCommand.Execute();
-            }
-
             previousKeyboardState = currentKeyboardState;
         }
 
-        // Helper method to check if a key is a movement key
         private bool IsMovementKey(Keys key)
         {
             return key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D;
@@ -100,3 +97,4 @@ namespace Legend_of_the_Power_Rangers
         }
     }
 }
+
