@@ -1,0 +1,23 @@
+Readability
+	Author: Jake Meyer	
+	Date: 11/04/24 	
+	Sprint 4	
+	Enemy.cs	
+	Author of Enemy.cs: Alex
+	10
+	Overall pretty readable. A few things though, I’m not too sure what OnSelected is. 
+	Looks like maybe it’s when it initially spawned from the content of the method, but unsure what would call it. 
+	The commented out section was when we worked on trying to change something together, and can be removed.
+	Overall though, the rest is pretty simple and readable.
+
+Quality
+	Author: Jake Meyer	
+	Date: 11/04/2024	
+	Sprint 4
+	Enemy.cs	
+	Author of Enemy.cs: Alex
+	10
+	All the initialization, OnSelected, TriggerDeath, 
+	and fields seem pretty efficient. Especially with only updating frame time unless the enemy is spawning or dying. 
+	Some nested if statements but I can’t think of a better way to design them. currentFrameIndex is set to 0 but only in a comment, 
+	though the comment says it might be needed. I don’t know how it works but should probably either have the line or not

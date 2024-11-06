@@ -1,0 +1,54 @@
+Readability
+	Alex Mitelman
+	11/4/24
+	4
+	Hud.cs
+	Will Uvlin
+	10 	
+	Variable and parameter names like hudTexture and hudDestinationRectangle are concise and descriptive.
+	Additionally, the Draw() method is straightforward, encapsulating all drawing operations, making the purpose of the class clear. 
+	The class’s readability could be improved upon by adding comments on the specific values of hudDestinationRectanlge.
+	In the plaintext file for a code quality review, include the following information:
+
+Quality
+	Alex Mitelman
+	11/4/24
+	4
+	Hud.cs
+	Will Uvlin
+	Specific comments on code quality
+	Hud.cs is efficient and provides flexability to however we would like to change it in the future. 
+	There are hardcoded values, but those can be change into constants to maintain flexibility. 
+	A hypothetical change to make to the game related to file being reviewed and how the current 
+	implementation could or could not easily support that change
+	If the HUD needed additional elements to be displayed like health bars or power-ups, 
+	the current code structure would need to handle multiple draw calls with different textures or rectangles. 
+	Adding a draw method that accepts general parameters could extend the current functionality without hardcoding new elements.
+
+
+Readability
+	Alex Mitelman
+	11/4/24
+	4
+	InventoryScreen.cs
+	Max Muccillo
+	10 	
+	Specific comments on what is readable and what is not
+	Variable and parameter names such as InventoryTexture and InventoryDestinationRectangle are clear and descriptive, 
+	which makes the code easier to follow. The Draw() method is concise and straightforward, which effectively shows the purpose of the class. 
+	Readability could be improved by adding comments explaining the purpose of hardcoded values in ??InventorySourceRectangle, 
+	which would provide context for future adjustments.
+
+Quality
+	Alex Mitelman
+	11/4/24
+	4
+	InventoryScreen.cs
+	Max Muccillo
+	Specific comments on code quality 
+	InventoryScreen.cs is efficient in its current form, with a focus on essential functionality for drawing the inventory screen. 
+	Hardcoded values in InventorySourceRectangle could be turned into constants to maintain flexibility if changes to the inventory dimensions are needed. 
+	Additionally, it would benefit to ensure variable names are consistent across classes with the use of Camel Case like InvontoryTexture vs hudTexture.
+	Similar to the HUD, if we needed to add additional elements that the InventoryScreen needed to display, 
+	changing the way that the current code structure handles the multiple draw calls by adding a draw method that accepts general parameters 
+	could support multiple source and destination rectangles for different items or equipment displays within the inventory.

@@ -12,8 +12,9 @@ namespace Legend_of_the_Power_Rangers
         private KeyboardState currentKeyboardState;
         private KeyboardState previousKeyboardState;
         private readonly LinkIdleCommand idleCommand;
+        private Keys activeMovementKey = Keys.None;
 
-        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager ,Game1 game, GameStateMachine gameStateMachine)
+        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager, Game1 game, GameStateMachine gameStateMachine)
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {
@@ -32,11 +33,9 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.T, new BlockPreviousCommand(blockManager) },
                 { Keys.Y, new BlockNextCommand(blockManager) },
                 { Keys.U, new ItemShowPreviousCommand(itemManager) },
-                //{ Keys.I, new ItemShowNextCommand(itemManager) },
                 { Keys.I, new SwitchInventoryState(gameStateMachine) },
-                //{ Keys.O, new NPCShowPreviousCommand(game) },
                 { Keys.P, new SwitchState(gameStateMachine) },
-                { Keys.M, new MuteUnmuteGameCommand()},
+                { Keys.M, new MuteUnmuteGameCommand() },
                 { Keys.Q, new QuitCommand(game) },
                 { Keys.R, new ResetCommand(gameStateMachine) }
             };
@@ -49,35 +48,48 @@ namespace Legend_of_the_Power_Rangers
             Keys[] pressedKeys = currentKeyboardState.GetPressedKeys();
             var currentPressedKeySet = new HashSet<Keys>(pressedKeys);
 
-            foreach (Keys key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
+            if (activeMovementKey != Keys.None && !currentPressedKeySet.Contains(activeMovementKey))
             {
-                if (currentPressedKeySet.Contains(key))
+                activeMovementKey = Keys.None;
+            }
+
+            if (activeMovementKey == Keys.None)
+            {
+                foreach (Keys key in new[] { Keys.W, Keys.A, Keys.S, Keys.D })
                 {
-                    if (keyCommandMappings.TryGetValue(key, out var command))
+                    if (currentPressedKeySet.Contains(key))
                     {
-                        command.Execute();
+                        activeMovementKey = key;
+                        break;
                     }
-                    break;
                 }
+            }
+
+            if (activeMovementKey != Keys.None && keyCommandMappings.TryGetValue(activeMovementKey, out var movementCommand))
+            {
+                movementCommand.Execute();
+            }
+            else if (activeMovementKey == Keys.None)
+            {
+                idleCommand.Execute();
             }
 
             foreach (Keys key in pressedKeys)
             {
-                if (!previousKeyboardState.IsKeyDown(key) && keyCommandMappings.ContainsKey(key))
+                if (!previousKeyboardState.IsKeyDown(key) && keyCommandMappings.ContainsKey(key) && !IsMovementKey(key))
                 {
                     ICommand command = keyCommandMappings[key];
                     command.Execute();
                 }
             }
 
-            if (pressedKeys.Length == 0)
-            {
-                idleCommand.Execute();
-            }
-
             previousKeyboardState = currentKeyboardState;
         }
 
+        private bool IsMovementKey(Keys key)
+        {
+            return key == Keys.W || key == Keys.A || key == Keys.S || key == Keys.D;
+        }
 
         public void RegisterCommand(Keys key, ICommand command)
         {
@@ -85,3 +97,4 @@ namespace Legend_of_the_Power_Rangers
         }
     }
 }
+

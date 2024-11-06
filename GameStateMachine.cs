@@ -156,13 +156,19 @@ namespace Legend_of_the_Power_Rangers
 
         private void ResetLevel()
         {
+            if (game.reader != null)
+            {
+                game.reader.Close();
+            }
             string initialRoomPath = game.Content.RootDirectory + "\\LinkDungeon1 - Room1.csv";
+            game.reader = new StreamReader(initialRoomPath);
+
             level = new Level(game.levelSpriteSheet, game.reader, game.Content.RootDirectory);
 
-            // Reset other elements like blocks and items
             game.blockManager = new BlockManager(new List<string> { "Statue1", "Statue2" });
             game.itemManager = new ItemManager(new List<string> { "Compass", "Map" });
         }
+
 
         public void Update(GameTime gameTime)
         {
