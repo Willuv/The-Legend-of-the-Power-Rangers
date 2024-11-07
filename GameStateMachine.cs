@@ -27,6 +27,7 @@ namespace Legend_of_the_Power_Rangers
         private InventoryScreen inventoryScreen;
         private Link link;
         private LinkDecorator linkDecorator;
+        private LinkInventory linkInventory;
         private KeyboardController keyboardController;
         private MouseController mouseController;
         private AudioManager audioManager;
@@ -73,12 +74,7 @@ namespace Legend_of_the_Power_Rangers
             // Load assets only if they haven't been loaded already
             if (game.itemSpriteSheet == null) game.itemSpriteSheet = game.Content.Load<Texture2D>("Items");
             if (game.enemySpritesheet == null) game.enemySpritesheet = game.Content.Load<Texture2D>("Enemies");
-            if (hud == null)
-            {
-                Texture2D hudTexture = game.Content.Load<Texture2D>("HUD");
-                Rectangle hudDestinationRectangle = new Rectangle(0, 0, 1020, 192);
-                hud = new HUD(game.GraphicsDevice, hudTexture, hudDestinationRectangle);
-            }
+            
             Texture2D blockSpriteSheet = game.Content.Load<Texture2D>("Blocks");
             game.levelSpriteSheet = game.Content.Load<Texture2D>("Level");
             Texture2D linkSpriteSheet = game.Content.Load<Texture2D>("Link Sprites");
@@ -104,6 +100,15 @@ namespace Legend_of_the_Power_Rangers
             LinkManager.Initialize(link);
             linkDecorator = new LinkDecorator(link);
             LinkManager.SetLinkDecorator(linkDecorator);
+            linkInventory = new LinkInventory();
+            LinkManager.setLinkInventory(linkInventory);
+
+            if (hud == null)
+            {
+                Texture2D hudTexture = game.Content.Load<Texture2D>("HUD");
+                Rectangle hudDestinationRectangle = new Rectangle(0, 0, 1020, 192);
+                hud = new HUD(game.GraphicsDevice, hudTexture, hudDestinationRectangle);
+            }
 
             // Load the level
             string path = game.Content.RootDirectory;
