@@ -38,5 +38,10 @@ namespace Legend_of_the_Power_Rangers
                     break;
             }
         }
+
+        public int GetItemCount(ItemType itemType)
+        {
+            return itemCounts.ContainsKey(itemType) ? itemCounts[itemType] : 0;
+        }
     }
 }
