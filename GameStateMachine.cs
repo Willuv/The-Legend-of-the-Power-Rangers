@@ -31,6 +31,7 @@ namespace Legend_of_the_Power_Rangers
         private KeyboardController keyboardController;
         private MouseController mouseController;
         private AudioManager audioManager;
+        private GreenDot greenDot;
 
         public GameStateMachine(Game1 game, SpriteBatch spriteBatch)
         {
