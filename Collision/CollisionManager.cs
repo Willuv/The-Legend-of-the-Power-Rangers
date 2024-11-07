@@ -36,7 +36,7 @@ namespace Legend_of_the_Power_Rangers
                 }
             };
         }
-        public void Update(GameTime gameTime, List<ICollision> loadedObjects)
+        public void Update(List<ICollision> loadedObjects)
         {
             this.loadedObjects = loadedObjects;
 

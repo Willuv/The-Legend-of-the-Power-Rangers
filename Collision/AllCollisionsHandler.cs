@@ -26,7 +26,11 @@ namespace Legend_of_the_Power_Rangers
             }
             else
             {
-                //Debug.WriteLine($"{object1}{object2}{direction} not found in eventList.");
+                if (object1 is not IWall && object2 is not IBlock)
+                {
+                    Debug.WriteLine($"{object1}{object2}{direction} not found in eventList.");
+                }
+                
             }
         }
 

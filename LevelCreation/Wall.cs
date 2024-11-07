@@ -24,7 +24,7 @@ public class Wall : IWall
 	}
 	public void Draw(SpriteBatch spriteBatch, Texture2D levelSpriteSheet)
 	{
-		spriteBatch.Draw(levelSpriteSheet, destinationRectangle, sourceRectangle, Color.White);
+		spriteBatch.Draw(levelSpriteSheet, destinationRectangle, sourceRectangle, Color.Red);
 	}
 	public void DetermineRectangles(int xPos, int yPos)
 	{
@@ -32,27 +32,27 @@ public class Wall : IWall
 		{
 			case 0:
                 sourceRectangle = new Rectangle(0, 0, 31, 71);
-                destinationRectangle = new Rectangle(1, 194, 31 * scaleFactor, 71 * scaleFactor);
+                destinationRectangle = new Rectangle(1, 180, 31 * scaleFactor, 71 * scaleFactor);
                 break;
 			case 1:
                 sourceRectangle = new Rectangle(0, 0, 111, 31);
-                destinationRectangle = new Rectangle(1, 194, 111 * scaleFactor, 31 * scaleFactor);
+                destinationRectangle = new Rectangle(1, 180, 111 * scaleFactor, 31 * scaleFactor);
                 break;
 			case 2:
                 sourceRectangle = new Rectangle(144, 0, 111, 31);
-                destinationRectangle = new Rectangle(575, 194, 111 * scaleFactor, 31 * scaleFactor);
+                destinationRectangle = new Rectangle(575, 180, 111 * scaleFactor, 31 * scaleFactor);
                 break;
             case 3:
                 sourceRectangle = new Rectangle(224, 0, 31, 71);
-                destinationRectangle = new Rectangle(895, 194, 31 * scaleFactor, 71 * scaleFactor);
+                destinationRectangle = new Rectangle(895, 180, 31 * scaleFactor, 71 * scaleFactor);
                 break;
             case 4:
                 sourceRectangle = new Rectangle(224, 104, 31, 71);
-                destinationRectangle = new Rectangle(895, 605, 31 * scaleFactor, 71 * scaleFactor);
+                destinationRectangle = new Rectangle(895, 400, 31 * scaleFactor, 71 * scaleFactor);
                 break;
             case 5:
                 sourceRectangle = new Rectangle(144, 144, 111, 31);
-                destinationRectangle = new Rectangle(575, 767, 111 * scaleFactor, 31 * scaleFactor);
+                destinationRectangle = new Rectangle(575, 400, 111 * scaleFactor, 31 * scaleFactor);
                 break;
             case 6:
                 sourceRectangle = new Rectangle(0, 144, 111, 31);

@@ -139,7 +139,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 enemy.Update(gametime);
             }
-            collisionManager.Update(gametime, loadedObjects);
+            collisionManager.Update(loadedObjects);
         }
         public void MouseChangeLevel(int direction)
         {
