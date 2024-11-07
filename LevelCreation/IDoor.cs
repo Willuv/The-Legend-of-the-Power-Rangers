@@ -6,7 +6,7 @@ public interface IDoor : ICollision
 {
     void DetermineDestination();
     void Draw(SpriteBatch spriteBatch);
-    bool AlreadyOverlapping { get; set; }
+    bool IsCameraMoving { get; set; } //so we don't constantly call move until transition over
     bool IsOpen { get; set; }
     DoorType DoorType { get; }
 }

@@ -14,7 +14,7 @@ internal class diamondDoor : IDoor
     private int scaleFactor = 4;
     public ObjectType ObjectType { get { return ObjectType.Door; } }
     public DoorType DoorType { get { return DoorType.Diamond; } }
-    public bool AlreadyOverlapping { get; set; }
+    public bool IsCameraMoving { get; set; }
     public bool IsOpen { get; set; }
     public diamondDoor(Texture2D spriteSheet, int doorNum)
     {
@@ -22,7 +22,7 @@ internal class diamondDoor : IDoor
         this.spriteSheet = spriteSheet;
         this.sourceRectangle = new Rectangle(393, (33 * doorNum), 31, 31);
         DetermineDestination();
-        AlreadyOverlapping = false;
+        IsCameraMoving = false;
         IsOpen = false;
     }
 

@@ -16,14 +16,49 @@ namespace Legend_of_the_Power_Rangers
         {
             //Link can either go through door or can't
             IDoor door = collidable as IDoor;
-            //if (door.IsOpen)
-            //{
-            //    switch (direction)
-            //    {
-            //        case CollisionDirection.Left:
-            //            IEvent doorLeft = new
-            //    }
-            //}
+            if (door.IsOpen)
+            {
+                switch (direction)
+                {
+                    case CollisionDirection.Left:
+                        //camera move to right room
+                        Debug.WriteLine("moving to right room");
+                        break;
+                    case CollisionDirection.Top:
+                        //camera move to down room
+                        Debug.WriteLine("moving to down room");
+                        break;
+                    case CollisionDirection.Right:
+                        //camera move to left room
+                        Debug.WriteLine("moving to left room");
+                        break;
+                    case CollisionDirection.Bottom:
+                        //camera move to up room
+                        Debug.WriteLine("moving to up room");
+                        break;
+                }
+            } else
+            {
+                switch (direction)
+                {
+                    case CollisionDirection.Left:
+                        MoveLinkLeft moveLinkLeft = new();
+                        moveLinkLeft.Execute(link, collidable, direction);
+                        break;
+                    case CollisionDirection.Top:
+                        MoveLinkUp moveLinkUp = new();
+                        moveLinkUp.Execute(link, collidable, direction);
+                        break;
+                    case CollisionDirection.Right:
+                        MoveLinkRight moveLinkRight = new();
+                        moveLinkRight.Execute(link, collidable, direction);
+                        break;
+                    case CollisionDirection.Bottom:
+                        MoveLinkDown moveLinkDown = new();
+                        moveLinkDown.Execute(link, collidable, direction);
+                        break;
+                }
+            }
         }
     }
 }

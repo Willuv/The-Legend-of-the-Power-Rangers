@@ -14,7 +14,7 @@ internal class keyDoor : IDoor
     private int scaleFactor = 4;
     public ObjectType ObjectType { get { return ObjectType.Door; } }
     public DoorType DoorType { get { return DoorType.Key; } }
-    public bool AlreadyOverlapping { get; set; }
+    public bool IsCameraMoving { get; set; }
     public bool IsOpen { get; set; }
     public keyDoor(Texture2D spriteSheet, int doorNum)
     {
@@ -22,7 +22,7 @@ internal class keyDoor : IDoor
         this.spriteSheet = spriteSheet;
         this.sourceRectangle = new Rectangle(360, (33 * doorNum), 31, 31);
         DetermineDestination();
-        AlreadyOverlapping = false;
+        IsCameraMoving = false;
         IsOpen = false;
     }
 

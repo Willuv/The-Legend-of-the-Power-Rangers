@@ -1,4 +1,5 @@
-﻿using Microsoft.Testing.Platform.Extensions.Messages;
+﻿using Legend_of_the_Power_Rangers;
+using Microsoft.Testing.Platform.Extensions.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -9,7 +10,13 @@ public class Wall : IWall
 	int wallNum;
 	Rectangle sourceRectangle;
 	Rectangle destinationRectangle;
+    public Rectangle CollisionHitbox
+    {
+        get { return destinationRectangle; }
+        set { destinationRectangle = value; }
+    }
     int scaleFactor = 4;
+    public ObjectType ObjectType { get { return ObjectType.Wall; } }
 	public Wall(int wallNum, int xPos, int yPos)
 	{
 		this.wallNum = wallNum;

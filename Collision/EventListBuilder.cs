@@ -72,6 +72,11 @@ namespace Legend_of_the_Power_Rangers
                 new LinkVSEnemyLeft(), new LinkVSEnemyTop(),
                 new LinkVSEnemyRight(), new LinkVSEnemyBottom()
             };
+            List<ICollision> doors = new()
+            {
+                new diamondDoor(null, 0), new holeDoor(null, 0), new keyDoor(null, 0),
+                new openDoor(null, 0), new wallDoor(null, 0)
+            };
 
             //custom events
             List<IEvent> pushableBlockEvents = new()
@@ -106,6 +111,15 @@ namespace Legend_of_the_Power_Rangers
             AddNonDirectionalEvents(list, link, enemyProjectiles, new HurtLink());
             //link projectiles hurting enemies
             AddNonDirectionalEvents(list, linkProjectiles, enemies, new HurtEnemy());
+
+            //link vs doors
+            AddNonDirectionalEvents(list, link, doors, new LinkVSAnyDoor());
+            //link vs walls
+            AddDirectionalEvents(list, link, new List<ICollision>() { new Wall(0, 0, 0) }, linkMovementEvents);
+
+            //special events
+            //bomb vs bombed wall
+            
 
             return list;
         }
