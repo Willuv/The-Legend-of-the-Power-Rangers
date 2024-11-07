@@ -7,5 +7,6 @@ public interface IDoor : ICollision
     void DetermineDestination();
     void Draw(SpriteBatch spriteBatch);
     bool AlreadyOverlapping { get; set; }
+    bool IsOpen { get; set; }
     DoorType DoorType { get; }
 }

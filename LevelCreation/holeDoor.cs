@@ -15,6 +15,7 @@ internal class holeDoor : IDoor
     public ObjectType ObjectType { get { return ObjectType.Door; } }
     public DoorType DoorType { get { return DoorType.Hole; } }
     public bool AlreadyOverlapping { get; set; }
+    public bool IsOpen { get; set; }
     public holeDoor(Texture2D spriteSheet, int doorNum)
     {
         this.doorNum = doorNum;
@@ -23,6 +24,7 @@ internal class holeDoor : IDoor
         DetermineDestination();
         blownUp = false;
         AlreadyOverlapping = false;
+        IsOpen = false;
     }
     public void DetermineDestination()
     {

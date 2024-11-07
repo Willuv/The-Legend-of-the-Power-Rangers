@@ -16,11 +16,13 @@ namespace Legend_of_the_Power_Rangers
         {
             //Link can either go through door or can't
             IDoor door = collidable as IDoor;
-            switch (door.DoorType)
+            if (door.IsOpen)
             {
-                case DoorType.Diamond:
-                    diamondDoor diamond = (diamondDoor)door;
-                    
+                switch (direction)
+                {
+                    case CollisionDirection.Left:
+                        IEvent doorLeft = new
+                }
             }
         }
     }

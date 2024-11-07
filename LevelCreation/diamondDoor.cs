@@ -14,6 +14,7 @@ internal class diamondDoor : IDoor
     public ObjectType ObjectType { get { return ObjectType.Door; } }
     public DoorType DoorType { get { return DoorType.Diamond; } }
     public bool AlreadyOverlapping { get; set; }
+    public bool IsOpen { get; set; }
     public diamondDoor(Texture2D spriteSheet, int doorNum)
     {
         this.doorNum = doorNum;
@@ -21,6 +22,7 @@ internal class diamondDoor : IDoor
         this.sourceRectangle = new Rectangle(393, (33 * doorNum), 31, 31);
         DetermineDestination();
         AlreadyOverlapping = false;
+        IsOpen = false;
     }
 
     public void DetermineDestination()
