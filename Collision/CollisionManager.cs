@@ -24,7 +24,7 @@ namespace Legend_of_the_Power_Rangers
                 if (obj != null)
                 {
                     loadedObjects.Add(obj);
-                    Debug.WriteLine("projectile added");
+                    //Debug.WriteLine("projectile added");
                 }
             };
             DelegateManager.OnObjectRemoved += (obj) =>
@@ -32,19 +32,12 @@ namespace Legend_of_the_Power_Rangers
                 if (obj != null)
                 {
                     loadedObjects.Remove(obj);
-                    Debug.WriteLine("projectile removed");
+                    //Debug.WriteLine("projectile removed");
                 }
             };
         }
         public void Update(GameTime gameTime, List<ICollision> loadedObjects)
         {
-            //foreach (ICollision collidable in loadedObjects)
-            //{
-            //    if (collidable is IDamaging damagingItem)
-            //    {
-
-            //    }
-            //}
             this.loadedObjects = loadedObjects;
 
             //Sort
@@ -62,17 +55,6 @@ namespace Legend_of_the_Power_Rangers
                 {
                     ICollision object1 = loadedObjects[i];
                     ICollision object2 = loadedObjects[j];
-
-                    //temp checks to see if collision error is a case we care about or not
-                    if (object1 is IBlock && object2 is IBlock) continue;
-                    if (object1 is IItem && object2 is IBlock) continue;
-                    if (object1 is IBlock && object2 is IItem) continue;
-                    if (object1 is IEnemy && object2 is IItem) continue;
-                    if (object1 is IItem && object2 is IEnemy) continue;
-                    if (object1 is IEnemy && object2 is BlockSquare) continue;
-                    if (object1 is Link && object2 is BlockSquare) continue;
-                    if (object1 is BlockSquare && object2 is Link) continue;
-                    if (object1 is BlockSquare && object2 is IEnemy) continue;
 
                     if (object2.DestinationRectangle.Left > object1.DestinationRectangle.Right)
                     {

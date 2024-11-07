@@ -31,6 +31,9 @@
     <Folder Include="Sprites\" />
   </ItemGroup>
   <ItemGroup>
+    <None Update="Content\LinkDungeon1 - Room0.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="Content\LinkDungeon1 - Room1.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
