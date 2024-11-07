@@ -8,7 +8,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
@@ -30,7 +30,7 @@ namespace Legend_of_the_Power_Rangers
 
         public BatKeese() : base()
         {
-            DestinationRectangle = new Rectangle(300, 100, 44, 30); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 44, 30); // Default positon
             OnSelected(destinationRectangle.X, destinationRectangle.Y);
             InitializeFrames();
             SetRandomDirection();

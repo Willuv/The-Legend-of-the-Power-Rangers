@@ -209,7 +209,7 @@ namespace Legend_of_the_Power_Rangers
             mouseController.Update();
             link.Update(gameTime);
             linkDecorator.Update(gameTime);
-            game.linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
+            game.linkItemFactory.Update(gameTime, link.destinationRectangle, link.GetDirection());
             level.Update(gameTime);
             
         }
