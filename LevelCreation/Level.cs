@@ -20,7 +20,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         Rectangle wallsDestination;
         private String ContentPath;
         int numRooms;
-        int currentRoom;
+        public int currentRoom;
         int currentRoomRow;
         int currentRoomColumn;
         int loadedRoom;
