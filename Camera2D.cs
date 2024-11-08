@@ -14,7 +14,7 @@ public class Camera2D
     }
     public Camera2D()
 	{
-        position = new Vector2(/*1000*/0, /*698*/0);
+        position = new Vector2(/*1000*/3000, /*698*/0);
 	}
 
     public static Camera2D Instance
@@ -56,7 +56,7 @@ public class Camera2D
 
     public void CalculateTransformMatrix(int RoomRow, int RoomColumn)
 	{
-        position = new Vector2 ((1020 * RoomColumn), (698 * RoomRow));
+        //position = new Vector2 ((1020 * RoomColumn), (698 * RoomRow));
         transformMatrix = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0));
 	}
 }

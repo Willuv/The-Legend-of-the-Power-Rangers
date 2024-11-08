@@ -61,7 +61,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 for (int j = 0; j < 6; j++) 
                 { 
-                    if (map[i,j] != -1 /*&& map[i,j] != 18*/)
+                    if (map[j,i] != -1 && map[j,i] != 18)
                     {
                         CreateWalls(i, j);
                         loader.LoadBlocks(map[i,j]);
