@@ -19,42 +19,48 @@ public class Wall : IWall
 	{
 		spriteBatch.Draw(levelSpriteSheet, destinationRectangle, sourceRectangle, Color.White);
 	}
-	public void DetermineRectangles(int xPos, int yPos)
-	{
-		switch (wallNum)
-		{
-			case 0:
+    public void DetermineRectangles(int xPos, int yPos)
+    {
+        // Calculate the room's top-left corner based on xPos and yPos
+        int roomTopLeftX = xPos * 500;  // Adjust 500 if room width differs
+        int roomTopLeftY = yPos * 700;  // Adjust 500 if room height differs
+
+        switch (wallNum)
+        {
+            case 0: // Left wall, top
                 sourceRectangle = new Rectangle(0, 0, 31, 71);
-                destinationRectangle = new Rectangle(1, 194, 31 * scaleFactor, 71 * scaleFactor);
+                destinationRectangle = new Rectangle(roomTopLeftX, roomTopLeftY + 194, 31 * scaleFactor, 71 * scaleFactor);
                 break;
-			case 1:
+            case 1: // Top wall, middle
                 sourceRectangle = new Rectangle(0, 0, 111, 31);
-                destinationRectangle = new Rectangle(1, 194, 111 * scaleFactor, 31 * scaleFactor);
+                destinationRectangle = new Rectangle(roomTopLeftX, roomTopLeftY + 194, 111 * scaleFactor, 31 * scaleFactor);
                 break;
-			case 2:
+            case 2: // Top wall, right
                 sourceRectangle = new Rectangle(144, 0, 111, 31);
-                destinationRectangle = new Rectangle(575, 194, 111 * scaleFactor, 31 * scaleFactor);
+                destinationRectangle = new Rectangle(roomTopLeftX + 575, roomTopLeftY + 194, 111 * scaleFactor, 31 * scaleFactor);
                 break;
-            case 3:
+            case 3: // Right wall, top
                 sourceRectangle = new Rectangle(224, 0, 31, 71);
-                destinationRectangle = new Rectangle(895, 194, 31 * scaleFactor, 71 * scaleFactor);
+                destinationRectangle = new Rectangle(roomTopLeftX + 899 , roomTopLeftY + 194, 31 * scaleFactor, 71 * scaleFactor);
                 break;
-            case 4:
+            case 4: // Right wall, bottom
                 sourceRectangle = new Rectangle(224, 104, 31, 71);
-                destinationRectangle = new Rectangle(895, 605, 31 * scaleFactor, 71 * scaleFactor);
+                destinationRectangle = new Rectangle(roomTopLeftX + 899, roomTopLeftY + 605, 31 * scaleFactor, 71 * scaleFactor);
                 break;
-            case 5:
-                sourceRectangle = new Rectangle(144, 144, 111, 31);
-                destinationRectangle = new Rectangle(575, 767, 111 * scaleFactor, 31 * scaleFactor);
+            case 5: // Bottom wall, right
+                sourceRectangle = new Rectangle(144, 145, 111, 31);
+                destinationRectangle = new Rectangle(roomTopLeftX + 578, roomTopLeftY + 769, 111 * scaleFactor, 31 * scaleFactor);
                 break;
-            case 6:
-                sourceRectangle = new Rectangle(0, 144, 111, 31);
-                destinationRectangle = new Rectangle(0, 767, 111 * scaleFactor, 31 * scaleFactor);
+            case 6: // Bottom wall, left
+                sourceRectangle = new Rectangle(0, 145, 111, 31);
+                destinationRectangle = new Rectangle(roomTopLeftX, roomTopLeftY + 769, 111 * scaleFactor, 31 * scaleFactor);
                 break;
-            case 7:
+            case 7: // Left wall, bottom
                 sourceRectangle = new Rectangle(0, 104, 31, 71);
-                destinationRectangle = new Rectangle(0, 605, 31 * scaleFactor, 71 * scaleFactor);
+                destinationRectangle = new Rectangle(roomTopLeftX, roomTopLeftY + 605, 31 * scaleFactor, 71 * scaleFactor);
                 break;
-		}
-	}
+        }
+    }
+
+
 }

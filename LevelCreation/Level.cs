@@ -13,32 +13,41 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
     public class Level
     {
         int[,] map;
-        IWall[] walls;
+        List<IWall> walls;
         LevelLoader loader;
         Texture2D levelSpriteSheet;
+        StreamReader reader;
         Rectangle wallsSource;
         Rectangle wallsDestination;
         private String ContentPath;
         int numRooms;
         int currentRoom;
         int currentRoomRow;
+        public int CurrentRoomRow
+        {
+            get { return currentRoomRow; }
+        }
         int currentRoomColumn;
+        public int CurrentRoomColumn
+        {
+            get { return currentRoomColumn; }
+        }
         int loadedRoom;
         int scaleFactor = 4;
-        private StreamReader reader;
         private CollisionManager collisionManager;
+        private Camera2D camera;
         private List<ICollision> loadedObjects;
-        public Level(Texture2D levelSpriteSheet, StreamReader reader, String ContentPath)
+        public Level(Texture2D levelSpriteSheet, String ContentPath)
         {
-            this.reader = reader;
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = 18;
-            currentRoom = 0;
-            loadedRoom = 0;
-            currentRoomRow = 5;
-            currentRoomColumn = 2;
+            currentRoom = 1;
+            loadedRoom = 1;
+            currentRoomRow = 0;
+            currentRoomColumn = 1;
+            walls = new List<IWall>();
             map = new int[,]
             {
                 { 18, 17, 16, -1, -1, -1},
@@ -48,21 +57,30 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 { -1, -1, 4, -1, -1, -1},
                 { -1, 2, 1, 3, -1, -1}
             };
-            walls = CreateWalls();
-            loader.Load(reader);
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 6; j++) 
+                { 
+                    if (map[i,j] != -1 /*&& map[i,j] != 18*/)
+                    {
+                        CreateWalls(i, j);
+                        loader.LoadBlocks(map[i,j]);
+                    }
+                }
+            }
+            reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            loader.LoadEnemiesItems(reader);
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
         }
-        private IWall[] CreateWalls()
+        private void CreateWalls(int RoomRow, int RoomColumn)
         {
-            IWall[] walls = new IWall[8];
-            for (int i = 0; i < walls.Length; i++)
+            for (int i = 0; i < 8; i++)
             {
-                walls[i] = new Wall(i, currentRoomRow, currentRoomColumn);
+                walls.Add(new Wall(i, RoomRow, RoomColumn));
             }
 
-            return walls;
         }
         public List<ICollision> GetRoomObjects()
         {
@@ -79,16 +97,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
-            if (currentRoom != 18)
+            foreach (IWall wall in walls)
             {
-                foreach (IWall wall in walls)
-                {
-                    wall.Draw(spriteBatch, levelSpriteSheet);
-                }
-                foreach (IDoor door in loader.Doors)
-                {
-                    door.Draw(spriteBatch);
-                }
+                wall.Draw(spriteBatch, levelSpriteSheet);
+            }
+            foreach (IDoor door in loader.Doors)
+            {
+                door.Draw(spriteBatch);
             }
             foreach (IBlock block in loader.Blocks)
             {
@@ -109,7 +124,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             List<int> toRemove = new List<int>();
             if (currentRoom != loadedRoom)
             {
-                loader.Load(reader);
+                loader.LoadEnemiesItems(reader);
                 
                 loadedRoom = currentRoom;
 

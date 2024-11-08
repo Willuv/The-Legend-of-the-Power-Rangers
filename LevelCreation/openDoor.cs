@@ -22,16 +22,16 @@ internal class openDoor : IDoor
         switch (doorNum)
         {
             case 0:
-                destinationRectangle = new Rectangle(443, 192, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(445, 192, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 1:
                 destinationRectangle = new Rectangle(-5, 479, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 2:
-                destinationRectangle = new Rectangle(895, 479, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(898, 478, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 3:
-                destinationRectangle = new Rectangle(443, 765, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(445, 765, 33 * scaleFactor, 32 * scaleFactor);
                 break;
         }
     }

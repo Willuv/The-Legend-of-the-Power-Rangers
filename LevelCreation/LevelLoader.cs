@@ -105,13 +105,31 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             doors.Clear();
             items.Clear();
         }
-        public void Load(StreamReader reader)
+        public void ReadData(StreamReader reader)
         {
             String line;
             String[] splitLine;
             Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-            //unload past room
-            doors.Clear();
+
+            line = reader.ReadLine();
+            splitLine = CSVParser.Split(line);
+            for (int i = 0; i < 4; i++)
+            {
+                if (doorMaker != null)
+                {
+                    doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i));
+                }
+            }
+        }
+        public void LoadBlocks(int CurrentRoom)
+        {
+
+        }
+        public void LoadEnemiesItems(StreamReader reader)
+        {
+            String line;
+            String[] splitLine;
+            Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
             
             line = reader.ReadLine();
             splitLine = CSVParser.Split(line);

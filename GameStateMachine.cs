@@ -20,6 +20,7 @@ namespace Legend_of_the_Power_Rangers
         }
 
         public GameState currentState;
+        private Camera2D camera;
         private Game1 game;
         private SpriteBatch spriteBatch;
         public Level level;
@@ -35,6 +36,8 @@ namespace Legend_of_the_Power_Rangers
         {
             this.game = game;
             this.spriteBatch = spriteBatch;
+
+            camera = Camera2D.Instance;
 
             audioManager = AudioManager.Instance;
             audioManager.Initialize(game.Content);
@@ -106,9 +109,9 @@ namespace Legend_of_the_Power_Rangers
             LinkManager.SetLinkDecorator(linkDecorator);
 
             // Load the level
-            string path = game.Content.RootDirectory;
-            game.reader = new StreamReader(path + "\\LinkDungeon1 - Room1.csv");
-            level = new Level(game.levelSpriteSheet, game.reader, path);
+            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
+            // Set the Camera to current level
+            camera.CalculateTransformMatrix(level.CurrentRoomRow, level.CurrentRoomColumn);
             // Set up controllers
             keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
             mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
@@ -156,8 +159,7 @@ namespace Legend_of_the_Power_Rangers
 
         private void ResetLevel()
         {
-            string initialRoomPath = game.Content.RootDirectory + "\\LinkDungeon1 - Room1.csv";
-            level = new Level(game.levelSpriteSheet, game.reader, game.Content.RootDirectory);
+            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
 
             // Reset other elements like blocks and items
             game.blockManager = new BlockManager(new List<string> { "Statue1", "Statue2" });
@@ -200,12 +202,12 @@ namespace Legend_of_the_Power_Rangers
             linkDecorator.Update(gameTime);
             game.linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
             level.Update(gameTime);
-            
+            camera.CalculateTransformMatrix(level.CurrentRoomRow, level.CurrentRoomColumn);
         }
 
         public void Draw(GameTime gameTime)
         {
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp/*, transformMatrix: */);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp, transformMatrix: camera.TransformMatrix);
             switch (currentState)
             {
                 case GameState.Gameplay:
