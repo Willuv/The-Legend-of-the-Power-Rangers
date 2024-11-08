@@ -45,7 +45,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             numRooms = 18;
             currentRoom = 1;
             loadedRoom = 1;
-            currentRoomRow = 0;
+            currentRoomRow = 1;
             currentRoomColumn = 1;
             walls = new List<IWall>();
             map = new int[,]

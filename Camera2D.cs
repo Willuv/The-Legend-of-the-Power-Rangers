@@ -56,7 +56,7 @@ public class Camera2D
 
     public void CalculateTransformMatrix(int RoomRow, int RoomColumn)
 	{
-        //position = new Vector2 ((1020 * RoomColumn), (698 * RoomRow));
+        position = new Vector2 ((1020 * RoomColumn), (698 * RoomRow));
         transformMatrix = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0));
 	}
 }
