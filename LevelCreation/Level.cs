@@ -23,6 +23,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int numRooms;
         int currentRoom;
         int currentRoomRow;
+        public int CurrentRooom
+        {
+            get { return currentRoom; }
+        }
         public int CurrentRoomRow
         {
             get { return currentRoomRow; }
