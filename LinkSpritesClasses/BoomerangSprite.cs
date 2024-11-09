@@ -77,6 +77,7 @@ namespace Legend_of_the_Power_Rangers
             if (currentFrame % 10 == 0) {
                 rotation += currentFrame;
                 rotation %= MathHelper.Pi * 2;
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Arrow_Boomerang");
             }
             if (currentFrame < 50)
             {

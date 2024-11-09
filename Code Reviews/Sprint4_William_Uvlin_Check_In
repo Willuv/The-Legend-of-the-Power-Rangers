@@ -1,0 +1,25 @@
+
+Readability
+	William Uvlin
+	11/4/24
+	Sprint 4
+	Level.cs
+	Christian Colon
+	15
+	Overall Christian Made the level class relatively easy to read. 
+	The class groups variables together that make sense being together. 
+	The methods in the level class are named clearly allowing readers to understand the method's purpose. 
+	Some parts of the file that could have improvements made to the readability are by splitting up updates into two methods, 
+	one to load blocks, and one to load items.
+
+
+Quality
+	William Uvlin
+	11/4/24
+	Sprint 4
+	Level.cs
+	Christian Colon
+	15
+	One hypothetical change to make to the level.cs file and class would be to not “hardcode” the streamreader paths and also put them in level loader. 
+	This could be easily implemented by creating a load room function that contains a list of some sorts with all the paths. 
+	This would allow us to keep the functionality of switching rooms while improving readability as well as better coupling and modularity

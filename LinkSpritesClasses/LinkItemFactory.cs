@@ -36,15 +36,18 @@ public class LinkItemFactory
                 item = new(CreationLinkItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 				break;
 			case CreationLinkItemType.Arrow:
-				item = new(CreationLinkItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Arrow_Boomerang");
+                item = new(CreationLinkItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 				break;
 			case CreationLinkItemType.Sword:
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Sword_Combined");
                 item = new(CreationLinkItemType.Sword, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 				break;
 			case CreationLinkItemType.Boomerang:
                 item = new(CreationLinkItemType.Boomerang, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 				break;
 			case CreationLinkItemType.Candle:
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Candle");
                 item = new(CreationLinkItemType.Candle, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
 				break;
         }

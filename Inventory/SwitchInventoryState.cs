@@ -20,7 +20,7 @@ namespace Legend_of_the_Power_Rangers
         {
             if (gameStateMachine.currentState == GameStateMachine.GameState.ItemSelection)
             {
-                gameStateMachine.ChangeState(GameStateMachine.GameState.Gameplay);
+                gameStateMachine.ChangeState(GameStateMachine.GameState.Running);
             }
             else
             {
