@@ -45,13 +45,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             numRooms = 18;
             currentRoom = 1;
             loadedRoom = 1;
-            currentRoomRow = 1;
+            currentRoomRow = 0;
             currentRoomColumn = 1;
             walls = new List<IWall>();
             map = new int[,]
             {
-                { 18, 17, 16, -1, -1, -1},
-                { -1, -1, 13, -1, -1, -1},
+                { 18, 17, 16, -1, -1, 0},
+                { -1, -1, 13, -1, 14, 15},
                 { 10, 9, 8, 11, 12, -1},
                 { -1, 6, 5, 7, -1, -1},
                 { -1, -1, 4, -1, -1, -1},
@@ -61,15 +61,18 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 for (int j = 0; j < 6; j++) 
                 { 
-                    if (map[j,i] != -1 && map[j,i] != 18)
+                    if (map[j,i] != -1)
                     {
-                        CreateWalls(i, j);
-                        loader.LoadBlocks(map[i,j]);
+                        if (map[j,i] != 18)
+                        {
+                            CreateWalls(i, j);
+                        }
+                        reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + map[j,i] + ".csv");
+                        loader.ReadData(reader, i, j);
                     }
                 }
             }
             reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
-            loader.LoadEnemiesItems(reader);
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
@@ -124,8 +127,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             List<int> toRemove = new List<int>();
             if (currentRoom != loadedRoom)
             {
-                loader.LoadEnemiesItems(reader);
-                
+                loader.LoadEnemiesItems(reader, currentRoomRow, currentRoomColumn);
+
                 loadedRoom = currentRoom;
 
                 //changing the loaded objects based on current room
@@ -165,6 +168,17 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             if (currentRoom < 0)
             {
                 currentRoom = numRooms;
+            }
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    if (map[j,i] == currentRoom)
+                    {
+                        currentRoomRow = j;
+                        currentRoomColumn = i;
+                    }
+                }
             }
             loader.DeloadRoom();
             loadedObjects.Clear();

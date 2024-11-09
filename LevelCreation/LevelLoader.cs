@@ -101,11 +101,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         public void DeloadRoom()
         {
             enemies.Clear();
-            blocks.Clear();
-            doors.Clear();
             items.Clear();
         }
-        public void ReadData(StreamReader reader)
+        public void ReadData(StreamReader reader, int RoomRow, int RoomColumn)
         {
             String line;
             String[] splitLine;
@@ -115,32 +113,12 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             splitLine = CSVParser.Split(line);
             for (int i = 0; i < 4; i++)
             {
-                if (doorMaker != null)
+                if (doorMaker != null && splitLine[i][4] != '9')
                 {
-                    doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i));
+                    doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i, RoomRow, RoomColumn));
                 }
             }
-        }
-        public void LoadBlocks(int CurrentRoom)
-        {
 
-        }
-        public void LoadEnemiesItems(StreamReader reader)
-        {
-            String line;
-            String[] splitLine;
-            Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-            
-            line = reader.ReadLine();
-            splitLine = CSVParser.Split(line);
-            for (int i = 0; i < 4; i++)
-            {
-                if (doorMaker != null)
-                {
-                    doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i));
-                }
-            }
-            //reads top-bottom left-right
             for (int i = 1; i < 8; i++)
             {
                 line = reader.ReadLine();
@@ -148,14 +126,11 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 {
                     splitLine = CSVParser.Split(line);
 
-                    int currentx = 128 + (64 * j);
-                    int currenty = 320 + (64 * (i-1));
+                    int currentx = 128 + (64 * j) + (RoomRow * 1020);
+                    int currenty = 320 + (64 * (i - 1)) + (RoomColumn * 698);
                     String tileCode = splitLine[j];
                     String blockOneCode = tileCode.Substring(1, 2);
                     String blockTwoCode = tileCode.Substring(4, 2);
-                    String enemyCode = tileCode.Substring(7, 2);
-                    String itemCode = tileCode.Substring(10, 2);
-
                     if (blockTwoCode != "99")
                     {
                         String blockTwoString = BlockDictionary[blockTwoCode];
@@ -170,6 +145,32 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                         block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
                         blocks.Add(block);
                     }
+
+                }
+            }
+        }
+        public void LoadEnemiesItems(StreamReader reader, int RoomRow, int RoomColumn)
+        {
+            String line;
+            String[] splitLine;
+            Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+            
+            line = reader.ReadLine();
+            // read doorLine
+            splitLine = CSVParser.Split(line);
+            //reads top-bottom left-right
+            for (int i = 1; i < 8; i++)
+            {
+                line = reader.ReadLine();
+                for (int j = 0; j < 12; j++)
+                {
+                    splitLine = CSVParser.Split(line);
+
+                    int currentx = 128 + (64 * j) + (RoomColumn * 1020);
+                    int currenty = 320 + (64 * (i-1)) + (RoomRow * 698);
+                    String tileCode = splitLine[j];
+                    String enemyCode = tileCode.Substring(7, 2);
+                    String itemCode = tileCode.Substring(10, 2);
                     if (enemyCode != "99")
                     {
                         IEnemy enemy = EnemySpriteFactory.Instance.CreateEnemy(enemyCode);

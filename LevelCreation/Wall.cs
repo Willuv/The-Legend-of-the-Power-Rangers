@@ -22,7 +22,7 @@ public class Wall : IWall
     public void DetermineRectangles(int xPos, int yPos)
     {
         // Calculate the room's top-left corner based on xPos and yPos
-        int roomTopLeftX = xPos * 1000;
+        int roomTopLeftX = xPos * 1020;
         int roomTopLeftY = yPos * 698;
         switch (wallNum)
         {

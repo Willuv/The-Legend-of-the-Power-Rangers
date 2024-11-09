@@ -11,25 +11,25 @@ public class DoorMaker
         this.levelSpriteSheet = levelSpriteSheet;
     }
 
-    public IDoor CreateDoor(char doorChar, int doorNum)
+    public IDoor CreateDoor(char doorChar, int doorNum, int RoomRow, int RoomColumn)
     {
         IDoor door = null;
         switch (doorChar)
 		{
 			case '1':
-				door = new wallDoor(levelSpriteSheet, doorNum);
+				door = new wallDoor(levelSpriteSheet, doorNum, RoomRow, RoomColumn);
 				break;
 			case '2':
-                door = new openDoor(levelSpriteSheet, doorNum);
+                door = new openDoor(levelSpriteSheet, doorNum, RoomRow, RoomColumn);
                 break;
 			case '3':
-                door = new keyDoor(levelSpriteSheet, doorNum);
+                door = new keyDoor(levelSpriteSheet, doorNum, RoomRow, RoomColumn);
                 break;
 			case '4':
-                door = new diamondDoor(levelSpriteSheet, doorNum);
+                door = new diamondDoor(levelSpriteSheet, doorNum, RoomRow, RoomColumn);
                 break;
 			case '5':
-				door = new holeDoor(levelSpriteSheet, doorNum);
+				door = new holeDoor(levelSpriteSheet, doorNum, RoomRow, RoomColumn);
                 break;
 		}
         if (door == null)
