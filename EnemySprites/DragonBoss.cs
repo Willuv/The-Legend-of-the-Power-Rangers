@@ -13,7 +13,10 @@ namespace Legend_of_the_Power_Rangers
         public Rectangle DestinationRectangle
         {
             get { return destinationRectangle; }
-            set { destinationRectangle = value; }
+            set
+            {
+                destinationRectangle = value;
+            }
         }
 
         private Vector2 direction;

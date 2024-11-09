@@ -15,7 +15,7 @@ namespace Legend_of_the_Power_Rangers
         }
         private int currentFrameIndex;
         private Vector2 direction;
-         private float speed = 100f;
+        private float speed = 100f;
         //private float scale = 2.0f;
 
         private double timeSinceLastToggle;
