@@ -8,10 +8,14 @@ internal class openDoor : IDoor
     private Rectangle sourceRectangle;
     private Rectangle destinationRectangle;
     private int doorNum;
+    private int xPos;
+    private int yPos;
     private int scaleFactor = 4;
-    public openDoor(Texture2D spriteSheet, int doorNum)
+    public openDoor(Texture2D spriteSheet, int doorNum, int RoomRow, int RoomColumn)
     {
         this.doorNum = doorNum;
+        this.xPos = RoomRow;
+        this.yPos = RoomColumn;
         this.spriteSheet = spriteSheet;
         this.sourceRectangle = new Rectangle(327, (33 * doorNum), 31, 31);
         determineDestination();
@@ -19,19 +23,21 @@ internal class openDoor : IDoor
 
     public void determineDestination()
     {
+        int roomTopLeftX = xPos * 1020;
+        int roomTopLeftY = yPos * 698;
         switch (doorNum)
         {
             case 0:
-                destinationRectangle = new Rectangle(443, 192, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(443 + roomTopLeftX, 192 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 1:
-                destinationRectangle = new Rectangle(-5, 479, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(-5 + roomTopLeftX, 479 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 2:
-                destinationRectangle = new Rectangle(895, 479, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(898 + roomTopLeftX, 479 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 3:
-                destinationRectangle = new Rectangle(443, 765, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(445 + roomTopLeftX, 765 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
         }
     }
