@@ -259,9 +259,12 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.Running:
                     DrawGameplay();
-                    hud.Draw();
                     break;
             }
+            spriteBatch.End();
+
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            hud.Draw();
             spriteBatch.End();
         }
 
