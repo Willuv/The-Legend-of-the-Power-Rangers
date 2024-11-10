@@ -9,12 +9,21 @@ namespace Legend_of_the_Power_Rangers
     {
         private Dictionary<ItemType, int> itemCounts = new Dictionary<ItemType, int>();
         private HashSet<ItemType> obtainedItems = new HashSet<ItemType>();
+        private ItemType activeItem;
+
 
         public LinkInventory()
         {
             itemCounts[ItemType.Rupee] = 0;
             itemCounts[ItemType.Bomb] = 0;
             itemCounts[ItemType.Key] = 0;
+
+        }
+
+        public ItemType ActiveItem
+        {
+            get { return activeItem; }
+            set { activeItem = value; }
         }
 
         public void PickUpItem(IItem item)
