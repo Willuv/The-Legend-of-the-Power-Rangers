@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using System.Collections.Generic;
+using Microsoft.Xna.Framework.Media;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -9,11 +10,14 @@ namespace Legend_of_the_Power_Rangers
     {
         private static AudioManager instance;
         private Dictionary<string, SoundEffect> soundEffects;
+        private Dictionary<string, Song> music;
+        private SoundEffectInstance currentMusicInstance;
         private bool isMuted;
 
         private AudioManager()
         {
             soundEffects = new Dictionary<string, SoundEffect>();
+            music = new Dictionary<string, Song>();
             isMuted = false;
         }
 
@@ -31,6 +35,7 @@ namespace Legend_of_the_Power_Rangers
 
         public void Initialize(ContentManager content)
         {
+            music["Dungeon"] = content.Load<Song>("Dungeon");
             //Done
             soundEffects["Arrow_Boomerang"] = content.Load<SoundEffect>("LOZ_Arrow_Boomerang");
             //Done
@@ -82,18 +87,30 @@ namespace Legend_of_the_Power_Rangers
             }
             else if (!soundEffects.ContainsKey(soundName))
             {
-                System.Console.WriteLine($"Sound {soundName} not found.");
+                System.Console.WriteLine($"Sound effect {soundName} not found.");
+            }
+        }
+
+        public void PlayMusic(string musicName)
+        {
+            if (!isMuted && music.ContainsKey(musicName))
+            {
+                MediaPlayer.Stop();
+                MediaPlayer.IsRepeating = true;
+                MediaPlayer.Play(music[musicName]);
             }
         }
 
         public void Mute()
         {
             isMuted = true;
+            MediaPlayer.Pause();
         }
 
         public void Unmute()
         {
             isMuted = false;
+            MediaPlayer.Resume();
         }
 
         public bool IsMuted()
