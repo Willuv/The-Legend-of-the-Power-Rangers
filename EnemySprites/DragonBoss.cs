@@ -47,6 +47,10 @@ namespace Legend_of_the_Power_Rangers
         int bossSpriteWidth = 40;
         int bossSpriteHeight = 40;
 
+        private bool isHurt = false;
+        private double hurtTimer = 0;
+        private const double hurtDuration = 1000;
+
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.DragonBoss; } }
 
@@ -95,6 +99,16 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Update(GameTime gameTime)
         {
+            if (isHurt)
+            {
+                hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (hurtTimer >= hurtDuration)
+                {
+                    isHurt = false;
+                    hurtTimer = 0;
+                }
+            }
+
             directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (directionChangeTimer >= 3) // ChangeDirrection every 3sec
             {
@@ -165,6 +179,11 @@ namespace Legend_of_the_Power_Rangers
             if (Health <= 0)
             {
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
+            else
+            {
+                isHurt = true;
+                hurtTimer = 0;
             }
         }
     }

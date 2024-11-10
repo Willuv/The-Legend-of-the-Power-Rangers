@@ -35,6 +35,10 @@ namespace Legend_of_the_Power_Rangers
         private double drawTimer;
         private const double drawDelay = 500;
 
+        private bool isHurt = false;
+        private double hurtTimer = 0;
+        private const double hurtDuration = 1000;
+
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.RedOcto; } }
 
@@ -98,6 +102,16 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
+            if (isHurt)
+            {
+                hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (hurtTimer >= hurtDuration)
+                {
+                    isHurt = false;
+                    hurtTimer = 0;
+                }
+            }
+
             directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (directionChangeTimer >= 3) // ChangeDirrection every 3sec
             {
@@ -151,6 +165,11 @@ namespace Legend_of_the_Power_Rangers
             {
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
                 //TriggerDeath();
+            }
+            else
+            {
+                isHurt = true;
+                hurtTimer = 0;
             }
         }
 

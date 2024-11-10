@@ -13,6 +13,10 @@ namespace Legend_of_the_Power_Rangers
             set { destinationRectangle = value; }
         }
 
+        private bool isHurt = false;
+        private double hurtTimer = 0;
+        private const double hurtDuration = 1000;
+
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.BlueGorya; } }
 
@@ -23,6 +27,15 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
+            // if (isHurt)
+            // {
+            //     hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            //     if (hurtTimer >= hurtDuration)
+            //     {
+            //         isHurt = false;
+            //         hurtTimer = 0;
+            //     }
+            // }
             throw new System.NotImplementedException();
         }
         int Health = 1;
@@ -32,6 +45,11 @@ namespace Legend_of_the_Power_Rangers
             if (Health <= 0)
             {
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+            }
+            else
+            {
+                isHurt = true;
+                hurtTimer = 0;
             }
         }
     }
