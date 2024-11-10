@@ -22,9 +22,11 @@ namespace Legend_of_the_Power_Rangers
             switch (item.ItemType)
             {
                 case ItemType.Rupee:
-                case ItemType.Bomb:
                 case ItemType.Key:
                     itemCounts[item.ItemType]++;
+                    break;
+                case ItemType.Bomb:
+                    itemCounts[item.ItemType] = itemCounts[item.ItemType] + 4;
                     break;
                 case ItemType.Fairy:
                 case ItemType.Heart:
@@ -43,5 +45,16 @@ namespace Legend_of_the_Power_Rangers
         {
             return itemCounts.ContainsKey(itemType) ? itemCounts[itemType] : 0;
         }
+
+        public void SetItemCount(ItemType itemType, int count)
+        {
+            itemCounts[itemType] = count;  
+        }
+
+        public bool HasItem(ItemType itemType)
+        {
+            return obtainedItems.Contains(itemType);
+        }
+
     }
 }
