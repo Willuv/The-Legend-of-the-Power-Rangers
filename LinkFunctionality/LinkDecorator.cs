@@ -14,7 +14,7 @@ public class LinkDecorator : Link
     {
         this.baseLink = baseLink;
         damagedColor = Color.Red;
-        damageDuration = 1f;
+        damageDuration = 0.5f;
         timeDamaged = damageDuration;
     }
 

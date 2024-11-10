@@ -10,12 +10,15 @@ namespace Legend_of_the_Power_Rangers
 {
     public class LinkVSEnemyLeft : IEvent
     {
+        private const int KnockbackDistance = 60;
         public LinkVSEnemyLeft() { }
 
         public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
         {
             LinkStateMachine linkStateMachine = ((Link)link).GetStateMachine();
             LinkStateMachine.LinkAction action = linkStateMachine.GetCurrentAction();
+            Vector2 knockback = Vector2.Zero;
+
             if (action == LinkStateMachine.LinkAction.Attack)
             {
                 //enemy.gethurt whatever the actual method is when alex implements
@@ -26,6 +29,9 @@ namespace Legend_of_the_Power_Rangers
                 Rectangle newDestination = link.DestinationRectangle;
                 newDestination.X -= overlap.Width;
                 link.DestinationRectangle = newDestination;
+
+                knockback = new Vector2(-KnockbackDistance, 0);
+                LinkManager.GetLink().UpdatePosition(knockback);
 
                 linkStateMachine.ChangeAction(LinkStateMachine.LinkAction.Idle);
 
