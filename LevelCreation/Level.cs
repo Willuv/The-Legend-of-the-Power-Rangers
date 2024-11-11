@@ -47,8 +47,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             this.levelSpriteSheet = levelSpriteSheet;
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = 18;
-            currentRoom = 1;
-            loadedRoom = 1;
+            currentRoom = 17;
+            loadedRoom = 17;
             currentRoomRow = 0;
             currentRoomColumn = 1;
             walls = new List<IWall>();
@@ -62,7 +62,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 { -1, 2, 1, 3, -1, -1}
             };
             for (int i = 0; i < 6; i++)
-            {
+            { 
                 for (int j = 0; j < 6; j++) 
                 { 
                     if (map[j,i] != -1)
@@ -187,6 +187,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
+            int LinkWidth = LinkManager.GetLink().DestinationRectangle.Width;
+            int LinkHeight = LinkManager.GetLink().DestinationRectangle.Height;
+            LinkManager.GetLink().DestinationRectangle = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
             reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
         }
         public void ChangeLevel(String direction)
