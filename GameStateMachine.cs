@@ -240,7 +240,6 @@ namespace Legend_of_the_Power_Rangers
             {
                 case GameState.Gameplay:
                     DrawGameplay();
-                    hud.Draw();
                     break;
                 case GameState.Paused:
                     // Draw paused screen
@@ -266,10 +265,14 @@ namespace Legend_of_the_Power_Rangers
                     break;
             }
             spriteBatch.End();
-
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            hud.Draw();
-            spriteBatch.End();
+            switch (currentState)
+            {
+                case GameState.Gameplay:
+                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                    hud.Draw();
+                    spriteBatch.End();
+                    break;
+            }
         }
 
         private void DrawGameplay()
@@ -277,8 +280,9 @@ namespace Legend_of_the_Power_Rangers
             level.Draw(game.enemySpritesheet, spriteBatch);
             game.linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
+            hud.Draw();
         }
 
-        
+
     }
 }

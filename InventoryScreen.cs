@@ -110,27 +110,27 @@ namespace Legend_of_the_Power_Rangers
             InventorySpriteBatch.Draw(blackTexture, potionCover, Color.Black);
             InventorySpriteBatch.Draw(blackTexture, itemSelectCover, Color.Black);
             InventorySpriteBatch.Draw(blackTexture, aboveItemSelectCover, Color.Black);
-            if (linkInventory.obtainedItems.Contains(ItemType.BluePotion))
+            if (linkInventory.HasItem(ItemType.BluePotion))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, potionPosition, potionSource, Color.White);
             }
-            if (linkInventory.obtainedItems.Contains(ItemType.BlueCandle))
+            if (linkInventory.HasItem(ItemType.BlueCandle))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, candlePosition, candleSource, Color.White);
             }
-            if (linkInventory.obtainedItems.Contains(ItemType.Bow))
+            if (linkInventory.HasItem(ItemType.Bow))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, bowPosition, bowSource, Color.White);
             }
-            if (linkInventory.obtainedItems.Contains(ItemType.Bomb))
+            if (linkInventory.HasItem(ItemType.Bomb))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, bombPosition, bombSource, Color.White);
             }
-            if (linkInventory.obtainedItems.Contains(ItemType.WoodBoomerang))
+            if (linkInventory.HasItem(ItemType.WoodBoomerang))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, boomerangPosition, boomerangSource, Color.White);
             }
-            if (!linkInventory.obtainedItems.Contains(ItemType.Map))
+            if (!linkInventory.HasItem(ItemType.Map))
             {
                 InventorySpriteBatch.Draw(blackTexture, mapCover, Color.Black);
                 InventorySpriteBatch.Draw(blackTexture, mapTextCover, Color.Black);
