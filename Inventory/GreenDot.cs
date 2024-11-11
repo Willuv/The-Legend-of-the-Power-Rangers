@@ -97,7 +97,7 @@ namespace Legend_of_the_Power_Rangers
         {
             
             greenDotSpriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            if (linkInventory.obtainedItems.Contains(ItemType.Compass))
+            if (linkInventory.HasItem(ItemType.Compass))
             {
                 greenDotSpriteBatch.Draw(greenDotTexture, destinationRectangle, sourceRectangle, Color.White);
             }  

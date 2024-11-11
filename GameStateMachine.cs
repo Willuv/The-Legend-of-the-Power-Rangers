@@ -117,15 +117,17 @@ namespace Legend_of_the_Power_Rangers
             linkInventory = new LinkInventory();
             LinkManager.setLinkInventory(linkInventory);
 
+            // Load the level
+            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
+
             if (hud == null)
             {
                 Texture2D hudTexture = game.Content.Load<Texture2D>("HUD");
                 Rectangle hudDestinationRectangle = new Rectangle(0, 0, 1020, 192);
-                hud = new HUD(game.GraphicsDevice, hudTexture, hudDestinationRectangle);
+                hud = new HUD(game.GraphicsDevice, hudTexture, hudDestinationRectangle, level.currentRoom);
             }
 
-            // Load the level
-            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
+
             // Set the Camera to current level
             camera.CalculateTransformMatrix(level.CurrentRoomRow, level.CurrentRoomColumn);
             // Set up controllers
@@ -196,10 +198,11 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.Running:
                     // Handle the gameplay updates for both Gameplay and Running states
                     UpdateGameplay(gameTime);
+                    hud.Update(level.currentRoom);
                     break;
                 case GameState.Paused:
                     keyboardController.Update();
-
+                    hud.Update(level.currentRoom);
                     // Handle paused state update
                     break;
                 case GameState.ItemSelection:

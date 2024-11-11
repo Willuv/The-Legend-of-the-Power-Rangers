@@ -82,12 +82,12 @@ namespace Legend_of_the_Power_Rangers
             InventorySpriteBatch.Draw(blackTexture, keyCountPosition, Color.Black);
             InventorySpriteBatch.Draw(InventoryTexture, rupeeXCover, xSourceRectangle, Color.White);
             InventorySpriteBatch.Draw(blackTexture, rupeeCountPosition, Color.Black);
-            if (!linkInventory.obtainedItems.Contains(ItemType.Map))
+            if (!linkInventory.HasItem(ItemType.Map))
             {
                 InventorySpriteBatch.Draw(blackTexture, mapCover, Color.Black);
                 InventorySpriteBatch.Draw(blackTexture, mapTextCover, Color.Black);
             }
-            if (!linkInventory.obtainedItems.Contains(ItemType.Compass))
+            if (!linkInventory.HasItem(ItemType.Compass))
             {
                 InventorySpriteBatch.Draw(blackTexture, compassTextCover, Color.Black);
             }
