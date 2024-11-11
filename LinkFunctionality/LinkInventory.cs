@@ -33,6 +33,7 @@ namespace Legend_of_the_Power_Rangers
                 case ItemType.Rupee:
                 case ItemType.Key:
                     itemCounts[item.ItemType]++;
+                    obtainedItems.Add(item.ItemType);
                     break;
                 case ItemType.Bomb:
                     itemCounts[item.ItemType] = itemCounts[item.ItemType] + 4;
@@ -51,6 +52,18 @@ namespace Legend_of_the_Power_Rangers
                     obtainedItems.Add(item.ItemType);
                     break;
                 case ItemType.Compass:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.WoodBoomerang:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.Bow:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.BlueCandle:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.BluePotion:
                     obtainedItems.Add(item.ItemType);
                     break;
             }
