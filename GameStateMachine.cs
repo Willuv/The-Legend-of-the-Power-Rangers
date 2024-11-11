@@ -34,6 +34,7 @@ namespace Legend_of_the_Power_Rangers
         private MouseController mouseController;
         private AudioManager audioManager;
         private GreenDot greenDot;
+    
 
         public GameStateMachine(Game1 game, SpriteBatch spriteBatch)
         {
@@ -147,10 +148,10 @@ namespace Legend_of_the_Power_Rangers
             {
                 Texture2D InventoryTexture = game.Content.Load<Texture2D>("HUD");
                 Rectangle InventoryDestinationRectangle = new Rectangle(0, 0, 1020, 1020);
-                inventoryScreen = new InventoryScreen(game.GraphicsDevice, InventoryTexture, InventoryDestinationRectangle);
+                inventoryScreen = new InventoryScreen(game.GraphicsDevice, InventoryTexture, InventoryDestinationRectangle, linkInventory);
             }
             Texture2D greenDotTexture = game.Content.Load<Texture2D>("HUD");
-            greenDot = new GreenDot(game.GraphicsDevice, greenDotTexture, currentRoom);
+            greenDot = new GreenDot(game.GraphicsDevice, greenDotTexture, currentRoom, linkInventory);
         }
 
         private void InitializeGameOverState()

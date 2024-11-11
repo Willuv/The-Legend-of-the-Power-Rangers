@@ -12,6 +12,9 @@ namespace Legend_of_the_Power_Rangers
         private Rectangle bombCover;
         private Rectangle BCover;
         private Rectangle rupeeXCover;
+        private Rectangle mapCover;
+        private Rectangle mapTextCover;
+        private Rectangle compassTextCover;
         private Rectangle rupeeNumberCover;
         private Texture2D InventoryTexture;
         private Rectangle InventorySourceRectangle = new Rectangle(0, 0, 255, 265);
@@ -21,6 +24,7 @@ namespace Legend_of_the_Power_Rangers
         private readonly Rectangle keyCountPosition;
         private readonly Rectangle rupeeCountPosition;
         private Link link;
+        private LinkInventory linkInventory;
 
         private const int HeartSize = 8;
         private const int ScaledHeartSize = 32;
@@ -31,12 +35,13 @@ namespace Legend_of_the_Power_Rangers
         private readonly Rectangle halfHeartSource = new Rectangle(176, 242, HeartSize, HeartSize);
         private readonly Rectangle emptyHeartSource = new Rectangle(176, 233, HeartSize, HeartSize);
 
-        public InventoryScreen(GraphicsDevice graphicsDevice, Texture2D hudTexture, Rectangle destinationRectangle)
+        public InventoryScreen(GraphicsDevice graphicsDevice, Texture2D hudTexture, Rectangle destinationRectangle, LinkInventory linkInventory)
         {
             this.InventoryTexture = hudTexture;
             this.InventorySpriteBatch = new SpriteBatch(graphicsDevice);
             this.InventoryDestinationRectangle = destinationRectangle;
             this.link = LinkManager.GetLink();
+            this.linkInventory = linkInventory;
 
             blackTexture = new Texture2D(graphicsDevice, 1, 1);
             blackTexture.SetData(new[] { Color.Black });
@@ -44,6 +49,9 @@ namespace Legend_of_the_Power_Rangers
             heartCover = new Rectangle(InventoryDestinationRectangle.X + 704, InventoryDestinationRectangle.Y + 800, 260, 68);
             BCover = new Rectangle(InventoryDestinationRectangle.X + 512, InventoryDestinationRectangle.Y + 768, 32, 64);
             rupeeXCover = new Rectangle(InventoryDestinationRectangle.X + 384, InventoryDestinationRectangle.Y + 738, 32, 32);
+            mapCover = new Rectangle(InventoryDestinationRectangle.X + 376, InventoryDestinationRectangle.Y + 350, 520, 350);
+            mapTextCover = new Rectangle(InventoryDestinationRectangle.X + 126, InventoryDestinationRectangle.Y + 350, 150, 150);
+            compassTextCover = new Rectangle(InventoryDestinationRectangle.X + 90, InventoryDestinationRectangle.Y + 500, 250, 150);
 
             rupeeCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 738, 64, 32);
             bombCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 832, 64, 32);
@@ -74,6 +82,15 @@ namespace Legend_of_the_Power_Rangers
             InventorySpriteBatch.Draw(blackTexture, keyCountPosition, Color.Black);
             InventorySpriteBatch.Draw(InventoryTexture, rupeeXCover, xSourceRectangle, Color.White);
             InventorySpriteBatch.Draw(blackTexture, rupeeCountPosition, Color.Black);
+            if (!linkInventory.obtainedItems.Contains(ItemType.Map))
+            {
+                InventorySpriteBatch.Draw(blackTexture, mapCover, Color.Black);
+                InventorySpriteBatch.Draw(blackTexture, mapTextCover, Color.Black);
+            }
+            if (!linkInventory.obtainedItems.Contains(ItemType.Compass))
+            {
+                InventorySpriteBatch.Draw(blackTexture, compassTextCover, Color.Black);
+            }
 
 
         }
