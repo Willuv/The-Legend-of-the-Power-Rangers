@@ -16,7 +16,7 @@ namespace Legend_of_the_Power_Rangers
         private int currentFrameIndex;
         private Vector2 direction;
         private float speed = 100f;
-        //private float scale = 2.0f;
+        private float scale = 1.5f;
 
         private double timeSinceLastToggle;
         private const double millisecondsPerToggle = 100;
@@ -34,7 +34,7 @@ namespace Legend_of_the_Power_Rangers
 
         public BatKeese() : base()
         {
-            DestinationRectangle = new Rectangle(300, 100, 44, 30); // Default positon
+            DestinationRectangle = new Rectangle(300, 100, 54, 40); // Default positon
             OnSelected(destinationRectangle.X, destinationRectangle.Y);
             InitializeFrames();
             SetRandomDirection();

@@ -171,8 +171,9 @@ namespace Legend_of_the_Power_Rangers
 
         public void ResetGame()
         {
-            InitializeGameplayState();
             ResetLevel();
+            InitializeGameplayState();
+            //ResetLevel();
             ChangeState(GameState.Gameplay);
         }
 
