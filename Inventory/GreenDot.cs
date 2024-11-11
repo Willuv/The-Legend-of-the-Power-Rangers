@@ -20,13 +20,15 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D greenDotTexture;
         private SpriteBatch greenDotSpriteBatch;
         private int currentRoom;
+        private LinkInventory linkInventory;
 
-        public GreenDot(GraphicsDevice graphicsDevice, Texture2D greenDotTexture, int currentRoom)
+        public GreenDot(GraphicsDevice graphicsDevice, Texture2D greenDotTexture, int currentRoom, LinkInventory linkInventory)
         {
             this.greenDotTexture = greenDotTexture;
             this.greenDotSpriteBatch = new SpriteBatch(graphicsDevice);
             //this.destinationRectangle = destinationRectangle;
             this.currentRoom = currentRoom;
+            this.linkInventory = linkInventory;
         }
 
         public void Update()
@@ -95,7 +97,10 @@ namespace Legend_of_the_Power_Rangers
         {
             
             greenDotSpriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            greenDotSpriteBatch.Draw(greenDotTexture, destinationRectangle, sourceRectangle, Color.White);
+            if (linkInventory.obtainedItems.Contains(ItemType.Compass))
+            {
+                greenDotSpriteBatch.Draw(greenDotTexture, destinationRectangle, sourceRectangle, Color.White);
+            }  
             greenDotSpriteBatch.End();
         }
     }

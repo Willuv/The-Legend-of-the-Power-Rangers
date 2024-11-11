@@ -13,6 +13,8 @@ namespace Legend_of_the_Power_Rangers
         private Rectangle BCover;
         private Rectangle rupeeXCover;
         private Rectangle mapCover;
+        private Rectangle mapTextCover;
+        private Rectangle compassTextCover;
         private Rectangle rupeeNumberCover;
         private Texture2D InventoryTexture;
         private Rectangle InventorySourceRectangle = new Rectangle(0, 0, 255, 265);
@@ -47,12 +49,13 @@ namespace Legend_of_the_Power_Rangers
             heartCover = new Rectangle(InventoryDestinationRectangle.X + 704, InventoryDestinationRectangle.Y + 800, 260, 68);
             BCover = new Rectangle(InventoryDestinationRectangle.X + 512, InventoryDestinationRectangle.Y + 768, 32, 64);
             rupeeXCover = new Rectangle(InventoryDestinationRectangle.X + 384, InventoryDestinationRectangle.Y + 738, 32, 32);
-            mapCover = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 738, 250, 200);
-
+            mapCover = new Rectangle(InventoryDestinationRectangle.X + 376, InventoryDestinationRectangle.Y + 350, 520, 350);
+            mapTextCover = new Rectangle(InventoryDestinationRectangle.X + 126, InventoryDestinationRectangle.Y + 350, 150, 150);
+            compassTextCover = new Rectangle(InventoryDestinationRectangle.X + 90, InventoryDestinationRectangle.Y + 500, 250, 150);
 
             rupeeCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 738, 64, 32);
             bombCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 832, 64, 32);
-            keyCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 416, 64, 32);
+            keyCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 800, 64, 32);
         }
 
         private readonly Dictionary<int, Rectangle> digitSourceRectangles = new Dictionary<int, Rectangle>
@@ -82,6 +85,11 @@ namespace Legend_of_the_Power_Rangers
             if (!linkInventory.obtainedItems.Contains(ItemType.Map))
             {
                 InventorySpriteBatch.Draw(blackTexture, mapCover, Color.Black);
+                InventorySpriteBatch.Draw(blackTexture, mapTextCover, Color.Black);
+            }
+            if (!linkInventory.obtainedItems.Contains(ItemType.Compass))
+            {
+                InventorySpriteBatch.Draw(blackTexture, compassTextCover, Color.Black);
             }
 
 

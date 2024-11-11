@@ -151,7 +151,7 @@ namespace Legend_of_the_Power_Rangers
                 inventoryScreen = new InventoryScreen(game.GraphicsDevice, InventoryTexture, InventoryDestinationRectangle, linkInventory);
             }
             Texture2D greenDotTexture = game.Content.Load<Texture2D>("HUD");
-            greenDot = new GreenDot(game.GraphicsDevice, greenDotTexture, currentRoom);
+            greenDot = new GreenDot(game.GraphicsDevice, greenDotTexture, currentRoom, linkInventory);
         }
 
         private void InitializeGameOverState()
