@@ -22,8 +22,6 @@ namespace Legend_of_the_Power_Rangers
         private Rectangle bombPosition;
         private Rectangle bowPosition;
         private Rectangle bowCover;
-        private Rectangle candlePosition;
-        private Rectangle potionPosition;
         private Rectangle potionCover;
         private Rectangle itemSelectCover;
         private Rectangle aboveItemSelectCover;
@@ -67,8 +65,6 @@ namespace Legend_of_the_Power_Rangers
             itemSelectCover = new Rectangle(InventoryDestinationRectangle.X + 616, InventoryDestinationRectangle.Y + 245, 250, 65);
             aboveItemSelectCover = new Rectangle(InventoryDestinationRectangle.X + 500, InventoryDestinationRectangle.Y + 90, 400, 65);
 
-            potionPosition = new Rectangle(InventoryDestinationRectangle.X + 516, InventoryDestinationRectangle.Y + 245, 60, 65);
-            candlePosition = new Rectangle(InventoryDestinationRectangle.X + 810, InventoryDestinationRectangle.Y + 180, 50, 65);
             bowPosition = new Rectangle(InventoryDestinationRectangle.X + 713, InventoryDestinationRectangle.Y + 180, 50, 65);
             bombPosition = new Rectangle(InventoryDestinationRectangle.X + 613, InventoryDestinationRectangle.Y + 180, 50, 65);
             boomerangPosition = new Rectangle(InventoryDestinationRectangle.X + 516, InventoryDestinationRectangle.Y + 180, 50, 65);
@@ -110,37 +106,33 @@ namespace Legend_of_the_Power_Rangers
             InventorySpriteBatch.Draw(blackTexture, potionCover, Color.Black);
             InventorySpriteBatch.Draw(blackTexture, itemSelectCover, Color.Black);
             InventorySpriteBatch.Draw(blackTexture, aboveItemSelectCover, Color.Black);
-            if (linkInventory.obtainedItems.Contains(ItemType.BluePotion))
-            {
-                InventorySpriteBatch.Draw(InventoryTexture, potionPosition, potionSource, Color.White);
-            }
-            if (linkInventory.obtainedItems.Contains(ItemType.BlueCandle))
-            {
-                InventorySpriteBatch.Draw(InventoryTexture, candlePosition, candleSource, Color.White);
-            }
-            if (linkInventory.obtainedItems.Contains(ItemType.Bow))
+            if (linkInventory.HasItem(ItemType.Bow))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, bowPosition, bowSource, Color.White);
             }
-            if (linkInventory.obtainedItems.Contains(ItemType.Bomb))
+            if (linkInventory.HasItem(ItemType.Bomb))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, bombPosition, bombSource, Color.White);
             }
-            if (linkInventory.obtainedItems.Contains(ItemType.WoodBoomerang))
+            if (linkInventory.HasItem(ItemType.WoodBoomerang))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, boomerangPosition, boomerangSource, Color.White);
             }
-            if (!linkInventory.obtainedItems.Contains(ItemType.Map))
+            if (!linkInventory.HasItem(ItemType.Map))
             {
                 InventorySpriteBatch.Draw(blackTexture, mapCover, Color.Black);
                 InventorySpriteBatch.Draw(blackTexture, mapTextCover, Color.Black);
             }
-            if (!linkInventory.obtainedItems.Contains(ItemType.Compass))
+            if (!linkInventory.HasItem(ItemType.Compass))
             {
                 InventorySpriteBatch.Draw(blackTexture, compassTextCover, Color.Black);
             }
 
 
+        }
+        private void moveItemSelect(int xpos)
+        {
+            //
         }
 
         private void DrawItemCount(int count, Rectangle position)
