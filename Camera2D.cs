@@ -14,7 +14,7 @@ public class Camera2D
     }
     public Camera2D()
 	{
-        position = new Vector2(/*1000*/0, /*698*/0);
+        position = new Vector2(/*1020*/0, /*698*/0);
 	}
 
     public static Camera2D Instance

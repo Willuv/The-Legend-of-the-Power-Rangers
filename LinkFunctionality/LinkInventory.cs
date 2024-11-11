@@ -47,6 +47,12 @@ namespace Legend_of_the_Power_Rangers
                 default:
                     obtainedItems.Add(item.ItemType);
                     break;
+                case ItemType.Map:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.Compass:
+                    obtainedItems.Add(item.ItemType);
+                    break;
             }
         }
 

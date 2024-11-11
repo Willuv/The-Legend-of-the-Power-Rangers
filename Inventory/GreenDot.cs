@@ -20,13 +20,15 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D greenDotTexture;
         private SpriteBatch greenDotSpriteBatch;
         private int currentRoom;
+        private LinkInventory linkInventory;
 
-        public GreenDot(GraphicsDevice graphicsDevice, Texture2D greenDotTexture, int currentRoom)
+        public GreenDot(GraphicsDevice graphicsDevice, Texture2D greenDotTexture, int currentRoom, LinkInventory linkInventory)
         {
             this.greenDotTexture = greenDotTexture;
             this.greenDotSpriteBatch = new SpriteBatch(graphicsDevice);
             //this.destinationRectangle = destinationRectangle;
             this.currentRoom = currentRoom;
+            this.linkInventory = linkInventory;
         }
 
         public void Update()
@@ -34,13 +36,58 @@ namespace Legend_of_the_Power_Rangers
             switch (currentRoom)
             {
                 case 1:
-                    destinationRectangle = new Rectangle(613, 574, 16, 16);
+                    destinationRectangle = new Rectangle(613, 575, 16, 16);
                     break;
                 case 2:
-                    destinationRectangle = new Rectangle(613, 544, 16, 16);
+                    destinationRectangle = new Rectangle(581, 575, 16, 16);
                     break;
                 case 3:
-                    destinationRectangle = new Rectangle(613, 514, 16, 16);
+                    destinationRectangle = new Rectangle(645, 575, 16, 16);
+                    break;
+                case 4:
+                    destinationRectangle = new Rectangle(613, 544, 16, 16);
+                    break;
+                case 5:
+                    destinationRectangle = new Rectangle(613, 513, 16, 16);
+                    break;
+                case 6:
+                    destinationRectangle = new Rectangle(581, 513, 16, 16);
+                    break;
+                case 7:
+                    destinationRectangle = new Rectangle(645, 513, 16, 16);
+                    break;
+                case 8:
+                    destinationRectangle = new Rectangle(613, 482, 16, 16);
+                    break;
+                case 9:
+                    destinationRectangle = new Rectangle(581, 482, 16, 16);
+                    break;
+                case 10:
+                    destinationRectangle = new Rectangle(549, 482, 16, 16);
+                    break;
+                case 11:
+                    destinationRectangle = new Rectangle(645, 482, 16, 16);
+                    break;
+                case 12:
+                    destinationRectangle = new Rectangle(677, 482, 16, 16);
+                    break;
+                case 13:
+                    destinationRectangle = new Rectangle(613, 450, 16, 16);
+                    break;
+                case 14:
+                    destinationRectangle = new Rectangle(677, 450, 16, 16);
+                    break;
+                case 15:
+                    destinationRectangle = new Rectangle(709, 450, 16, 16);
+                    break;
+                case 16:
+                    destinationRectangle = new Rectangle(613, 420, 16, 16);
+                    break;
+                case 17:
+                    destinationRectangle = new Rectangle(581, 420, 16, 16);
+                    break;
+                case 18:
+                    destinationRectangle = new Rectangle(549, 420, 16, 16);
                     break;
             }
             
@@ -50,7 +97,10 @@ namespace Legend_of_the_Power_Rangers
         {
             
             greenDotSpriteBatch.Begin(samplerState: SamplerState.PointClamp);
-            greenDotSpriteBatch.Draw(greenDotTexture, destinationRectangle, sourceRectangle, Color.White);
+            if (linkInventory.obtainedItems.Contains(ItemType.Compass))
+            {
+                greenDotSpriteBatch.Draw(greenDotTexture, destinationRectangle, sourceRectangle, Color.White);
+            }  
             greenDotSpriteBatch.End();
         }
     }
