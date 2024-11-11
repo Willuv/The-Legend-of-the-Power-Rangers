@@ -132,6 +132,8 @@ namespace Legend_of_the_Power_Rangers
             keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
             mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
 
+            audioManager.PlayMusic("Dungeon");
+
             LinkManager.GetLink().UpdatePosition(new Vector2(510, 700));
         }
 
@@ -258,9 +260,12 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.Running:
                     DrawGameplay();
-                    hud.Draw();
                     break;
             }
+            spriteBatch.End();
+
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            hud.Draw();
             spriteBatch.End();
         }
 

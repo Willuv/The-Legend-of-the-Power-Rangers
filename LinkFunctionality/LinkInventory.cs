@@ -8,13 +8,22 @@ namespace Legend_of_the_Power_Rangers
     public class LinkInventory
     {
         private Dictionary<ItemType, int> itemCounts = new Dictionary<ItemType, int>();
-        public HashSet<ItemType> obtainedItems = new HashSet<ItemType>();
+        private HashSet<ItemType> obtainedItems = new HashSet<ItemType>();
+        private ItemType activeItem;
+
 
         public LinkInventory()
         {
             itemCounts[ItemType.Rupee] = 0;
             itemCounts[ItemType.Bomb] = 0;
             itemCounts[ItemType.Key] = 0;
+
+        }
+
+        public ItemType ActiveItem
+        {
+            get { return activeItem; }
+            set { activeItem = value; }
         }
 
         public void PickUpItem(IItem item)
@@ -22,9 +31,11 @@ namespace Legend_of_the_Power_Rangers
             switch (item.ItemType)
             {
                 case ItemType.Rupee:
-                case ItemType.Bomb:
                 case ItemType.Key:
                     itemCounts[item.ItemType]++;
+                    break;
+                case ItemType.Bomb:
+                    itemCounts[item.ItemType] = itemCounts[item.ItemType] + 4;
                     break;
                 case ItemType.Fairy:
                 case ItemType.Heart:
@@ -49,5 +60,16 @@ namespace Legend_of_the_Power_Rangers
         {
             return itemCounts.ContainsKey(itemType) ? itemCounts[itemType] : 0;
         }
+
+        public void SetItemCount(ItemType itemType, int count)
+        {
+            itemCounts[itemType] = count;  
+        }
+
+        public bool HasItem(ItemType itemType)
+        {
+            return obtainedItems.Contains(itemType);
+        }
+
     }
 }
