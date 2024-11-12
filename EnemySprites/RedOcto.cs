@@ -186,5 +186,10 @@ namespace Legend_of_the_Power_Rangers
                 base.Draw(texture, spriteBatch);
             }
         }
+
+        public bool IsHurt()
+        {
+            return isHurt;
+        }
     }
 }
