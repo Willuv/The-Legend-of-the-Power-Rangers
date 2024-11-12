@@ -101,7 +101,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         public void DeloadRoom()
         {
             enemies.Clear();
-            items.Clear();
         }
         public void ReadData(StreamReader reader, int RoomRow, int RoomColumn)
         {
@@ -131,6 +130,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     String tileCode = splitLine[j];
                     String blockOneCode = tileCode.Substring(1, 2);
                     String blockTwoCode = tileCode.Substring(4, 2);
+                    String itemCode = tileCode.Substring(10, 2);
                     if (blockTwoCode != "99")
                     {
                         String blockTwoString = BlockDictionary[blockTwoCode];
@@ -145,11 +145,17 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                         block.CollisionHitbox = new Rectangle(currentx, currenty, 64, 64);
                         blocks.Add(block);
                     }
-
+                    if (itemCode != "99")
+                    {
+                        String itemString = ItemDictionary[itemCode];
+                        IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
+                        item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 40, 40);
+                        items.Add(item);
+                    }
                 }
             }
         }
-        public void LoadEnemiesItems(StreamReader reader, int RoomRow, int RoomColumn)
+        public void LoadEnemies(StreamReader reader, int RoomRow, int RoomColumn)
         {
             String line;
             String[] splitLine;
@@ -179,14 +185,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                         enemy.CollisionHitbox = new Rectangle(currentx, currenty, enemyWidth, enemyHeight);
                         enemies.Add(enemy);
                     }
-                    if (itemCode != "99")
-                    {
-                        String itemString = ItemDictionary[itemCode];
-                        IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
-                        item.CollisionHitbox = new Rectangle(currentx + 20, currenty + 20, 40, 40);
-                        items.Add(item);
-                    }
-
                 }
             }
         }
