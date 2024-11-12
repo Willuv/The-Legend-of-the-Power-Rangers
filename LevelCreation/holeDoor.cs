@@ -12,6 +12,17 @@ internal class holeDoor : IDoor
     private int yPos;
     private int scaleFactor = 4;
     private bool blownUp;
+    public bool BlownUp
+    {
+        get { return blownUp; }
+        set { blownUp = value; }
+    }
+    private bool canWalkThrough;
+    public bool CanWalkThrough
+    {
+        get { return canWalkThrough; }
+        set { canWalkThrough = value; }
+    }
     public holeDoor(Texture2D spriteSheet, int doorNum, int RoomRow, int RoomColumn)
     {
         this.doorNum = doorNum;
@@ -21,6 +32,7 @@ internal class holeDoor : IDoor
         this.sourceRectangle = new Rectangle(294, (33 * doorNum), 31, 31);
         determineDestination();
         blownUp = false;
+        canWalkThrough = false;
     }
     public void determineDestination()
     {
@@ -42,11 +54,12 @@ internal class holeDoor : IDoor
                 break;
         }
     }
-    public void Update(GameTime gameTime)
+    public void Update(GameTime gameTime, int enemiesCount)
     {
         if (blownUp)
         {
             sourceRectangle = new Rectangle(426, (33 * doorNum), 31, 31);
+            this.canWalkThrough = true;
         }
     }
     public void Draw(SpriteBatch spriteBatch)

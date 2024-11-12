@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -22,6 +23,7 @@ namespace Legend_of_the_Power_Rangers
 
         public GameState currentState;
         private Camera2D camera;
+        private String movementDirection;
         private Game1 game;
         private SpriteBatch spriteBatch;
         public Level level;
@@ -48,7 +50,7 @@ namespace Legend_of_the_Power_Rangers
             InitializeGameplayState(); // Start the game in gameplay state will change to start state later on
         }
 
-        public void ChangeState(GameState newState)
+        public void ChangeState(GameState newState, String movementDirection)
         {
             if (newState == currentState)
                 return;
@@ -75,7 +77,7 @@ namespace Legend_of_the_Power_Rangers
                     InitializeWinningState();
                     break;
                 case GameState.RoomTransition:
-                    InitializeRoomTransitionState();
+                    InitializeRoomTransitionState(movementDirection);
                     break;
                 case GameState.Running:
                     break;
@@ -126,10 +128,10 @@ namespace Legend_of_the_Power_Rangers
             // Load the level
             level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
             // Set the Camera to current level
-            camera.CalculateTransformMatrix(level.CurrentRoomRow, level.CurrentRoomColumn);
+            camera.CalculateTransformMatrix();
             // Set up controllers
             keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
-            mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
+            mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game, this);
 
             LinkManager.GetLink().UpdatePosition(new Vector2(510, 700));
         }
@@ -163,9 +165,11 @@ namespace Legend_of_the_Power_Rangers
             // Winning logic (e.g., display winning screen, handle end of game)
         }
 
-        private void InitializeRoomTransitionState()
+        private void InitializeRoomTransitionState(String movementDirection)
         {
-            // Room transition logic (e.g., fade out/in between rooms)
+            this.movementDirection = movementDirection;
+            level.ChangeLevel(this.movementDirection);
+            camera.CalculateRoomCamera(level.CurrentRoomRow, level.CurrentRoomColumn);
         }
 
 
@@ -173,8 +177,7 @@ namespace Legend_of_the_Power_Rangers
         {
             ResetLevel();
             InitializeGameplayState();
-            //ResetLevel();
-            ChangeState(GameState.Gameplay);
+            ChangeState(GameState.Gameplay, "");
         }
 
         private void ResetLevel()
@@ -197,7 +200,6 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.Paused:
                     keyboardController.Update();
-
                     // Handle paused state update
                     break;
                 case GameState.ItemSelection:
@@ -212,7 +214,7 @@ namespace Legend_of_the_Power_Rangers
                     // Handle winning update
                     break;
                 case GameState.RoomTransition:
-                    // Handle room transition update
+                    UpdateRoomTranstion(gameTime);
                     break;
             }
         }
@@ -225,7 +227,22 @@ namespace Legend_of_the_Power_Rangers
             linkDecorator.Update(gameTime);
             game.linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
             level.Update(gameTime);
-            camera.CalculateTransformMatrix(level.CurrentRoomRow, level.CurrentRoomColumn);
+            camera.CalculateRoomCamera(level.CurrentRoomRow, level.CurrentRoomColumn);
+            camera.CalculateTransformMatrix();
+
+        }
+
+        private void UpdateRoomTranstion(GameTime gameTime)
+        {
+            if (camera.IsMoving)
+            {
+                camera.CalculateMovement(movementDirection);
+            }
+            else
+            {
+                ChangeState(GameState.Running, "");
+            }
+            camera.CalculateTransformMatrix();
         }
 
         public void Draw(GameTime gameTime)
@@ -254,7 +271,8 @@ namespace Legend_of_the_Power_Rangers
                     // Draw winning screen
                     break;
                 case GameState.RoomTransition:
-                    // Draw room transition animation
+                    level.Draw(game.enemySpritesheet, spriteBatch);
+                    hud.Draw();
                     break;
                 case GameState.Running:
                     DrawGameplay();

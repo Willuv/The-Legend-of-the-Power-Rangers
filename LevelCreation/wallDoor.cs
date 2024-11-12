@@ -11,6 +11,12 @@ internal class wallDoor : IDoor
     private int xPos;
     private int yPos;
     private int scaleFactor = 4;
+    private bool canWalkThrough;
+    public bool CanWalkThrough
+    {
+        get { return canWalkThrough; }
+        set { canWalkThrough = value; }
+    }
     public wallDoor(Texture2D spriteSheet, int doorNum, int RoomRow, int RoomColumn)
     {
         this.doorNum = doorNum;
@@ -19,6 +25,7 @@ internal class wallDoor : IDoor
         this.spriteSheet = spriteSheet;
         this.sourceRectangle = new Rectangle(294, (33 * doorNum), 31, 31);
         determineDestination();
+        canWalkThrough = false;
     }
     public void determineDestination()
     {
@@ -40,6 +47,10 @@ internal class wallDoor : IDoor
                 destinationRectangle = new Rectangle(445 + roomTopLeftX, 765 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
         }
+    }
+    public void Update(GameTime gametime, int enemiesCount)
+    {
+
     }
     public void Draw(SpriteBatch spriteBatch)
     {

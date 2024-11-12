@@ -20,11 +20,11 @@ namespace Legend_of_the_Power_Rangers
         {
             if (gameStateMachine.currentState == GameStateMachine.GameState.Paused)
             {
-                gameStateMachine.ChangeState(GameStateMachine.GameState.Running);
+                gameStateMachine.ChangeState(GameStateMachine.GameState.Running, "");
             }
             else
             {
-                gameStateMachine.ChangeState(GameStateMachine.GameState.Paused);
+                gameStateMachine.ChangeState(GameStateMachine.GameState.Paused, "");
             }
             
         }

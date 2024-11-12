@@ -11,7 +11,7 @@ namespace Legend_of_the_Power_Rangers
         private MouseState currentMouseState;
         private MouseState previousMouseState;
 
-        public MouseController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Level level, Game1 game)
+        public MouseController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, Level level, Game1 game, GameStateMachine gameStateMachine)
         {
             mouseCommandMappings = new Dictionary<MouseButton, ICommand>
             {

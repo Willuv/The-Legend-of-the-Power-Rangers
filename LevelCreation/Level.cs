@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Runtime.CompilerServices;
 
 namespace Legend_of_the_Power_Rangers.LevelCreation
 {
@@ -47,10 +48,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             this.levelSpriteSheet = levelSpriteSheet;
             loader = new LevelLoader(levelSpriteSheet);
             numRooms = 18;
-            currentRoom = 17;
-            loadedRoom = 17;
-            currentRoomRow = 0;
-            currentRoomColumn = 1;
+            currentRoom = 1;
+            loadedRoom = 1;
+            currentRoomRow = 5;
+            currentRoomColumn = 2;
             walls = new List<IWall>();
             map = new int[,]
             {
@@ -118,7 +119,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             foreach (IItem item in loader.Items)
             {
-                    item.Draw(spriteBatch);
+                item.Draw(spriteBatch);
             }
             foreach (IEnemy enemy in loader.Enemies)
             {
@@ -131,7 +132,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             List<int> toRemove = new List<int>();
             if (currentRoom != loadedRoom)
             {
-                loader.LoadEnemiesItems(reader, currentRoomRow, currentRoomColumn);
+                loader.LoadEnemies(reader, currentRoomRow, currentRoomColumn);
 
                 loadedRoom = currentRoom;
 
@@ -159,6 +160,19 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             foreach (IEnemy enemy in loader.Enemies)
             {
                 enemy.Update(gametime);
+                /*if (enemy.Health == 0)
+                {
+                    toRemove.Add(loader.Enemies.IndexOf(enemy));
+                }*/
+            }
+            foreach (int removeIndex in toRemove)
+            {
+                loader.Enemies.RemoveAt(removeIndex);
+            }
+            toRemove.Clear();
+            foreach (IDoor door in loader.Doors)
+            {
+                door.Update(gametime, loader.Enemies.Count);
             }
             collisionManager.Update(gametime, loadedObjects);
         }
@@ -206,14 +220,17 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     currentRoomRow--;
                     break;
                 case ("Down"):
-                    currentRoomRow--;
+                    currentRoomRow++;
                     break;
             }
             loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
             currentRoom = map[currentRoomRow, currentRoomColumn];
-            reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            if (currentRoom != -1)
+            {
+                reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            }
         }
     }
 }
