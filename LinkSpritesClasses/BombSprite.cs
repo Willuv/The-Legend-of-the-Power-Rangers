@@ -87,6 +87,7 @@ namespace Legend_of_the_Power_Rangers
                 offset = offset2;
                 scaleFactor = 12;
                 if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Bomb_Blow");
+                blowing = true;
             }
             else if (currentFrame == totalFrames)
             {

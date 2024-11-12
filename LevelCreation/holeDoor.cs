@@ -18,7 +18,7 @@ internal class holeDoor : IDoor
     private int xPos;
     private int yPos;
     private int scaleFactor = 4;
-    private bool blownUp;
+    public bool blownUp;
     public ObjectType ObjectType { get { return ObjectType.Door; } }
     public DoorType DoorType { get { return DoorType.Hole; } }
     public bool IsCameraMoving { get; set; }
