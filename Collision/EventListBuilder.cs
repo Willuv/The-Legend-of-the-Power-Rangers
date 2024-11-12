@@ -114,8 +114,16 @@ namespace Legend_of_the_Power_Rangers
 
             //link vs doors
             AddNonDirectionalEvents(list, link, doors, new LinkVSAnyDoor());
+            //enemies vs doors
+            AddDirectionalEvents(list, enemies, doors, enemyMovementEvents);
+            //projectiles vs doors
+
             //link vs walls
             AddDirectionalEvents(list, link, new List<ICollision>() { new Wall(0, 0, 0) }, linkMovementEvents);
+            //enemies vs walls
+            AddDirectionalEvents(list, enemies, new List<ICollision>() { new Wall(0, 0, 0) }, enemyMovementEvents);
+            //projectiles vs walls
+            //AddNonDirectionalEvents(list, allProjectiles, new List<ICollision>() { new Wall(0, 0, 0) }, new ProjectileVanish());
 
             //special events
             //bomb vs bombed wall
