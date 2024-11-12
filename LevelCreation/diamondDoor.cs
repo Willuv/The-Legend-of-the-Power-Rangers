@@ -7,7 +7,8 @@ using Legend_of_the_Power_Rangers.LevelCreation;
 internal class diamondDoor : IDoor
 {
     private Texture2D spriteSheet;
-    private Rectangle sourceRectangle;
+    private Rectangle sourceRectangleClosed;
+    private Rectangle sourceRectangleOpen;
     private Rectangle destinationRectangle;
     public Rectangle CollisionHitbox { get; set; }
     private int doorNum;
@@ -24,7 +25,8 @@ internal class diamondDoor : IDoor
         this.xPos = RoomRow;
         this.yPos = RoomColumn;
         this.spriteSheet = spriteSheet;
-        this.sourceRectangle = new Rectangle(393, (33 * doorNum), 31, 31);
+        this.sourceRectangleClosed = new Rectangle(393, (33 * doorNum), 31, 31);
+        this.sourceRectangleOpen = new Rectangle(327, (33 * doorNum), 31, 31);
         DetermineDestination();
         IsCameraMoving = false;
         IsOpen = false;
@@ -52,6 +54,12 @@ internal class diamondDoor : IDoor
     }
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.1f);
+        if (IsOpen)
+        {
+            spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangleOpen, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.1f);
+        } else
+        {
+            spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangleClosed, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.1f);
+        }
     }
 }

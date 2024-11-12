@@ -173,7 +173,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             toRemove.Clear();
             foreach (IDoor door in loader.Doors)
             {
-                door.Update(gametime, loader.Enemies.Count);
+                if (door.DoorType == DoorType.Diamond)
+                {
+                    if (loader.Enemies.Count == 0)
+                    {
+                        door.IsOpen = true;
+                    }
+                }
             }
             collisionManager.Update(loadedObjects);
         }
