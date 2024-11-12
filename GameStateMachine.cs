@@ -254,7 +254,6 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.Paused:
                     // Draw paused screen
                     DrawGameplay();
-                    hud.Draw();
                     break;
                 case GameState.ItemSelection:
                     // Draw item selection screen
@@ -276,14 +275,16 @@ namespace Legend_of_the_Power_Rangers
                     break;
             }
             spriteBatch.End();
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
             switch (currentState)
             {
                 case GameState.Gameplay:
-                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                case GameState.Running:
                     hud.Draw();
-                    spriteBatch.End();
                     break;
             }
+            spriteBatch.End();
+
         }
 
         private void DrawGameplay()
