@@ -17,7 +17,7 @@ namespace Legend_of_the_Power_Rangers
         public bool blowing;
         bool finished;
         Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }

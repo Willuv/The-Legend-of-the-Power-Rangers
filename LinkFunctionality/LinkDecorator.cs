@@ -44,6 +44,6 @@ public class LinkDecorator : Link
     {
         ILinkSprite currentSprite = baseLink.GetStateMachine().GetCurrentSprite();
         Color drawColor = IsDamaged() ? damagedColor : Color.White;
-        currentSprite.Draw(spriteBatch, baseLink.DestinationRectangle, drawColor);
+        currentSprite.Draw(spriteBatch, baseLink.destinationRectangle, drawColor);
     }
 }

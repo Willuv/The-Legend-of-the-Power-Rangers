@@ -9,7 +9,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
@@ -45,7 +45,7 @@ namespace Legend_of_the_Power_Rangers
             InitializeFrames();
             SetRandomDirection();
             projectiles = new List<OctoProjectile>();
-            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 30, 30); // Default positon
             OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
         private void InitializeFrames()

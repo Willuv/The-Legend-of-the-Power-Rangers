@@ -10,7 +10,7 @@ namespace Legend_of_the_Power_Rangers
         public Rectangle destinationRectangle = new Rectangle(370, 300, 32, 32);
         public Rectangle sourceRectangle = new Rectangle(240, 120, 16, 16);
 
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get {return destinationRectangle; }
             set { destinationRectangle = value;}

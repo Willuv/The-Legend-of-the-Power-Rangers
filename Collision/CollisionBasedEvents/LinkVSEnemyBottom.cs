@@ -26,10 +26,10 @@ namespace Legend_of_the_Power_Rangers
             }
             else
             {
-                Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, enemy.DestinationRectangle);
-                Rectangle newDestination = link.DestinationRectangle;
+                Rectangle overlap = Rectangle.Intersect(link.CollisionHitbox, enemy.CollisionHitbox);
+                Rectangle newDestination = link.CollisionHitbox;
                 newDestination.Y += overlap.Height;
-                link.DestinationRectangle = newDestination;
+                link.CollisionHitbox = newDestination;
 
                 knockback = new Vector2(0, KnockbackDistance);
                 LinkManager.GetLink().UpdatePosition(knockback);

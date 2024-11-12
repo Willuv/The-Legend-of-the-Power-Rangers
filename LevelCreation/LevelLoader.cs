@@ -135,14 +135,14 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     {
                         String blockTwoString = BlockDictionary[blockTwoCode];
                         IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockTwoString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
+                        block.CollisionHitbox = new Rectangle(currentx, currenty, 64, 64);
                         blocks.Add(block);
                     }
                     if (blockOneCode != "99")
                     {
                         String blockOneString = BlockDictionary[blockOneCode];
                         IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockOneString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
+                        block.CollisionHitbox = new Rectangle(currentx, currenty, 64, 64);
                         blocks.Add(block);
                     }
 
@@ -174,16 +174,16 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     if (enemyCode != "99")
                     {
                         IEnemy enemy = EnemySpriteFactory.Instance.CreateEnemy(enemyCode);
-                        int enemyWidth = enemy.DestinationRectangle.Width;
-                        int enemyHeight =  enemy.DestinationRectangle.Height;
-                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, enemyWidth, enemyHeight);
+                        int enemyWidth = enemy.CollisionHitbox.Width;
+                        int enemyHeight =  enemy.CollisionHitbox.Height;
+                        enemy.CollisionHitbox = new Rectangle(currentx, currenty, enemyWidth, enemyHeight);
                         enemies.Add(enemy);
                     }
                     if (itemCode != "99")
                     {
                         String itemString = ItemDictionary[itemCode];
                         IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
-                        item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 40, 40);
+                        item.CollisionHitbox = new Rectangle(currentx + 20, currenty + 20, 40, 40);
                         items.Add(item);
                     }
 
