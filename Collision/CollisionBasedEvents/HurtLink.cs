@@ -17,9 +17,9 @@ public class HurtLink : IEvent
     {
         LinkDecorator decoratedLink = LinkManager.GetLinkDecorator();
 
-        // Apply damage
-        LinkBecomeDamagedCommand linkGetsHurt = new(decoratedLink);
-        linkGetsHurt.Execute();
-
+        
+            LinkBecomeDamagedCommand linkGetsHurt = new(decoratedLink);
+            linkGetsHurt.Execute();
+        
     }
 }

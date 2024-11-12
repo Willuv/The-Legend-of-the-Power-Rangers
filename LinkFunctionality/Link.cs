@@ -42,7 +42,6 @@ public class Link : ICollision
     public void Heal(int amount)
     {
         currentHealth = Math.Min(maxHealth, currentHealth + amount);
-        Debug.WriteLine($"Current Health: {this.GetCurrentHealth()} / Max Health: {this.GetMaxHealth()}");
 
     }
 
@@ -50,9 +49,9 @@ public class Link : ICollision
     {
         maxHealth += 2;
         currentHealth = maxHealth;
-        Debug.WriteLine($"Current Health: {this.GetCurrentHealth()} / Max Health: {this.GetMaxHealth()}");
 
     }
+
 
     private void UpdateDestinationRectangle()
     {

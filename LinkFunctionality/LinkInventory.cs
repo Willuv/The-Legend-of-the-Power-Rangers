@@ -31,6 +31,8 @@ namespace Legend_of_the_Power_Rangers
             switch (item.ItemType)
             {
                 case ItemType.Rupee:
+                    itemCounts[item.ItemType]++;
+                    break;
                 case ItemType.Key:
                     itemCounts[item.ItemType]++;
                     break;
@@ -39,6 +41,8 @@ namespace Legend_of_the_Power_Rangers
                     itemCounts[item.ItemType] = itemCounts[item.ItemType] + 4;
                     break;
                 case ItemType.Fairy:
+                    LinkManager.GetLink().Heal(LinkManager.GetLink().GetMaxHealth());
+                    break;
                 case ItemType.Heart:
                     LinkManager.GetLink().Heal(2);
                     break;
