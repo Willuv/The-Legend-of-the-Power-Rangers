@@ -42,16 +42,20 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         private CollisionManager collisionManager;
         private Camera2D camera;
         private List<ICollision> loadedObjects;
+        private int LinkWidth;
+        private int LinkHeight;
         public Level(Texture2D levelSpriteSheet, String ContentPath)
         {
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
             loader = new LevelLoader(levelSpriteSheet);
+            LinkWidth = LinkManager.GetLink().CollisionHitbox.Width;
+            LinkHeight = LinkManager.GetLink().CollisionHitbox.Height;
             numRooms = 18;
-            currentRoom = 1;
-            loadedRoom = 1;
+            currentRoom = 3;
+            loadedRoom = 3;
             currentRoomRow = 5;
-            currentRoomColumn = 2;
+            currentRoomColumn = 3;
             walls = new List<IWall>();
             map = new int[,]
             {
@@ -81,6 +85,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
+            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
         }
         private void CreateWalls(int RoomRow, int RoomColumn)
         {
@@ -208,8 +213,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            int LinkWidth = LinkManager.GetLink().CollisionHitbox.Width;
-            int LinkHeight = LinkManager.GetLink().CollisionHitbox.Height;
             LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
             reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
         }
