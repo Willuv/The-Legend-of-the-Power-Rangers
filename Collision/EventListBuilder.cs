@@ -126,7 +126,7 @@ namespace Legend_of_the_Power_Rangers
             //AddNonDirectionalEvents(list, allProjectiles, new List<ICollision>() { new Wall(0, 0, 0) }, new ProjectileVanish());
 
             //special events
-            //bomb vs bombed wall
+            //bomb vs bombable door
             
 
             return list;

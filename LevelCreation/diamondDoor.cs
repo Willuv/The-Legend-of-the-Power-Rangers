@@ -10,7 +10,11 @@ internal class diamondDoor : IDoor
     private Rectangle sourceRectangleClosed;
     private Rectangle sourceRectangleOpen;
     private Rectangle destinationRectangle;
-    public Rectangle CollisionHitbox { get; set; }
+    public Rectangle CollisionHitbox
+    {
+        get { return destinationRectangle; }
+        set { destinationRectangle = value; }
+    }
     private int doorNum;
     private int xPos;
     private int yPos;

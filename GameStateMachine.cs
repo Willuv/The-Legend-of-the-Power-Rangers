@@ -49,6 +49,13 @@ namespace Legend_of_the_Power_Rangers
             audioManager.Initialize(game.Content);
 
             InitializeGameplayState(); // Start the game in gameplay state will change to start state later on
+
+            //Subscribing to room change call from collision
+            DelegateManager.OnRoomChange += (direction) =>
+            {
+                level.ChangeLevel(direction);
+                ChangeState(GameState.RoomTransition);
+            };
         }
 
         public void ChangeState(GameState newState)
