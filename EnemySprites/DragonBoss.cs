@@ -186,5 +186,10 @@ namespace Legend_of_the_Power_Rangers
                 hurtTimer = 0;
             }
         }
+
+        public bool IsHurt()
+        {
+            return isHurt;
+        }
     }
 }

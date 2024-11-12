@@ -32,6 +32,7 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.BatKeese; } }
 
+
         public BatKeese() : base()
         {
             CollisionHitbox = new Rectangle(300, 100, 44, 30); // Default positon
@@ -118,6 +119,10 @@ namespace Legend_of_the_Power_Rangers
                 isHurt = true;
                 hurtTimer = 0;
             }
+        }
+        public bool IsHurt()
+        {
+            return isHurt;
         }
     }
 }
