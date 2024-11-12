@@ -22,11 +22,11 @@ public class Camera2D
     {
         get { return transformMatrix; }
     }
-    public Camera2D()
+    public Camera2D(int CurrentRoomRow, int CurrentRoomColumn)
 	{
-        position = new Vector2(/*1020*/0, /*698*/0);
-        destination = new Vector2(0, 0);
-        isMoving = true;
+        position = new Vector2(1020 * CurrentRoomColumn, 698 * CurrentRoomRow);
+        destination = position;
+        isMoving = false;
 	}
 
     public static Camera2D Instance
@@ -35,7 +35,7 @@ public class Camera2D
         {
             if (instance == null)
             {
-                instance = new Camera2D();
+                instance = new Camera2D(0, 0);
             }
             return instance;
         }
@@ -44,36 +44,25 @@ public class Camera2D
     {
         destination = new Vector2((1020 * RoomColumn), (698 * RoomRow));
     }
-    public void CalculateMovement(String direction)
+    public void CalculateMovement()
     {
-         switch (direction)
-         {
-             case "Left":
-                 position.X += -1;
-                 break;
-             case "Right":
-                 position.X += 1;
-                 break;
-             case "Up":
-                 position.Y += -1;
-                 break;
-             case "Down":
-                 position.Y += 1;
-                 break;
-             default:
-                break;
-         }
-        transformMatrix = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0));
-        Debug.Print(position.X.ToString() + destination.X.ToString());
-        if (destination == position)
-        {
-            IsMoving = false;
-        }
+            // Smoothly move position towards destination
+            float lerpSpeed = 0.05f; // Adjust for desired speed
+            position = Vector2.Lerp(position, destination, lerpSpeed);
+
+            // Update transform matrix based on new position
+            transformMatrix = Matrix.CreateTranslation(new Vector3(-position.X, -position.Y, 0));
+
+            // Stop moving if the camera is very close to the destination
+            if (Vector2.Distance(position, destination) < 1f)
+            {
+                position = destination;
+                isMoving = false;
+            }
     }
 
     public void CalculateTransformMatrix()
 	{
         transformMatrix = Matrix.CreateTranslation(new Vector3(-destination.X, -destination.Y, 0));
-        position = destination;
 	}
 }

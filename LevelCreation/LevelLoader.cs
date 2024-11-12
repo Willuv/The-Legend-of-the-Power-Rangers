@@ -149,7 +149,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     {
                         String itemString = ItemDictionary[itemCode];
                         IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
-                        item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 40, 40);
+                        item.CollisionHitbox = new Rectangle(currentx + 20, currenty + 20, 40, 40);
                         items.Add(item);
                     }
                 }
