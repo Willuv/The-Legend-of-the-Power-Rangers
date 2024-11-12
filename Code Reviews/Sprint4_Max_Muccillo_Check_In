@@ -1,4 +1,4 @@
-Readability
+Readability:
 	Max Muccillo
 	11/4/24
 	Sprint 4
@@ -8,7 +8,7 @@ Readability
 	Will designed the game state machine as a way to reduce the amount of code in game1 and to keep everything organized in one spot. 
 	Will did a good job of making the code in the class readable. 
 
-Quality
+Quality:
 	Max Muccillo
 	11/4/24
 	Sprint 4
@@ -19,3 +19,25 @@ Quality
 	The way Will designed this class makes it very easy to add new states due to its modular design. 
 	One change to improve code quality is to create a separate method that loads all the textures and factories. 
 	This way duplicate code won’t be used in other states. 
+
+Readability:
+	Max Muccillo
+	11/12/24
+	Sprint 4
+	AudioManager.cs
+	Will Ulivin
+	10
+	The code in the audio manager file is very organized and easily readable. All the variables and function names are descriptive 
+	and coencide with the functionality of the variable/function
+
+Quality:
+	Max Muccillo
+	11/12/24
+	Sprint 4
+	AudioManager.cs
+	Will Ulvin
+	10
+	The code in the audio manager is very high quality. It is simplistic in a good way and very easy to build on if you wanted to add new audio files.
+	One thing that I might do differently to improve code quality is initialize all of the audio files in a separate class to try
+	to clean the code in the file up a bit. This way there isn't a huge repetative chunk of code dedicated to initiallizing all the audio files. 
+
