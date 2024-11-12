@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -25,6 +26,10 @@ namespace Legend_of_the_Power_Rangers
         private int frameIndex2;
         private int currentFrameIndex;
         private Random random = new Random();
+
+        private bool isHurt = false;
+        private double hurtTimer = 0;
+        private const double hurtDuration = 1000;
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.Skeleton; } }
@@ -88,7 +93,18 @@ namespace Legend_of_the_Power_Rangers
             {
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
+            else
+            {
+                isHurt = true;
+                hurtTimer = 0;
+            }
         }
+
+        public bool IsHurt()
+        {
+            return isHurt;
+        }
+
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);

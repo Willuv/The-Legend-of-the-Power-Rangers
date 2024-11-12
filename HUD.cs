@@ -215,6 +215,11 @@ namespace Legend_of_the_Power_Rangers
 
         }
 
+        public void UpdateLink()
+        {
+            this.link = LinkManager.GetLink();
+        }
+
         public void Draw()
         {
             hudSpriteBatch.Begin(samplerState: SamplerState.PointClamp);
