@@ -33,9 +33,9 @@ namespace Legend_of_the_Power_Rangers
                 case ItemType.Rupee:
                 case ItemType.Key:
                     itemCounts[item.ItemType]++;
-                    obtainedItems.Add(item.ItemType);
                     break;
                 case ItemType.Bomb:
+                    obtainedItems.Add(item.ItemType);
                     itemCounts[item.ItemType] = itemCounts[item.ItemType] + 4;
                     break;
                 case ItemType.Fairy:

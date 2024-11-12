@@ -34,6 +34,7 @@ namespace Legend_of_the_Power_Rangers
         private MouseController mouseController;
         private AudioManager audioManager;
         private GreenDot greenDot;
+        private ItemSelector itemSelector;
     
 
         public GameStateMachine(Game1 game, SpriteBatch spriteBatch)
@@ -131,7 +132,12 @@ namespace Legend_of_the_Power_Rangers
             // Set the Camera to current level
             camera.CalculateTransformMatrix(level.CurrentRoomRow, level.CurrentRoomColumn);
             // Set up controllers
-            keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
+            Texture2D itemSelectTexture = game.Content.Load<Texture2D>("HUD");
+            Rectangle itemSelectorDestinationRectangle = new Rectangle(500, 180, 60, 60);
+            int destX = 505;
+            itemSelector = new ItemSelector(game.GraphicsDevice, itemSelectTexture, destX, linkInventory);
+
+            keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this, itemSelector, linkInventory);
             mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
 
             audioManager.PlayMusic("Dungeon");
@@ -156,6 +162,8 @@ namespace Legend_of_the_Power_Rangers
             }
             Texture2D greenDotTexture = game.Content.Load<Texture2D>("HUD");
             greenDot = new GreenDot(game.GraphicsDevice, greenDotTexture, currentRoom, linkInventory);
+
+            
         }
 
         private void InitializeGameOverState()
@@ -176,8 +184,8 @@ namespace Legend_of_the_Power_Rangers
 
         public void ResetGame()
         {
+            ResetLevel();
             InitializeGameplayState();
-            hud.UpdateLink();
             //ResetLevel();
             ChangeState(GameState.Gameplay);
         }
@@ -209,6 +217,7 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.ItemSelection:
                     // Handle item selection update
                     keyboardController.Update();
+                    itemSelector.Update(gameTime);
                     greenDot.Update();
                     break;
                 case GameState.GameOver:
@@ -250,6 +259,7 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.ItemSelection:
                     // Draw item selection screen
                     inventoryScreen.Draw();
+                    itemSelector.Draw();
                     greenDot.Draw();
                     break;
                 case GameState.GameOver:

@@ -174,7 +174,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     if (enemyCode != "99")
                     {
                         IEnemy enemy = EnemySpriteFactory.Instance.CreateEnemy(enemyCode);
-                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, 40, 40);
+                        int enemyWidth = enemy.DestinationRectangle.Width;
+                        int enemyHeight =  enemy.DestinationRectangle.Height;
+                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, enemyWidth, enemyHeight);
                         enemies.Add(enemy);
                     }
                     if (itemCode != "99")

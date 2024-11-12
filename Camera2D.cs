@@ -30,21 +30,23 @@ public class Camera2D
     }
     public void CalculateMovement()
     {
-        /*if ()
+       /* switch (direction) 
         {
-            movement.X = ;
-        }
-        if ()
-        {
-            movement.X = ;
-        }
-        if ()
-        {
-            movement.Y = ;
-        }
-        if ()
-        {
-            movement.Y = ;
+            case "Left":
+                movement.X = -1;
+                break;
+            case "Right":
+                movement.X = 1;
+                break;
+            case "Up":
+                movement.X = -1;
+                break;
+            case "Down":
+                movement.X = -1;
+                break;
+            default:
+                movement = Vector2.Zero;
+                break;
         }*/
     }
     public void MoveCamera()
