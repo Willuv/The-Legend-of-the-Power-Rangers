@@ -10,6 +10,7 @@ internal class DelegateManager
 {
     public static event Action<ICollision> OnObjectCreated = delegate { };
     public static event Action<ICollision> OnObjectRemoved = delegate { };
+    public static event Action<String> OnRoomChange = delegate { };
 
     public static void RaiseObjectCreated(ICollision newObject)
     {
@@ -19,5 +20,10 @@ internal class DelegateManager
     public static void RaiseObjectRemoved(ICollision removedObject)
     {
         OnObjectRemoved(removedObject);
+    }
+
+    public static void ChangeRoom(String direction)
+    {
+        OnRoomChange(direction);
     }
 }

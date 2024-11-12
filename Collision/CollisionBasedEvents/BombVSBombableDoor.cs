@@ -8,17 +8,19 @@ using Microsoft.Xna.Framework;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BombVSBombableWall : IEvent
+    public class BombVSBombableDoor : IEvent
     {
-        public BombVSBombableWall() { }
+        public BombVSBombableDoor() { }
 
         public void Execute(ICollision bombObj, ICollision doorObj, CollisionDirection direction)
         {
             BombSprite bomb = bombObj as BombSprite;
-            BlockBombedWall wall = doorObj as BlockBombedWall;
-            //if (bomb.blowing && )
+            holeDoor door = doorObj as holeDoor;
+            if (bomb.blowing && !door.IsOpen)
             {
-
+                door.IsOpen = true;
+                door.blownUp = true;
+                Debug.WriteLine("door should be open");
             }
         }
     }

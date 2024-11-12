@@ -9,7 +9,11 @@ internal class wallDoor : IDoor
     private Texture2D spriteSheet;
     private Rectangle sourceRectangle;
     private Rectangle destinationRectangle;
-    public Rectangle CollisionHitbox { get; set; }
+    public Rectangle CollisionHitbox
+    {
+        get { return destinationRectangle; }
+        set { destinationRectangle = value; }
+    }
     private int doorNum;
     private int xPos;
     private int yPos;
