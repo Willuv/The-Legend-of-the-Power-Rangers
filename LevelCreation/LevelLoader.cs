@@ -135,14 +135,14 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     {
                         String blockTwoString = BlockDictionary[blockTwoCode];
                         IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockTwoString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
+                        block.CollisionHitbox = new Rectangle(currentx, currenty, 64, 64);
                         blocks.Add(block);
                     }
                     if (blockOneCode != "99")
                     {
                         String blockOneString = BlockDictionary[blockOneCode];
                         IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockOneString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
+                        block.CollisionHitbox = new Rectangle(currentx, currenty, 64, 64);
                         blocks.Add(block);
                     }
                     if (itemCode != "99")
@@ -180,9 +180,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     if (enemyCode != "99")
                     {
                         IEnemy enemy = EnemySpriteFactory.Instance.CreateEnemy(enemyCode);
-                        int enemyWidth = enemy.DestinationRectangle.Width;
-                        int enemyHeight =  enemy.DestinationRectangle.Height;
-                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, enemyWidth, enemyHeight);
+                        int enemyWidth = enemy.CollisionHitbox.Width;
+                        int enemyHeight =  enemy.CollisionHitbox.Height;
+                        enemy.CollisionHitbox = new Rectangle(currentx, currenty, enemyWidth, enemyHeight);
                         enemies.Add(enemy);
                     }
                 }

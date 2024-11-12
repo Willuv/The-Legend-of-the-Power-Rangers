@@ -14,11 +14,11 @@ namespace Legend_of_the_Power_Rangers
 
         public void Execute(ICollision link, ICollision nonMovingBlock, CollisionDirection direction)
         {
-            Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, nonMovingBlock.DestinationRectangle);
-            Rectangle newDestination = link.DestinationRectangle;
+            Rectangle overlap = Rectangle.Intersect(link.CollisionHitbox, nonMovingBlock.CollisionHitbox);
+            Rectangle newDestination = link.CollisionHitbox;
            
             newDestination.Y -= overlap.Height;
-            link.DestinationRectangle = newDestination;
+            link.CollisionHitbox = newDestination;
         }
     }
 }

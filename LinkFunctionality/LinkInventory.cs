@@ -9,12 +9,21 @@ namespace Legend_of_the_Power_Rangers
     {
         private Dictionary<ItemType, int> itemCounts = new Dictionary<ItemType, int>();
         private HashSet<ItemType> obtainedItems = new HashSet<ItemType>();
+        private ItemType activeItem;
+
 
         public LinkInventory()
         {
             itemCounts[ItemType.Rupee] = 0;
             itemCounts[ItemType.Bomb] = 0;
             itemCounts[ItemType.Key] = 0;
+
+        }
+
+        public ItemType ActiveItem
+        {
+            get { return activeItem; }
+            set { activeItem = value; }
         }
 
         public void PickUpItem(IItem item)
@@ -22,9 +31,12 @@ namespace Legend_of_the_Power_Rangers
             switch (item.ItemType)
             {
                 case ItemType.Rupee:
-                case ItemType.Bomb:
                 case ItemType.Key:
                     itemCounts[item.ItemType]++;
+                    break;
+                case ItemType.Bomb:
+                    obtainedItems.Add(item.ItemType);
+                    itemCounts[item.ItemType] = itemCounts[item.ItemType] + 4;
                     break;
                 case ItemType.Fairy:
                 case ItemType.Heart:
@@ -36,6 +48,24 @@ namespace Legend_of_the_Power_Rangers
                 default:
                     obtainedItems.Add(item.ItemType);
                     break;
+                case ItemType.Map:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.Compass:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.WoodBoomerang:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.Bow:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.BlueCandle:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.BluePotion:
+                    obtainedItems.Add(item.ItemType);
+                    break;
             }
         }
 
@@ -43,5 +73,16 @@ namespace Legend_of_the_Power_Rangers
         {
             return itemCounts.ContainsKey(itemType) ? itemCounts[itemType] : 0;
         }
+
+        public void SetItemCount(ItemType itemType, int count)
+        {
+            itemCounts[itemType] = count;  
+        }
+
+        public bool HasItem(ItemType itemType)
+        {
+            return obtainedItems.Contains(itemType);
+        }
+
     }
 }

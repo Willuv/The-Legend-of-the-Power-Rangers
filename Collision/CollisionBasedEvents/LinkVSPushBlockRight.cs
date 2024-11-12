@@ -13,11 +13,11 @@ namespace Legend_of_the_Power_Rangers
 
         public void Execute(ICollision link, ICollision pushableBlock, CollisionDirection direction)
         {
-            Rectangle overlap = Rectangle.Intersect(link.DestinationRectangle, pushableBlock.DestinationRectangle);
-            Rectangle newDestination = link.DestinationRectangle;
+            Rectangle overlap = Rectangle.Intersect(link.CollisionHitbox, pushableBlock.CollisionHitbox);
+            Rectangle newDestination = link.CollisionHitbox;
 
             newDestination.X += overlap.Width;
-            link.DestinationRectangle = newDestination;
+            link.CollisionHitbox = newDestination;
 
             if (pushableBlock is BlockPush actualBlock && actualBlock.IsPushable && actualBlock.PushableDirection == direction)
             {

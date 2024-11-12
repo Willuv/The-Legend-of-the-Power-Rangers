@@ -10,7 +10,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set
@@ -59,7 +59,7 @@ namespace Legend_of_the_Power_Rangers
             bossSpritesheet = spritesheet;
             this.projectileTexture = projectileTexture;
             
-            DestinationRectangle = new Rectangle(300, 100, bossSpriteWidth * scale, bossSpriteHeight * scale); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, bossSpriteWidth * scale, bossSpriteHeight * scale); // Default positon
             projectileSourceRectangle = new Rectangle(330, 0, spriteWidth, spriteHeight); // Specific coordinates and size for projectile
             
             SetRandomDirection();
@@ -178,6 +178,7 @@ namespace Legend_of_the_Power_Rangers
             Health -= damage;
             if (Health <= 0)
             {
+                isHurt = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
             else
@@ -185,6 +186,11 @@ namespace Legend_of_the_Power_Rangers
                 isHurt = true;
                 hurtTimer = 0;
             }
+        }
+
+        public bool IsHurt()
+        {
+            return isHurt;
         }
     }
 }

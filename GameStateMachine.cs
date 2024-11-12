@@ -36,6 +36,8 @@ namespace Legend_of_the_Power_Rangers
         private MouseController mouseController;
         private AudioManager audioManager;
         private GreenDot greenDot;
+        private ItemSelector itemSelector;
+    
 
         public GameStateMachine(Game1 game, SpriteBatch spriteBatch)
         {
@@ -118,20 +120,29 @@ namespace Legend_of_the_Power_Rangers
             linkInventory = new LinkInventory();
             LinkManager.setLinkInventory(linkInventory);
 
+            // Load the level
+            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
+
             if (hud == null)
             {
                 Texture2D hudTexture = game.Content.Load<Texture2D>("HUD");
                 Rectangle hudDestinationRectangle = new Rectangle(0, 0, 1020, 192);
-                hud = new HUD(game.GraphicsDevice, hudTexture, hudDestinationRectangle);
+                hud = new HUD(game.GraphicsDevice, hudTexture, hudDestinationRectangle, level.currentRoom);
             }
 
-            // Load the level
-            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
+
             // Set the Camera to current level
             camera.CalculateTransformMatrix();
             // Set up controllers
-            keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this);
-            mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game, this);
+            Texture2D itemSelectTexture = game.Content.Load<Texture2D>("HUD");
+            Rectangle itemSelectorDestinationRectangle = new Rectangle(500, 180, 60, 60);
+            int destX = 505;
+            itemSelector = new ItemSelector(game.GraphicsDevice, itemSelectTexture, destX, linkInventory);
+
+            keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this, itemSelector, linkInventory);
+            mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
+
+            audioManager.PlayMusic("Dungeon");
 
             LinkManager.GetLink().UpdatePosition(new Vector2(510, 700));
         }
@@ -149,10 +160,12 @@ namespace Legend_of_the_Power_Rangers
             {
                 Texture2D InventoryTexture = game.Content.Load<Texture2D>("HUD");
                 Rectangle InventoryDestinationRectangle = new Rectangle(0, 0, 1020, 1020);
-                inventoryScreen = new InventoryScreen(game.GraphicsDevice, InventoryTexture, InventoryDestinationRectangle);
+                inventoryScreen = new InventoryScreen(game.GraphicsDevice, InventoryTexture, InventoryDestinationRectangle, linkInventory);
             }
             Texture2D greenDotTexture = game.Content.Load<Texture2D>("HUD");
-            greenDot = new GreenDot(game.GraphicsDevice, greenDotTexture, currentRoom);
+            greenDot = new GreenDot(game.GraphicsDevice, greenDotTexture, currentRoom, linkInventory);
+
+            
         }
 
         private void InitializeGameOverState()
@@ -197,14 +210,17 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.Running:
                     // Handle the gameplay updates for both Gameplay and Running states
                     UpdateGameplay(gameTime);
+                    hud.Update(level.currentRoom);
                     break;
                 case GameState.Paused:
                     keyboardController.Update();
+                    hud.Update(level.currentRoom);
                     // Handle paused state update
                     break;
                 case GameState.ItemSelection:
                     // Handle item selection update
                     keyboardController.Update();
+                    itemSelector.Update(gameTime);
                     greenDot.Update();
                     break;
                 case GameState.GameOver:
@@ -225,7 +241,7 @@ namespace Legend_of_the_Power_Rangers
             mouseController.Update();
             link.Update(gameTime);
             linkDecorator.Update(gameTime);
-            game.linkItemFactory.Update(gameTime, link.DestinationRectangle, link.GetDirection());
+            game.linkItemFactory.Update(gameTime, link.destinationRectangle, link.GetDirection());
             level.Update(gameTime);
             camera.CalculateRoomCamera(level.CurrentRoomRow, level.CurrentRoomColumn);
             camera.CalculateTransformMatrix();
@@ -252,16 +268,15 @@ namespace Legend_of_the_Power_Rangers
             {
                 case GameState.Gameplay:
                     DrawGameplay();
-                    hud.Draw();
                     break;
                 case GameState.Paused:
                     // Draw paused screen
                     DrawGameplay();
-                    hud.Draw();
                     break;
                 case GameState.ItemSelection:
                     // Draw item selection screen
                     inventoryScreen.Draw();
+                    itemSelector.Draw();
                     greenDot.Draw();
                     break;
                 case GameState.GameOver:
@@ -276,6 +291,14 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.Running:
                     DrawGameplay();
+                    break;
+            }
+            spriteBatch.End();
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            switch (currentState)
+            {
+                case GameState.Gameplay:
+                case GameState.Running:
                     hud.Draw();
                     break;
             }
@@ -287,6 +310,7 @@ namespace Legend_of_the_Power_Rangers
             level.Draw(game.enemySpritesheet, spriteBatch);
             game.linkItemFactory.Draw(spriteBatch);
             linkDecorator.Draw(spriteBatch);
+            hud.Draw();
         }
 
         

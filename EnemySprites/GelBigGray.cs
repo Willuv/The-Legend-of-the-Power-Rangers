@@ -8,7 +8,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
@@ -35,7 +35,7 @@ namespace Legend_of_the_Power_Rangers
 
         public GelBigGray()
         {
-            DestinationRectangle = new Rectangle(300, 100, 40, 44); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 40, 44); // Default positon
             InitializeFrames();
             SetRandomDirection();
         }
@@ -105,6 +105,7 @@ namespace Legend_of_the_Power_Rangers
             Health -= damage;
             if (Health <= 0)
             {
+                isHurt = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
             else
@@ -112,6 +113,11 @@ namespace Legend_of_the_Power_Rangers
                 isHurt = true;
                 hurtTimer = 0;
             }
+        }
+
+        public bool IsHurt()
+        {
+            return isHurt;
         }
     }
 }

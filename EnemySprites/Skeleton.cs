@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,7 +9,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
@@ -26,6 +27,10 @@ namespace Legend_of_the_Power_Rangers
         private int currentFrameIndex;
         private Random random = new Random();
 
+        private bool isHurt = false;
+        private double hurtTimer = 0;
+        private const double hurtDuration = 1000;
+
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.Skeleton; } }
 
@@ -33,7 +38,7 @@ namespace Legend_of_the_Power_Rangers
         {
             InitializeFrames();
             SetRandomDirection();
-            DestinationRectangle = new Rectangle(300, 100, 44, 36); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 44, 36); // Default positon
         }
 
         private void InitializeFrames()
@@ -86,9 +91,21 @@ namespace Legend_of_the_Power_Rangers
             Health -= damage;
             if (Health <= 0)
             {
+                isHurt = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
+            else
+            {
+                isHurt = true;
+                hurtTimer = 0;
+            }
         }
+
+        public bool IsHurt()
+        {
+            return isHurt;
+        }
+
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);

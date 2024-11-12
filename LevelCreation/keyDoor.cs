@@ -1,28 +1,23 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using System.Collections;
+using Legend_of_the_Power_Rangers;
+using Legend_of_the_Power_Rangers.LevelCreation;
 
 internal class keyDoor : IDoor
 {
     private Texture2D spriteSheet;
     private Rectangle sourceRectangle;
     private Rectangle destinationRectangle;
+    public Rectangle CollisionHitbox { get; set; }
     private int doorNum;
     private int xPos;
     private int yPos;
     private int scaleFactor = 4;
-    private bool isOpen;
-    public bool IsOpen
-    {
-        get { return isOpen; }
-        set { isOpen = value; }
-    }
-    private bool canWalkThrough;
-    public bool CanWalkThrough
-    {
-        get { return canWalkThrough; }
-        set { canWalkThrough = value; }
-    }
+    public ObjectType ObjectType { get { return ObjectType.Door; } }
+    public DoorType DoorType { get { return DoorType.Key; } }
+    public bool IsCameraMoving { get; set; }
+    public bool IsOpen { get; set; }
     public keyDoor(Texture2D spriteSheet, int doorNum, int RoomRow, int RoomColumn)
     {
         this.doorNum = doorNum;
@@ -30,12 +25,12 @@ internal class keyDoor : IDoor
         this.yPos = RoomColumn;
         this.spriteSheet = spriteSheet;
         this.sourceRectangle = new Rectangle(360, (33 * doorNum), 31, 31);
-        determineDestination();
-        canWalkThrough = false;
-        isOpen = false;
+        DetermineDestination();
+        IsCameraMoving = false;
+        IsOpen = false;
     }
 
-    public void determineDestination()
+    public void DetermineDestination()
     {
         int roomTopLeftX = xPos * 1020;
         int roomTopLeftY = yPos * 698;
@@ -53,14 +48,6 @@ internal class keyDoor : IDoor
             case 3:
                 destinationRectangle = new Rectangle(445 + roomTopLeftX, 765 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
-        }
-    }
-    public void Update(GameTime gametime, int enemiesCount)
-    {
-        if (isOpen)
-        {
-            canWalkThrough = true;
-            sourceRectangle = new Rectangle(426, (33 * doorNum), 31, 31);
         }
     }
     public void Draw(SpriteBatch spriteBatch)

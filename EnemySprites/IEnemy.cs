@@ -12,5 +12,6 @@ namespace Legend_of_the_Power_Rangers
         void Draw(Texture2D texture, SpriteBatch spriteBatch);
         public void TriggerDeath(int X, int Y);
         public void TakeDamage(int X);
+        public bool IsHurt();
     }
 }

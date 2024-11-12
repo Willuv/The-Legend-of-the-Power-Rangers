@@ -18,7 +18,7 @@ namespace Legend_of_the_Power_Rangers
             if (list.Count < 2) return list;
 
             int pivotIndex = list.Count / 2;
-            int xOfPivot = list[pivotIndex].DestinationRectangle.X;
+            int xOfPivot = list[pivotIndex].CollisionHitbox.X;
             List<ICollision> left = new List<ICollision>();
             List<ICollision> right = new List<ICollision>();
 
@@ -26,7 +26,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 if (i == pivotIndex) continue;
 
-                if (list[i].DestinationRectangle.X < xOfPivot)
+                if (list[i].CollisionHitbox.X < xOfPivot)
                 {
                     left.Add(list[i]);
                 }
@@ -53,7 +53,7 @@ namespace Legend_of_the_Power_Rangers
                 swapped = false;
                 for (int j = 0; j < n - 1 - i; j++)
                 {
-                    if (list[j].DestinationRectangle.X > list[j + 1].DestinationRectangle.X)
+                    if (list[j].CollisionHitbox.X > list[j + 1].CollisionHitbox.X)
                     {
                         ICollision temp = list[j];
                         list[j] = list[j + 1];

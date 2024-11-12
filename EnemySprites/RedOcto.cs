@@ -10,7 +10,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
@@ -50,11 +50,11 @@ namespace Legend_of_the_Power_Rangers
             projectiles = new List<OctoProjectile>();
             if (spawnRectangle.HasValue)
             {
-                DestinationRectangle = spawnRectangle.Value;
+                CollisionHitbox = spawnRectangle.Value;
             }
             else
             {
-                DestinationRectangle = new Rectangle(300, 100, 15 * scale, 15 * scale); // Default position
+                CollisionHitbox = new Rectangle(300, 100, 15 * scale, 15 * scale); // Default position
             }
             OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
@@ -163,6 +163,7 @@ namespace Legend_of_the_Power_Rangers
             Health -= damage;
             if (Health <= 0)
             {
+                isHurt = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
                 //TriggerDeath();
             }
@@ -185,6 +186,11 @@ namespace Legend_of_the_Power_Rangers
             {
                 base.Draw(texture, spriteBatch);
             }
+        }
+
+        public bool IsHurt()
+        {
+            return isHurt;
         }
     }
 }

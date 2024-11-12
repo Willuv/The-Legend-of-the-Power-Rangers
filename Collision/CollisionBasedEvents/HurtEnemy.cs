@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 
 namespace Legend_of_the_Power_Rangers
@@ -14,23 +10,19 @@ namespace Legend_of_the_Power_Rangers
 
         public void Execute(ICollision linkItem, ICollision enemy, CollisionDirection direction)
         {
-            if (enemy is IEnemy)
+            if (enemy is IEnemy enemy1)
             {
-                //enemy.GetHurt(); for alex to implement
-                if (!AudioManager.Instance.IsMuted())
+                if (!enemy1.IsHurt())
                 {
-                    if (((IEnemy)enemy).EnemyType != EnemyType.DragonBoss)
-                    {
-                        AudioManager.Instance.PlaySound("Enemy_Hit");
-                    }
-                    else
-                    {
-                        AudioManager.Instance.PlaySound("Boss_Hit");
+                    enemy1.TakeDamage(1);
 
+                    if (!AudioManager.Instance.IsMuted())
+                    {
+                        string sound = enemy1.EnemyType != EnemyType.DragonBoss ? "Enemy_Hit" : "Boss_Hit";
+                        AudioManager.Instance.PlaySound(sound);
                     }
+
                 }
-
-                Debug.WriteLine("Enemy hurt");
             }
         }
     }

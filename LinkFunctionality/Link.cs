@@ -12,14 +12,14 @@ public class Link : ICollision
     private const float ScaleFactor = 3.36f;
     private const int LinkWidth = 48;
     private const int LinkHeight = 48;
-    private Rectangle destinationRectangle;
+    public Rectangle destinationRectangle;
     private int maxHealth = 6;
     private int currentHealth;
 
     public int GetCurrentHealth() => currentHealth;
     public int GetMaxHealth() => maxHealth;
 
-    public Rectangle DestinationRectangle
+    public Rectangle CollisionHitbox
     {
         get { return destinationRectangle; }
         set { destinationRectangle = value; }
