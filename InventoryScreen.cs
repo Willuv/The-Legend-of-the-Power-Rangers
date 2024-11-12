@@ -7,11 +7,15 @@ namespace Legend_of_the_Power_Rangers
     public class InventoryScreen
     {
         private Texture2D blackTexture;
+        private Texture2D whiteTexture;
+        private Texture2D redTexture;
+
         private Rectangle heartCover;
         private Rectangle keyCover;
         private Rectangle bombCover;
         private Rectangle BCover;
         private Rectangle rupeeXCover;
+        private Rectangle fullMapCover;
         private Rectangle mapCover;
         private Rectangle mapTextCover;
         private Rectangle compassTextCover;
@@ -25,6 +29,9 @@ namespace Legend_of_the_Power_Rangers
         private Rectangle potionCover;
         private Rectangle itemSelectCover;
         private Rectangle aboveItemSelectCover;
+        private Rectangle bossRoom;
+        private List<Rectangle> mapLayoutCover;
+        private List<Rectangle> rooms;
 
         private Texture2D InventoryTexture;
         private SpriteBatch InventorySpriteBatch;
@@ -54,6 +61,12 @@ namespace Legend_of_the_Power_Rangers
             blackTexture = new Texture2D(graphicsDevice, 1, 1);
             blackTexture.SetData(new[] { Color.Black });
 
+            whiteTexture = new Texture2D(graphicsDevice, 1, 1);
+            whiteTexture.SetData(new[] { Color.White });
+
+            redTexture = new Texture2D(graphicsDevice, 1, 1);
+            redTexture.SetData(new[] { Color.Red });
+
             heartCover = new Rectangle(InventoryDestinationRectangle.X + 704, InventoryDestinationRectangle.Y + 800, 260, 68);
             BCover = new Rectangle(InventoryDestinationRectangle.X + 512, InventoryDestinationRectangle.Y + 768, 32, 64);
             rupeeXCover = new Rectangle(InventoryDestinationRectangle.X + 384, InventoryDestinationRectangle.Y + 738, 32, 32);
@@ -64,6 +77,8 @@ namespace Legend_of_the_Power_Rangers
             potionCover = new Rectangle(InventoryDestinationRectangle.X + 516, InventoryDestinationRectangle.Y + 245, 60, 65);
             itemSelectCover = new Rectangle(InventoryDestinationRectangle.X + 616, InventoryDestinationRectangle.Y + 245, 250, 65);
             aboveItemSelectCover = new Rectangle(InventoryDestinationRectangle.X + 500, InventoryDestinationRectangle.Y + 90, 400, 65);
+            fullMapCover = new Rectangle(InventoryDestinationRectangle.X + 64, InventoryDestinationRectangle.Y + 736, 252, 124);
+            bossRoom = new Rectangle(InventoryDestinationRectangle.X + 262, InventoryDestinationRectangle.Y + 785, 16, 12);
 
             bowPosition = new Rectangle(InventoryDestinationRectangle.X + 713, InventoryDestinationRectangle.Y + 180, 50, 65);
             bombPosition = new Rectangle(InventoryDestinationRectangle.X + 613, InventoryDestinationRectangle.Y + 180, 50, 65);
@@ -71,7 +86,49 @@ namespace Legend_of_the_Power_Rangers
             rupeeCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 738, 64, 32);
             bombCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 832, 64, 32);
             keyCountPosition = new Rectangle(InventoryDestinationRectangle.X + 416, InventoryDestinationRectangle.Y + 800, 64, 32);
+
+            mapLayoutCover = new List<Rectangle>();
+            rooms = new List<Rectangle>();
+
+            int startX = InventoryDestinationRectangle.X + 64;
+            int startY = InventoryDestinationRectangle.Y + 36;
+            int width = 28;
+            int height = 16;
+
+            int totalRows = 8;
+            List<int[]> skippedRows = new List<int[]>
+            {
+                new int[] { },
+                new int[] { 4 },
+                new int[] { 2, 4, 5, 7},
+                new int[] { 2, 3, 4, 5, 6, 7 },
+                new int[] { 4, 5, 7 },
+                new int[] { 3, 4 },
+                new int[] { 3 },
+                new int[] { }
+            };
+
+            for (int col = 0; col < skippedRows.Count; col++)
+            {
+                HashSet<int> skips = new HashSet<int>(skippedRows[col]);
+
+                for (int row = 0; row < totalRows; row++)
+                {
+                    int x = startX + col * 32;
+                    int y = startY + 699 + row * 16;
+                    Rectangle rect = new Rectangle(x, y, width, height);
+
+                    if (skips.Contains(row))
+                    {
+                        rooms.Add(rect);
+                        continue;
+                    }
+
+                    mapLayoutCover.Add(rect);
+                }
+            }
         }
+    
 
         private readonly Dictionary<int, Rectangle> digitSourceRectangles = new Dictionary<int, Rectangle>
         {
@@ -86,6 +143,8 @@ namespace Legend_of_the_Power_Rangers
             { 8, new Rectangle(96, 314, 8, 8) },
             { 9, new Rectangle(96, 323, 8, 8) }
         };
+
+        
 
         private void DrawCovers()
         {
@@ -130,9 +189,25 @@ namespace Legend_of_the_Power_Rangers
 
 
         }
-        private void moveItemSelect(int xpos)
+        private void DrawMap()
         {
-            //
+            if (LinkManager.GetLinkInventory().HasItem(ItemType.Map))
+            {
+                foreach (var roomRectangle in mapLayoutCover)
+                {
+                    InventorySpriteBatch.Draw(blackTexture, roomRectangle, Color.Black);
+                }
+            }
+            else
+            {
+                InventorySpriteBatch.Draw(blackTexture, fullMapCover, Color.Black);
+            }
+
+            if (LinkManager.GetLinkInventory().HasItem(ItemType.Compass))
+            {
+                InventorySpriteBatch.Draw(redTexture, bossRoom, Color.Red);
+            }
+
         }
 
         private void DrawItemCount(int count, Rectangle position)
@@ -191,6 +266,7 @@ namespace Legend_of_the_Power_Rangers
             InventorySpriteBatch.Begin(samplerState: SamplerState.PointClamp);
             InventorySpriteBatch.Draw(InventoryTexture, InventoryDestinationRectangle, InventorySourceRectangle, Color.White);
             DrawCovers();
+            DrawMap();
             DrawItemCount(LinkManager.GetLinkInventory().GetItemCount(ItemType.Rupee), rupeeCountPosition);
             DrawItemCount(LinkManager.GetLinkInventory().GetItemCount(ItemType.Bomb), bombCountPosition);
             DrawItemCount(LinkManager.GetLinkInventory().GetItemCount(ItemType.Key), keyCountPosition);
