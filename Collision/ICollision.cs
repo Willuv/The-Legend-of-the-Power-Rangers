@@ -10,6 +10,6 @@ namespace Legend_of_the_Power_Rangers
     public interface ICollision
     {
         ObjectType ObjectType { get; }
-        Rectangle DestinationRectangle { get; set; }
+        Rectangle CollisionHitbox { get; set; }
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public enum ObjectType
+    public enum DoorType
     {
-        Link, Block, Item, LinkProjectile, Enemy, EnemyProjectile, Door, Wall
+        Diamond, Hole, Key, Open, Wall
     }
 }

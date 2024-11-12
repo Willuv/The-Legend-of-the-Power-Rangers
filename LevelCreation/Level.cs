@@ -96,7 +96,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             roomObjects.AddRange(loader.Blocks);
             roomObjects.AddRange(loader.Enemies);
             roomObjects.AddRange(loader.Items);
-            //roomObjects.AddRange(loader.Doors);
+            roomObjects.AddRange(loader.Doors);
+            roomObjects.AddRange(walls);
 
             return roomObjects;
 
@@ -160,7 +161,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 enemy.Update(gametime);
             }
-            collisionManager.Update(gametime, loadedObjects);
+            collisionManager.Update(loadedObjects);
         }
         public void MouseChangeLevel(int direction)
         {
@@ -187,9 +188,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            int LinkWidth = LinkManager.GetLink().DestinationRectangle.Width;
-            int LinkHeight = LinkManager.GetLink().DestinationRectangle.Height;
-            LinkManager.GetLink().DestinationRectangle = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+            int LinkWidth = LinkManager.GetLink().CollisionHitbox.Width;
+            int LinkHeight = LinkManager.GetLink().CollisionHitbox.Height;
+            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
             reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
         }
         public void ChangeLevel(String direction)

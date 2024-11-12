@@ -26,14 +26,19 @@ namespace Legend_of_the_Power_Rangers
             }
             else
             {
-                //Debug.WriteLine($"{object1}{object2}{direction} not found in eventList.");
+                if (object1 is not IWall && object2 is not IBlock)
+                {
+                    Debug.WriteLine($"{object1}{object2}{direction} not found in eventList.");
+                }
+                
             }
         }
 
         private static (ICollision obj1, ICollision obj2, CollisionDirection dir) EnsureOrder(ICollision object1, ICollision object2, CollisionDirection direction)
         {
             if (object1 is IBlock || object1 is IItem || (object1 is IEnemy && object2 is Link) ||
-                object2 is ILinkItemSprite|| object2 is IEnemyProjectile)
+                object2 is ILinkItemSprite || object2 is IEnemyProjectile || object1 is IDoor ||
+                object1 is IWall)
             {
                 direction = ReverseDirection(direction);
                 return (object2, object1, direction);

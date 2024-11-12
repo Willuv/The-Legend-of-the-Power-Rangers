@@ -20,7 +20,7 @@ namespace Legend_of_the_Power_Rangers
         Rectangle position;
         Rectangle destinationRectangle;
 
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }

@@ -36,7 +36,7 @@ namespace Legend_of_the_Power_Rangers
                 }
             };
         }
-        public void Update(GameTime gameTime, List<ICollision> loadedObjects)
+        public void Update(List<ICollision> loadedObjects)
         {
             this.loadedObjects = loadedObjects;
 
@@ -56,12 +56,12 @@ namespace Legend_of_the_Power_Rangers
                     ICollision object1 = loadedObjects[i];
                     ICollision object2 = loadedObjects[j];
 
-                    if (object2.DestinationRectangle.Left > object1.DestinationRectangle.Right)
+                    if (object2.CollisionHitbox.Left > object1.CollisionHitbox.Right)
                     {
                         break; //object 2 doesn't overlap at all
                     }
 
-                    if (object1.DestinationRectangle.Intersects(object2.DestinationRectangle))
+                    if (object1.CollisionHitbox.Intersects(object2.CollisionHitbox))
                     {
                         HandleCollision(object1, object2);
                     }
@@ -72,16 +72,18 @@ namespace Legend_of_the_Power_Rangers
         private void HandleCollision(ICollision object1, ICollision object2)
         {
             //Debug.WriteLine($"Collision detected between {object1} and {object2} in direction");
-            Rectangle intersection = Rectangle.Intersect(object1.DestinationRectangle,
-                                                        object2.DestinationRectangle);
+            Rectangle intersection = Rectangle.Intersect(object1.CollisionHitbox,
+                                                        object2.CollisionHitbox);
+
+            //Debug.WriteLine($"Collision between link and {object2}");
             if (intersection.Width > intersection.Height)
             {
                 //collision is from top or from bottom
-                if (object1.DestinationRectangle.Top < object2.DestinationRectangle.Top)
+                if (object1.CollisionHitbox.Top < object2.CollisionHitbox.Top)
                 {
                     //object 1 is on top
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Top);
-                } else if (object1.DestinationRectangle.Bottom > object2.DestinationRectangle.Bottom)
+                } else if (object1.CollisionHitbox.Bottom > object2.CollisionHitbox.Bottom)
                 {
                     //object 1 is on bottom
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Bottom);
@@ -92,11 +94,11 @@ namespace Legend_of_the_Power_Rangers
             } else if (intersection.Height > intersection.Width)
             {
                 //collision is from left or right
-                if (object1.DestinationRectangle.Left < object2.DestinationRectangle.Left)
+                if (object1.CollisionHitbox.Left < object2.CollisionHitbox.Left)
                 {
                     //object 1 is on left
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Left);
-                } else if (object1.DestinationRectangle.Right > object2.DestinationRectangle.Right)
+                } else if (object1.CollisionHitbox.Right > object2.CollisionHitbox.Right)
                 {
                     //object 1 is on right
                     allCollisionsHandler.Handle(object1, object2, CollisionDirection.Right);
