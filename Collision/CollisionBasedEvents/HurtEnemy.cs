@@ -22,7 +22,6 @@ namespace Legend_of_the_Power_Rangers
                         AudioManager.Instance.PlaySound(sound);
                     }
 
-                    Debug.WriteLine("Enemy hurt");
                 }
             }
         }
