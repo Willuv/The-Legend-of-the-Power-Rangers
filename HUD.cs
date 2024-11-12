@@ -43,6 +43,11 @@ namespace Legend_of_the_Power_Rangers
         private readonly Rectangle halfHeartSource = new Rectangle(176, 242, HeartSize, HeartSize);
         private readonly Rectangle emptyHeartSource = new Rectangle(176, 233, HeartSize, HeartSize);
 
+        private readonly Rectangle boomerangSourceRectangle = new Rectangle(127, 232, 9, 17);
+        private readonly Rectangle bombSourceRectangle = new Rectangle(127, 249, 9, 17);
+        private readonly Rectangle bowSourceRectangle = new Rectangle(127, 266, 9, 17);
+
+
 
         private readonly Dictionary<int, Rectangle> digitSourceRectangles = new Dictionary<int, Rectangle>
         {
@@ -215,6 +220,22 @@ namespace Legend_of_the_Power_Rangers
 
         }
 
+        private void DrawActiveItem()
+        {
+            switch (LinkManager.GetLinkInventory().ActiveItem)
+            {
+                case ItemType.WoodBoomerang:
+                    hudSpriteBatch.Draw(hudTexture, BCover, boomerangSourceRectangle, Color.White);
+                    break;
+                case ItemType.Bomb:
+                    hudSpriteBatch.Draw(hudTexture, BCover, bombSourceRectangle, Color.White);
+                    break;
+                case ItemType.Bow:
+                    hudSpriteBatch.Draw(hudTexture, BCover, bowSourceRectangle, Color.White);
+                    break;
+            }
+        }
+
         public void UpdateLink()
         {
             this.link = LinkManager.GetLink();
@@ -231,6 +252,7 @@ namespace Legend_of_the_Power_Rangers
             DrawItemCount(LinkManager.GetLinkInventory().GetItemCount(ItemType.Bomb), bombCountPosition);
             DrawItemCount(LinkManager.GetLinkInventory().GetItemCount(ItemType.Key), keyCountPosition);
             DrawHearts();
+            DrawActiveItem();
             hudSpriteBatch.Draw(whiteTexture, linkPosition, Color.White);
 
 
