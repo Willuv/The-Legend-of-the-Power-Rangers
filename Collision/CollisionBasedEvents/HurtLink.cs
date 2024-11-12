@@ -4,20 +4,22 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework;
 
-namespace Legend_of_the_Power_Rangers
+public class HurtLink : IEvent
 {
-    public class HurtLink : IEvent
+    private const int KnockbackDistance = 60;  // Define your knockback distance
+
+    public HurtLink() { }
+
+    public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
     {
-        public HurtLink() { }
+        LinkDecorator decoratedLink = LinkManager.GetLinkDecorator();
 
-        public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
-        {
-            LinkDecorator decoratedLink = LinkManager.GetLinkDecorator();
+        // Apply damage
+        LinkBecomeDamagedCommand linkGetsHurt = new(decoratedLink);
+        linkGetsHurt.Execute();
 
-            LinkBecomeDamagedCommand linkGetsHurt = new(decoratedLink);
-            linkGetsHurt.Execute();
-        }
     }
 }

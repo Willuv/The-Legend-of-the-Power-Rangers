@@ -75,7 +75,7 @@ namespace Legend_of_the_Power_Rangers
             Rectangle intersection = Rectangle.Intersect(object1.CollisionHitbox,
                                                         object2.CollisionHitbox);
 
-            Debug.WriteLine($"Collision between link and {object2}");
+            //Debug.WriteLine($"Collision between link and {object2}");
             if (intersection.Width > intersection.Height)
             {
                 //collision is from top or from bottom

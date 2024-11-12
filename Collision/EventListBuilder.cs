@@ -74,8 +74,8 @@ namespace Legend_of_the_Power_Rangers
             };
             List<ICollision> doors = new()
             {
-                new diamondDoor(null, 0), new holeDoor(null, 0), new keyDoor(null, 0),
-                new openDoor(null, 0), new wallDoor(null, 0)
+                new diamondDoor(null, 0, 0 , 0), new holeDoor(null, 0, 0, 0), new keyDoor(null, 0, 0, 0),
+                new openDoor(null, 0, 0, 0), new wallDoor(null, 0, 0, 0)
             };
 
             //custom events

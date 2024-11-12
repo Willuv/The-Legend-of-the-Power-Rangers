@@ -24,7 +24,7 @@ public class Wall : IWall
 	}
 	public void Draw(SpriteBatch spriteBatch, Texture2D levelSpriteSheet)
 	{
-		spriteBatch.Draw(levelSpriteSheet, destinationRectangle, sourceRectangle, Color.Red);
+		spriteBatch.Draw(levelSpriteSheet, destinationRectangle, sourceRectangle, Color.White);
 	}
     public void DetermineRectangles(int xPos, int yPos)
     {

@@ -18,7 +18,7 @@ internal class wallDoor : IDoor
     public DoorType DoorType { get { return DoorType.Wall; } }
     public bool IsCameraMoving { get; set; }
     public bool IsOpen { get; set; }
-    public wallDoor(Texture2D spriteSheet, int doorNum)
+    public wallDoor(Texture2D spriteSheet, int doorNum, int RoomRow, int RoomColumn)
     {
         this.doorNum = doorNum;
         this.xPos = RoomRow;
