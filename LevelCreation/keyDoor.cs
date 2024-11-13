@@ -57,7 +57,10 @@ internal class keyDoor : IDoor
 
     public void Update(GameTime gameTime)
     {
-
+        if (IsOpen)
+        {
+            sourceRectangle = new Rectangle(327, (33 * doorNum), 31, 31);
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch)

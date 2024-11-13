@@ -18,26 +18,10 @@ namespace Legend_of_the_Power_Rangers
             if (door.IsOpen)
             {
                 DelegateManager.RaiseDoorEntered(direction);
-
-                switch (direction)
-                {
-                    case CollisionDirection.Left:
-                        //camera move to right room
-                        Debug.WriteLine("moving to right room");
-                        break;
-                    case CollisionDirection.Top:
-                        //camera move to down room
-                        Debug.WriteLine("moving to down room");
-                        break;
-                    case CollisionDirection.Right:
-                        //camera move to left room
-                        Debug.WriteLine("moving to left room");
-                        break;
-                    case CollisionDirection.Bottom:
-                        //camera move to up room
-                        Debug.WriteLine("moving to up room");
-                        break;
-                }
+            } else if (door is keyDoor)
+            {
+                LinkManager.GetLinkInventory().SetItemCount(ItemType.Key, LinkManager.GetLinkInventory().GetItemCount(ItemType.Key) - 1);
+                door.IsOpen = true;
             } else
             {
                 switch (direction)
