@@ -1,0 +1,26 @@
+
+Readability
+	William Uvlin
+	11/12/2024
+	Sprint 4
+	Camera2D.cs
+	Christian Colon
+	15
+	Overall Christian made the camera class relatively easy to read. As someone who did not work on managing the camera this sprint,
+	by reading through the class I was able to gain a good understanding on how it works. The methods in the class are well named and describe
+	what the methods do. Some parts of the file that could have improvements to the readability are setting some of the constant values 
+	in the class to variables to allow for quicker understanding.
+
+
+
+Quality
+	William Uvlin
+	11/12/24
+	Sprint 4
+	Camera2D.cs
+	Christian Colon
+	15
+	This would allow us to keep the functionality of switching rooms while improving readability as well as better coupling and modularity
+	There are very few changes I would make to this class. The code will cause the camera to move from one position in space to another, 
+	one change could be to split the movement based on direction, that way if there is a bug in the code then it would be easier to spot.
+	

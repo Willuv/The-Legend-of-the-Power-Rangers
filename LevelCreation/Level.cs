@@ -108,7 +108,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             return roomObjects;
 
         }
-
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
             foreach (IWall wall in walls)
@@ -132,7 +131,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 enemy.Draw(enemySpritesheet, spriteBatch);
             }
         }
-
         public void Update(GameTime gametime) 
         {
             List<int> toRemove = new List<int>();
@@ -214,32 +212,54 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
             LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
-            reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            if (currentRoom != -1)
+            {
+                reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            }
         }
         public void ChangeLevel(String direction)
         {
             switch (direction) 
             {
                 case ("Left"):
-                    currentRoomColumn--;
+                    currentRoomColumn++;
+                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 135, 698 * currentRoomRow + 515, LinkWidth, LinkHeight);
                     break;
                 case ("Right"):
-                    currentRoomColumn++;
+                    currentRoomColumn--;
+                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 825, 698 * currentRoomRow + 515, LinkWidth, LinkHeight);
                     break;
                 case ("Up"):
                     currentRoomRow--;
+                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
                     break;
                 case ("Down"):
                     currentRoomRow++;
+                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
                     break;
             }
             loader.DeloadRoom();
+            currentRoom = map[currentRoomRow, currentRoomColumn];
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            currentRoom = map[currentRoomRow, currentRoomColumn];
             if (currentRoom != -1)
             {
                 reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            }
+        }
+        public void SelectLevel(int level)
+        {
+            currentRoom = level;
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    if (map[j, i] == currentRoom)
+                    {
+                        currentRoomRow = j;
+                        currentRoomColumn = i;
+                    }
+                }
             }
         }
     }

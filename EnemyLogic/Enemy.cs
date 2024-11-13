@@ -12,7 +12,7 @@ namespace Legend_of_the_Power_Rangers
         protected bool IsSpawning { get; set; }
         protected bool IsDying { get; set; }
 
-        private double frameDisplayTime = 400; // Time between frames
+        private double frameDisplayTime = 800; // Time between frames
         private double totalFrameTime = 0;
         private int currentFrameIndex = 0;
 
@@ -46,6 +46,7 @@ namespace Legend_of_the_Power_Rangers
             IsDying = true;
             currentFrameIndex = 2;  // Start at death frame 1
             DestinationRectangle = new Rectangle(X - 8, Y - 25, sourceRectangles[2].Width * 3, sourceRectangles[2].Height * 3);  // // X-8/Y-25 center the animation
+            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Enemy_Die");
         }
 
         //testing purposes from Jake
