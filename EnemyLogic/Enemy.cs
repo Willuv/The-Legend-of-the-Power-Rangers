@@ -9,17 +9,17 @@ namespace Legend_of_the_Power_Rangers
         public Rectangle DestinationRectangle { get; set; }
         private Rectangle[] sourceRectangles;
         public bool IsAlive { get; set; } = true;
-        protected bool IsSpawning { get; set; }
+        protected bool IsSpawning { get; set; } = true;
         protected bool IsDying { get; set; }
 
-        private double frameDisplayTime = 800; // Time between frames
+        private double frameDisplayTime = 500; // Time between frames
         private double totalFrameTime = 0;
         private int currentFrameIndex = 0;
 
         public Enemy()
         {
             InitializeFrames();
-            DestinationRectangle = new Rectangle(300, 100, sourceRectangles[0].Width * 3, sourceRectangles[0].Height * 3);  // X/Y are reset later
+            DestinationRectangle = new Rectangle(DestinationRectangle.X, DestinationRectangle.Y, sourceRectangles[0].Width * 3, sourceRectangles[0].Height * 3);  // X/Y are reset later
         }
         private void InitializeFrames()
         {
@@ -37,7 +37,7 @@ namespace Legend_of_the_Power_Rangers
             IsSpawning = true;
             IsAlive = true;
             currentFrameIndex = 0;  // Start at spawn frame 1
-            DestinationRectangle = new Rectangle(DestinationRectangle.X - 8, Y - 25, sourceRectangles[0].Width * 3, sourceRectangles[0].Height * 3);  // X-8,Y-25 center the animation
+            DestinationRectangle = new Rectangle(X, Y - 25, sourceRectangles[0].Width * 3, sourceRectangles[0].Height * 3);  // X-8,Y-25 center the animation (removed - 8, looked like not needed)
         }
 
         public void TriggerDeath(int X, int Y)
@@ -75,7 +75,7 @@ namespace Legend_of_the_Power_Rangers
                     if (currentFrameIndex >= 2)
                     {
                         IsSpawning = false; // Spawning done
-                        //currentFrameIndex = 0;  // Reset frame (maybe needed)
+                        currentFrameIndex = 0;  // Reset frame (maybe needed)
                     }
                 }
             }

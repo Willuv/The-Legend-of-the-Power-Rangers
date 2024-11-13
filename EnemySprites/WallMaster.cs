@@ -24,6 +24,7 @@ namespace Legend_of_the_Power_Rangers
         private double directionChangeTimer;
         private Random random = new Random();
 
+        private bool shouldSpawn = true;
         private bool isHurt = false;
         private double hurtTimer = 0;
         private const double hurtDuration = 1000;
@@ -87,7 +88,13 @@ namespace Legend_of_the_Power_Rangers
         public void Update(GameTime gameTime)
         {
             float deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
+            
+            if (shouldSpawn)
+            {
+                shouldSpawn = false;
+                OnSelected(destinationRectangle.X, destinationRectangle.Y);
+            }
+            
             if (isHurt)
             {
                 HandleHurtState(gameTime);

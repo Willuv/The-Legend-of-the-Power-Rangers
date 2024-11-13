@@ -26,6 +26,7 @@ namespace Legend_of_the_Power_Rangers
         private int frameIndex2;
         private Random random = new Random();
         
+        private bool shouldSpawn = true;
         private bool isHurt = false;
         private double hurtTimer = 0;
         private const double hurtDuration = 1000;
@@ -37,10 +38,8 @@ namespace Legend_of_the_Power_Rangers
         public BatKeese() : base()
         {
             CollisionHitbox = new Rectangle(300, 100, 44, 30); // Default positon
-            OnSelected(destinationRectangle.X, destinationRectangle.Y);
             InitializeFrames();
             SetRandomDirection();
-            
         }
         private void InitializeFrames()
         {
@@ -69,6 +68,12 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
+            if (shouldSpawn)
+            {
+                shouldSpawn = false;
+                OnSelected(destinationRectangle.X, destinationRectangle.Y);
+            }
+            
             if (isHurt)
             {
                 hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -110,7 +115,6 @@ namespace Legend_of_the_Power_Rangers
             {
                 base.Draw(texture, spriteBatch);
             }
-            
         }
 
         int Health = 2;

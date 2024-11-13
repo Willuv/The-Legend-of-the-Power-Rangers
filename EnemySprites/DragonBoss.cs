@@ -47,6 +47,7 @@ namespace Legend_of_the_Power_Rangers
         int bossSpriteWidth = 40;
         int bossSpriteHeight = 40;
 
+        private bool shouldSpawn = true;
         private bool isHurt = false;
         private double hurtTimer = 0;
         private const double hurtDuration = 1000;
@@ -65,7 +66,6 @@ namespace Legend_of_the_Power_Rangers
             SetRandomDirection();
             InitializeFrames();
             projectiles = new List<Tuple<DragonProjectile, Vector2>>();
-            OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
 
         private void InitializeFrames()
@@ -99,6 +99,12 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Update(GameTime gameTime)
         {
+            if (shouldSpawn)
+            {
+                shouldSpawn = false;
+                OnSelected(destinationRectangle.X, destinationRectangle.Y);
+            }
+            
             if (isHurt)
             {
                 hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
