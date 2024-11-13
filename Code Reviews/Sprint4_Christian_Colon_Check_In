@@ -18,3 +18,22 @@ Quality
 	Looping through loaded objects with nested ifs and checking for collisions seems to be the best way to do it.
 	I think that the else for debugging in HandleCollision can be removed.
 
+Readability
+	Author: Christian Colon	
+	Date: 11/12/24 	
+	Sprint 4	
+	Enemy.cs	
+	Author of Collision.cs: Alex 
+	10
+	The code is rather readable, a few comments are found to make some Update choices clear as well as what the InitializeFrames are.
+
+Quality
+	Author: Christian Colon	
+	Date: 11/12/2024	
+	Sprint 4
+	Enemy.cs	
+	Author of CollisionManager.cs: Alex
+	Most of Enemy seems fine, but there seems to be something weird with OnSelected and TriggerDeath. OnSelected never uses the X paramater its asked for.
+	Not sure if both methods should be using destinationRectangle values.
+	There is an unnecessary commented out TriggerDeath method.
+
