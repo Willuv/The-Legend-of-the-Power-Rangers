@@ -231,19 +231,19 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 case ("Left"):
                     currentRoomColumn++;
-                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 135, 698 * currentRoomRow + 515, LinkWidth, LinkHeight);
+                    LinkManager.GetLink().UpdatePosition(new Vector2(300, 0));
                     break;
                 case ("Right"):
                     currentRoomColumn--;
-                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 825, 698 * currentRoomRow + 515, LinkWidth, LinkHeight);
+                    LinkManager.GetLink().UpdatePosition(new Vector2(-300, 0));
                     break;
                 case ("Up"):
-                    currentRoomRow--;
-                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+                    currentRoomRow++;
+                    LinkManager.GetLink().UpdatePosition(new Vector2(0, 350));
                     break;
                 case ("Down"):
-                    currentRoomRow++;
-                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+                    currentRoomRow--;
+                    LinkManager.GetLink().UpdatePosition(new Vector2(0, -350));
                     break;
             }
             loader.DeloadRoom();
@@ -268,6 +268,14 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                         currentRoomColumn = i;
                     }
                 }
+            }
+            loader.DeloadRoom();
+            currentRoom = map[currentRoomRow, currentRoomColumn];
+            loadedObjects.Clear();
+            loadedObjects.Add(LinkManager.GetLink());
+            if (currentRoom != -1)
+            {
+                reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
             }
         }
     }
