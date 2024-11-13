@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -149,7 +150,7 @@ namespace Legend_of_the_Power_Rangers
             keyboardController = new KeyboardController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, game.blockManager, game.itemManager, game, this, itemSelector, linkInventory);
             mouseController = new MouseController(link.GetStateMachine(), game.linkItemFactory, linkDecorator, level, game);
 
-            audioManager.PlayMusic("Dungeon");
+            if (!AudioManager.Instance.IsMuted()) audioManager.PlayMusic("Dungeon");
 
             LinkManager.GetLink().UpdatePosition(new Vector2(510, 700));
 
@@ -184,10 +185,12 @@ namespace Legend_of_the_Power_Rangers
 
         private void InitializeWinningState()
         {
-        if (triforceManager == null)
-        {
-            triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this);
-        }
+            if (triforceManager == null)
+            {
+                triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this);
+            }
+            MediaPlayer.Stop();
+            if (!AudioManager.Instance.IsMuted()) audioManager.PlayMusic("Win");
         }
 
         private void InitializeRoomTransitionState()

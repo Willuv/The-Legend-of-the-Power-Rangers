@@ -13,6 +13,7 @@ namespace Legend_of_the_Power_Rangers
         private Dictionary<string, Song> music;
         private SoundEffectInstance currentMusicInstance;
         private bool isMuted;
+        public float MusicVolume { get; set; } = 1.0f;
 
         private AudioManager()
         {
@@ -37,6 +38,9 @@ namespace Legend_of_the_Power_Rangers
         {
             //Done
             music["Dungeon"] = content.Load<Song>("Dungeon");
+            music["Main_Theme"] = content.Load<Song>("Main Theme");
+            //Done
+            music["Win"] = content.Load<Song>("Win");
             //Done
             soundEffects["Arrow_Boomerang"] = content.Load<SoundEffect>("LOZ_Arrow_Boomerang");
             //Done
@@ -45,16 +49,15 @@ namespace Legend_of_the_Power_Rangers
             soundEffects["Bomb_Drop"] = content.Load<SoundEffect>("LOZ_Bomb_Drop");
             //Done
             soundEffects["Boss_Hit"] = content.Load<SoundEffect>("LOZ_Boss_Hit");
+            //Done
             soundEffects["Boss_Scream1"] = content.Load<SoundEffect>("LOZ_Boss_Scream1");
-            //soundEffects["Boss_Scream2"] = content.Load<SoundEffect>("LOZ_Boss_Scream2");
-            //soundEffects["Boss_Scream3"] = content.Load<SoundEffect>("LOZ_Boss_Scream3");
             //Done
             soundEffects["Candle"] = content.Load<SoundEffect>("LOZ_Candle");
             soundEffects["Door_Unlock"] = content.Load<SoundEffect>("LOZ_Door_Unlock");
+            //Done
             soundEffects["Enemy_Die"] = content.Load<SoundEffect>("LOZ_Enemy_Die");
             //Done
             soundEffects["Enemy_Hit"] = content.Load<SoundEffect>("LOZ_Enemy_Hit");
-            soundEffects["Fanfare"] = content.Load<SoundEffect>("LOZ_Fanfare");
             //Done
             soundEffects["Get_Heart"] = content.Load<SoundEffect>("LOZ_Get_Heart");
             //Done
@@ -62,16 +65,14 @@ namespace Legend_of_the_Power_Rangers
             //Done
             soundEffects["Get_Ruppee"] = content.Load<SoundEffect>("LOZ_Get_Rupee");
             soundEffects["Key_Appear"] = content.Load<SoundEffect>("LOZ_Key_Appear");
+
             soundEffects["Link_Die"] = content.Load<SoundEffect>("LOZ_Link_Die");
             //Done
             soundEffects["Link_Hurt"] = content.Load<SoundEffect>("LOZ_Link_Hurt");
-            soundEffects["LowHeath"] = content.Load<SoundEffect>("LOZ_LowHealth");
-            //soundEffects["MagicalRod"] = content.Load<SoundEffect>("LOZ_MagicalRod");
-            //soundEffects["Recorder"] = content.Load<SoundEffect>("LOZ_Recorder");
+            soundEffects["LowHealth"] = content.Load<SoundEffect>("LOZ_LowHealth");
             soundEffects["Refill_Loop"] = content.Load<SoundEffect>("LOZ_Refill_Loop");
             soundEffects["Secret"] = content.Load<SoundEffect>("LOZ_Secret");
             soundEffects["Shield"] = content.Load<SoundEffect>("LOZ_Shield");
-            //soundEffects["Shore"] = content.Load<SoundEffect>("LOZ_Shore");
             soundEffects["Stairs"] = content.Load<SoundEffect>("LOZ_Stairs");
             //Done
             soundEffects["Sword_Combined"] = content.Load<SoundEffect>("LOZ_Sword_Combined");
@@ -97,10 +98,18 @@ namespace Legend_of_the_Power_Rangers
 
         public void PlayMusic(string musicName)
         {
+            MusicVolume = 1.0f;
             if (!isMuted && music.ContainsKey(musicName))
             {
                 MediaPlayer.Stop();
-                MediaPlayer.IsRepeating = true;
+                if (musicName == "Dungeon")
+                {
+                    MediaPlayer.IsRepeating = true;
+                }
+                else
+                {
+                    MediaPlayer.IsRepeating = false;
+                }
                 MediaPlayer.Play(music[musicName]);
             }
         }
