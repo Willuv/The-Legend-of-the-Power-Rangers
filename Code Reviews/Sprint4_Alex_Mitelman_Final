@@ -20,4 +20,5 @@ Quality
 	A hypothetical change to make to the game related to file being reviewed and how the current:
 	If there were additional interactions between game objects that needed to be added, the current code structure can easily be extended to do so.
 	Unless said interactions are too complicated, needing additional logic to be added, extending the events list should accommodate new types of objects without much difficulty.
+
 	
