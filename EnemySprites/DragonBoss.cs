@@ -172,7 +172,7 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
-        int Health = 1;
+        int Health = 6;
         public void TakeDamage(int damage = 1)
         {
             Health -= damage;
@@ -180,6 +180,8 @@ namespace Legend_of_the_Power_Rangers
             {
                 isHurt = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
+                this.destinationRectangle.Width = 0;
+                this.destinationRectangle.Height = 0;
             }
             else
             {
