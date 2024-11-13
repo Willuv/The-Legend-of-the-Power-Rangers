@@ -33,4 +33,5 @@ This README provides information about our game project **Legend of the Power Ra
 ## Known Bugs
   - Enemies not despawning when dead
   - Camera transition from left to right
+  - Link does not spawn when originally loading the game (Change rooms with the mouse to fix)
 
