@@ -29,7 +29,7 @@ namespace Legend_of_the_Power_Rangers
         public LinkStateMachine()
         {
             currentAction = LinkAction.Idle;
-            currentDirection = LinkDirection.Right;
+            currentDirection = LinkDirection.Up;
             currentSprite = LinkSpriteFactory.Instance.CreateLinkSprite(currentAction, currentDirection);
             actionTimeRemaining = 0;
         }

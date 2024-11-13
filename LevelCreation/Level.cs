@@ -52,10 +52,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             LinkWidth = LinkManager.GetLink().CollisionHitbox.Width;
             LinkHeight = LinkManager.GetLink().CollisionHitbox.Height;
             numRooms = 18;
-            currentRoom = 3;
-            loadedRoom = 3;
+            currentRoom = 1;
+            loadedRoom = 1;
             currentRoomRow = 5;
-            currentRoomColumn = 3;
+            currentRoomColumn = 2;
             walls = new List<IWall>();
             map = new int[,]
             {
@@ -85,7 +85,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
-            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+            LinkManager.GetLink().UpdatePosition(new Vector2(1020 * currentRoomColumn + 490, 698 * currentRoomRow + 775));
         }
         private void CreateWalls(int RoomRow, int RoomColumn)
         {
@@ -229,11 +229,11 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     currentRoomColumn--;
                     LinkManager.GetLink().UpdatePosition(new Vector2(-300, 0));
                     break;
-                case ("Up"):
+                case ("Top"):
                     currentRoomRow++;
                     LinkManager.GetLink().UpdatePosition(new Vector2(0, 350));
                     break;
-                case ("Down"):
+                case ("Bottom"):
                     currentRoomRow--;
                     LinkManager.GetLink().UpdatePosition(new Vector2(0, -350));
                     break;
