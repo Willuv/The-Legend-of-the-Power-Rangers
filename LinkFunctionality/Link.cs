@@ -12,11 +12,14 @@ public class Link : ICollision
     private const float ScaleFactor = 3.36f;
     private const int LinkWidth = 48;
     private const int LinkHeight = 48;
-    private Rectangle destinationRectangle;
-    private const int MaxHealth = 6;
-    private int currentHealth = MaxHealth;
+    public Rectangle destinationRectangle;
+    private int maxHealth = 6;
+    private int currentHealth;
 
-    public Rectangle DestinationRectangle
+    public int GetCurrentHealth() => currentHealth;
+    public int GetMaxHealth() => maxHealth;
+
+    public Rectangle CollisionHitbox
     {
         get { return destinationRectangle; }
         set { destinationRectangle = value; }
@@ -27,6 +30,7 @@ public class Link : ICollision
     {
         stateMachine = new LinkStateMachine();
         currentSprite = stateMachine.GetCurrentSprite();
+        currentHealth = 6;
         UpdateDestinationRectangle();
     }
 
@@ -37,18 +41,17 @@ public class Link : ICollision
 
     public void Heal(int amount)
     {
-        currentHealth = Math.Min(MaxHealth, currentHealth + amount);
+        currentHealth = Math.Min(maxHealth, currentHealth + amount);
+
     }
 
-    public int GetCurrentHealth()
+    public void IncreaseMaxHealth()
     {
-        return currentHealth;
+        maxHealth += 2;
+        currentHealth = maxHealth;
+
     }
 
-    public int GetMaxHealth()
-    {
-        return MaxHealth;
-    }
 
     private void UpdateDestinationRectangle()
     {

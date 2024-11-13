@@ -7,62 +7,93 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Runtime.CompilerServices;
 
 namespace Legend_of_the_Power_Rangers.LevelCreation
 {
     public class Level
     {
         int[,] map;
-        IWall[] walls;
+        List<IWall> walls;
         LevelLoader loader;
         Texture2D levelSpriteSheet;
+        StreamReader reader;
         Rectangle wallsSource;
         Rectangle wallsDestination;
         private String ContentPath;
         int numRooms;
-        int currentRoom;
+        public int currentRoom;
         int currentRoomRow;
+        public int CurrentRooom
+        {
+            get { return currentRoom; }
+        }
+        public int CurrentRoomRow
+        {
+            get { return currentRoomRow; }
+        }
         int currentRoomColumn;
+        public int CurrentRoomColumn
+        {
+            get { return currentRoomColumn; }
+        }
         int loadedRoom;
         int scaleFactor = 4;
-        private StreamReader reader;
         private CollisionManager collisionManager;
+        private Camera2D camera;
         private List<ICollision> loadedObjects;
-        public Level(Texture2D levelSpriteSheet, StreamReader reader, String ContentPath)
+        private int LinkWidth;
+        private int LinkHeight;
+        public Level(Texture2D levelSpriteSheet, String ContentPath)
         {
-            this.reader = reader;
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
             loader = new LevelLoader(levelSpriteSheet);
+            LinkWidth = LinkManager.GetLink().CollisionHitbox.Width;
+            LinkHeight = LinkManager.GetLink().CollisionHitbox.Height;
             numRooms = 18;
-            currentRoom = 0;
-            loadedRoom = 0;
+            currentRoom = 3;
+            loadedRoom = 3;
             currentRoomRow = 5;
-            currentRoomColumn = 2;
+            currentRoomColumn = 3;
+            walls = new List<IWall>();
             map = new int[,]
             {
-                { 18, 17, 16, -1, -1, -1},
-                { -1, -1, 13, -1, -1, -1},
+                { 18, 17, 16, -1, -1, 0},
+                { -1, -1, 13, -1, 14, 15},
                 { 10, 9, 8, 11, 12, -1},
                 { -1, 6, 5, 7, -1, -1},
                 { -1, -1, 4, -1, -1, -1},
                 { -1, 2, 1, 3, -1, -1}
             };
-            walls = CreateWalls();
-            loader.Load(reader);
+            for (int i = 0; i < 6; i++)
+            { 
+                for (int j = 0; j < 6; j++) 
+                { 
+                    if (map[j,i] != -1)
+                    {
+                        if (map[j,i] != 18)
+                        {
+                            CreateWalls(i, j);
+                        }
+                        reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + map[j,i] + ".csv");
+                        loader.ReadData(reader, i, j);
+                    }
+                }
+            }
+            reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
+            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
         }
-        private IWall[] CreateWalls()
+        private void CreateWalls(int RoomRow, int RoomColumn)
         {
-            IWall[] walls = new IWall[8];
-            for (int i = 0; i < walls.Length; i++)
+            for (int i = 0; i < 8; i++)
             {
-                walls[i] = new Wall(i, currentRoomRow, currentRoomColumn);
+                walls.Add(new Wall(i, RoomRow, RoomColumn));
             }
 
-            return walls;
         }
         public List<ICollision> GetRoomObjects()
         {
@@ -71,24 +102,21 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             roomObjects.AddRange(loader.Blocks);
             roomObjects.AddRange(loader.Enemies);
             roomObjects.AddRange(loader.Items);
-            //roomObjects.AddRange(loader.Doors);
+            roomObjects.AddRange(loader.Doors);
+            roomObjects.AddRange(walls);
 
             return roomObjects;
 
         }
-
         public void Draw(Texture2D enemySpritesheet, SpriteBatch spriteBatch)
         {
-            if (currentRoom != 18)
+            foreach (IWall wall in walls)
             {
-                foreach (IWall wall in walls)
-                {
-                    wall.Draw(spriteBatch, levelSpriteSheet);
-                }
-                foreach (IDoor door in loader.Doors)
-                {
-                    door.Draw(spriteBatch);
-                }
+                wall.Draw(spriteBatch, levelSpriteSheet);
+            }
+            foreach (IDoor door in loader.Doors)
+            {
+                door.Draw(spriteBatch);
             }
             foreach (IBlock block in loader.Blocks)
             {
@@ -96,21 +124,20 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             foreach (IItem item in loader.Items)
             {
-                    item.Draw(spriteBatch);
+                item.Draw(spriteBatch);
             }
             foreach (IEnemy enemy in loader.Enemies)
             {
                 enemy.Draw(enemySpritesheet, spriteBatch);
             }
         }
-
         public void Update(GameTime gametime) 
         {
             List<int> toRemove = new List<int>();
             if (currentRoom != loadedRoom)
             {
-                loader.Load(reader);
-                
+                loader.LoadEnemies(reader, currentRoomRow, currentRoomColumn);
+
                 loadedRoom = currentRoom;
 
                 //changing the loaded objects based on current room
@@ -137,8 +164,27 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             foreach (IEnemy enemy in loader.Enemies)
             {
                 enemy.Update(gametime);
+                /*if (enemy.Health == 0)
+                {
+                    toRemove.Add(loader.Enemies.IndexOf(enemy));
+                }*/
             }
-            collisionManager.Update(gametime, loadedObjects);
+            foreach (int removeIndex in toRemove)
+            {
+                loader.Enemies.RemoveAt(removeIndex);
+            }
+            toRemove.Clear();
+            foreach (IDoor door in loader.Doors)
+            {
+                if (door.DoorType == DoorType.Diamond)
+                {
+                    if (loader.Enemies.Count == 0)
+                    {
+                        door.IsOpen = true;
+                    }
+                }
+            }
+            collisionManager.Update(loadedObjects);
         }
         public void MouseChangeLevel(int direction)
         {
@@ -151,33 +197,70 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 currentRoom = numRooms;
             }
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    if (map[j,i] == currentRoom)
+                    {
+                        currentRoomRow = j;
+                        currentRoomColumn = i;
+                    }
+                }
+            }
             loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            reader = new StreamReader(ContentPath + "\\LinkDungeon1 - Room" + currentRoom + ".csv");
+            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+            if (currentRoom != -1)
+            {
+                reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            }
         }
         public void ChangeLevel(String direction)
         {
             switch (direction) 
             {
                 case ("Left"):
-                    currentRoomColumn--;
+                    currentRoomColumn++;
+                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 135, 698 * currentRoomRow + 515, LinkWidth, LinkHeight);
                     break;
                 case ("Right"):
-                    currentRoomColumn++;
+                    currentRoomColumn--;
+                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 825, 698 * currentRoomRow + 515, LinkWidth, LinkHeight);
                     break;
                 case ("Up"):
                     currentRoomRow--;
+                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
                     break;
                 case ("Down"):
-                    currentRoomRow--;
+                    currentRoomRow++;
+                    LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
                     break;
             }
             loader.DeloadRoom();
+            currentRoom = map[currentRoomRow, currentRoomColumn];
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            currentRoom = map[currentRoomRow, currentRoomColumn];
-            reader = new StreamReader(ContentPath + "\\LinkDungeon1 - Room" + currentRoom + ".csv");
+            if (currentRoom != -1)
+            {
+                reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            }
+        }
+        public void SelectLevel(int level)
+        {
+            currentRoom = level;
+            for (int i = 0; i < 6; i++)
+            {
+                for (int j = 0; j < 6; j++)
+                {
+                    if (map[j, i] == currentRoom)
+                    {
+                        currentRoomRow = j;
+                        currentRoomColumn = i;
+                    }
+                }
+            }
         }
     }
 }

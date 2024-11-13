@@ -56,6 +56,16 @@ namespace Legend_of_the_Power_Rangers
                     return new BlockOpenDoor();
                 case "Wall":
                     return new BlockWall();
+                case "PushUp":
+                    BlockPush UpDown = new BlockPush();
+                    UpDown.IsPushable = true;
+                    UpDown.PushableDirection = CollisionDirection.Bottom;
+                    return UpDown;
+                case "PushLeft":
+                    BlockPush LeftRight = new BlockPush();
+                    LeftRight.IsPushable = true;
+                    LeftRight.PushableDirection = CollisionDirection.Right;
+                    return LeftRight;
                 default:
                     throw new ArgumentException($"Block type {blockType} not recognized");
             }

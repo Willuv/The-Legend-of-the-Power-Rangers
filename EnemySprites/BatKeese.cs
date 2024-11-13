@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -8,15 +9,15 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
         }
         private int currentFrameIndex;
         private Vector2 direction;
-         private float speed = 100f;
-        //private float scale = 2.0f;
+        private float speed = 100f;
+        private float scale = 1.5f;
 
         private double timeSinceLastToggle;
         private const double millisecondsPerToggle = 100;
@@ -24,13 +25,18 @@ namespace Legend_of_the_Power_Rangers
         private int frameIndex1;
         private int frameIndex2;
         private Random random = new Random();
+        
+        private bool isHurt = false;
+        private double hurtTimer = 0;
+        private const double hurtDuration = 1000;
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.BatKeese; } }
 
+
         public BatKeese() : base()
         {
-            DestinationRectangle = new Rectangle(300, 100, 44, 30); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 44, 30); // Default positon
             OnSelected(destinationRectangle.X, destinationRectangle.Y);
             InitializeFrames();
             SetRandomDirection();
@@ -63,24 +69,39 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
+            if (isHurt)
+            {
+                hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (hurtTimer >= hurtDuration)
+                {
+                    isHurt = false;
+                    hurtTimer = 0;
+                }
+            }
+
+            // Update direction change timer
             directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
-            if (directionChangeTimer >= 3) // ChangeDirrection every 3sec
+            if (directionChangeTimer >= 3)
             {
                 SetRandomDirection();
                 directionChangeTimer = 0;
             }
 
+            // Update animation frame
             timeSinceLastToggle += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastToggle >= millisecondsPerToggle)
             {
-                currentFrameIndex = (currentFrameIndex + 1) % 2; // % sourceRectangle.Length
+                currentFrameIndex = (currentFrameIndex + 1) % 2;
                 timeSinceLastToggle = 0;
             }
-            // Update destinationRectangle based on direction and speed
+
+            // Update position based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
+
             base.Update(gameTime);
         }
+
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             
@@ -97,8 +118,18 @@ namespace Legend_of_the_Power_Rangers
             Health -= damage;
             if (Health <= 0)
             {
+                isHurt = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
+            else
+            {
+                isHurt = true;
+                hurtTimer = 0;
+            }
+        }
+        public bool IsHurt()
+        {
+            return isHurt;
         }
     }
 }

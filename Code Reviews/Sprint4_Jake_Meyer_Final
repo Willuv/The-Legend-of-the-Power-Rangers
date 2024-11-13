@@ -1,0 +1,27 @@
+Readability
+	Author: Jake Meyer	
+	Date: 11/12/24 	
+	Sprint 4	
+	ItemSelector.cs	
+	Author of ItemSelector.cs: Max
+	10
+	The method names are pretty readable, along with most variable names. A lot of magic numbers, though.
+	I'm guessing that the 705 and 505 numbers are the positions of the item selection boxes, but it's
+	very hard to actually know. I also don't really understand why one method has 705 and 505, while the
+	other has 705 505 and 605. Overall though, eliminating the magic numbers would make this much much
+	more readable. The layout and other elements are readable without those numbers. Also, I'm really not
+	sure what Update does in this instance, such as what reverse is for.
+
+Quality
+	Author: Jake Meyer	
+	Date: 11/12/24	
+	Sprint 4
+	ItemSelector.cs	
+	Author of ItemSelector.cs: Max
+	10
+	I've already talked about the readability so I won't reiterate, tho the readability makes it hard to
+	understand the quality. As for quality, the class is pretty short which is good. Methods are concise.
+	A few instances of commented out code, though I've done the same. Count is unused so it can go. Not sure
+	what the purpose of the default case in ChooseActiveItem is, but could be for debugging. And one small 
+	thing that isn't a big deal: Inconsistent with where things get initialized vs declared. Some are initialized
+	in the constructor, some before it. I've done the same thing a few times. 

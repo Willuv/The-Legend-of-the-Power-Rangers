@@ -29,6 +29,8 @@ namespace Legend_of_the_Power_Rangers
             int enemyOffset = 3000;
             int linkProjectileOffset = 4000;
             int enemyProjectileOffset = 5000;
+            int doorOffset = 6000;
+            int wallOffset = 7000;
 
             if (obj is IBlock block)
                 return (int)block.BlockType + blockOffset;
@@ -40,7 +42,10 @@ namespace Legend_of_the_Power_Rangers
                 return (int)linkItem.LinkProjectileType + linkProjectileOffset;
             if (obj is IEnemyProjectile enemyProjectile)
                 return (int)enemyProjectile.EnemyProjectileType + enemyProjectileOffset;
-
+            if (obj is IDoor door)
+                return (int)door.DoorType + doorOffset;
+            if (obj is IWall wall)
+                return (int)wall.ObjectType + wallOffset; //no types of walls
             return obj.GetHashCode(); //just in case
         }
     }

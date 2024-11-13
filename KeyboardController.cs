@@ -14,7 +14,7 @@ namespace Legend_of_the_Power_Rangers
         private readonly LinkIdleCommand idleCommand;
         private Keys activeMovementKey = Keys.None;
 
-        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager, Game1 game, GameStateMachine gameStateMachine)
+        public KeyboardController(LinkStateMachine stateMachine, LinkItemFactory linkItemFactory, LinkDecorator linkDecorator, BlockManager blockManager, ItemManager itemManager, Game1 game, GameStateMachine gameStateMachine, ItemSelector itemSelector, LinkInventory linkInventory)
         {
             keyCommandMappings = new Dictionary<Keys, ICommand>
             {
@@ -22,13 +22,14 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.S, new LinkDownCommand(stateMachine) },
                 { Keys.A, new LinkLeftCommand(stateMachine) },
                 { Keys.D, new LinkRightCommand(stateMachine) },
-                { Keys.Z, new LinkSwordCommand(stateMachine) },
-                { Keys.N, new LinkSwordCommand(stateMachine) },
+                { Keys.Z, new LinkSwordCommand(stateMachine, linkItemFactory) },
+                { Keys.N, new LinkSwordCommand(stateMachine, linkItemFactory) },
                 { Keys.D1, new LinkItem1Command(stateMachine, linkItemFactory) },
                 { Keys.D2, new LinkItem2Command(stateMachine, linkItemFactory) },
                 { Keys.D3, new LinkItem3Command(stateMachine, linkItemFactory) },
                 { Keys.D4, new LinkItem4Command(stateMachine, linkItemFactory) },
                 { Keys.D5, new LinkItem5Command(stateMachine, linkItemFactory) },
+                { Keys.B, new LinkActiveItemCommand(stateMachine, linkItemFactory, linkInventory)},
                 { Keys.E, new LinkBecomeDamagedCommand(linkDecorator) },
                 { Keys.T, new BlockPreviousCommand(blockManager) },
                 { Keys.Y, new BlockNextCommand(blockManager) },
@@ -37,7 +38,10 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.P, new SwitchState(gameStateMachine) },
                 { Keys.M, new MuteUnmuteGameCommand() },
                 { Keys.Q, new QuitCommand(game) },
-                { Keys.R, new ResetCommand(gameStateMachine) }
+                { Keys.R, new ResetCommand(gameStateMachine) },
+                { Keys.Right, new MoveSelectorRight(itemSelector)},
+                { Keys.Left, new MoveSelectorLeft(itemSelector)},
+                { Keys.Enter, new Select(itemSelector)}
             };
             idleCommand = new LinkIdleCommand(stateMachine);
         }

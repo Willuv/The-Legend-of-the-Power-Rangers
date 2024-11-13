@@ -20,15 +20,15 @@ namespace Legend_of_the_Power_Rangers
             Rectangle r = new(); //instead of declaring new rectangle for everything that needs one
 
             List<ICollision> enemies = new() {
-                new BatKeese(), new BlueCentaur(), new BlueGorya(), new BlueKnight(), new BlueOcto(null), 
-                new DarkMoblin(), new DragonBoss(null, null), new GelBigGray(), new GelBigGreen(), 
-                new GelSmallBlack(), new GelSmallTeal(), new RedCentaur(), new RedGorya(), new RedKnight(), 
+                new BatKeese(), new BlueCentaur(), new BlueGorya(), new BlueKnight(), new BlueOcto(null),
+                new DarkMoblin(), new DragonBoss(null, null), new GelBigGray(), new GelBigGreen(),
+                new GelSmallBlack(), new GelSmallTeal(), new RedCentaur(), new RedGorya(), new RedKnight(),
                 new RedMoblin(), new RedOcto(null), new Skeleton(), new WallMaster()
             };
 
             List<ICollision> unmovableBlocks = new() {
-                new BlockBlueFloor(), new BlockBlueGap(), new BlockBombedWall(), new BlockDiamond(), 
-                new BlockKeyHole(), new BlockLadder(), new BlockOpenDoor(), new BlockStairs(), 
+                new BlockBlueFloor(), new BlockBlueGap(), new BlockBombedWall(), new BlockDiamond(),
+                new BlockKeyHole(), new BlockLadder(), new BlockOpenDoor(), new BlockStairs(),
                 new BlockStatue1(), new BlockStatue2(), new BlockWall(), new BlockWhiteBrick()
             };
             List<ICollision> otherBlocks = new()
@@ -72,6 +72,11 @@ namespace Legend_of_the_Power_Rangers
                 new LinkVSEnemyLeft(), new LinkVSEnemyTop(),
                 new LinkVSEnemyRight(), new LinkVSEnemyBottom()
             };
+            List<ICollision> doors = new()
+            {
+                new diamondDoor(null, 0, 0 , 0), new holeDoor(null, 0, 0, 0), new keyDoor(null, 0, 0, 0),
+                new openDoor(null, 0, 0, 0), new wallDoor(null, 0, 0, 0)
+            };
 
             //custom events
             List<IEvent> pushableBlockEvents = new()
@@ -87,8 +92,8 @@ namespace Legend_of_the_Power_Rangers
             AddDirectionalEvents(list, enemies, allCollidableBlocks, enemyMovementEvents);
             //link vs pushable blocks
             AddDirectionalEvents(list, link, new List<ICollision>() { new BlockPush() }, pushableBlockEvents);
-            //AddUniqueBlockEvents(list, link, enemies, uniqueBlocksAndEvents);
-            //uniqueBlocksAndEvents can be a dictionary?
+            //link vs fire
+            AddNonDirectionalEvents(list, link, new List<ICollision>() { new BlockFire() }, new HurtLink());
 
             //projectiles against blocks
             allCollidableBlocks.Remove(new BlockBlueGap()); //projectiles go over the water
@@ -106,6 +111,25 @@ namespace Legend_of_the_Power_Rangers
             AddNonDirectionalEvents(list, link, enemyProjectiles, new HurtLink());
             //link projectiles hurting enemies
             AddNonDirectionalEvents(list, linkProjectiles, enemies, new HurtEnemy());
+
+            //link vs doors
+            AddNonDirectionalEvents(list, link, doors, new LinkVSAnyDoor());
+            //enemies vs doors
+            AddDirectionalEvents(list, enemies, doors, enemyMovementEvents);
+            //projectiles vs doors
+
+            //link vs walls
+            AddDirectionalEvents(list, link, new List<ICollision>() { new Wall(0, 0, 0) }, linkMovementEvents);
+            //enemies vs walls
+            AddDirectionalEvents(list, enemies, new List<ICollision>() { new Wall(0, 0, 0) }, enemyMovementEvents);
+            //projectiles vs walls
+            //AddNonDirectionalEvents(list, allProjectiles, new List<ICollision>() { new Wall(0, 0, 0) }, new ProjectileVanish());
+
+            //special events
+            //bomb vs bombable door
+            AddNonDirectionalEvents(list, new List<ICollision>() { new BombSprite(null, r, 0) },
+                new List<ICollision>() { new holeDoor(null, 0, 0, 0) }, new BombVSBombableDoor());
+            
 
             return list;
         }

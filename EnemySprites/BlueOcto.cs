@@ -9,7 +9,7 @@ namespace Legend_of_the_Power_Rangers
     {
         private Rectangle[] sourceRectangle;
         private Rectangle destinationRectangle;
-        public Rectangle DestinationRectangle
+        public Rectangle CollisionHitbox
         {
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
@@ -32,6 +32,10 @@ namespace Legend_of_the_Power_Rangers
         private const double projectileInterval = 1.5; // 1.5 second timer
         private Texture2D projectileTexture;
 
+        private bool isHurt = false;
+        private double hurtTimer = 0;
+        private const double hurtDuration = 1000;
+
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.BlueOcto; } }
 
@@ -41,7 +45,7 @@ namespace Legend_of_the_Power_Rangers
             InitializeFrames();
             SetRandomDirection();
             projectiles = new List<OctoProjectile>();
-            DestinationRectangle = new Rectangle(300, 100, 30, 30); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 30, 30); // Default positon
             OnSelected(destinationRectangle.X, destinationRectangle.Y);
         }
         private void InitializeFrames()
@@ -84,6 +88,16 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
+            if (isHurt)
+            {
+                hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (hurtTimer >= hurtDuration)
+                {
+                    isHurt = false;
+                    hurtTimer = 0;
+                }
+            }
+
             directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (directionChangeTimer >= 3) // ChangeDirrection every 3sec
             {
@@ -146,8 +160,19 @@ namespace Legend_of_the_Power_Rangers
             Health -= damage;
             if (Health <= 0)
             {
+                isHurt = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
             }
+            else
+            {
+                isHurt = true;
+                hurtTimer = 0;
+            }
+        }
+
+        public bool IsHurt()
+        {
+            return isHurt;
         }
     }
 }

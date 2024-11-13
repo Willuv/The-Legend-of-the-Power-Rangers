@@ -1,0 +1,21 @@
+Readability:
+	Max Muccillo
+	11/12/24
+	Sprint 4
+	AudioManager.cs
+	Will Ulivin
+	10
+	The code in the audio manager file is very organized and easily readable. All the variables and function names are descriptive 
+	and coencide with the functionality of the variable/function
+
+Quality:
+	Max Muccillo
+	11/12/24
+	Sprint 4
+	AudioManager.cs
+	Will Ulvin
+	10
+	The code in the audio manager is very high quality. It is simplistic in a good way and very easy to build on if you wanted to add new audio files.
+	One thing that I might do differently to improve code quality is initialize all of the audio files in a separate class to try
+	to clean the code in the file up a bit. This way there isn't a huge repetative chunk of code dedicated to initiallizing all the audio files. 
+

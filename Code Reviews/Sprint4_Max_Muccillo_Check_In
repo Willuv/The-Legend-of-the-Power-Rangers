@@ -1,4 +1,4 @@
-Readability
+Readability:
 	Max Muccillo
 	11/4/24
 	Sprint 4
@@ -8,7 +8,7 @@ Readability
 	Will designed the game state machine as a way to reduce the amount of code in game1 and to keep everything organized in one spot. 
 	Will did a good job of making the code in the class readable. 
 
-Quality
+Quality:
 	Max Muccillo
 	11/4/24
 	Sprint 4

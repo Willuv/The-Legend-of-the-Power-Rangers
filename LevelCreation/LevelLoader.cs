@@ -48,6 +48,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             { "10", "BlueFloor"},
             { "11", "BlueSand"},
             { "12", "Wall"},
+            { "13", "PushUp"},
+            { "14", "PushLeft"}
         };
         List<IItem> items;
         public List<IItem> Items
@@ -99,27 +101,69 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         public void DeloadRoom()
         {
             enemies.Clear();
-            blocks.Clear();
-            doors.Clear();
-            items.Clear();
         }
-        public void Load(StreamReader reader)
+        public void ReadData(StreamReader reader, int RoomRow, int RoomColumn)
         {
             String line;
             String[] splitLine;
             Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-            //unload past room
-            doors.Clear();
-            
+
             line = reader.ReadLine();
             splitLine = CSVParser.Split(line);
             for (int i = 0; i < 4; i++)
             {
-                if (doorMaker != null)
+                if (doorMaker != null && splitLine[i][4] != '9')
                 {
-                    doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i));
+                    doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i, RoomRow, RoomColumn));
                 }
             }
+
+            for (int i = 1; i < 8; i++)
+            {
+                line = reader.ReadLine();
+                for (int j = 0; j < 12; j++)
+                {
+                    splitLine = CSVParser.Split(line);
+
+                    int currentx = 128 + (64 * j) + (RoomRow * 1020);
+                    int currenty = 320 + (64 * (i - 1)) + (RoomColumn * 698);
+                    String tileCode = splitLine[j];
+                    String blockOneCode = tileCode.Substring(1, 2);
+                    String blockTwoCode = tileCode.Substring(4, 2);
+                    String itemCode = tileCode.Substring(10, 2);
+                    if (blockTwoCode != "99")
+                    {
+                        String blockTwoString = BlockDictionary[blockTwoCode];
+                        IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockTwoString);
+                        block.CollisionHitbox = new Rectangle(currentx, currenty, 64, 64);
+                        blocks.Add(block);
+                    }
+                    if (blockOneCode != "99")
+                    {
+                        String blockOneString = BlockDictionary[blockOneCode];
+                        IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockOneString);
+                        block.CollisionHitbox = new Rectangle(currentx, currenty, 64, 64);
+                        blocks.Add(block);
+                    }
+                    if (itemCode != "99")
+                    {
+                        String itemString = ItemDictionary[itemCode];
+                        IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
+                        item.CollisionHitbox = new Rectangle(currentx + 20, currenty + 20, 40, 40);
+                        items.Add(item);
+                    }
+                }
+            }
+        }
+        public void LoadEnemies(StreamReader reader, int RoomRow, int RoomColumn)
+        {
+            String line;
+            String[] splitLine;
+            Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+            
+            line = reader.ReadLine();
+            // read doorLine
+            splitLine = CSVParser.Split(line);
             //reads top-bottom left-right
             for (int i = 1; i < 8; i++)
             {
@@ -128,42 +172,19 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 {
                     splitLine = CSVParser.Split(line);
 
-                    int currentx = 128 + (64 * j);
-                    int currenty = 320 + (64 * (i-1));
+                    int currentx = 128 + (64 * j) + (RoomColumn * 1020);
+                    int currenty = 320 + (64 * (i-1)) + (RoomRow * 698);
                     String tileCode = splitLine[j];
-                    String blockOneCode = tileCode.Substring(1, 2);
-                    String blockTwoCode = tileCode.Substring(4, 2);
                     String enemyCode = tileCode.Substring(7, 2);
                     String itemCode = tileCode.Substring(10, 2);
-
-                    if (blockTwoCode != "99")
-                    {
-                        String blockTwoString = BlockDictionary[blockTwoCode];
-                        IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockTwoString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 80, 81);
-                        blocks.Add(block);
-                    }
-                    if (blockOneCode != "99")
-                    {
-                        String blockOneString = BlockDictionary[blockOneCode];
-                        IBlock block = BlockSpriteFactory.Instance.CreateBlock(blockOneString);
-                        block.DestinationRectangle = new Rectangle(currentx, currenty, 64, 64);
-                        blocks.Add(block);
-                    }
                     if (enemyCode != "99")
                     {
                         IEnemy enemy = EnemySpriteFactory.Instance.CreateEnemy(enemyCode);
-                        enemy.DestinationRectangle = new Rectangle(currentx, currenty, 40, 40);
+                        int enemyWidth = enemy.CollisionHitbox.Width;
+                        int enemyHeight =  enemy.CollisionHitbox.Height;
+                        enemy.CollisionHitbox = new Rectangle(currentx, currenty, enemyWidth, enemyHeight);
                         enemies.Add(enemy);
                     }
-                    if (itemCode != "99")
-                    {
-                        String itemString = ItemDictionary[itemCode];
-                        IItem item = ItemSpriteFactory.Instance.CreateItem(itemString);
-                        item.DestinationRectangle = new Rectangle(currentx + 20, currenty + 20, 40, 40);
-                        items.Add(item);
-                    }
-
                 }
             }
         }
