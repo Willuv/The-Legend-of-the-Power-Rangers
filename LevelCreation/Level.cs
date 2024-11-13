@@ -191,6 +191,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                         door.IsOpen = true;
                     }
                 }
+
+                door.Update(gametime);
             }
             collisionManager.Update(loadedObjects);
         }

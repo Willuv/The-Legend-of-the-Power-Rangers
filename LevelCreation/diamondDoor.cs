@@ -56,6 +56,12 @@ internal class diamondDoor : IDoor
                 break;
         }
     }
+
+    public void Update(GameTime gameTime)
+    {
+        
+    }
+
     public void Draw(SpriteBatch spriteBatch)
     {
         if (IsOpen)
