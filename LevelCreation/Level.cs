@@ -231,11 +231,11 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     break;
                 case ("Up"):
                     currentRoomRow++;
-                    LinkManager.GetLink().UpdatePosition(new Vector2(0, 100));
+                    LinkManager.GetLink().UpdatePosition(new Vector2(0, 350));
                     break;
                 case ("Down"):
                     currentRoomRow--;
-                    LinkManager.GetLink().UpdatePosition(new Vector2(0, -100));
+                    LinkManager.GetLink().UpdatePosition(new Vector2(0, -350));
                     break;
             }
             loader.DeloadRoom();
