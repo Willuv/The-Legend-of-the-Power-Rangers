@@ -64,6 +64,9 @@ namespace Legend_of_the_Power_Rangers
                 case ItemType.Bow:
                     obtainedItems.Add(item.ItemType);
                     break;
+                case ItemType.Triforce:
+                    obtainedItems.Add(item.ItemType);
+                    break;
                 case ItemType.BlueCandle:
                     obtainedItems.Add(item.ItemType);
                     break;

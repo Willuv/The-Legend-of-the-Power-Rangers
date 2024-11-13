@@ -68,6 +68,16 @@ namespace Legend_of_the_Power_Rangers
 
         public void Update(GameTime gameTime)
         {
+            if (isHurt)
+            {
+                hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (hurtTimer >= hurtDuration)
+                {
+                    isHurt = false;
+                    hurtTimer = 0;
+                }
+            }
+            
             directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (directionChangeTimer >= 3) // ChangeDirrection every 3sec
             {

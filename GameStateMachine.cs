@@ -36,7 +36,7 @@ namespace Legend_of_the_Power_Rangers
         private AudioManager audioManager;
         private GreenDot greenDot;
         private ItemSelector itemSelector;
-    
+        private TriforceCompletionManager triforceManager;
 
         public GameStateMachine(Game1 game, SpriteBatch spriteBatch)
         {
@@ -152,6 +152,8 @@ namespace Legend_of_the_Power_Rangers
             audioManager.PlayMusic("Dungeon");
 
             LinkManager.GetLink().UpdatePosition(new Vector2(510, 700));
+
+            triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this);
         }
 
         private void InitializePausedState()
@@ -182,7 +184,10 @@ namespace Legend_of_the_Power_Rangers
 
         private void InitializeWinningState()
         {
-            // Winning logic (e.g., display winning screen, handle end of game)
+        if (triforceManager == null)
+        {
+            triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this);
+        }
         }
 
         private void InitializeRoomTransitionState()
@@ -218,6 +223,7 @@ namespace Legend_of_the_Power_Rangers
                     // Handle the gameplay updates for both Gameplay and Running states
                     UpdateGameplay(gameTime);
                     hud.Update(level.currentRoom);
+                    triforceManager.Update(gameTime, this);
                     break;
                 case GameState.Paused:
                     keyboardController.Update();
@@ -235,6 +241,7 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.Winning:
                     // Handle winning update
+                    triforceManager.Update(gameTime, this);
                     break;
                 case GameState.RoomTransition:
                     UpdateRoomTranstion(gameTime);
@@ -290,6 +297,11 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.Winning:
                     // Draw winning screen
+                    DrawGameplay();
+                    // Draw triforce effects without camera transform
+                    //spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                    //triforceManager.Draw(spriteBatch, new Rectangle(0, 0, 1020, 892));
+                    //spriteBatch.End();
                     break;
                 case GameState.RoomTransition:
                     level.Draw(game.enemySpritesheet, spriteBatch);
@@ -306,6 +318,14 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.Gameplay:
                 case GameState.Running:
                     hud.Draw();
+                    break;
+            }
+            switch (currentState)
+            {
+                case GameState.Winning:
+                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                    triforceManager.Draw(spriteBatch, new Rectangle(0, 0, 1020, 892));
+                    spriteBatch.End();
                     break;
             }
             spriteBatch.End();
