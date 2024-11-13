@@ -7,7 +7,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Mime;
+using System.Reflection.Emit;
 using System.Runtime.CompilerServices;
+using static Legend_of_the_Power_Rangers.GameStateMachine;
 
 namespace Legend_of_the_Power_Rangers.LevelCreation
 {
@@ -86,6 +88,12 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
             LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+
+            //listener for room change from stairs or wall master
+            DelegateManager.OnChangeToSpecificRoom += (roomNum) =>
+            {
+                SelectLevel(roomNum);
+            };
         }
         private void CreateWalls(int RoomRow, int RoomColumn)
         {

@@ -9,8 +9,6 @@ using Microsoft.Xna.Framework;
 
 public class HurtLink : IEvent
 {
-    private const int KnockbackDistance = 60;  // Define your knockback distance
-
     public HurtLink() { }
 
     public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
