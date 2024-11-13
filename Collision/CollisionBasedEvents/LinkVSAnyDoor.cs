@@ -17,7 +17,7 @@ namespace Legend_of_the_Power_Rangers
             IDoor door = collidable as IDoor;
             if (door.IsOpen)
             {
-                DelegateManager.RaiseDoorEntered(direction.ToString());
+                DelegateManager.RaiseDoorEntered(direction);
 
                 switch (direction)
                 {

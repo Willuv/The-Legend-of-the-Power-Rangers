@@ -227,23 +227,23 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
             }
         }
-        public void ChangeLevel(String direction)
+        public void ChangeLevel(CollisionDirection direction)
         {
             switch (direction) 
             {
-                case ("Left"):
+                case (CollisionDirection.Left):
                     currentRoomColumn++;
                     LinkManager.GetLink().UpdatePosition(new Vector2(300, 0));
                     break;
-                case ("Right"):
+                case (CollisionDirection.Right):
                     currentRoomColumn--;
                     LinkManager.GetLink().UpdatePosition(new Vector2(-300, 0));
                     break;
-                case ("Up"):
+                case (CollisionDirection.Top):
                     currentRoomRow++;
                     LinkManager.GetLink().UpdatePosition(new Vector2(0, 350));
                     break;
-                case ("Down"):
+                case (CollisionDirection.Bottom):
                     currentRoomRow--;
                     LinkManager.GetLink().UpdatePosition(new Vector2(0, -350));
                     break;
