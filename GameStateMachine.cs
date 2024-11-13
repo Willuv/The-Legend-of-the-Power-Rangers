@@ -152,7 +152,7 @@ namespace Legend_of_the_Power_Rangers
 
             if (!AudioManager.Instance.IsMuted()) audioManager.PlayMusic("Dungeon");
 
-            LinkManager.GetLink().UpdatePosition(new Vector2(510, 700));
+
 
             triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this);
         }
@@ -301,9 +301,9 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.Winning:
                     // Draw winning screen
                     DrawGameplay();
-                    //spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                    //triforceManager.Draw(spriteBatch, new Rectangle(0, 0, 1020, 892));
-                    //spriteBatch.End();
+                    spriteBatch.End(); // End gameplay SpriteBatch to prepare for Triforce
+                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                    triforceManager.Draw(spriteBatch, new Rectangle(0, 0, 1020, 892));
                     break;
                 case GameState.RoomTransition:
                     level.Draw(game.enemySpritesheet, spriteBatch);
@@ -319,15 +319,10 @@ namespace Legend_of_the_Power_Rangers
             {
                 case GameState.Gameplay:
                 case GameState.Running:
+                case GameState.RoomTransition:
                     hud.Draw();
                     break;
-                case GameState.Winning:
-                    spriteBatch.End(); // spriteBatch.End to play Winning animation
-                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
-                    triforceManager.Draw(spriteBatch, new Rectangle(0, 0, 1020, 892));
-                    spriteBatch.End();
-                    spriteBatch.Begin(); // Start spriteBatch back up
-                    break;    
+           
             }
             spriteBatch.End();
         }

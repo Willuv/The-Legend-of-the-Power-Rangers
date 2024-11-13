@@ -27,9 +27,12 @@ namespace Legend_of_the_Power_Rangers
                     this.linkItemFactory.CreateItem(LinkItem.CreationLinkItemType.Boomerang);
                     break;
                 case ItemType.Bomb:
-                    this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
-                    this.linkItemFactory.CreateItem(LinkItem.CreationLinkItemType.Bomb);
-                    LinkManager.GetLinkInventory().SetItemCount(ItemType.Bomb, LinkManager.GetLinkInventory().GetItemCount(ItemType.Bomb) - 1);
+                    if (LinkManager.GetLinkInventory().GetItemCount(ItemType.Bomb) > 0)
+                    {
+                        this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
+                        this.linkItemFactory.CreateItem(LinkItem.CreationLinkItemType.Bomb);
+                        LinkManager.GetLinkInventory().SetItemCount(ItemType.Bomb, LinkManager.GetLinkInventory().GetItemCount(ItemType.Bomb) - 1);
+                    }
                     break;
                 case ItemType.Bow:
                     this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);

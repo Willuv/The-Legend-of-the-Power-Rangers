@@ -307,7 +307,7 @@ namespace Legend_of_the_Power_Rangers
                     linkPosition = new Rectangle(hudDestinationRectangle.X + 230, hudDestinationRectangle.Y + 84, 16, 12);
                     break;
                 case 15:
-                    linkPosition = new Rectangle(hudDestinationRectangle.X + 252, hudDestinationRectangle.Y + 84, 16, 12);
+                    linkPosition = new Rectangle(hudDestinationRectangle.X + 262, hudDestinationRectangle.Y + 84, 16, 12);
                     break;
                 case 16:
                     linkPosition = new Rectangle(hudDestinationRectangle.X + 166, hudDestinationRectangle.Y + 68, 16, 12);

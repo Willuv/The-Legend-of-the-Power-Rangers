@@ -54,10 +54,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             LinkWidth = LinkManager.GetLink().CollisionHitbox.Width;
             LinkHeight = LinkManager.GetLink().CollisionHitbox.Height;
             numRooms = 18;
-            currentRoom = 3;
-            loadedRoom = 3;
+            currentRoom = 1;
+            loadedRoom = 1;
             currentRoomRow = 5;
-            currentRoomColumn = 3;
+            currentRoomColumn = 2;
             walls = new List<IWall>();
             map = new int[,]
             {
