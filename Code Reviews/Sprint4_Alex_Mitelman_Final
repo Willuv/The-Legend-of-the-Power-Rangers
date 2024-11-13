@@ -1,0 +1,24 @@
+Readability
+	Alex Mitelman
+	11/12/24
+	4
+	AllCollisionsHandler.cs
+	Jake Meyer
+	15	
+	Specific comments on what is readable and what is not:
+	The code structure and its handling of collisions and events in AllCollisionsHandler is clear and efficient. 
+	Additionally, the EnsureOrder() method is clear in how it standardizes the input for collision handling to check object orders against the dictionary.
+
+Quality
+	Alex Mitelman
+	11/12/24
+	4
+	AllCollisionsHandler.cs
+	Jake Meyer
+	Specific comments on code quality:
+	Overall, the code quality is very good. The code inlcudes commented-out debug lines that are useful in understanding the broader context of the code, even if not in use. 
+	A hypothetical change to make to the game related to file being reviewed and how the current:
+	If there were additional interactions between game objects that needed to be added, the current code structure can easily be extended to do so.
+	Unless said interactions are too complicated, needing additional logic to be added, extending the events list should accommodate new types of objects without much difficulty.
+
+	
