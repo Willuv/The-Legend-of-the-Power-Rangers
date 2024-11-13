@@ -28,12 +28,12 @@ namespace Legend_of_the_Power_Rangers
 
             List<ICollision> unmovableBlocks = new() {
                 new BlockBlueFloor(), new BlockBlueGap(), new BlockBombedWall(), new BlockDiamond(),
-                new BlockKeyHole(), new BlockLadder(), new BlockOpenDoor(), new BlockStairs(),
+                new BlockKeyHole(), new BlockOpenDoor(),
                 new BlockStatue1(), new BlockStatue2(), new BlockWall(), new BlockWhiteBrick()
             };
             List<ICollision> otherBlocks = new()
             {
-                new BlockPush() //will add stairs and other odd cases
+                new BlockPush(), new BlockStairs() //will add stairs and other odd cases
             };
             List<ICollision> allCollidableBlocks = new();
             allCollidableBlocks.AddRange(unmovableBlocks);
@@ -92,6 +92,11 @@ namespace Legend_of_the_Power_Rangers
             AddDirectionalEvents(list, enemies, allCollidableBlocks, enemyMovementEvents);
             //link vs pushable blocks
             AddDirectionalEvents(list, link, new List<ICollision>() { new BlockPush() }, pushableBlockEvents);
+            //link vs stairs
+            AddDirectionalEvents(list, link, new List<ICollision>() { new BlockStairs() }, new List<IEvent>()
+            {
+                new StairsEvent(), new MoveLinkUp(), new MoveLinkRight(), new MoveLinkDown()
+            });
             //link vs fire
             AddNonDirectionalEvents(list, link, new List<ICollision>() { new BlockFire() }, new HurtLink());
 

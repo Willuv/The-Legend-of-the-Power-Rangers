@@ -52,7 +52,7 @@ namespace Legend_of_the_Power_Rangers
             InitializeGameplayState(); // Start the game in gameplay state will change to start state later on
 
             //Subscribing to room change call from collision
-            DelegateManager.OnRoomChange += (direction) =>
+            DelegateManager.OnDoorEntered += (direction) =>
             {
                 level.ChangeLevel(direction);
                 ChangeState(GameState.RoomTransition);

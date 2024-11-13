@@ -54,6 +54,15 @@ internal class keyDoor : IDoor
                 break;
         }
     }
+
+    public void Update(GameTime gameTime)
+    {
+        if (IsOpen)
+        {
+            sourceRectangle = new Rectangle(327, (33 * doorNum), 31, 31);
+        }
+    }
+
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.1f);

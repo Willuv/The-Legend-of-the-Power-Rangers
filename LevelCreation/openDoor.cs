@@ -54,6 +54,13 @@ internal class openDoor : IDoor
                 break;
         }
     }
+
+    public void Update(GameTime gameTime)
+    {
+
+    }
+
+
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(spriteSheet, destinationRectangle, sourceRectangle, Color.White, 0.0f, new Vector2(0, 0), SpriteEffects.None, 0.1f);
