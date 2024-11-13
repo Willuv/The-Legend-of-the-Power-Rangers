@@ -1,6 +1,8 @@
 ﻿using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Media;
+using System.Diagnostics;
 
 public class LinkDecorator : Link
 {
@@ -9,9 +11,13 @@ public class LinkDecorator : Link
     private float timeDamaged;
     private Link baseLink;
 
-    private bool isHurt;              
-    private float hurtCooldown = 0.5f; 
+    private bool isHurt;
+    private float hurtCooldown = 0.5f;
     private float hurtCooldownTimer;
+
+    private bool isDead;
+    private float lowHealthTimer;
+    private const float lowHealthInterval = 1f;
 
     public LinkDecorator(Link baseLink) : base()
     {
@@ -21,6 +27,8 @@ public class LinkDecorator : Link
         timeDamaged = damageDuration;
         isHurt = false;
         hurtCooldownTimer = hurtCooldown;
+        isDead = false;
+        lowHealthTimer = 0f;
     }
 
     public void TakeDamage()
@@ -58,6 +66,31 @@ public class LinkDecorator : Link
             {
                 isHurt = false;
             }
+        }
+
+        int currentHealth = baseLink.GetCurrentHealth();
+
+        if (currentHealth <= 0 && !isDead)
+        {
+            isDead = true;
+            if (!AudioManager.Instance.IsMuted())
+            {
+               MediaPlayer.Stop();
+               AudioManager.Instance.PlaySound("Link_Die");
+            }
+        }
+        else if (currentHealth <= 2 && !isDead)
+        {
+            lowHealthTimer += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (lowHealthTimer >= lowHealthInterval)
+            {
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("LowHealth");
+                lowHealthTimer = 0f;
+            }
+        }
+        else
+        {
+            lowHealthTimer = 0f;
         }
     }
 
