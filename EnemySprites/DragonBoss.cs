@@ -54,7 +54,7 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.DragonBoss; } }
 
-        public DragonBoss(Texture2D spritesheet, Texture2D projectileTexture)
+        public DragonBoss(Texture2D spritesheet, Texture2D projectileTexture) : base()
         {
             bossSpritesheet = spritesheet;
             this.projectileTexture = projectileTexture;
@@ -131,6 +131,7 @@ namespace Legend_of_the_Power_Rangers
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
             UpdateProjectiles(gameTime);
+            base.Update(gameTime);
         }
         private void UpdateProjectiles(GameTime gameTime)
         {
@@ -165,7 +166,13 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(bossSpritesheet, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White); // Draw boss
+            Color tint = isHurt ? Color.Red : Color.White;
+            spriteBatch.Draw(bossSpritesheet, destinationRectangle, sourceRectangle[currentFrameIndex], tint); // Draw boss
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
+            }
+            
             foreach (var projectile in projectiles) // Draw projectiles
             {
                 projectile.Item1.Draw(texture, spriteBatch);

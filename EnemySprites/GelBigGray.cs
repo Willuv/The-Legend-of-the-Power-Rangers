@@ -33,7 +33,7 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.GelBigGray; } }
 
-        public GelBigGray()
+        public GelBigGray() : base()
         {
             CollisionHitbox = new Rectangle(300, 100, 40, 44); // Default positon
             InitializeFrames();
@@ -92,14 +92,20 @@ namespace Legend_of_the_Power_Rangers
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            base.Update(gameTime);
         }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+            Color tint = isHurt ? Color.Red : Color.White;
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], tint);
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
+            }
         }
 
-        int Health = 1;
+        int Health = 2;
         public void TakeDamage(int damage = 1)
         {
             Health -= damage;

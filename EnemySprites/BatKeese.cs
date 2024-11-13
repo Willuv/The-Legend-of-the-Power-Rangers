@@ -104,15 +104,16 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], Color.White);
+            Color tint = isHurt ? Color.Red : Color.White;
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], tint);
             if (IsSpawning || IsDying)
             {
                 base.Draw(texture, spriteBatch);
             }
+            
         }
 
-        int Health = 1;
+        int Health = 2;
         public void TakeDamage(int damage = 1)
         {
             Health -= damage;
