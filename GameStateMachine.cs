@@ -298,7 +298,6 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.Winning:
                     // Draw winning screen
                     DrawGameplay();
-                    // Draw triforce effects without camera transform
                     //spriteBatch.Begin(samplerState: SamplerState.PointClamp);
                     //triforceManager.Draw(spriteBatch, new Rectangle(0, 0, 1020, 892));
                     //spriteBatch.End();
@@ -319,14 +318,13 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.Running:
                     hud.Draw();
                     break;
-            }
-            switch (currentState)
-            {
                 case GameState.Winning:
+                    spriteBatch.End(); // spriteBatch.End to play Winning animation
                     spriteBatch.Begin(samplerState: SamplerState.PointClamp);
                     triforceManager.Draw(spriteBatch, new Rectangle(0, 0, 1020, 892));
                     spriteBatch.End();
-                    break;
+                    spriteBatch.Begin(); // Start spriteBatch back up
+                    break;    
             }
             spriteBatch.End();
         }

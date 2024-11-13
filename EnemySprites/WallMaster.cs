@@ -138,11 +138,11 @@ namespace Legend_of_the_Power_Rangers
 
                     // Update Link's position to match WallMaster
                     Link link = LinkManager.GetLink();
-                    link.DestinationRectangle = new Rectangle(
+                    link.destinationRectangle = new Rectangle(
                         destinationRectangle.X, 
                         destinationRectangle.Y,
-                        link.DestinationRectangle.Width,
-                        link.DestinationRectangle.Height
+                        link.destinationRectangle.Width,
+                        link.destinationRectangle.Height
                     );
                 }
                 else
@@ -184,7 +184,7 @@ namespace Legend_of_the_Power_Rangers
             Link link = LinkManager.GetLink();
             float distanceToLink = Vector2.Distance(
                 new Vector2(destinationRectangle.X, destinationRectangle.Y),
-                new Vector2(link.DestinationRectangle.X, link.DestinationRectangle.Y)
+                new Vector2(link.destinationRectangle.X, link.destinationRectangle.Y)
             );
 
             if (distanceToLink < proximityThreshold)
@@ -196,11 +196,11 @@ namespace Legend_of_the_Power_Rangers
         private void ResetLinkToStart()
         {
             Link link = LinkManager.GetLink();
-            link.DestinationRectangle = new Rectangle(
+            link.destinationRectangle = new Rectangle(
                 startPosition.X,
                 startPosition.Y,
-                link.DestinationRectangle.Width,
-                link.DestinationRectangle.Height
+                link.destinationRectangle.Width,
+                link.destinationRectangle.Height
             );
         }
 
