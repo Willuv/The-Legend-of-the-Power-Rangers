@@ -12,7 +12,7 @@ namespace Legend_of_the_Power_Rangers
         protected bool IsSpawning { get; set; }
         protected bool IsDying { get; set; }
 
-        private double frameDisplayTime = 400; // Time between frames
+        private double frameDisplayTime = 800; // Time between frames
         private double totalFrameTime = 0;
         private int currentFrameIndex = 0;
 
