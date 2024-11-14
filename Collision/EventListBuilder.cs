@@ -28,12 +28,12 @@ namespace Legend_of_the_Power_Rangers
 
             List<ICollision> unmovableBlocks = new() {
                 new BlockBlueFloor(), new BlockBlueGap(), new BlockBombedWall(), new BlockDiamond(),
-                new BlockKeyHole(), new BlockOpenDoor(),
-                new BlockStatue1(), new BlockStatue2(), new BlockWall(), new BlockWhiteBrick()
+                new BlockKeyHole(), new BlockOpenDoor(), new BlockStatue1(), new BlockStatue2(), 
+                new BlockWall(), new BlockWhiteBrick()
             };
             List<ICollision> otherBlocks = new()
             {
-                new BlockPush(), new BlockStairs() //will add stairs and other odd cases
+                new BlockPush(), new BlockStairs()
             };
             List<ICollision> allCollidableBlocks = new();
             allCollidableBlocks.AddRange(unmovableBlocks);
@@ -88,6 +88,8 @@ namespace Legend_of_the_Power_Rangers
 
             //link vs unmovableblocks
             AddDirectionalEvents(list, link, unmovableBlocks, linkMovementEvents);
+            //link vs invisible blocks (bc enemies can ignore them in secret room)
+            AddDirectionalEvents(list, link, new List<ICollision>() { new InvisibleBlock() }, linkMovementEvents);
             //enemies vs all blocks
             AddDirectionalEvents(list, enemies, allCollidableBlocks, enemyMovementEvents);
             //link vs pushable blocks
@@ -97,6 +99,8 @@ namespace Legend_of_the_Power_Rangers
             {
                 new StairsEvent(), new MoveLinkUp(), new MoveLinkRight(), new MoveLinkDown()
             });
+            //link vs teleporter
+            AddNonDirectionalEvents(list, link, new List<ICollision>() { new InvisibleTeleportBlock() }, new LinkVSTeleporter());
             //link vs fire
             AddNonDirectionalEvents(list, link, new List<ICollision>() { new BlockFire() }, new HurtLink());
 
@@ -124,9 +128,9 @@ namespace Legend_of_the_Power_Rangers
             //projectiles vs doors
 
             //link vs walls
-            AddDirectionalEvents(list, link, new List<ICollision>() { new Wall(0, 0, 0) }, linkMovementEvents);
+            AddDirectionalEvents(list, link, new List<ICollision>() { new Wall(0, 0, 0, true) }, linkMovementEvents);
             //enemies vs walls
-            AddDirectionalEvents(list, enemies, new List<ICollision>() { new Wall(0, 0, 0) }, enemyMovementEvents);
+            AddDirectionalEvents(list, enemies, new List<ICollision>() { new Wall(0, 0, 0, true) }, enemyMovementEvents);
             //projectiles vs walls
             //AddNonDirectionalEvents(list, allProjectiles, new List<ICollision>() { new Wall(0, 0, 0) }, new ProjectileVanish());
 

@@ -15,5 +15,6 @@ public class StairsEvent : IEvent
     public void Execute(ICollision link, ICollision stairs, CollisionDirection direction)
     {
         DelegateManager.RaiseChangeToSpecificRoom(basementRoom);
+        link.CollisionHitbox = new Rectangle(270, 321, link.CollisionHitbox.Width, link.CollisionHitbox.Height);
     }
 }

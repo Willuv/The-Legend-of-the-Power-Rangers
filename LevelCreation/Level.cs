@@ -97,11 +97,11 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         }
         private void CreateWalls(int RoomRow, int RoomColumn)
         {
+            bool visible = (currentRoom != 18);
             for (int i = 0; i < 8; i++)
             {
-                walls.Add(new Wall(i, RoomRow, RoomColumn));
+                walls.Add(new Wall(i, RoomRow, RoomColumn, visible));
             }
-
         }
         public List<ICollision> GetRoomObjects()
         {

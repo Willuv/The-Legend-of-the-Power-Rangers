@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Legend_of_the_Power_Rangers
@@ -234,6 +235,7 @@ namespace Legend_of_the_Power_Rangers
                     hud.Update(level.currentRoom);
                     triforceManager.Update(gameTime, this);
                     deathManager.deathUpdateCheck(gameTime);
+                    Debug.WriteLine($"pos: {link.destinationRectangle.X}, {link.destinationRectangle.Y}");
                     break;
                 case GameState.Paused:
                     keyboardController.Update();

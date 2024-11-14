@@ -10,7 +10,7 @@ namespace Legend_of_the_Power_Rangers
 {
     public class LinkVSEnemyBottom : IEvent
     {
-        private const int KnockbackDistance = 50;
+        private const int KnockbackDistance = 30;
         public LinkVSEnemyBottom() { }
 
         public void Execute(ICollision link, ICollision enemy, CollisionDirection direction)
