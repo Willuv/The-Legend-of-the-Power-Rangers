@@ -7,6 +7,7 @@ using System.Diagnostics;
 
 public class TriforceCompletionManager
 {
+    private readonly Link link;
     private bool isTriforceSequenceActive = false;
     private bool hasCompletedSequence = false;
     private bool isFlashing = false;
@@ -23,9 +24,10 @@ public class TriforceCompletionManager
     private Texture2D fadeTexture;
     private readonly GameStateMachine gameStateMachine;
     
-    public TriforceCompletionManager(GraphicsDevice graphicsDevice, GameStateMachine gameStateMachine)
+    public TriforceCompletionManager(GraphicsDevice graphicsDevice, GameStateMachine gameStateMachine, Link link)
     {
         this.gameStateMachine = gameStateMachine;
+        this.link = link;
         fadeTexture = new Texture2D(graphicsDevice, 1, 1);
         fadeTexture.SetData(new[] { Color.White });
     }
@@ -50,6 +52,7 @@ public class TriforceCompletionManager
         isFlashing = false;
         fadeAlpha = 0f;
         gameStateMachine.ChangeState(GameStateMachine.GameState.Winning);
+        link.FaceForward();
     }
 
     private void UpdateTriforceSequence(GameTime gameTime)

@@ -106,6 +106,11 @@ public class Link : ICollision
         return stateMachine.GetCurrentDirection();
     }
 
+    public void FaceForward()
+    {
+        stateMachine.ChangeDirection(LinkStateMachine.LinkDirection.Down);
+    }
+
     public virtual void Update(GameTime gameTime)
     {
         stateMachine.UpdateActionTimer(gameTime);

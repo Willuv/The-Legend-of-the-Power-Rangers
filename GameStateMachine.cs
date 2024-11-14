@@ -38,6 +38,7 @@ namespace Legend_of_the_Power_Rangers
         private GreenDot greenDot;
         private ItemSelector itemSelector;
         private TriforceCompletionManager triforceManager;
+        private DeathScreenManager deathManager;
 
         public GameStateMachine(Game1 game, SpriteBatch spriteBatch)
         {
@@ -154,7 +155,8 @@ namespace Legend_of_the_Power_Rangers
 
 
 
-            triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this);
+            triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this, link);
+            deathManager = new DeathScreenManager(game.GraphicsDevice, link, this, spriteBatch);
         }
 
         private void InitializePausedState()
@@ -181,13 +183,17 @@ namespace Legend_of_the_Power_Rangers
         private void InitializeGameOverState()
         {
             // Game Over logic (e.g., display game over screen, stop gameplay)
+            if (deathManager == null)
+            {
+                deathManager = new DeathScreenManager(game.GraphicsDevice,link,  this, spriteBatch);
+            }
         }
 
         private void InitializeWinningState()
         {
             if (triforceManager == null)
             {
-                triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this);
+                triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this, link);
             }
             MediaPlayer.Stop();
             if (!AudioManager.Instance.IsMuted()) audioManager.PlayMusic("Win");
@@ -227,6 +233,7 @@ namespace Legend_of_the_Power_Rangers
                     UpdateGameplay(gameTime);
                     hud.Update(level.currentRoom);
                     triforceManager.Update(gameTime, this);
+                    deathManager.deathUpdateCheck(gameTime);
                     break;
                 case GameState.Paused:
                     keyboardController.Update();
@@ -241,6 +248,7 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.GameOver:
                     // Handle game over update
+                    deathManager.Update(gameTime);
                     break;
                 case GameState.Winning:
                     // Handle winning update
@@ -297,6 +305,10 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.GameOver:
                     // Draw game over screen
+                    DrawGameplay();
+                    spriteBatch.End(); // End gameplay SpriteBatch to prepare for Triforce
+                    spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+                    deathManager.Draw(spriteBatch, new Rectangle(0, 0, 1020, 892));
                     break;
                 case GameState.Winning:
                     // Draw winning screen
