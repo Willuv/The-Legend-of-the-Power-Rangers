@@ -154,6 +154,11 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     }
                 }
             }
+
+            if (RoomRow == 0 && RoomColumn == 0) //Secret room doesn't fit the rest
+            {
+                LoadSecretRoom(blocks);
+            }
         }
         public void LoadEnemies(StreamReader reader, int RoomRow, int RoomColumn)
         {
@@ -187,6 +192,38 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     }
                 }
             }
+        }
+
+        private void LoadSecretRoom(List<IBlock> blocks)
+        {
+            InvisibleBlock bottomLeft = new()
+            {
+                CollisionHitbox = new Rectangle(192, 576, 64, 75)
+            };
+            InvisibleBlock bottomMiddle = new()
+            {
+                CollisionHitbox = new Rectangle(320, 576, 320, 75)
+            };
+            InvisibleBlock bottomRight = new()
+            {
+                CollisionHitbox = new Rectangle(704, 576, 64, 75)
+            };
+            InvisibleBlock top = new()
+            {
+                CollisionHitbox = new Rectangle(448, 384, 320, 75)
+            };
+            InvisibleTeleportBlock door = new()
+            {
+                CollisionHitbox = new Rectangle(256, 256, 64, 64),
+                DesiredRoom = 17,
+                DesiredPosition = new Vector2(1477, 523)
+            };
+
+            blocks.Add(bottomLeft);
+            blocks.Add(bottomMiddle);
+            blocks.Add(bottomRight);
+            blocks.Add(top);
+            blocks.Add(door);
         }
     }
 }
