@@ -44,8 +44,8 @@ namespace Legend_of_the_Power_Rangers
                 return (int)enemyProjectile.EnemyProjectileType + enemyProjectileOffset;
             if (obj is IDoor door)
                 return (int)door.DoorType + doorOffset;
-            if (obj is IWall wall)
-                return (int)wall.ObjectType + wallOffset; //no types of walls
+            if (obj is IWall)
+                return wallOffset; //no types of walls
             return obj.GetHashCode(); //just in case
         }
     }

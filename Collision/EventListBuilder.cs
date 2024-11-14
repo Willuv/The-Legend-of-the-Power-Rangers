@@ -102,13 +102,17 @@ namespace Legend_of_the_Power_Rangers
             //link vs teleporter
             AddNonDirectionalEvents(list, link, new List<ICollision>() { new InvisibleTeleportBlock() }, new LinkVSTeleporter());
             //link vs fire
-            AddNonDirectionalEvents(list, link, new List<ICollision>() { new BlockFire() }, new HurtLink());
+            AddNonDirectionalEvents(list, link, new List<ICollision>() { new BlockFire() }, new LinkVSFire());
 
             //projectiles against blocks
             allCollidableBlocks.Remove(new BlockBlueGap()); //projectiles go over the water
-            allProjectiles.Remove(new BombSprite(null, r, 0)); //bomb is its own case
             AddNonDirectionalEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());
             allCollidableBlocks.Add(new BlockBlueGap());
+            //projectiles against doors
+            allProjectiles.RemoveAt(1); //bomb is its own case
+            AddNonDirectionalEvents(list, allProjectiles, doors, new ProjectileVanish());
+            //projectiles against walls
+            AddNonDirectionalEvents(list, allProjectiles, new List<ICollision>() { new Wall(0, 0, 0, true) }, new ProjectileVanish());
             allProjectiles.Add(new BombSprite(null, r, 0));
 
             //link picking up items
@@ -117,7 +121,7 @@ namespace Legend_of_the_Power_Rangers
             //link running into enemies
             AddDirectionalEvents(list, link, enemies, linkEncountersEnemyEvents);
             //link hurt by enemy projectiles
-            AddNonDirectionalEvents(list, link, enemyProjectiles, new HurtLink());
+            AddNonDirectionalEvents(list, link, enemyProjectiles, new LinkVSEnemyProjectile());
             //link projectiles hurting enemies
             AddNonDirectionalEvents(list, linkProjectiles, enemies, new HurtEnemy());
 
