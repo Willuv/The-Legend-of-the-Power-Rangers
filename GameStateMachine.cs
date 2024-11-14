@@ -235,7 +235,6 @@ namespace Legend_of_the_Power_Rangers
                     hud.Update(level.currentRoom);
                     triforceManager.Update(gameTime, this);
                     deathManager.deathUpdateCheck(gameTime);
-                    Debug.WriteLine($"pos: {link.destinationRectangle.X}, {link.destinationRectangle.Y}");
                     break;
                 case GameState.Paused:
                     keyboardController.Update();

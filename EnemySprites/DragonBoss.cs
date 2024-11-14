@@ -149,10 +149,18 @@ namespace Legend_of_the_Power_Rangers
                 projectileFireTimer = 0; // Reset timer
             }
 
-            for (int i = 0; i < projectiles.Count; i++)
+            for (int i = projectiles.Count - 1; i >= 0; i--)
             {
                 var projectile = projectiles[i];
-                projectile.Item1.Update(gameTime); // Update the projectile
+
+                if (projectile.Item1.HasHitWall)
+                {
+                    projectiles.RemoveAt(i);
+                }
+                else
+                {
+                    projectile.Item1.Update(gameTime);
+                }
             }
         }
 
