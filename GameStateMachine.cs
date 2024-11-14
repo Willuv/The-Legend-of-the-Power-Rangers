@@ -237,7 +237,6 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.Paused:
                     keyboardController.Update();
-                    mouseController.Update();
                     hud.Update(level.currentRoom);
                     // Handle paused state update
                     break;
