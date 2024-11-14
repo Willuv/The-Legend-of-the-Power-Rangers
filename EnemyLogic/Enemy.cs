@@ -11,6 +11,12 @@ namespace Legend_of_the_Power_Rangers
         public bool IsAlive { get; set; } = true;
         protected bool IsSpawning { get; set; } = true;
         protected bool IsDying { get; set; }
+        public bool IsDragonBoss { get; set; } = false;
+
+        private const int DefaultScale = 1;
+        private const int DragonBossScale = 4;
+        private const int DragonBossXOffset = -65;
+        private const int DragonBossYOffset = -65;
 
         private double frameDisplayTime = 500; // Time between frames
         private double totalFrameTime = 0;
@@ -19,7 +25,7 @@ namespace Legend_of_the_Power_Rangers
         public Enemy()
         {
             InitializeFrames();
-            DestinationRectangle = new Rectangle(DestinationRectangle.X, DestinationRectangle.Y, sourceRectangles[0].Width * 3, sourceRectangles[0].Height * 3);  // X/Y are reset later
+            DestinationRectangle = new Rectangle(DestinationRectangle.X, DestinationRectangle.Y, sourceRectangles[0].Width * 3 * DefaultScale, sourceRectangles[0].Height * 3 * DefaultScale);  // X/Y are reset later
         }
         private void InitializeFrames()
         {
@@ -37,7 +43,11 @@ namespace Legend_of_the_Power_Rangers
             IsSpawning = true;
             IsAlive = true;
             currentFrameIndex = 0;  // Start at spawn frame 1
-            DestinationRectangle = new Rectangle(X, Y - 25, sourceRectangles[0].Width * 3, sourceRectangles[0].Height * 3);  // X-8,Y-25 center the animation (removed - 8, looked like not needed)
+
+            int scale = IsDragonBoss ? DragonBossScale : DefaultScale;
+            int adjustedX = IsDragonBoss ? X + DragonBossXOffset : X;
+            int adjustedY = IsDragonBoss ? Y + DragonBossYOffset : Y;
+            DestinationRectangle = new Rectangle(adjustedX, adjustedY - 25, sourceRectangles[0].Width * 3 * scale, sourceRectangles[0].Height * 3 * scale);  // X-8,Y-25 center the animation (removed - 8, looked like not needed)
         }
 
         public void TriggerDeath(int X, int Y)
@@ -45,7 +55,11 @@ namespace Legend_of_the_Power_Rangers
             IsAlive = false;
             IsDying = true;
             currentFrameIndex = 2;  // Start at death frame 1
-            DestinationRectangle = new Rectangle(X - 8, Y - 25, sourceRectangles[2].Width * 3, sourceRectangles[2].Height * 3);  // // X-8/Y-25 center the animation
+
+            int scale = IsDragonBoss ? DragonBossScale : DefaultScale;
+            int adjustedX = IsDragonBoss ? X + DragonBossXOffset : X;
+            int adjustedY = IsDragonBoss ? Y + DragonBossYOffset : Y;
+            DestinationRectangle = new Rectangle(adjustedX - 8, adjustedY - 25, sourceRectangles[2].Width * 3 * scale, sourceRectangles[2].Height * 3 * scale);  // // X-8/Y-25 center the animation
             if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Enemy_Die");
         }
 
@@ -91,6 +105,7 @@ namespace Legend_of_the_Power_Rangers
                     {
                         currentFrameIndex = 3;
                         IsDying = false;  // Dying done
+                        IsDragonBoss = false;
                     }
                 }
             }

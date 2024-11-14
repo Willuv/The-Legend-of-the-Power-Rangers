@@ -45,7 +45,7 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.WallMaster; } }
 
-        public WallMaster()
+        public WallMaster() : base()
         {
             InitializeFrames();
             SetRandomDirection();
@@ -115,6 +115,7 @@ namespace Legend_of_the_Power_Rangers
             int height = (int)(sourceRectangle[currentFrameIndex].Height * scale);
             destinationRectangle.Width = width;
             destinationRectangle.Height = height;
+            base.Update(gameTime);
         }
 
         private void HandleHurtState(GameTime gameTime)
@@ -241,7 +242,7 @@ namespace Legend_of_the_Power_Rangers
 
             return nearestDoor;
         }
-        int Health = 1;
+        int Health = 2;
         public void TakeDamage(int damage = 1)
         {
             Health -= damage;
@@ -277,6 +278,10 @@ namespace Legend_of_the_Power_Rangers
             {
                 // toDo: When grabbing, draw WallMaster first (behind Link)
                 spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], tint);
+            }
+            if (IsSpawning || IsDying)
+            {
+                base.Draw(texture, spriteBatch);
             }
         }
     }

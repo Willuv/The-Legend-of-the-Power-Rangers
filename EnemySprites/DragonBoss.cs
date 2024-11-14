@@ -65,6 +65,7 @@ namespace Legend_of_the_Power_Rangers
             
             SetRandomDirection();
             InitializeFrames();
+            IsDragonBoss = true;
             projectiles = new List<Tuple<DragonProjectile, Vector2>>();
         }
 
