@@ -228,11 +228,11 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     break;
                 case (CollisionDirection.Top):
                     currentRoomRow++;
-                    LinkManager.GetLink().UpdatePosition(new Vector2(0, 350));
+                    LinkManager.GetLink().UpdatePosition(new Vector2(0, 310));
                     break;
                 case (CollisionDirection.Bottom):
                     currentRoomRow--;
-                    LinkManager.GetLink().UpdatePosition(new Vector2(0, -350));
+                    LinkManager.GetLink().UpdatePosition(new Vector2(0, -310));
                     break;
             }
             currentRoom = map[currentRoomRow, currentRoomColumn];
