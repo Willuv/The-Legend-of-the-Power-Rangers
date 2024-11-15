@@ -15,6 +15,8 @@ public class Link : ICollision
     public Rectangle destinationRectangle;
     private int maxHealth = 6;
     private int currentHealth;
+    public LinkStateMachine.LinkAction CurrentAction => stateMachine.GetCurrentAction();
+    public LinkStateMachine.LinkDirection CurrentDirection => stateMachine.GetCurrentDirection();
 
     public int GetCurrentHealth() => currentHealth;
     public int GetMaxHealth() => maxHealth;

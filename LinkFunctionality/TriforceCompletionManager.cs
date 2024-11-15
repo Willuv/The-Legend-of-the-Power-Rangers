@@ -54,7 +54,7 @@ public class TriforceCompletionManager
         fadeAlpha = 0f;
         gameStateMachine.ChangeState(GameStateMachine.GameState.Winning);
         link.FaceForward();
-        currentSprite = LinkSpriteFactory.Instance.CreateWinSprite();
+        currentSprite = LinkSpriteFactory.Instance.CreateLinkSprite(LinkManager.GetLink().CurrentAction, LinkManager.GetLink().CurrentDirection);
         //linkWinSprite.Draw(spriteBatch, new Rectangle(100, 100, 28, 32), Color.White);
         
     }
