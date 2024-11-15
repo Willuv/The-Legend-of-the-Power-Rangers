@@ -149,7 +149,14 @@ namespace Legend_of_the_Power_Rangers
             //bomb vs bombable door
             AddNonDirectionalEvents(list, new List<ICollision>() { new BombSprite(null, r, 0) },
                 new List<ICollision>() { new holeDoor(null, 0, 0, 0) }, new BombVSBombableDoor());
-            
+
+            //portal projectiles
+            allCollidableBlocks.RemoveAt(1); //remove blue gap
+            AddNonDirectionalEvents(list, portalProjectiles, allCollidableBlocks, new SpawnPortal());
+            allCollidableBlocks.Add(new BlockBlueGap());
+
+            //link walking into portals
+
 
             return list;
         }
