@@ -107,6 +107,10 @@ namespace Legend_of_the_Power_Rangers
                     return new LinkItemRightSprite(linkSpriteSheet);
             }
         }
+        public ILinkSprite CreateWinSprite()
+        {
+            return new LinkWinSprite(linkSpriteSheet);
+        }
     }
 }
 

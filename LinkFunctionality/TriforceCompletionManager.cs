@@ -23,6 +23,7 @@ public class TriforceCompletionManager
     
     private Texture2D fadeTexture;
     private readonly GameStateMachine gameStateMachine;
+    private ILinkSprite currentSprite;
     
     public TriforceCompletionManager(GraphicsDevice graphicsDevice, GameStateMachine gameStateMachine, Link link)
     {
@@ -53,6 +54,9 @@ public class TriforceCompletionManager
         fadeAlpha = 0f;
         gameStateMachine.ChangeState(GameStateMachine.GameState.Winning);
         link.FaceForward();
+        currentSprite = LinkSpriteFactory.Instance.CreateWinSprite();
+        //linkWinSprite.Draw(spriteBatch, new Rectangle(100, 100, 28, 32), Color.White);
+        
     }
 
     private void UpdateTriforceSequence(GameTime gameTime)
