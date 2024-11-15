@@ -19,7 +19,7 @@ namespace Legend_of_the_Power_Rangers
         private ILinkItemSprite item;
         public enum CreationLinkItemType
         {
-            Boomerang, Arrow, Sword, Bomb, Candle, BluePortal, RedPortal
+            Boomerang, Arrow, Sword, Bomb, Candle, BluePortal, OrangePortal
         }
 
         public LinkItem(CreationLinkItemType type, Rectangle position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet, Texture2D portalSpriteSheet)
@@ -44,7 +44,9 @@ namespace Legend_of_the_Power_Rangers
                 case CreationLinkItemType.BluePortal:
                     item = new BluePortalProjectileSprite(portalSpriteSheet, position, direction);
                     break;
-                //add orange portal
+                case CreationLinkItemType.OrangePortal:
+                    item = new OrangePortalProjectileSprite(portalSpriteSheet, position, direction);
+                    break;
             }
             this.itemSpriteSheet = itemSpriteSheet;
             this.projectileSpriteSheet = projectileSpriteSheet;

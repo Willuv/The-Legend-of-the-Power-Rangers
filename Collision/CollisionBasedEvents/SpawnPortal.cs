@@ -27,7 +27,14 @@ namespace Legend_of_the_Power_Rangers
                 Debug.WriteLine("Blue portal spawned");
             } else //orange
             {
+                OrangePortalProjectileSprite projectile = object1 as OrangePortalProjectileSprite;
+                projectile.HasHitWall = true;
+                PortalDelegator.RaiseOrangePortalCreated(new Vector2(object1.CollisionHitbox.X, object1.CollisionHitbox.Y), direction);
 
+                ProjectileVanish projectileVanish = new();
+                projectileVanish.Execute(object1, block, direction);
+
+                Debug.WriteLine("Orange portal spawned");
             }
         }
     }

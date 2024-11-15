@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers.Portals
 {
-    public class BluePortal : IPortal
+    public class OrangePortal : IPortal
     {
-        private Rectangle sourceRectangle = new(0, 0, 73, 160);
+        private Rectangle sourceRectangle = new(74, 0, 73, 160);
         private Rectangle destinationRectangle = new(450, 340, 48, 48);
         public Rectangle CollisionHitbox
         {
@@ -18,7 +18,7 @@ namespace Legend_of_the_Power_Rangers.Portals
         public Vector2 TeleportPosition { get; set; }
         public LinkStateMachine.LinkDirection LinkDirection { get; set; }
 
-        public BluePortal()
+        public OrangePortal()
         {
             //all default values
             PortalRoom = 1;

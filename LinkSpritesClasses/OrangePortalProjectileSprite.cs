@@ -7,7 +7,7 @@ using static Legend_of_the_Power_Rangers.LinkStateMachine;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class BluePortalProjectileSprite : ILinkItemSprite
+    public class OrangePortalProjectileSprite : ILinkItemSprite
 	{
 		private Texture2D portalTexture;
         int width;
@@ -26,7 +26,7 @@ namespace Legend_of_the_Power_Rangers
         int currentFrame = 0;
 
         public ObjectType ObjectType { get { return ObjectType.LinkProjectile; } }
-        public LinkProjectileType LinkProjectileType { get { return LinkProjectileType.BluePortal; } }
+        public LinkProjectileType LinkProjectileType { get { return LinkProjectileType.OrangePortal; } }
         private bool hasHitWall = false;
         public bool HasHitWall
         {
@@ -34,7 +34,7 @@ namespace Legend_of_the_Power_Rangers
             set { hasHitWall = value; }
         }
 
-        public BluePortalProjectileSprite(Texture2D texture, Rectangle position, LinkDirection direction)
+        public OrangePortalProjectileSprite(Texture2D texture, Rectangle position, LinkDirection direction)
 		{
             width = 8;
             height = 8;
@@ -42,7 +42,7 @@ namespace Legend_of_the_Power_Rangers
             position.Width = width;
             position.Height = height;
             this.portalTexture = texture;
-            this.sourceRectangle = new Rectangle(164, 0, 8, 8);
+            this.sourceRectangle = new Rectangle(152, 0, 8, 8);
 
             switch (direction)
             {

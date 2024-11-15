@@ -27,7 +27,8 @@ public class LinkItemFactory
         { CreationLinkItemType.Sword, 1.5f },
         { CreationLinkItemType.Boomerang, 1.6f },
         { CreationLinkItemType.Candle, 1.2f },
-		{ CreationLinkItemType.BluePortal, 0.8f }
+		{ CreationLinkItemType.BluePortal, 0.8f },
+		{ CreationLinkItemType.OrangePortal, 0.8f }
     };
 
     private readonly Dictionary<CreationLinkItemType, float> cooldownTimers = new();
@@ -75,6 +76,9 @@ public class LinkItemFactory
 				break;
 			case CreationLinkItemType.BluePortal:
 				item = new(CreationLinkItemType.BluePortal, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
+				break;
+			case CreationLinkItemType.OrangePortal:
+				item = new(CreationLinkItemType.OrangePortal, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
 				break;
         }
 

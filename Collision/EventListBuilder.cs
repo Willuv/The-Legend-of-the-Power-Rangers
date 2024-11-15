@@ -90,11 +90,11 @@ namespace Legend_of_the_Power_Rangers
             //portals
             List<ICollision> portalProjectiles = new()
             {
-                new BluePortalProjectileSprite(null, r, 0)
+                new BluePortalProjectileSprite(null, r, 0), new OrangePortalProjectileSprite(null, r, 0)
             };
             List<ICollision> portals = new()
             {
-                new BluePortal()
+                new BluePortal(), new OrangePortal()
             };
 
 
