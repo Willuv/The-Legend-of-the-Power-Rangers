@@ -19,10 +19,10 @@ namespace Legend_of_the_Power_Rangers
         private ILinkItemSprite item;
         public enum CreationLinkItemType
         {
-            Boomerang, Arrow, Sword, Bomb, Candle
+            Boomerang, Arrow, Sword, Bomb, Candle, BluePortal, RedPortal
         }
 
-        public LinkItem(CreationLinkItemType type, Rectangle position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
+        public LinkItem(CreationLinkItemType type, Rectangle position, LinkDirection direction, Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet, Texture2D portalSpriteSheet)
         {
             switch (type)
             {
@@ -41,6 +41,10 @@ namespace Legend_of_the_Power_Rangers
                 case CreationLinkItemType.Candle:
                     item = new CandleSprite(blockSpriteSheet, position, direction);
                     break;
+                case CreationLinkItemType.BluePortal:
+                    item = new BluePortalProjectileSprite(portalSpriteSheet, position, direction);
+                    break;
+                //add red portal
             }
             this.itemSpriteSheet = itemSpriteSheet;
             this.projectileSpriteSheet = projectileSpriteSheet;

@@ -41,7 +41,8 @@ namespace Legend_of_the_Power_Rangers
                 { Keys.R, new ResetCommand(gameStateMachine) },
                 { Keys.Right, new MoveSelectorRight(itemSelector)},
                 { Keys.Left, new MoveSelectorLeft(itemSelector)},
-                { Keys.Enter, new Select(itemSelector)}
+                { Keys.Enter, new Select(itemSelector)},
+                { Keys.D9, new ShootBluePortal(stateMachine, linkItemFactory) }
             };
             idleCommand = new LinkIdleCommand(stateMachine);
         }

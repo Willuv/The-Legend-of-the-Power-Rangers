@@ -194,7 +194,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
         }
 
-        private void LoadSecretRoom(List<IBlock> blocks)
+        private static void LoadSecretRoom(List<IBlock> blocks)
         {
             InvisibleBlock bottomLeft = new()
             {

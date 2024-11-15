@@ -8,6 +8,6 @@ namespace Legend_of_the_Power_Rangers.LinkSpritesClasses
 {
     public enum LinkProjectileType
     {
-        Arrow, Bomb, Boomerang, Candle, ThrownSword, HeldSword
+        Arrow, Bomb, Boomerang, Candle, Sword, BluePortal, OrangePortal
     }
 }

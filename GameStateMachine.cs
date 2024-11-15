@@ -1,4 +1,5 @@
 ﻿using Legend_of_the_Power_Rangers.LevelCreation;
+using Legend_of_the_Power_Rangers.Portals;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -106,6 +107,7 @@ namespace Legend_of_the_Power_Rangers
             Texture2D linkSpriteSheet = game.Content.Load<Texture2D>("Link Sprites");
             Texture2D projectileSpriteSheet = game.Content.Load<Texture2D>("Projectiles");
             Texture2D bossSpriteSheet = game.Content.Load<Texture2D>("Bosses");
+            Texture2D portalSpriteSheet = game.Content.Load<Texture2D>("Portal");
 
             // Set up factories
             BlockSpriteFactory.Instance.SetBlockSpritesheet(blockSpriteSheet);
@@ -114,8 +116,9 @@ namespace Legend_of_the_Power_Rangers
             LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
             EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
+            PortalSpriteFactory.Instance.SetPortalSpritesheet(portalSpriteSheet);
 
-            game.linkItemFactory = new LinkItemFactory(game.itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+            game.linkItemFactory = new LinkItemFactory(game.itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
 
             // Initialize managers if they are null
             game.blockManager ??= new BlockManager(new List<string> { "Statue1", "Statue2" });
@@ -235,7 +238,6 @@ namespace Legend_of_the_Power_Rangers
                     hud.Update(level.currentRoom);
                     triforceManager.Update(gameTime, this);
                     deathManager.deathUpdateCheck(gameTime);
-                    Debug.WriteLine($"pos: {link.destinationRectangle.X}, {link.destinationRectangle.Y}");
                     break;
                 case GameState.Paused:
                     keyboardController.Update();

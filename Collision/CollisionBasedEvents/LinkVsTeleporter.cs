@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Legend_of_the_Power_Rangers;
+using Legend_of_the_Power_Rangers.Portals;
 using Microsoft.Xna.Framework;
 
 public class LinkVSTeleporter : IEvent

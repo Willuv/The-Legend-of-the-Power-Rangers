@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using Legend_of_the_Power_Rangers.Portals;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -26,7 +27,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int numRooms;
         public int currentRoom;
         int currentRoomRow;
-        public int CurrentRooom
+        public int CurrentRoom
         {
             get { return currentRoom; }
         }
@@ -42,6 +43,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int loadedRoom;
         int scaleFactor = 4;
         private CollisionManager collisionManager;
+        private PortalManager portalManager;
         private Camera2D camera;
         private List<ICollision> loadedObjects;
         private int LinkWidth;
@@ -88,6 +90,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
             LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+            portalManager = new();
 
             //listener for room change from stairs or wall master
             DelegateManager.OnChangeToSpecificRoom += (roomNum) =>
@@ -138,6 +141,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 enemy.Draw(enemySpritesheet, spriteBatch);
             }
+            portalManager.Draw(spriteBatch);
         }
         public void Update(GameTime gametime) 
         {
@@ -194,6 +198,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
                 door.Update(gametime);
             }
+            portalManager.Update(gametime, currentRoom, loadedObjects);
             collisionManager.Update(loadedObjects);
         }
         public void MouseChangeLevel(int direction)

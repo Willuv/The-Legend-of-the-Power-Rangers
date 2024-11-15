@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Legend_of_the_Power_Rangers.Portals;
 using Microsoft.Xna.Framework;
 
 namespace Legend_of_the_Power_Rangers
@@ -83,6 +84,16 @@ namespace Legend_of_the_Power_Rangers
             {
                 new LinkVSPushBlockLeft(), new LinkVSPushBlockTop(),
                 new LinkVSPushBlockRight(), new LinkVSPushBlockBottom()
+            };
+
+            //portals
+            List<ICollision> portalProjectiles = new()
+            {
+                new BluePortalProjectileSprite(null, r, 0)
+            };
+            List<ICollision> portals = new()
+            {
+                new BluePortal()
             };
 
 
