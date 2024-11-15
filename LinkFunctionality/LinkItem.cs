@@ -44,7 +44,7 @@ namespace Legend_of_the_Power_Rangers
                 case CreationLinkItemType.BluePortal:
                     item = new BluePortalProjectileSprite(portalSpriteSheet, position, direction);
                     break;
-                //add red portal
+                //add orange portal
             }
             this.itemSpriteSheet = itemSpriteSheet;
             this.projectileSpriteSheet = projectileSpriteSheet;

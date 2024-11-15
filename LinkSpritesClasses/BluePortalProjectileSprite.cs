@@ -47,19 +47,19 @@ namespace Legend_of_the_Power_Rangers
             switch (direction)
             {
                 case LinkDirection.Left:
-                    offset = new Rectangle(-30, 0, 0, 0);
+                    offset = new Rectangle(-20, 0, 0, 0);
                     movement.X = -4;
                     break;
                 case LinkDirection.Right:
-                    offset = new Rectangle(50, 0, 0, 0);
+                    offset = new Rectangle(20, 0, 0, 0);
                     movement.X = 4;
                     break;
                 case LinkDirection.Up:
-                    offset = new Rectangle(5, -50, 0, 0);
+                    offset = new Rectangle(5, -10, 0, 0);
                     movement.Y = -4;
                     break;
                 case LinkDirection.Down:
-                    offset = new Rectangle(5, 50, 0, 0);
+                    offset = new Rectangle(5, 20, 0, 0);
                     movement.Y = 4;
                     break;
             }

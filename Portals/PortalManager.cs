@@ -20,8 +20,10 @@ namespace Legend_of_the_Power_Rangers.Portals
         public PortalManager()
         {
             NeedsRoomAssignment = -1;
-            portalWidth = 73;
-            portalHeight = 160;
+            //portalWidth = 36;
+            //portalHeight = 80;
+            portalWidth = 50;
+            portalHeight = 50;
             PortalDelegator.OnBluePortalCreated += HandleBluePortalCreation;
             //PortalDelegator.OnOrangePortalCreated += HandleOrangePortalCreation;
         }
@@ -33,8 +35,6 @@ namespace Legend_of_the_Power_Rangers.Portals
                 AddBluePortal(location, projectileDirection);
             } else
             {
-                //int index = loadedObjects.FindIndex(obj => obj is BluePortal);
-                //loadedObjects.RemoveAt(index);
                 DelegateManager.RaiseObjectRemoved(bluePortal);
                 AddBluePortal(location, projectileDirection);
             }
