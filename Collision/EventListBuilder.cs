@@ -155,9 +155,10 @@ namespace Legend_of_the_Power_Rangers
             allCollidableBlocks.RemoveAt(1); //remove blue gap
             AddNonDirectionalEvents(list, portalProjectiles, allCollidableBlocks, new SpawnPortal());
             allCollidableBlocks.Add(new BlockBlueGap());
-
             //portal projectiles vs walls
             AddNonDirectionalEvents(list, portalProjectiles, wall, new SpawnPortal());
+            //portal projectils vs doors
+            AddNonDirectionalEvents(list, portalProjectiles, doors, new PortalProjectileVSDoor());
 
             //link walking into portals
 

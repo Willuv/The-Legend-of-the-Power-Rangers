@@ -121,7 +121,6 @@ public class LinkItemFactory
 				ICollision collidable = ActiveItems[removeIndex].CollisionObject;
 				DelegateManager.RaiseObjectRemoved(collidable);
                 ActiveItems.RemoveAt(removeIndex);
-				Debug.WriteLine("Object removal invoked");
             }
 		}
 		toRemove.Clear();

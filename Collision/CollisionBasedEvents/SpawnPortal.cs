@@ -25,8 +25,6 @@ namespace Legend_of_the_Power_Rangers
 
                 ProjectileVanish projectileVanish = new();
                 projectileVanish.Execute(object1, block, direction);
-
-                Debug.WriteLine("Blue portal spawned");
             } else //orange
             {
                 OrangePortalProjectileSprite projectile = object1 as OrangePortalProjectileSprite;
@@ -35,8 +33,6 @@ namespace Legend_of_the_Power_Rangers
 
                 ProjectileVanish projectileVanish = new();
                 projectileVanish.Execute(object1, block, direction);
-
-                Debug.WriteLine("Orange portal spawned");
             }
         }
     }

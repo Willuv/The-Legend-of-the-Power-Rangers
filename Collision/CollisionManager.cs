@@ -24,7 +24,6 @@ namespace Legend_of_the_Power_Rangers
                 if (obj != null)
                 {
                     loadedObjects.Add(obj);
-                    //Debug.WriteLine("projectile added");
                 }
             };
             DelegateManager.OnObjectRemoved += (obj) =>
@@ -32,7 +31,6 @@ namespace Legend_of_the_Power_Rangers
                 if (obj != null)
                 {
                     loadedObjects.Remove(obj);
-                    //Debug.WriteLine("projectile removed");
                 }
             };
         }

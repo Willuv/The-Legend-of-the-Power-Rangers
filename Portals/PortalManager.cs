@@ -12,16 +12,12 @@ namespace Legend_of_the_Power_Rangers.Portals
     public class PortalManager
     {
         private int NeedsRoomAssignment;
-        private readonly int portalWidth;
-        private readonly int portalHeight;
         private BluePortal bluePortal;
         private OrangePortal orangePortal;
         
         public PortalManager()
         {
             NeedsRoomAssignment = -1;
-            portalWidth = 50;
-            portalHeight = 50;
             PortalDelegator.OnBluePortalCreated += HandleBluePortalCreation;
             PortalDelegator.OnOrangePortalCreated += HandleOrangePortalCreation;
         }
