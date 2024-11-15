@@ -12,41 +12,40 @@ namespace Legend_of_the_Power_Rangers.Portals
     public class PortalManager
     {
         private int NeedsRoomAssignment;
-        private int portalWidth;
-        private int portalHeight;
+        private readonly int portalWidth;
+        private readonly int portalHeight;
         private BluePortal bluePortal;
         private OrangePortal orangePortal;
-        private List<ICollision> loadedObjects;
         
         public PortalManager()
         {
             NeedsRoomAssignment = -1;
-            //portalWidth = 36;
-            //portalHeight = 80;
             portalWidth = 50;
             portalHeight = 50;
             PortalDelegator.OnBluePortalCreated += HandleBluePortalCreation;
             PortalDelegator.OnOrangePortalCreated += HandleOrangePortalCreation;
         }
 
-        private void HandleBluePortalCreation(Vector2 location, CollisionDirection projectileDirection)
+        private void HandleBluePortalCreation(Rectangle rectangle, CollisionDirection projectileDirection)
         {
             if (bluePortal == null)
             {
-                AddBluePortal(location, projectileDirection);
-            } else
+                AddBluePortal(rectangle, projectileDirection);
+                DelegateManager.RaiseObjectCreated(bluePortal);
+            } else if (orangePortal != null && !rectangle.Intersects(orangePortal.CollisionHitbox)) //don't want portals to overlap
             {
                 DelegateManager.RaiseObjectRemoved(bluePortal);
-                AddBluePortal(location, projectileDirection);
+                AddBluePortal(rectangle, projectileDirection);
+                DelegateManager.RaiseObjectCreated(bluePortal);
             }
         }
 
-        private void AddBluePortal(Vector2 location, CollisionDirection projectileDirection)
+        private void AddBluePortal(Rectangle rectangle, CollisionDirection projectileDirection)
         {
             bluePortal = new BluePortal()
             {
-                CollisionHitbox = new Rectangle((int)location.X, (int)location.Y, portalWidth, portalHeight),
-                TeleportPosition = location
+                CollisionHitbox = rectangle,
+                TeleportPosition = new Vector2(rectangle.X, rectangle.Y)
             };
             switch (projectileDirection)
             {
@@ -65,28 +64,29 @@ namespace Legend_of_the_Power_Rangers.Portals
             }
 
             NeedsRoomAssignment = 0;
-            DelegateManager.RaiseObjectCreated(bluePortal);
         }
 
-        private void HandleOrangePortalCreation(Vector2 location, CollisionDirection projectileDirection)
+        private void HandleOrangePortalCreation(Rectangle rectangle, CollisionDirection projectileDirection)
         {
             if (orangePortal == null)
             {
-                AddOrangePortal(location, projectileDirection);
+                AddOrangePortal(rectangle, projectileDirection);
+                DelegateManager.RaiseObjectCreated(orangePortal);
             }
-            else
+            else if (bluePortal != null && !rectangle.Intersects(bluePortal.CollisionHitbox))
             {
                 DelegateManager.RaiseObjectRemoved(orangePortal);
-                AddOrangePortal(location, projectileDirection);
+                AddOrangePortal(rectangle, projectileDirection);
+                DelegateManager.RaiseObjectCreated(orangePortal);
             }
         }
 
-        private void AddOrangePortal(Vector2 location, CollisionDirection projectileDirection)
+        private void AddOrangePortal(Rectangle rectangle, CollisionDirection projectileDirection)
         {
             orangePortal = new OrangePortal()
             {
-                CollisionHitbox = new Rectangle((int)location.X, (int)location.Y, portalWidth, portalHeight),
-                TeleportPosition = location
+                CollisionHitbox = rectangle,
+                TeleportPosition = new Vector2(rectangle.X, rectangle.Y)
             };
             switch (projectileDirection)
             {
@@ -105,20 +105,16 @@ namespace Legend_of_the_Power_Rangers.Portals
             }
 
             NeedsRoomAssignment = 1;
-            DelegateManager.RaiseObjectCreated(orangePortal);
         }
 
-        public void Update(GameTime gameTime, int currentRoom, List<ICollision> loadedObjects)
+        public void Update(GameTime gameTime, int currentRoom)
         {
-            this.loadedObjects = loadedObjects;
-
             if (NeedsRoomAssignment == 0) //blue needs
             {
                 bluePortal.PortalRoom = currentRoom;
             } else if (NeedsRoomAssignment == 1) //orange
             {
                 orangePortal.PortalRoom = currentRoom;
-                loadedObjects.Add(orangePortal);
             }
             NeedsRoomAssignment = -1;
         }

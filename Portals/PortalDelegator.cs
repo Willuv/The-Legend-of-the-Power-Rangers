@@ -9,15 +9,15 @@ namespace Legend_of_the_Power_Rangers.Portals;
 
 internal class PortalDelegator
 {
-    public static event Action<Vector2, CollisionDirection> OnBluePortalCreated = delegate { };
-    public static event Action<Vector2, CollisionDirection> OnOrangePortalCreated = delegate { };
+    public static event Action<Rectangle, CollisionDirection> OnBluePortalCreated = delegate { };
+    public static event Action<Rectangle, CollisionDirection> OnOrangePortalCreated = delegate { };
 
-    public static void RaiseBluePortalCreated(Vector2 spawnLocation, CollisionDirection direction)
+    public static void RaiseBluePortalCreated(Rectangle spawnLocation, CollisionDirection direction)
     {
         OnBluePortalCreated(spawnLocation, direction);
     }
 
-    public static void RaiseOrangePortalCreated(Vector2 spawnLocation, CollisionDirection direction)
+    public static void RaiseOrangePortalCreated(Rectangle spawnLocation, CollisionDirection direction)
     {
         OnOrangePortalCreated(spawnLocation, direction);
     }
