@@ -13,7 +13,7 @@ namespace Legend_of_the_Power_Rangers.Portals
             set { destinationRectangle = value; }
         }
         public ObjectType ObjectType { get { return ObjectType.Portal; } }
-        public PortalType PortalType { get { return PortalType.Blue; } }
+        public PortalType PortalType { get { return PortalType.Orange; } }
         public int PortalRoom { get; set; }
         public Vector2 TeleportPosition { get; set; }
         public LinkStateMachine.LinkDirection LinkDirection { get; set; }

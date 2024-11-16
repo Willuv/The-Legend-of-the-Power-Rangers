@@ -47,7 +47,7 @@ namespace Legend_of_the_Power_Rangers
             if (obj is IDoor door)
                 return (int)door.DoorType + doorOffset;
             if (obj is IWall wall)
-                return (int)wall.ObjectType + wallOffset; //no types of walls
+                return wallOffset; //no types of walls
             if (obj is IPortal portal)
                 return (int)portal.PortalType + portalOffset;
             return obj.GetHashCode(); //just in case

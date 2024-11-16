@@ -161,7 +161,7 @@ namespace Legend_of_the_Power_Rangers
             AddNonDirectionalEvents(list, portalProjectiles, doors, new PortalProjectileVSDoor());
 
             //link walking into portals
-
+            AddNonDirectionalEvents(list, link, portals, new LinkVSPortal());
 
             return list;
         }
@@ -191,11 +191,6 @@ namespace Legend_of_the_Power_Rangers
                     eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Bottom), oneEvent);
                 }
             }
-        }
-
-        private static void AddUniqueEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> collidables1, List<ICollision> collidables2, List<IEvent> events)
-        {
-            //figure out soon
         }
     }
 }

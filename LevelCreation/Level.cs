@@ -95,7 +95,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             //listener for room change from stairs or wall master
             DelegateManager.OnChangeToSpecificRoom += (roomNum) =>
             {
-                SelectLevel(roomNum);
+                if (roomNum != currentRoom) SelectLevel(roomNum);
             };
         }
         private void CreateWalls(int RoomRow, int RoomColumn)
@@ -278,8 +278,16 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             loader.DeloadRoom();
             currentRoom = map[currentRoomRow, currentRoomColumn];
+
+            BluePortal blue = loadedObjects.Find(blue => blue is BluePortal) as BluePortal;
+            OrangePortal orange = loadedObjects.Find(orange => orange is OrangePortal) as OrangePortal;
+            bool hasOrange = loadedObjects.Find(orange => orange is OrangePortal) != null;
+
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
+            if (blue != null) loadedObjects.Add(blue);
+            if (orange != null) loadedObjects.Add(orange);
+
             if (currentRoom != -1)
             {
                 reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");

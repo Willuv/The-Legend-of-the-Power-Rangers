@@ -50,7 +50,7 @@ public class LinkDecorator : Link
         return timeDamaged < damageDuration;
     }
 
-    public override void Update(GameTime gameTime)
+    public virtual void Update(GameTime gameTime)
     {
         baseLink.Update(gameTime);
 
