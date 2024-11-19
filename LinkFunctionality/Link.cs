@@ -16,6 +16,8 @@ public class Link : ICollision
     private int maxHealth = 6;
     private int currentHealth;
     private float portalCooldownTimer;
+    public LinkStateMachine.LinkAction CurrentAction => stateMachine.GetCurrentAction();
+    public LinkStateMachine.LinkDirection CurrentDirection => stateMachine.GetCurrentDirection();
 
     public int GetCurrentHealth() => currentHealth;
     public int GetMaxHealth() => maxHealth;
@@ -113,7 +115,7 @@ public class Link : ICollision
         stateMachine.ChangeDirection(LinkStateMachine.LinkDirection.Down);
     }
 
-    public void Update(GameTime gameTime)
+    public virtual void Update(GameTime gameTime)
     {
         stateMachine.UpdateActionTimer(gameTime);
 

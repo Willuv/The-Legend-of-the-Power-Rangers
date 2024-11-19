@@ -51,10 +51,16 @@ namespace Legend_of_the_Power_Rangers
         private bool isHurt = false;
         private double hurtTimer = 0;
         private const double hurtDuration = 1000;
+        private int health = 6;
 
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.DragonBoss; } }
 
+        public int Health
+        {
+            get { return health; }
+            set { health = value; }
+        }
         public DragonBoss(Texture2D spritesheet, Texture2D projectileTexture) : base()
         {
             bossSpritesheet = spritesheet;
@@ -149,10 +155,18 @@ namespace Legend_of_the_Power_Rangers
                 projectileFireTimer = 0; // Reset timer
             }
 
-            for (int i = 0; i < projectiles.Count; i++)
+            for (int i = projectiles.Count - 1; i >= 0; i--)
             {
                 var projectile = projectiles[i];
-                projectile.Item1.Update(gameTime); // Update the projectile
+
+                if (projectile.Item1.HasHitWall)
+                {
+                    projectiles.RemoveAt(i);
+                }
+                else
+                {
+                    projectile.Item1.Update(gameTime);
+                }
             }
         }
 
@@ -186,7 +200,6 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
-        int Health = 6;
         public void TakeDamage(int damage = 1)
         {
             Health -= damage;

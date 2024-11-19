@@ -114,6 +114,7 @@ namespace Legend_of_the_Power_Rangers
             ItemSpriteFactory.Instance.SetItemSpritesheet(game.itemSpriteSheet);
             EnemySpriteFactory.Instance.SetEnemySpritesheet(game.enemySpritesheet);
             LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
+            LinkSpriteFactory.Instance.SetGameStateMachine(this);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
             EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
             PortalSpriteFactory.Instance.SetPortalSpritesheet(portalSpriteSheet);
