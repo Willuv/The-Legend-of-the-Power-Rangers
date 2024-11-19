@@ -18,11 +18,13 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Execute()
         {
-            //if (LinkManager.GetLinkInventory().GetItemCount(ItemType.Bomb) > 0)
-            //{
+            LinkInventory inventory = LinkManager.GetLinkInventory();
+            if (inventory.GetItemCount(ItemType.PortalGun) > 0 && inventory.ActiveItem == ItemType.PortalGun)
+                
+            {
                 this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
                 this.linkItemFactory.CreateItem(LinkItem.CreationLinkItemType.OrangePortal);
-            //}
+            }
         }
     }
 }

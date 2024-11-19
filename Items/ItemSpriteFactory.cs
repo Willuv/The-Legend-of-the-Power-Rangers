@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Legend_of_the_Power_Rangers.Portals;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 
 namespace Legend_of_the_Power_Rangers
@@ -52,6 +53,8 @@ namespace Legend_of_the_Power_Rangers
                     return new ItemBlueCandle();
                 case "BluePotion":
                     return new ItemBluePotion();
+                case "PortalGun":
+                    return new ItemPortalGun();
                 default:
                     throw new ArgumentException($"Item type {itemType} not recognized");
             }

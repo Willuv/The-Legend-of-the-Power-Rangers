@@ -7,8 +7,8 @@ namespace Legend_of_the_Power_Rangers.Portals
 {
     public class ItemPortalGun: IItem
     {
-        public Rectangle destinationRectangle = new Rectangle(370, 300, 32, 32);
-        public Rectangle sourceRectangle = new Rectangle(384, 0, 36, 16);
+        public Rectangle destinationRectangle = new(370, 300, 32, 32);
+        public Rectangle sourceRectangle = new(384, 0, 36, 16);
 
         public Rectangle CollisionHitbox
         {
@@ -17,7 +17,7 @@ namespace Legend_of_the_Power_Rangers.Portals
         }
 
         public ObjectType ObjectType { get { return ObjectType.Item; } }
-        public ItemType ItemType { get { return ItemType.BlueCandle; } }
+        public ItemType ItemType { get { return ItemType.PortalGun; } }
 
         bool pickedUp = false;
         public bool PickedUp

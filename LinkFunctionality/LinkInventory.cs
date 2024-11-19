@@ -17,7 +17,7 @@ namespace Legend_of_the_Power_Rangers
             itemCounts[ItemType.Rupee] = 0;
             itemCounts[ItemType.Bomb] = 0;
             itemCounts[ItemType.Key] = 0;
-
+            itemCounts[ItemType.PortalGun] = 1; //TEMP
         }
 
         public ItemType ActiveItem
@@ -71,6 +71,9 @@ namespace Legend_of_the_Power_Rangers
                     obtainedItems.Add(item.ItemType);
                     break;
                 case ItemType.BluePotion:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.PortalGun:
                     obtainedItems.Add(item.ItemType);
                     break;
             }

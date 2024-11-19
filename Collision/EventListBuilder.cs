@@ -55,7 +55,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 new ItemBomb(), new ItemBow(), new ItemClock(), new ItemCompass(), new ItemFairy(),
                 new ItemHeart(), new ItemHeartContainer(), new ItemKey(), new ItemMap(), new ItemRupee(),
-                new ItemTriforce(), new ItemWoodBoomerang()
+                new ItemTriforce(), new ItemWoodBoomerang(), new ItemPortalGun()
             };
             List<ICollision> linkProjectiles = new()
             {

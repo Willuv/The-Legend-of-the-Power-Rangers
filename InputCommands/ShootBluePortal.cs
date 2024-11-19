@@ -19,7 +19,7 @@ namespace Legend_of_the_Power_Rangers
         }
         public void Execute()
         {
-            //if (LinkManager.GetLinkInventory().GetItemCount(ItemType.PortalGun) > 0)
+            if (LinkManager.GetLinkInventory().GetItemCount(ItemType.PortalGun) > 0)
             {
                 this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
                 this.linkItemFactory.CreateItem(LinkItem.CreationLinkItemType.BluePortal);
