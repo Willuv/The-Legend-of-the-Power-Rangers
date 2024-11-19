@@ -198,7 +198,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
                 door.Update(gametime);
             }
-            portalManager.Update(gametime, currentRoom);
+            portalManager.Update(loadedObjects, currentRoom);
             collisionManager.Update(loadedObjects);
         }
         public void MouseChangeLevel(int direction)

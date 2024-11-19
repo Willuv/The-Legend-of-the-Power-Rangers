@@ -19,7 +19,7 @@ namespace Legend_of_the_Power_Rangers
         public void Execute()
         {
             LinkInventory inventory = LinkManager.GetLinkInventory();
-            if (inventory.GetItemCount(ItemType.PortalGun) > 0 && inventory.ActiveItem == ItemType.PortalGun)
+            if (inventory.ActiveItem == ItemType.PortalGun)
                 
             {
                 this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);

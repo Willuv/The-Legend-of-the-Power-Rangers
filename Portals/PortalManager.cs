@@ -128,8 +128,17 @@ namespace Legend_of_the_Power_Rangers.Portals
             }
         }
 
-        public void Update(GameTime gameTime, int currentRoom)
+        public void Update(List<ICollision> loadedObjects, int currentRoom)
         {
+            if (bluePortal != null && !loadedObjects.Contains(bluePortal))
+            {
+                loadedObjects.Add(bluePortal);
+            }
+            if (orangePortal != null && !loadedObjects.Contains(orangePortal))
+            {
+                loadedObjects.Add(orangePortal);
+            }
+
             if (NeedsRoomAssignment == 0) //blue needs
             {
                 bluePortal.PortalRoom = currentRoom;
