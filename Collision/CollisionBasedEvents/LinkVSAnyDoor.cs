@@ -18,12 +18,12 @@ namespace Legend_of_the_Power_Rangers
             if (door.IsOpen)
             {
                 DelegateManager.RaiseDoorEntered(direction);
-            } 
+            }
             else if (door is keyDoor && LinkManager.GetLinkInventory().GetItemCount(ItemType.Key) > 0)
             {
-                    LinkManager.GetLinkInventory().SetItemCount(ItemType.Key, LinkManager.GetLinkInventory().GetItemCount(ItemType.Key) - 1);
-                    door.IsOpen = true;
-            } 
+                LinkManager.GetLinkInventory().SetItemCount(ItemType.Key, LinkManager.GetLinkInventory().GetItemCount(ItemType.Key) - 1);
+                door.IsOpen = true;
+            }
             else
             {
                 switch (direction)

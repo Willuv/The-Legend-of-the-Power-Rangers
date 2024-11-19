@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Legend_of_the_Power_Rangers.Portals;
 using Microsoft.Xna.Framework;
 
 namespace Legend_of_the_Power_Rangers
@@ -17,6 +18,7 @@ namespace Legend_of_the_Power_Rangers
             Dictionary<(int, int, CollisionDirection), IEvent> list = new();
 
             List<ICollision> link = new() { LinkManager.GetLink() };
+            List<ICollision> wall = new() { new Wall(0, 0, 0, false) };
             Rectangle r = new(); //instead of declaring new rectangle for everything that needs one
 
             List<ICollision> enemies = new() {
@@ -53,7 +55,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 new ItemBomb(), new ItemBow(), new ItemClock(), new ItemCompass(), new ItemFairy(),
                 new ItemHeart(), new ItemHeartContainer(), new ItemKey(), new ItemMap(), new ItemRupee(),
-                new ItemTriforce(), new ItemWoodBoomerang()
+                new ItemTriforce(), new ItemWoodBoomerang(), new ItemPortalGun()
             };
             List<ICollision> linkProjectiles = new()
             {
@@ -83,6 +85,16 @@ namespace Legend_of_the_Power_Rangers
             {
                 new LinkVSPushBlockLeft(), new LinkVSPushBlockTop(),
                 new LinkVSPushBlockRight(), new LinkVSPushBlockBottom()
+            };
+
+            //portals
+            List<ICollision> portalProjectiles = new()
+            {
+                new BluePortalProjectileSprite(null, r, 0), new OrangePortalProjectileSprite(null, r, 0)
+            };
+            List<ICollision> portals = new()
+            {
+                new BluePortal(), new OrangePortal()
             };
 
 
@@ -132,9 +144,9 @@ namespace Legend_of_the_Power_Rangers
             //projectiles vs doors
 
             //link vs walls
-            AddDirectionalEvents(list, link, new List<ICollision>() { new Wall(0, 0, 0, true) }, linkMovementEvents);
+            AddDirectionalEvents(list, link, wall, linkMovementEvents);
             //enemies vs walls
-            AddDirectionalEvents(list, enemies, new List<ICollision>() { new Wall(0, 0, 0, true) }, enemyMovementEvents);
+            AddDirectionalEvents(list, enemies, wall, enemyMovementEvents);
             //projectiles vs walls
             //AddNonDirectionalEvents(list, allProjectiles, new List<ICollision>() { new Wall(0, 0, 0) }, new ProjectileVanish());
 
@@ -142,7 +154,18 @@ namespace Legend_of_the_Power_Rangers
             //bomb vs bombable door
             AddNonDirectionalEvents(list, new List<ICollision>() { new BombSprite(null, r, 0) },
                 new List<ICollision>() { new holeDoor(null, 0, 0, 0) }, new BombVSBombableDoor());
-            
+
+            //portal projectiles vs blocks
+            allCollidableBlocks.RemoveAt(1); //remove blue gap
+            AddNonDirectionalEvents(list, portalProjectiles, allCollidableBlocks, new SpawnPortal());
+            allCollidableBlocks.Add(new BlockBlueGap());
+            //portal projectiles vs walls
+            AddNonDirectionalEvents(list, portalProjectiles, wall, new SpawnPortal());
+            //portal projectils vs doors
+            AddNonDirectionalEvents(list, portalProjectiles, doors, new PortalProjectileVSDoor());
+
+            //link walking into portals
+            AddNonDirectionalEvents(list, link, portals, new LinkVSPortal());
 
             return list;
         }
@@ -172,11 +195,6 @@ namespace Legend_of_the_Power_Rangers
                     eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Bottom), oneEvent);
                 }
             }
-        }
-
-        private static void AddUniqueEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> collidables1, List<ICollision> collidables2, List<IEvent> events)
-        {
-            //figure out soon
         }
     }
 }

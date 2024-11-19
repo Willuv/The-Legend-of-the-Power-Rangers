@@ -22,6 +22,7 @@ namespace Legend_of_the_Power_Rangers
         private Rectangle rupeeNumberCover; 
         private Rectangle InventorySourceRectangle = new Rectangle(0, 0, 255, 265);
         private Rectangle InventoryDestinationRectangle;
+        private Rectangle portalPosition;
         private Rectangle boomerangPosition;
         private Rectangle bombPosition;
         private Rectangle bowPosition;
@@ -80,6 +81,7 @@ namespace Legend_of_the_Power_Rangers
             fullMapCover = new Rectangle(InventoryDestinationRectangle.X + 64, InventoryDestinationRectangle.Y + 736, 252, 124);
             bossRoom = new Rectangle(InventoryDestinationRectangle.X + 262, InventoryDestinationRectangle.Y + 785, 16, 12);
 
+            portalPosition = new Rectangle(InventoryDestinationRectangle.X + 813, InventoryDestinationRectangle.Y + 180, 50, 65);
             bowPosition = new Rectangle(InventoryDestinationRectangle.X + 713, InventoryDestinationRectangle.Y + 180, 50, 65);
             bombPosition = new Rectangle(InventoryDestinationRectangle.X + 613, InventoryDestinationRectangle.Y + 180, 50, 65);
             boomerangPosition = new Rectangle(InventoryDestinationRectangle.X + 516, InventoryDestinationRectangle.Y + 180, 50, 65);
@@ -154,6 +156,7 @@ namespace Legend_of_the_Power_Rangers
             Rectangle bowSource = new Rectangle(127, 266,9, 17);
             Rectangle candleSource = new Rectangle(127, 283, 9, 17);
             Rectangle potionSource = new Rectangle(127, 300, 9, 17);
+            Rectangle portalSource = new Rectangle(127, 333, 9, 17);
 
             InventorySpriteBatch.Draw(blackTexture, heartCover, Color.Black);
             InventorySpriteBatch.Draw(blackTexture, BCover, Color.Black);
@@ -176,6 +179,10 @@ namespace Legend_of_the_Power_Rangers
             if (linkInventory.HasItem(ItemType.WoodBoomerang))
             {
                 InventorySpriteBatch.Draw(InventoryTexture, boomerangPosition, boomerangSource, Color.White);
+            }
+            if (linkInventory.HasItem(ItemType.PortalGun))
+            {
+                InventorySpriteBatch.Draw(InventoryTexture, portalPosition, portalSource, Color.White);
             }
             if (!linkInventory.HasItem(ItemType.Map))
             {

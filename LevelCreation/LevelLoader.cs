@@ -72,6 +72,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             { "12", "Clock"},
             { "13", "BlueCandle"},
             { "14", "BluePotion"},
+            { "15", "PortalGun" }
         };
         DoorMaker doorMaker;
 
@@ -194,7 +195,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
         }
 
-        private void LoadSecretRoom(List<IBlock> blocks)
+        private static void LoadSecretRoom(List<IBlock> blocks)
         {
             InvisibleBlock bottomLeft = new()
             {
