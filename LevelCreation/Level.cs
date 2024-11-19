@@ -278,15 +278,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             loader.DeloadRoom();
             currentRoom = map[currentRoomRow, currentRoomColumn];
-
-            BluePortal blue = loadedObjects.Find(blue => blue is BluePortal) as BluePortal;
-            OrangePortal orange = loadedObjects.Find(orange => orange is OrangePortal) as OrangePortal;
-            bool hasOrange = loadedObjects.Find(orange => orange is OrangePortal) != null;
-
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            if (blue != null) loadedObjects.Add(blue);
-            if (orange != null) loadedObjects.Add(orange);
 
             if (currentRoom != -1)
             {
