@@ -46,6 +46,7 @@ namespace Legend_of_the_Power_Rangers
         private readonly Rectangle boomerangSourceRectangle = new Rectangle(127, 232, 9, 17);
         private readonly Rectangle bombSourceRectangle = new Rectangle(127, 249, 9, 17);
         private readonly Rectangle bowSourceRectangle = new Rectangle(127, 266, 9, 17);
+        private readonly Rectangle portalSourceRectangle = new Rectangle(127, 333, 9, 17);
 
 
 
@@ -232,6 +233,9 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case ItemType.Bow:
                     hudSpriteBatch.Draw(hudTexture, BCover, bowSourceRectangle, Color.White);
+                    break;
+                case ItemType.PortalGun:
+                    hudSpriteBatch.Draw(hudTexture, BCover, portalSourceRectangle, Color.White);
                     break;
             }
         }

@@ -75,7 +75,7 @@ namespace Legend_of_the_Power_Rangers
                     if (linkInventory.HasItem(ItemType.PortalGun))
                     {
                         linkInventory.ActiveItem = ItemType.PortalGun;
-                        activeSource = new Rectangle(127, 283, 9, 17);
+                        activeSource = new Rectangle(127, 333, 9, 17);
                     }
                     break;
                 default:

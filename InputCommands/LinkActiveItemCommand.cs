@@ -38,6 +38,10 @@ namespace Legend_of_the_Power_Rangers
                     this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
                     this.linkItemFactory.CreateItem(LinkItem.CreationLinkItemType.Arrow);
                     break;
+                case ItemType.PortalGun:
+                    this.stateMachine.ChangeAction(LinkStateMachine.LinkAction.Item);
+                    this.linkItemFactory.CreateItem(LinkItem.CreationLinkItemType.BluePortal);
+                    break;
                 default:
                     break;
             }
