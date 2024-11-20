@@ -183,6 +183,7 @@ namespace Legend_of_the_Power_Rangers
 
                 if (projectile.Item1.HasHitWall)
                 {
+                    projectiles[i].Item1.CollisionHitbox = Rectangle.Empty;
                     projectiles.RemoveAt(i);
                 }
                 else
@@ -312,11 +313,11 @@ namespace Legend_of_the_Power_Rangers
             if (Health <= 0)
             {
                 isHurt = true;
-                
-                foreach (var projectile in projectiles)
+                // Clear projectiles one last time
+                for (int i = projectiles.Count - 1; i >= 0; i--)
                 {
-                    projectile.Item1.CollisionHitbox = new Rectangle(0, 0, 0, 0);
-                    projectiles.RemoveAt(0);
+                    projectiles[i].Item1.CollisionHitbox = Rectangle.Empty;
+                    projectiles.RemoveAt(i);
                 }
                 projectiles.Clear();
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
