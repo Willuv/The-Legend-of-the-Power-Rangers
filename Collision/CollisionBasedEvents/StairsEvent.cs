@@ -17,5 +17,7 @@ public class StairsEvent : IEvent
     {
         DelegateManager.RaiseChangeToSpecificRoom(basementRoom);
         link.CollisionHitbox = new Rectangle(270, 321, link.CollisionHitbox.Width, link.CollisionHitbox.Height);
+        if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Stairs");
+
     }
 }

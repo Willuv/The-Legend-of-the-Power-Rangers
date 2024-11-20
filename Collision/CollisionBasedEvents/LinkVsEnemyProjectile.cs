@@ -32,7 +32,8 @@ public class LinkVSEnemyProjectile : IEvent
         {
             ProjectileVanish vanish = new();
             vanish.Execute(collidable, null, direction);
-        } else
+        }
+        else
         {
             LinkDecorator decoratedLink = LinkManager.GetLinkDecorator();
             LinkBecomeDamagedCommand linkGetsHurt = new(decoratedLink);
