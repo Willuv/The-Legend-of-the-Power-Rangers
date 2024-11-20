@@ -25,6 +25,12 @@
 /processorParam:TextureFormat=Color
 /build:Blocks.png
 
+#begin Blue Portal.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Blue Portal.wav
+
 #begin Bosses.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -294,6 +300,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Main Theme.mp3
+
+#begin Orange Portal.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Orange Portal.wav
 
 #begin Portal.png
 /importer:TextureImporter

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Legend_of_the_Power_Rangers;
+﻿using Legend_of_the_Power_Rangers;
 using Microsoft.Xna.Framework;
 
 public class LinkVSEnemyProjectile : IEvent
@@ -26,13 +20,26 @@ public class LinkVSEnemyProjectile : IEvent
         IEnemyProjectile projectile = collidable as IEnemyProjectile;
         Vector2 projectileDirection = projectile.Direction;
         bool IsMatched = SameDirection(linkDirection, projectileDirection);
-        
-        //if standing still and facing projectile, shield blocks
+
+        // If standing still and facing projectile, shield blocks
         if (action == LinkStateMachine.LinkAction.Idle && IsMatched)
         {
+            // Set the destination rectangle of the projectile to 0,0 size
+            if (projectile is OctoProjectile octoProjectile)
+            {
+                octoProjectile.DestinationRectangle = new Rectangle(0, 0, 0, 0);
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Shield");
+            }
+            else if (projectile is DragonProjectile dragonProjectile)
+            {
+                dragonProjectile.destinationRectangle = new Rectangle(0, 0, 0, 0);
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Shield");
+            }
+
             ProjectileVanish vanish = new();
             vanish.Execute(collidable, null, direction);
-        } else
+        }
+        else
         {
             LinkDecorator decoratedLink = LinkManager.GetLinkDecorator();
             LinkBecomeDamagedCommand linkGetsHurt = new(decoratedLink);

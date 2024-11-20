@@ -192,6 +192,8 @@ namespace Legend_of_the_Power_Rangers
             {
                 deathManager = new DeathScreenManager(game.GraphicsDevice,link,  this, spriteBatch);
             }
+            MediaPlayer.Stop();
+            if (!AudioManager.Instance.IsMuted()) audioManager.PlaySound("Link_Die");
         }
 
         private void InitializeWinningState()
@@ -337,6 +339,7 @@ namespace Legend_of_the_Power_Rangers
                 case GameState.Gameplay:
                 case GameState.Running:
                 case GameState.RoomTransition:
+                case GameState.GameOver:
                     hud.Draw();
                     break;
            
