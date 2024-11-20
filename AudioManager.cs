@@ -88,6 +88,8 @@ namespace Legend_of_the_Power_Rangers
             soundEffects["Sword_Slash"] = content.Load<SoundEffect>("LOZ_Sword_Slash");
             soundEffects["Text"] = content.Load<SoundEffect>("LOZ_Text");
             soundEffects["Text_Slow"] = content.Load<SoundEffect>("LOZ_Text_Slow");
+            soundEffects["Blue_Portal"] = content.Load<SoundEffect>("Blue Portal");
+            soundEffects["Orange_Portal"] = content.Load<SoundEffect>("Orange Portal");
         }
 
         public void PlaySound(string soundName)

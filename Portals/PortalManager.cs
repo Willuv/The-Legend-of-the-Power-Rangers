@@ -42,6 +42,7 @@ namespace Legend_of_the_Power_Rangers.Portals
 
         private void AddBluePortal(Rectangle rectangle, CollisionDirection projectileDirection)
         {
+            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Blue_Portal");
             bluePortal = new BluePortal()
             {
                 CollisionHitbox = rectangle,
@@ -84,6 +85,7 @@ namespace Legend_of_the_Power_Rangers.Portals
 
         private void AddOrangePortal(Rectangle rectangle, CollisionDirection projectileDirection)
         {
+            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Orange_Portal");
             orangePortal = new OrangePortal()
             {
                 CollisionHitbox = rectangle,
