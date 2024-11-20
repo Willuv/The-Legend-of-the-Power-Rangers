@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Legend_of_the_Power_Rangers.Portals;
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -20,6 +21,7 @@ namespace Legend_of_the_Power_Rangers
         }
 
         private Vector2 direction;
+        private bool isFacingLeft = true;
         int scale = 3;
         private float speed = 100f;
 
@@ -53,6 +55,12 @@ namespace Legend_of_the_Power_Rangers
         private const double hurtDuration = 1000;
         private int health = 6;
 
+        private BluePortal currentLocationPortal;
+        private OrangePortal newLocationPortal;
+        private bool isTeleporting = false;
+        private double teleportTimer = 0.0;
+        private const double portalDuration = 1.5;
+
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.DragonBoss; } }
 
@@ -67,12 +75,14 @@ namespace Legend_of_the_Power_Rangers
             this.projectileTexture = projectileTexture;
             
             CollisionHitbox = new Rectangle(300, 100, bossSpriteWidth * scale, bossSpriteHeight * scale); // Default positon
-            projectileSourceRectangle = new Rectangle(330, 0, spriteWidth, spriteHeight); // Specific coordinates and size for projectile
+            projectileSourceRectangle = new Rectangle(330, 0, spriteWidth, spriteHeight); // Coordinates and size for projectile
             
             SetRandomDirection();
             InitializeFrames();
             IsDragonBoss = true;
             projectiles = new List<Tuple<DragonProjectile, Vector2>>();
+            currentLocationPortal = new BluePortal();
+            newLocationPortal = new OrangePortal();
         }
 
         private void InitializeFrames()
@@ -121,8 +131,17 @@ namespace Legend_of_the_Power_Rangers
                     hurtTimer = 0;
                 }
             }
+            if (isTeleporting)
+            {
+                teleportTimer += gameTime.ElapsedGameTime.TotalSeconds;
+                if (teleportTimer >= portalDuration)
+                {
+                    isTeleporting = false;
+                }
+            }
 
             directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
+            ScreenShakeManager.Update(gameTime); // ScreenShaker not Working
             if (directionChangeTimer >= 3) // ChangeDirrection every 3sec
             {
                 SetRandomDirection();
@@ -143,11 +162,14 @@ namespace Legend_of_the_Power_Rangers
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
+            Console.WriteLine(destinationRectangle.X + "  "+ destinationRectangle.Y);
             UpdateProjectiles(gameTime);
             base.Update(gameTime);
         }
         private void UpdateProjectiles(GameTime gameTime)
         {
+            if (Health <= 0) return;
+
             projectileFireTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (projectileFireTimer >= projectileFireInterval)
             {
@@ -171,24 +193,108 @@ namespace Legend_of_the_Power_Rangers
         }
 
         private void ShootProjectiles()
-    {
+        {   
         Vector2[] directions = { new Vector2(-1, -1), new Vector2(-1, 0), new Vector2(-1, 1) };
+
+        if (Health <= 4) directions = new Vector2[] { new Vector2(-1, -1), new Vector2(-1, 0), new Vector2(-1, 1), new Vector2(1, -1), new Vector2(1, 1), new Vector2(1, 0) };
         foreach (var direction in directions)
         {
             direction.Normalize(); // Normalize for consistent speed in all directions
             DragonProjectile projectile = new DragonProjectile(projectileTexture, projectileSourceRectangle);
             DelegateManager.RaiseObjectCreated(projectile);
-            //alex please add a way for projectiles to disappear after time - Jake
+            
+            if (isFacingLeft){
             projectile.Position = new Vector2(destinationRectangle.X + xOffset - 13, destinationRectangle.Y + yOffset - 13); // Start at boss's position w/ Offset
+            } else {
+            projectile.Position = new Vector2(destinationRectangle.X + xOffset + 83, destinationRectangle.Y + yOffset - 13); // Start at boss's position w/ Offset
+            }
+
             projectile.Direction = direction; // Set the movement direction
             projectiles.Add(new Tuple<DragonProjectile, Vector2>(projectile, projectile.Position));
         }
     }
+        private void DrawHealthBar(SpriteBatch spriteBatch)
+        {
+            int healthBarWidth = destinationRectangle.Width; // Width of the health bar
+            int healthBarHeight = 10; // Height of the health bar
+            int healthBarYOffset = 10; // Offset above the boss
+            int currentHealthBarWidth = (int)((float)Health / 6 * healthBarWidth); // Scaled bar on health
+            // Gray Background
+            Rectangle backgroundBar = new Rectangle( destinationRectangle.X, destinationRectangle.Y - healthBarYOffset - healthBarHeight, healthBarWidth, healthBarHeight);
+            spriteBatch.Draw(CreateSolidColorTexture(Color.Gray), backgroundBar, Color.Gray);
+
+            // Black Health Bar
+            Rectangle foregroundBar = new Rectangle(destinationRectangle.X, destinationRectangle.Y - healthBarYOffset - healthBarHeight, currentHealthBarWidth, healthBarHeight);
+            spriteBatch.Draw(CreateSolidColorTexture(Color.Black), foregroundBar, Color.Black);
+        }
+        private Texture2D CreateSolidColorTexture(Color color)
+        {
+            Texture2D texture = new Texture2D(bossSpritesheet.GraphicsDevice, 1, 1);
+            texture.SetData(new[] { color });
+            return texture;
+        }
+        private Color GetBossColor()
+        {
+            if (Health > 4) // More than 2/3 health
+                return Color.White;
+            else if (Health > 2) // Between 1/3 and 2/3 health
+                return Color.Orange;
+            else // 1/3 health or less
+                return Color.Red;
+        }
+
+        private void PhaseChange()
+        {
+            //SoundManager.PlaySound(SoundType.BossYell); // Not Added
+            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Boss_Scream1");
+            
+            if (Health == 4){
+                TeleportTo(new Vector2(4228, 1209));
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Candle");
+            } 
+            if (Health == 2){
+                TeleportTo(new Vector2(4720, 1209));
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Candle");
+            } 
+
+            // Trigger screen shake
+            ScreenShakeManager.TriggerShake(intensity: 15, duration: 5); // Does not work
+
+            speed += 20f; // Slight speed increase on PhaseChange()
+        }
+        public void TeleportTo(Vector2 newPosition)
+        {
+            // Set up Blue portal
+            currentLocationPortal.CollisionHitbox = new Rectangle(destinationRectangle.X, destinationRectangle.Y, destinationRectangle.Width, destinationRectangle.Height);
+
+            // Set up Orange portal
+            newLocationPortal.CollisionHitbox = new Rectangle((int)newPosition.X, (int)newPosition.Y, destinationRectangle.Width, destinationRectangle.Height);
+
+            // Trigger isTeleporting
+            isTeleporting = true;
+            teleportTimer = 0.0;
+
+            destinationRectangle.X = (int)newPosition.X;
+            destinationRectangle.Y = (int)newPosition.Y;
+
+            // Flip
+            isFacingLeft = !isFacingLeft;
+            SetRandomDirection();
+        }
 
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            Color tint = isHurt ? Color.Red : Color.White;
-            spriteBatch.Draw(bossSpritesheet, destinationRectangle, sourceRectangle[currentFrameIndex], tint); // Draw boss
+            if (isTeleporting)
+            {
+                currentLocationPortal.Draw(spriteBatch);
+                newLocationPortal.Draw(spriteBatch);
+            }
+
+            Color tint = GetBossColor();
+            if (isHurt) tint = Color.Lerp(tint, Color.Red, 0.5f); // Blend with red when hurt
+            SpriteEffects spriteEffect = isFacingLeft ? SpriteEffects.None : SpriteEffects.FlipHorizontally;
+            spriteBatch.Draw(bossSpritesheet, destinationRectangle, sourceRectangle[currentFrameIndex], tint, 0f, Vector2.Zero, spriteEffect, 0f); // Draw the boss
+            DrawHealthBar(spriteBatch);
             if (IsSpawning || IsDying)
             {
                 base.Draw(texture, spriteBatch);
@@ -206,6 +312,13 @@ namespace Legend_of_the_Power_Rangers
             if (Health <= 0)
             {
                 isHurt = true;
+                
+                foreach (var projectile in projectiles)
+                {
+                    projectile.Item1.CollisionHitbox = new Rectangle(0, 0, 0, 0);
+                    projectiles.RemoveAt(0);
+                }
+                projectiles.Clear();
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
                 this.destinationRectangle.Width = 0;
                 this.destinationRectangle.Height = 0;
@@ -214,6 +327,11 @@ namespace Legend_of_the_Power_Rangers
             {
                 isHurt = true;
                 hurtTimer = 0;
+
+                if (Health == 4 || Health == 2)
+                {
+                    PhaseChange();
+                }
             }
         }
 
