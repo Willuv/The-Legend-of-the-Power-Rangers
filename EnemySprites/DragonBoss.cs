@@ -96,10 +96,25 @@ namespace Legend_of_the_Power_Rangers
                 sourceRectangle[i] = new Rectangle(xOffsets[i], yOffset, bossSpriteWidth, bossSpriteHeight);
             }
         }
+        private bool oneTime4HPDirection = false;
+        private bool oneTime2HPDirection = false;
         private void SetRandomDirection()
         {
+            if (Health == 4 && !oneTime4HPDirection)
+            {
+                direction = new Vector2(1, 0); // right
+                oneTime4HPDirection = true;
+            }
+            else if (Health == 2 && !oneTime2HPDirection)
+            {
+                direction = new Vector2(-1, 0); // Left
+                oneTime2HPDirection = true;
+            }
+            else
+            {
             Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
             direction = directions[random.Next(directions.Length)];
+            }
             SetDragonDirection(direction);
         }
         public void SetDragonDirection(Vector2 direction)
@@ -193,24 +208,35 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
+        private bool alternation2HPShootDirection = false;
         private void ShootProjectiles()
         {   
         Vector2[] directions = { new Vector2(-1, -1), new Vector2(-1, 0), new Vector2(-1, 1) };
 
-        if (Health <= 4) directions = new Vector2[] { new Vector2(-1, -1), new Vector2(-1, 0), new Vector2(-1, 1), new Vector2(1, -1), new Vector2(1, 1), new Vector2(1, 0) };
+        if (Health <= 4) directions = new Vector2[] { new Vector2(-1, -1), new Vector2(-1, 0), new Vector2(-1, 1), new Vector2(1, -1), new Vector2(1, 1), new Vector2(1, 0) }; // Added 4 corners and right
+        if (Health <= 2) {
+            if (!alternation2HPShootDirection){
+                directions = new Vector2[] { new Vector2(-1, -1), new Vector2(-1, 0), new Vector2(-1, 1), new Vector2(-1, 1.5f),new Vector2(-1, -1.5f), new Vector2(-1, 0.5f), new Vector2(-1, -0.5f), new Vector2(0,1), new Vector2(0,-1)}; // Added up and down, removed left and right and right 2 corners
+                alternation2HPShootDirection = true;
+            } else {
+                directions = new Vector2[] { new Vector2(-0.7f, -1), new Vector2(-1, 0.5f), new Vector2(0, 1), new Vector2(1, 0.3f), new Vector2(1, -0.5f)};
+                alternation2HPShootDirection = false;
+            }
+        }
+
         foreach (var direction in directions)
         {
             direction.Normalize(); // Normalize for consistent speed in all directions
             DragonProjectile projectile = new DragonProjectile(projectileTexture, projectileSourceRectangle);
             DelegateManager.RaiseObjectCreated(projectile);
             
-            if (isFacingLeft){
+            if (isFacingLeft){ // Ensure projectiles spawn from Dragonbosses horn shooter
             projectile.Position = new Vector2(destinationRectangle.X + xOffset - 13, destinationRectangle.Y + yOffset - 13); // Start at boss's position w/ Offset
             } else {
             projectile.Position = new Vector2(destinationRectangle.X + xOffset + 83, destinationRectangle.Y + yOffset - 13); // Start at boss's position w/ Offset
             }
 
-            projectile.Direction = direction; // Set the movement direction
+            projectile.Direction = direction; // Set the projectile movement direction
             projectiles.Add(new Tuple<DragonProjectile, Vector2>(projectile, projectile.Position));
         }
     }
