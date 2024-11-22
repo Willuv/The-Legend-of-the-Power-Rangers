@@ -218,7 +218,6 @@ namespace Legend_of_the_Power_Rangers
             ResetLevel();
             InitializeGameplayState();
             hud.UpdateLink();
-            inventoryScreen.UpdateLinkInventory();
             ChangeState(GameState.Gameplay);
         }
 
