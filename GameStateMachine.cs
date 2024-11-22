@@ -218,6 +218,7 @@ namespace Legend_of_the_Power_Rangers
             ResetLevel();
             InitializeGameplayState();
             hud.UpdateLink();
+            inventoryScreen.UpdateLinkInventory();
             ChangeState(GameState.Gameplay);
         }
 
@@ -252,6 +253,7 @@ namespace Legend_of_the_Power_Rangers
                     // Handle item selection update
                     keyboardController.Update();
                     itemSelector.Update(gameTime);
+                    inventoryScreen.UpdateLinkInventory();
                     greenDot.Update();
                     break;
                 case GameState.GameOver:
