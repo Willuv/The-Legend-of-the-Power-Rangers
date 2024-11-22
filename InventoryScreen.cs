@@ -268,6 +268,11 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
+        public void UpdateLinkInventory()
+        {
+            this.linkInventory = LinkManager.GetLinkInventory();
+        }
+
         public void Draw()
         {
             InventorySpriteBatch.Begin(samplerState: SamplerState.PointClamp);

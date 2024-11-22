@@ -89,7 +89,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
-            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+            LinkManager.GetLink().UpdatePosition(new Vector2(currentRoomColumn * 1020 + 490, currentRoomRow * 698 + 755));
             portalManager = new();
 
             //listener for room change from stairs or wall master
