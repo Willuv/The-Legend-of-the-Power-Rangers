@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Legend_of_the_Power_Rangers.Portals;
 using Microsoft.Xna.Framework;
 
 namespace Legend_of_the_Power_Rangers
@@ -17,6 +18,7 @@ namespace Legend_of_the_Power_Rangers
             Dictionary<(int, int, CollisionDirection), IEvent> list = new();
 
             List<ICollision> link = new() { LinkManager.GetLink() };
+            List<ICollision> wall = new() { new Wall(0, 0, 0, false) };
             Rectangle r = new(); //instead of declaring new rectangle for everything that needs one
 
             List<ICollision> enemies = new() {
@@ -28,12 +30,12 @@ namespace Legend_of_the_Power_Rangers
 
             List<ICollision> unmovableBlocks = new() {
                 new BlockBlueFloor(), new BlockBlueGap(), new BlockBombedWall(), new BlockDiamond(),
-                new BlockKeyHole(), new BlockOpenDoor(),
-                new BlockStatue1(), new BlockStatue2(), new BlockWall(), new BlockWhiteBrick()
+                new BlockKeyHole(), new BlockOpenDoor(), new BlockStatue1(), new BlockStatue2(), 
+                new BlockWall(), new BlockWhiteBrick()
             };
             List<ICollision> otherBlocks = new()
             {
-                new BlockPush(), new BlockStairs() //will add stairs and other odd cases
+                new BlockPush(), new BlockStairs()
             };
             List<ICollision> allCollidableBlocks = new();
             allCollidableBlocks.AddRange(unmovableBlocks);
@@ -53,7 +55,7 @@ namespace Legend_of_the_Power_Rangers
             {
                 new ItemBomb(), new ItemBow(), new ItemClock(), new ItemCompass(), new ItemFairy(),
                 new ItemHeart(), new ItemHeartContainer(), new ItemKey(), new ItemMap(), new ItemRupee(),
-                new ItemTriforce(), new ItemWoodBoomerang()
+                new ItemTriforce(), new ItemWoodBoomerang(), new ItemPortalGun()
             };
             List<ICollision> linkProjectiles = new()
             {
@@ -85,9 +87,21 @@ namespace Legend_of_the_Power_Rangers
                 new LinkVSPushBlockRight(), new LinkVSPushBlockBottom()
             };
 
+            //portals
+            List<ICollision> portalProjectiles = new()
+            {
+                new BluePortalProjectileSprite(null, r, 0), new OrangePortalProjectileSprite(null, r, 0)
+            };
+            List<ICollision> portals = new()
+            {
+                new BluePortal(), new OrangePortal()
+            };
+
 
             //link vs unmovableblocks
             AddDirectionalEvents(list, link, unmovableBlocks, linkMovementEvents);
+            //link vs invisible blocks (bc enemies can ignore them in secret room)
+            AddDirectionalEvents(list, link, new List<ICollision>() { new InvisibleBlock() }, linkMovementEvents);
             //enemies vs all blocks
             AddDirectionalEvents(list, enemies, allCollidableBlocks, enemyMovementEvents);
             //link vs pushable blocks
@@ -97,14 +111,20 @@ namespace Legend_of_the_Power_Rangers
             {
                 new StairsEvent(), new MoveLinkUp(), new MoveLinkRight(), new MoveLinkDown()
             });
+            //link vs teleporter
+            AddNonDirectionalEvents(list, link, new List<ICollision>() { new InvisibleTeleportBlock() }, new LinkVSTeleporter());
             //link vs fire
-            AddNonDirectionalEvents(list, link, new List<ICollision>() { new BlockFire() }, new HurtLink());
+            AddNonDirectionalEvents(list, link, new List<ICollision>() { new BlockFire() }, new LinkVSFire());
 
             //projectiles against blocks
             allCollidableBlocks.Remove(new BlockBlueGap()); //projectiles go over the water
-            allProjectiles.Remove(new BombSprite(null, r, 0)); //bomb is its own case
             AddNonDirectionalEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());
             allCollidableBlocks.Add(new BlockBlueGap());
+            //projectiles against doors
+            allProjectiles.RemoveAt(1); //bomb is its own case
+            AddNonDirectionalEvents(list, allProjectiles, doors, new ProjectileVanish());
+            //projectiles against walls
+            AddNonDirectionalEvents(list, allProjectiles, new List<ICollision>() { new Wall(0, 0, 0, true) }, new ProjectileVanish());
             allProjectiles.Add(new BombSprite(null, r, 0));
 
             //link picking up items
@@ -113,7 +133,7 @@ namespace Legend_of_the_Power_Rangers
             //link running into enemies
             AddDirectionalEvents(list, link, enemies, linkEncountersEnemyEvents);
             //link hurt by enemy projectiles
-            AddNonDirectionalEvents(list, link, enemyProjectiles, new HurtLink());
+            AddNonDirectionalEvents(list, link, enemyProjectiles, new LinkVSEnemyProjectile());
             //link projectiles hurting enemies
             AddNonDirectionalEvents(list, linkProjectiles, enemies, new HurtEnemy());
 
@@ -124,9 +144,9 @@ namespace Legend_of_the_Power_Rangers
             //projectiles vs doors
 
             //link vs walls
-            AddDirectionalEvents(list, link, new List<ICollision>() { new Wall(0, 0, 0) }, linkMovementEvents);
+            AddDirectionalEvents(list, link, wall, linkMovementEvents);
             //enemies vs walls
-            AddDirectionalEvents(list, enemies, new List<ICollision>() { new Wall(0, 0, 0) }, enemyMovementEvents);
+            AddDirectionalEvents(list, enemies, wall, enemyMovementEvents);
             //projectiles vs walls
             //AddNonDirectionalEvents(list, allProjectiles, new List<ICollision>() { new Wall(0, 0, 0) }, new ProjectileVanish());
 
@@ -134,7 +154,18 @@ namespace Legend_of_the_Power_Rangers
             //bomb vs bombable door
             AddNonDirectionalEvents(list, new List<ICollision>() { new BombSprite(null, r, 0) },
                 new List<ICollision>() { new holeDoor(null, 0, 0, 0) }, new BombVSBombableDoor());
-            
+
+            //portal projectiles vs blocks
+            allCollidableBlocks.RemoveAt(1); //remove blue gap
+            AddNonDirectionalEvents(list, portalProjectiles, allCollidableBlocks, new SpawnPortal());
+            allCollidableBlocks.Add(new BlockBlueGap());
+            //portal projectiles vs walls
+            AddNonDirectionalEvents(list, portalProjectiles, wall, new SpawnPortal());
+            //portal projectils vs doors
+            AddNonDirectionalEvents(list, portalProjectiles, doors, new PortalProjectileVSDoor());
+
+            //link walking into portals
+            AddNonDirectionalEvents(list, link, portals, new LinkVSPortal());
 
             return list;
         }
@@ -164,11 +195,6 @@ namespace Legend_of_the_Power_Rangers
                     eventList.Add(KeyGenerator.Generate(obj1, obj2, CollisionDirection.Bottom), oneEvent);
                 }
             }
-        }
-
-        private static void AddUniqueEvents(Dictionary<(int, int, CollisionDirection), IEvent> eventList, List<ICollision> collidables1, List<ICollision> collidables2, List<IEvent> events)
-        {
-            //figure out soon
         }
     }
 }

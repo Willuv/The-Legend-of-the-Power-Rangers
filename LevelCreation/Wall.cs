@@ -17,14 +17,16 @@ public class Wall : IWall
     }
     int scaleFactor = 4;
     public ObjectType ObjectType { get { return ObjectType.Wall; } }
-	public Wall(int wallNum, int xPos, int yPos)
+    public bool IsVisible { get; set; }
+	public Wall(int wallNum, int xPos, int yPos, bool visible)
 	{
 		this.wallNum = wallNum;
 		DetermineRectangles(xPos,  yPos);
+        IsVisible = visible;
 	}
 	public void Draw(SpriteBatch spriteBatch, Texture2D levelSpriteSheet)
 	{
-		spriteBatch.Draw(levelSpriteSheet, destinationRectangle, sourceRectangle, Color.White);
+        if (IsVisible) spriteBatch.Draw(levelSpriteSheet, destinationRectangle, sourceRectangle, Color.White);
 	}
     public void DetermineRectangles(int xPos, int yPos)
     {

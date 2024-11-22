@@ -15,6 +15,9 @@ public class Link : ICollision
     public Rectangle destinationRectangle;
     private int maxHealth = 6;
     private int currentHealth;
+    private float portalCooldownTimer;
+    public LinkStateMachine.LinkAction CurrentAction => stateMachine.GetCurrentAction();
+    public LinkStateMachine.LinkDirection CurrentDirection => stateMachine.GetCurrentDirection();
 
     public int GetCurrentHealth() => currentHealth;
     public int GetMaxHealth() => maxHealth;
@@ -32,6 +35,7 @@ public class Link : ICollision
         currentSprite = stateMachine.GetCurrentSprite();
         currentHealth = 6;
         UpdateDestinationRectangle();
+        portalCooldownTimer = 1f;
     }
 
     public void LoseHealth()
@@ -131,6 +135,21 @@ public class Link : ICollision
         currentSprite.Update(gameTime);
 
         UpdateDestinationRectangle();
+
+        if (portalCooldownTimer > 0)
+        {
+            portalCooldownTimer -= (float)gameTime.ElapsedGameTime.TotalSeconds;
+        }
+    }
+
+    public bool CanTeleport()
+    {
+        return portalCooldownTimer <= 0;
+    }
+
+    public void EnterPortal()
+    {
+        portalCooldownTimer =1f;
     }
 
     public virtual void Draw(SpriteBatch spriteBatch)

@@ -6,14 +6,19 @@ namespace Legend_of_the_Power_Rangers
     public class LinkSpriteFactory
     {
         private Texture2D linkSpriteSheet;
-        private static LinkSpriteFactory instance = new LinkSpriteFactory();
+        private static LinkSpriteFactory instance;
+        private GameStateMachine gameStateMachine;
 
-        private LinkSpriteFactory() { }
+        public LinkSpriteFactory() { }
 
         public static LinkSpriteFactory Instance
         {
             get
             {
+                if (instance == null)
+                {
+                    instance = new LinkSpriteFactory();
+                }
                 return instance;
             }
         }
@@ -22,9 +27,20 @@ namespace Legend_of_the_Power_Rangers
         {
             linkSpriteSheet = spriteSheet;
         }
+        public void SetGameStateMachine(GameStateMachine gameStateMachine1)
+        {
+            gameStateMachine = gameStateMachine1;
+        }
+
 
         public ILinkSprite CreateLinkSprite(LinkStateMachine.LinkAction action, LinkStateMachine.LinkDirection direction)
         {
+
+            if (gameStateMachine.currentState == GameStateMachine.GameState.Winning)
+            {
+                return new LinkWinSprite(linkSpriteSheet);
+            }
+
             switch (action)
             {
                 case LinkStateMachine.LinkAction.Idle:

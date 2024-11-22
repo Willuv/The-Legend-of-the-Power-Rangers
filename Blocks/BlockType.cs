@@ -9,6 +9,7 @@ namespace Legend_of_the_Power_Rangers
     public enum BlockType
     {
         BlueFloor, BlueGap, BlueSand, BombedWall, Diamond, Fire, KeyHole, Ladder,
-        OpenDoor, Push, Square, Stairs, Statue1, Statue2, Wall, WhiteBrick
+        OpenDoor, Push, Square, Stairs, Statue1, Statue2, Wall, WhiteBrick, Invisible, 
+        TeleportBlock
     }
 }

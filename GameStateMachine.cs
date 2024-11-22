@@ -1,10 +1,12 @@
 ﻿using Legend_of_the_Power_Rangers.LevelCreation;
+using Legend_of_the_Power_Rangers.Portals;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace Legend_of_the_Power_Rangers
@@ -105,16 +107,19 @@ namespace Legend_of_the_Power_Rangers
             Texture2D linkSpriteSheet = game.Content.Load<Texture2D>("Link Sprites");
             Texture2D projectileSpriteSheet = game.Content.Load<Texture2D>("Projectiles");
             Texture2D bossSpriteSheet = game.Content.Load<Texture2D>("Bosses");
+            Texture2D portalSpriteSheet = game.Content.Load<Texture2D>("Portal");
 
             // Set up factories
             BlockSpriteFactory.Instance.SetBlockSpritesheet(blockSpriteSheet);
             ItemSpriteFactory.Instance.SetItemSpritesheet(game.itemSpriteSheet);
             EnemySpriteFactory.Instance.SetEnemySpritesheet(game.enemySpritesheet);
             LinkSpriteFactory.Instance.SetLinkSpriteSheet(linkSpriteSheet);
+            LinkSpriteFactory.Instance.SetGameStateMachine(this);
             EnemySpriteFactory.Instance.SetBossSpritesheet(bossSpriteSheet);
             EnemySpriteFactory.Instance.SetProjectileSpritesheet(projectileSpriteSheet);
+            PortalSpriteFactory.Instance.SetPortalSpritesheet(portalSpriteSheet);
 
-            game.linkItemFactory = new LinkItemFactory(game.itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+            game.linkItemFactory = new LinkItemFactory(game.itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
 
             // Initialize managers if they are null
             game.blockManager ??= new BlockManager(new List<string> { "Statue1", "Statue2" });
@@ -187,6 +192,8 @@ namespace Legend_of_the_Power_Rangers
             {
                 deathManager = new DeathScreenManager(game.GraphicsDevice,link,  this, spriteBatch);
             }
+            MediaPlayer.Stop();
+            if (!AudioManager.Instance.IsMuted()) audioManager.PlaySound("Link_Die");
         }
 
         private void InitializeWinningState()
@@ -232,6 +239,7 @@ namespace Legend_of_the_Power_Rangers
                     // Handle the gameplay updates for both Gameplay and Running states
                     UpdateGameplay(gameTime);
                     hud.Update(level.currentRoom);
+                    hud.UpdateLink();
                     triforceManager.Update(gameTime, this);
                     deathManager.deathUpdateCheck(gameTime);
                     break;
@@ -244,6 +252,7 @@ namespace Legend_of_the_Power_Rangers
                     // Handle item selection update
                     keyboardController.Update();
                     itemSelector.Update(gameTime);
+                    inventoryScreen.UpdateLinkInventory();
                     greenDot.Update();
                     break;
                 case GameState.GameOver:
@@ -331,7 +340,10 @@ namespace Legend_of_the_Power_Rangers
             {
                 case GameState.Gameplay:
                 case GameState.Running:
+                case GameState.Paused:
                 case GameState.RoomTransition:
+                case GameState.GameOver:
+                case GameState.Winning:
                     hud.Draw();
                     break;
            

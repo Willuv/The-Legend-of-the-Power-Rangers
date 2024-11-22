@@ -21,6 +21,7 @@ namespace Legend_of_the_Power_Rangers
                 door.IsOpen = true;
                 door.blownUp = true;
                 Debug.WriteLine("door should be open");
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Secret");
             }
         }
     }

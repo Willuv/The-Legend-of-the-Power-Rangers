@@ -34,16 +34,15 @@ namespace Legend_of_the_Power_Rangers
 
         public void moveSelector(int direction)
         {
-            int count = 1;
             destX += direction;
 
-            if(destX > 705)
+            if(destX > 805)
             {
                 destX = 505;
             }
             if (destX < 505)
             {
-                destX = 705;
+                destX = 805;
             }
             destinationRectangle = new Rectangle(destX, 180, 65, 65);
         }
@@ -70,6 +69,13 @@ namespace Legend_of_the_Power_Rangers
                     {
                         linkInventory.ActiveItem = ItemType.Bow;
                         activeSource = new Rectangle(127, 266, 9, 17);
+                    }
+                    break;
+                case 805:
+                    if (linkInventory.HasItem(ItemType.PortalGun))
+                    {
+                        linkInventory.ActiveItem = ItemType.PortalGun;
+                        activeSource = new Rectangle(127, 333, 9, 17);
                     }
                     break;
                 default:

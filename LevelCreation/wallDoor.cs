@@ -41,16 +41,16 @@ internal class wallDoor : IDoor
         switch (doorNum)
         {
             case 0:
-                destinationRectangle = new Rectangle(443 + roomTopLeftX, 192 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(443 + roomTopLeftX, 190 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 1:
-                destinationRectangle = new Rectangle(-5 + roomTopLeftX, 479 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(-9 + roomTopLeftX, 479 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 2:
-                destinationRectangle = new Rectangle(898 + roomTopLeftX, 479 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(902 + roomTopLeftX, 479 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
             case 3:
-                destinationRectangle = new Rectangle(445 + roomTopLeftX, 765 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
+                destinationRectangle = new Rectangle(445 + roomTopLeftX, 773 + roomTopLeftY, 33 * scaleFactor, 32 * scaleFactor);
                 break;
         }
     }

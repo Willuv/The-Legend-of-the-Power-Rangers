@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualBasic.FileIO;
+﻿using Legend_of_the_Power_Rangers.Portals;
+using Microsoft.VisualBasic.FileIO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -26,7 +27,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int numRooms;
         public int currentRoom;
         int currentRoomRow;
-        public int CurrentRooom
+        public int CurrentRoom
         {
             get { return currentRoom; }
         }
@@ -42,6 +43,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int loadedRoom;
         int scaleFactor = 4;
         private CollisionManager collisionManager;
+
+        private PortalManager portalManager;
+        private Camera2D camera;
+
         private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, String ContentPath)
         {
@@ -85,19 +90,21 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             collisionManager = new();
             LinkManager.GetLink().UpdatePosition(new Vector2(currentRoomColumn * 1020 + 490, currentRoomRow * 698 + 755));
 
+            portalManager = new();
+
             //listener for room change from stairs or wall master
             DelegateManager.OnChangeToSpecificRoom += (roomNum) =>
             {
-                SelectLevel(roomNum);
+                if (roomNum != currentRoom) SelectLevel(roomNum);
             };
         }
         private void CreateWalls(int RoomRow, int RoomColumn)
         {
+            bool visible = (currentRoom != 18);
             for (int i = 0; i < 8; i++)
             {
-                walls.Add(new Wall(i, RoomRow, RoomColumn));
+                walls.Add(new Wall(i, RoomRow, RoomColumn, visible));
             }
-
         }
         public List<ICollision> GetRoomObjects()
         {
@@ -134,6 +141,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                     enemy.Draw(enemySpritesheet, spriteBatch);
             }
+            portalManager.Draw(spriteBatch);
         }
         public void Update(GameTime gametime) 
         {
@@ -186,6 +194,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
                 door.Update(gametime);
             }
+            portalManager.Update(loadedObjects, currentRoom);
             collisionManager.Update(loadedObjects);
         }
         public void MouseChangeLevel(int direction)
@@ -256,6 +265,12 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             currentRoom = map[currentRoomRow, currentRoomColumn];
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
+
+            if (currentRoom != -1)
+            {
+                reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
+            }
+
         }
     }
 }

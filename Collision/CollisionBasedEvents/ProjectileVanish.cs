@@ -16,8 +16,7 @@ namespace Legend_of_the_Power_Rangers
         {
             if (object1 is IDamaging attackObject)
             {
-                attackObject.HasHitWall = true;
-                //Debug.WriteLine("Projectile hit wall");
+                attackObject.HasHitWall = true;                
             }
         }
     }

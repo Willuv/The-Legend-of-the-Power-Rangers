@@ -7,7 +7,7 @@ namespace Legend_of_the_Power_Rangers
 {
     public class LinkInventory
     {
-        private Dictionary<ItemType, int> itemCounts = new Dictionary<ItemType, int>();
+        private Dictionary<ItemType, int> itemCounts = new();
         private HashSet<ItemType> obtainedItems = new HashSet<ItemType>();
         private ItemType activeItem;
 
@@ -17,7 +17,6 @@ namespace Legend_of_the_Power_Rangers
             itemCounts[ItemType.Rupee] = 0;
             itemCounts[ItemType.Bomb] = 0;
             itemCounts[ItemType.Key] = 0;
-
         }
 
         public ItemType ActiveItem
@@ -71,6 +70,9 @@ namespace Legend_of_the_Power_Rangers
                     obtainedItems.Add(item.ItemType);
                     break;
                 case ItemType.BluePotion:
+                    obtainedItems.Add(item.ItemType);
+                    break;
+                case ItemType.PortalGun:
                     obtainedItems.Add(item.ItemType);
                     break;
             }

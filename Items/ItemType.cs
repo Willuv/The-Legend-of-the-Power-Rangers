@@ -9,6 +9,6 @@ namespace Legend_of_the_Power_Rangers
     public enum ItemType
     {
         BlueCandle, BluePotion, Bomb, Bow, Clock, Compass, Fairy, Heart,
-        HeartContainer, Key, Map, Rupee, Triforce, WoodBoomerang
+        HeartContainer, Key, Map, Rupee, Triforce, WoodBoomerang, PortalGun
     }
 }

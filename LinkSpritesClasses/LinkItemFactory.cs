@@ -1,4 +1,5 @@
 ﻿using Legend_of_the_Power_Rangers;
+using Legend_of_the_Power_Rangers.Portals;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
@@ -12,6 +13,7 @@ public class LinkItemFactory
 	private readonly Texture2D itemSpriteSheet;
     private readonly Texture2D projectileSpriteSheet;
     private readonly Texture2D blockSpriteSheet;
+	private readonly Texture2D portalSpriteSheet;
     private readonly List<LinkItem> ActiveItems;
 	private readonly List<int> toRemove;
 	private readonly int toRemoveIndex;
@@ -24,19 +26,22 @@ public class LinkItemFactory
         { CreationLinkItemType.Arrow, 0.5f },
         { CreationLinkItemType.Sword, 1.5f },
         { CreationLinkItemType.Boomerang, 1.6f },
-        { CreationLinkItemType.Candle, 1.2f }
+        { CreationLinkItemType.Candle, 1.2f },
+		{ CreationLinkItemType.BluePortal, 0.8f },
+		{ CreationLinkItemType.OrangePortal, 0.8f }
     };
 
     private readonly Dictionary<CreationLinkItemType, float> cooldownTimers = new();
 
 
-    public LinkItemFactory(Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet)
+    public LinkItemFactory(Texture2D itemSpriteSheet, Texture2D projectileSpriteSheet, Texture2D blockSpriteSheet, Texture2D portalSpriteSheet)
 	{
 		this.ActiveItems = new List<LinkItem>();
 		this.toRemove = new List<int>();
 		this.itemSpriteSheet = itemSpriteSheet;
 		this.projectileSpriteSheet = projectileSpriteSheet;
 		this.blockSpriteSheet = blockSpriteSheet;
+		this.portalSpriteSheet = portalSpriteSheet;
         foreach (var itemType in cooldownDurations.Keys)
         {
             cooldownTimers[itemType] = 0;
@@ -52,29 +57,33 @@ public class LinkItemFactory
 
 			case CreationLinkItemType.Bomb:
                 if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Bomb_Drop");
-                item = new(CreationLinkItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+                item = new(CreationLinkItemType.Bomb, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
 				break;
 			case CreationLinkItemType.Arrow:
                 if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Arrow_Boomerang");
-                item = new(CreationLinkItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+                item = new(CreationLinkItemType.Arrow, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
 				break;
 			case CreationLinkItemType.Sword:
                 if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Sword_Combined");
-                item = new(CreationLinkItemType.Sword, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+                item = new(CreationLinkItemType.Sword, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
 				break;
 			case CreationLinkItemType.Boomerang:
-                item = new(CreationLinkItemType.Boomerang, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+                item = new(CreationLinkItemType.Boomerang, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
 				break;
 			case CreationLinkItemType.Candle:
                 if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Candle");
-                item = new(CreationLinkItemType.Candle, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet);
+                item = new(CreationLinkItemType.Candle, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
+				break;
+			case CreationLinkItemType.BluePortal:
+				item = new(CreationLinkItemType.BluePortal, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
+				break;
+			case CreationLinkItemType.OrangePortal:
+				item = new(CreationLinkItemType.OrangePortal, position, direction, itemSpriteSheet, projectileSpriteSheet, blockSpriteSheet, portalSpriteSheet);
 				break;
         }
 
         ActiveItems.Add(item);
 		ICollision collidable = item.CollisionObject;
-		//if (item == null) Debug.WriteLine("item is null");
-		//if (collidable == null) Debug.WriteLine("collidable is null");
         DelegateManager.RaiseObjectCreated(collidable);
         //Debug.WriteLine("Object creation invoked");
         cooldownTimers[type] = cooldownDurations[type];
@@ -112,7 +121,6 @@ public class LinkItemFactory
 				ICollision collidable = ActiveItems[removeIndex].CollisionObject;
 				DelegateManager.RaiseObjectRemoved(collidable);
                 ActiveItems.RemoveAt(removeIndex);
-				Debug.WriteLine("Object removal invoked");
             }
 		}
 		toRemove.Clear();

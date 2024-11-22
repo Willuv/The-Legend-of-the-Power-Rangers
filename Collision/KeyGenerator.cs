@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Legend_of_the_Power_Rangers.Portals;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,6 +32,7 @@ namespace Legend_of_the_Power_Rangers
             int enemyProjectileOffset = 5000;
             int doorOffset = 6000;
             int wallOffset = 7000;
+            int portalOffset = 8000;
 
             if (obj is IBlock block)
                 return (int)block.BlockType + blockOffset;
@@ -45,7 +47,9 @@ namespace Legend_of_the_Power_Rangers
             if (obj is IDoor door)
                 return (int)door.DoorType + doorOffset;
             if (obj is IWall wall)
-                return (int)wall.ObjectType + wallOffset; //no types of walls
+                return wallOffset; //no types of walls
+            if (obj is IPortal portal)
+                return (int)portal.PortalType + portalOffset;
             return obj.GetHashCode(); //just in case
         }
     }
