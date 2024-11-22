@@ -239,6 +239,7 @@ namespace Legend_of_the_Power_Rangers
                     // Handle the gameplay updates for both Gameplay and Running states
                     UpdateGameplay(gameTime);
                     hud.Update(level.currentRoom);
+                    hud.UpdateLink();
                     triforceManager.Update(gameTime, this);
                     deathManager.deathUpdateCheck(gameTime);
                     break;
@@ -338,8 +339,10 @@ namespace Legend_of_the_Power_Rangers
             {
                 case GameState.Gameplay:
                 case GameState.Running:
+                case GameState.Paused:
                 case GameState.RoomTransition:
                 case GameState.GameOver:
+                case GameState.Winning:
                     hud.Draw();
                     break;
            
