@@ -101,6 +101,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         }
         public void DeloadRoom()
         {
+            doors.Clear();
             enemies.Clear();
         }
         public void ReadData(StreamReader reader, int RoomRow, int RoomColumn)
@@ -111,13 +112,14 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
             line = reader.ReadLine();
             splitLine = CSVParser.Split(line);
-            for (int i = 0; i < 4; i++)
+
+            /*for (int i = 0; i < 4; i++)
             {
                 if (doorMaker != null && splitLine[i][4] != '9')
                 {
                     doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i, RoomRow, RoomColumn));
                 }
-            }
+            }*/
 
             for (int i = 1; i < 8; i++)
             {
@@ -166,10 +168,18 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             String line;
             String[] splitLine;
             Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
-            
-            line = reader.ReadLine();
+
             // read doorLine
+            line = reader.ReadLine();
             splitLine = CSVParser.Split(line);
+            for (int i = 0; i < 4; i++)
+            {
+                if (doorMaker != null && splitLine[i][4] != '9')
+                {
+                    doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i, RoomRow, RoomColumn));
+                }
+            }
+
             //reads top-bottom left-right
             for (int i = 1; i < 8; i++)
             {
