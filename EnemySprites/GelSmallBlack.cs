@@ -26,6 +26,7 @@ namespace Legend_of_the_Power_Rangers
         private int currentFrameIndex;
         private Random random = new Random();
 
+        public bool isDead { get; set; }
         private bool shouldSpawn = true;
         private bool isHurt = false;
         private double hurtTimer = 0;
@@ -39,6 +40,7 @@ namespace Legend_of_the_Power_Rangers
             InitializeFrames();
             SetRandomDirection();
             CollisionHitbox = new Rectangle(300, 100, 44, 36); // Default positon
+            isDead = false;
         }
         private void InitializeFrames()
         {
@@ -115,17 +117,17 @@ namespace Legend_of_the_Power_Rangers
         int Health = 2;
         public void TakeDamage(int damage = 1)
         {
+            isHurt = true;
             Health -= damage;
             if (Health <= 0)
             {
-                isHurt = true;
+                isDead = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
                 this.destinationRectangle.Width = 0;
                 this.destinationRectangle.Height = 0;
             }
             else
             {
-                isHurt = true;
                 hurtTimer = 0;
             }
         }
