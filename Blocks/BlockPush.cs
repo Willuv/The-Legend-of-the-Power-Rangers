@@ -20,7 +20,7 @@ namespace Legend_of_the_Power_Rangers
         public BlockType BlockType { get { return BlockType.Push; } }
         public bool IsPushable { get; set; }
         public CollisionDirection PushableDirection { get; set; }
-        private bool IsMoving { get; set; }
+        public bool IsMoving { get; set; }
         private Vector2 targetPosition = new();
         private const int tileSize = 64;
         private const float movementSpeed = 2f;

@@ -18,7 +18,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
     {
         int[,] map;
         List<IWall> walls;
-        LevelLoader loader;
+        Dictionary<int, LevelLoader> rooms;
+        List<int> toRemove;
         Texture2D levelSpriteSheet;
         StreamReader reader;
         Rectangle wallsSource;
@@ -43,18 +44,17 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int loadedRoom;
         int scaleFactor = 4;
         private CollisionManager collisionManager;
+
         private PortalManager portalManager;
         private Camera2D camera;
+
         private List<ICollision> loadedObjects;
-        private int LinkWidth;
-        private int LinkHeight;
         public Level(Texture2D levelSpriteSheet, String ContentPath)
         {
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
-            loader = new LevelLoader(levelSpriteSheet);
-            LinkWidth = LinkManager.GetLink().CollisionHitbox.Width;
-            LinkHeight = LinkManager.GetLink().CollisionHitbox.Height;
+            toRemove = new List<int>();
+            rooms = new Dictionary<int, LevelLoader>();
             numRooms = 18;
             currentRoom = 1;
             loadedRoom = 1;
@@ -81,7 +81,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             CreateWalls(i, j);
                         }
                         reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + map[j,i] + ".csv");
-                        loader.ReadData(reader, i, j);
+                        rooms.Add(map[j,i], new LevelLoader(levelSpriteSheet, reader, i, j));
+                        rooms[map[j, i]].ReadData();
                     }
                 }
             }
@@ -89,7 +90,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             loadedObjects = GetRoomObjects();
             loadedObjects.Add(LinkManager.GetLink());
             collisionManager = new();
-            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
+            LinkManager.GetLink().UpdatePosition(new Vector2(currentRoomColumn * 1020 + 490, currentRoomRow * 698 + 755));
+
             portalManager = new();
 
             //listener for room change from stairs or wall master
@@ -110,10 +112,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         {
             List<ICollision> roomObjects = new();
             // Add blocks, enemies, and items to the list
-            roomObjects.AddRange(loader.Blocks);
-            roomObjects.AddRange(loader.Enemies);
-            roomObjects.AddRange(loader.Items);
-            roomObjects.AddRange(loader.Doors);
+            roomObjects.AddRange(rooms[currentRoom].Blocks);
+            roomObjects.AddRange(rooms[currentRoom].Enemies);
+            roomObjects.AddRange(rooms[currentRoom].Items);
+            roomObjects.AddRange(rooms[currentRoom].Doors);
             roomObjects.AddRange(walls);
 
             return roomObjects;
@@ -125,30 +127,35 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 wall.Draw(spriteBatch, levelSpriteSheet);
             }
-            foreach (IDoor door in loader.Doors)
+            // for loop to draw for every room, even if not current
+            // necessary to keep look during transitions and such
+            for (int i = 0; i < 19; i++)
             {
-                door.Draw(spriteBatch);
+                foreach (IDoor door in rooms[i].Doors)
+                {
+                    door.Draw(spriteBatch);
+                }
+                foreach (IBlock block in rooms[i].Blocks)
+                {
+                    block.Draw(spriteBatch);
+                }
             }
-            foreach (IBlock block in loader.Blocks)
-            {
-                block.Draw(spriteBatch);
-            }
-            foreach (IItem item in loader.Items)
+            foreach (IItem item in rooms[currentRoom].Items)
             {
                 item.Draw(spriteBatch);
             }
-            foreach (IEnemy enemy in loader.Enemies)
+            foreach (IEnemy enemy in rooms[currentRoom].Enemies)
             {
-                enemy.Draw(enemySpritesheet, spriteBatch);
+                    enemy.Draw(enemySpritesheet, spriteBatch);
             }
             portalManager.Draw(spriteBatch);
         }
         public void Update(GameTime gametime) 
         {
-            List<int> toRemove = new List<int>();
+            bool secretActivated = false;
             if (currentRoom != loadedRoom)
             {
-                loader.LoadEnemies(reader, currentRoomRow, currentRoomColumn);
+                //rooms[currentRoom].LoadEnemies();
 
                 loadedRoom = currentRoom;
 
@@ -156,43 +163,69 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 loadedObjects = GetRoomObjects();
                 loadedObjects.Add(LinkManager.GetLink());
             }
-            foreach (IItem item in loader.Items)
+            foreach (IItem item in rooms[currentRoom].Items)
             {
                 item.Update(gametime);
                 if (item.PickedUp)
                 {
-                    toRemove.Add(loader.Items.IndexOf(item));
+                    toRemove.Add(rooms[currentRoom].Items.IndexOf(item));
                 }
             }
             foreach (int removeIndex in toRemove)
             {
-                loader.Items.RemoveAt(removeIndex);
+                rooms[currentRoom].Items.RemoveAt(removeIndex);
             }
             toRemove.Clear();
-            foreach (IBlock block in loader.Blocks)
+            foreach (IBlock block in rooms[currentRoom].Blocks)
             {
                 block.Update(gametime);
+                if (block.BlockType == BlockType.Push)
+                {
+                    if (block.IsMoving)
+                    {
+                        secretActivated = true;
+                    }
+                }
             }
-            foreach (IEnemy enemy in loader.Enemies)
+            foreach (IEnemy enemy in rooms[currentRoom].Enemies)
             {
                 enemy.Update(gametime);
-                /*if (enemy.Health == 0)
-                {
-                    toRemove.Add(loader.Enemies.IndexOf(enemy));
-                }*/
+                //if (enemy.isdead)
+                //{
+                    //toRemove.Add(rooms[currentRoom].Items.IndexOf(item));
+                    //if (enemy.droppeditem != null)
+                    //{
+                        //rooms[currentRoom].Items.Add(enemy.droppeditem);
+                    //}
+                //}
             }
             foreach (int removeIndex in toRemove)
             {
-                loader.Enemies.RemoveAt(removeIndex);
+                rooms[currentRoom].Items.RemoveAt(removeIndex);
             }
             toRemove.Clear();
-            foreach (IDoor door in loader.Doors)
+            foreach (int removeIndex in toRemove)
+            {
+                rooms[currentRoom].Enemies.RemoveAt(removeIndex);
+            }
+            toRemove.Clear();
+            foreach (IDoor door in rooms[currentRoom].Doors)
             {
                 if (door.DoorType == DoorType.Diamond)
                 {
-                    if (loader.Enemies.Count == 0)
+                    if (currentRoom == 9)
                     {
-                        door.IsOpen = true;
+                        if (secretActivated)
+                        {
+                            door.IsOpen = true;
+                        }
+                    }
+                    else
+                    {
+                        if (rooms[currentRoom].Enemies.Count == 0)
+                        {
+                            door.IsOpen = true;
+                        }
                     }
                 }
 
@@ -223,14 +256,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     }
                 }
             }
-            loader.DeloadRoom();
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, LinkWidth, LinkHeight);
-            if (currentRoom != -1)
-            {
-                reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
-            }
+            LinkManager.GetLink().CollisionHitbox = new Rectangle(1020 * currentRoomColumn + 400, 698 * currentRoomRow + 500, 48, 48);
         }
         public void ChangeLevel(CollisionDirection direction)
         {
@@ -246,21 +274,16 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     break;
                 case (CollisionDirection.Top):
                     currentRoomRow++;
-                    LinkManager.GetLink().UpdatePosition(new Vector2(0, 350));
+                    LinkManager.GetLink().UpdatePosition(new Vector2(0, 310));
                     break;
                 case (CollisionDirection.Bottom):
                     currentRoomRow--;
-                    LinkManager.GetLink().UpdatePosition(new Vector2(0, -350));
+                    LinkManager.GetLink().UpdatePosition(new Vector2(0, -310));
                     break;
             }
-            loader.DeloadRoom();
             currentRoom = map[currentRoomRow, currentRoomColumn];
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
-            if (currentRoom != -1)
-            {
-                reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
-            }
         }
         public void SelectLevel(int level)
         {
@@ -276,7 +299,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     }
                 }
             }
-            loader.DeloadRoom();
             currentRoom = map[currentRoomRow, currentRoomColumn];
             loadedObjects.Clear();
             loadedObjects.Add(LinkManager.GetLink());
@@ -285,6 +307,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 reader = new StreamReader(ContentPath + "/LinkDungeon1 - Room" + currentRoom + ".csv");
             }
+
         }
     }
 }
