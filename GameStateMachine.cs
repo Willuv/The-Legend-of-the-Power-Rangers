@@ -25,6 +25,7 @@ namespace Legend_of_the_Power_Rangers
         }
 
         public GameState currentState;
+        private SpriteFont font;
         private Camera2D camera;
         private Game1 game;
         private SpriteBatch spriteBatch;
@@ -108,6 +109,7 @@ namespace Legend_of_the_Power_Rangers
             Texture2D projectileSpriteSheet = game.Content.Load<Texture2D>("Projectiles");
             Texture2D bossSpriteSheet = game.Content.Load<Texture2D>("Bosses");
             Texture2D portalSpriteSheet = game.Content.Load<Texture2D>("Portal");
+            font = game.Content.Load<SpriteFont>("ZeldaFont");
 
             // Set up factories
             BlockSpriteFactory.Instance.SetBlockSpritesheet(blockSpriteSheet);
@@ -134,7 +136,7 @@ namespace Legend_of_the_Power_Rangers
             LinkManager.setLinkInventory(linkInventory);
 
             // Load the level
-            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
+            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory, font);
 
             if (hud == null)
             {
@@ -224,7 +226,7 @@ namespace Legend_of_the_Power_Rangers
         private void ResetLevel()
         {
 
-            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory);
+            level = new Level(game.levelSpriteSheet, game.Content.RootDirectory, font);
 
             game.blockManager = new BlockManager(new List<string> { "Statue1", "Statue2" });
             game.itemManager = new ItemManager(new List<string> { "Compass", "Map" });
