@@ -146,7 +146,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             foreach (IEnemy enemy in rooms[currentRoom].Enemies)
             {
-                    enemy.Draw(enemySpritesheet, spriteBatch);
+                enemy.Draw(enemySpritesheet, spriteBatch);
             }
             portalManager.Draw(spriteBatch);
         }

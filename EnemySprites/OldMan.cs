@@ -20,28 +20,33 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.BlueGorya; } }
 
+        public OldMan() : base()
+        {
+            CollisionHitbox = new Rectangle(300, 100, 64, 64); // Default positon
+            sourceRectangle = new Rectangle(210, 322, 16, 16);
+        }
+
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            throw new System.NotImplementedException();
+            Color tint = isHurt ? Color.Red : Color.White;
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle, tint);
         }
 
         public void Update(GameTime gameTime)
         {
-            // if (isHurt)
-            // {
-            //     hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
-            //     if (hurtTimer >= hurtDuration)
-            //     {
-            //         isHurt = false;
-            //         hurtTimer = 0;
-            //     }
-            // }
-            throw new System.NotImplementedException();
+            if (isHurt)
+            {
+                hurtTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                if (hurtTimer >= hurtDuration)
+                {
+                    isHurt = false;
+                    hurtTimer = 0;
+                }
+            }
         }
         int Health = 1;
         public void TakeDamage(int damage = 1)
         {
-            Health -= damage;
             if (Health <= 0)
             {
                 isHurt = true;
