@@ -46,8 +46,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         }
         int loadedRoom;
         int scaleFactor = 4;
+        
         private CollisionManager collisionManager;
-
+        Dictionary<int, TimeSpan> deathTimers = new Dictionary<int, TimeSpan>();
+        
         private PortalManager portalManager;
         private Camera2D camera;
 
@@ -202,11 +204,29 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                 enemy.Update(gametime);
                 if (enemy.isDead)
                 {
-                    toRemove.Add(rooms[currentRoom].Enemies.IndexOf(enemy));
+                    int enemyIndex = rooms[currentRoom].Enemies.IndexOf(enemy);
+                    //toRemove.Add(rooms[currentRoom].Enemies.IndexOf(enemy));
+                    if (!deathTimers.ContainsKey(enemyIndex))
+                    {
+                        deathTimers[enemyIndex] = gametime.TotalGameTime;
+                    }
+                    if (gametime.TotalGameTime - deathTimers[enemyIndex] >= TimeSpan.FromMilliseconds(1500))
+                    {
+                        toRemove.Add(enemyIndex);
+                        deathTimers.Remove(enemyIndex);
+                        //toRemove.Add(rooms[currentRoom].Enemies.IndexOf(enemy));
+                    }
                     /*if (enemy.droppeditem != null)
                     {
                         rooms[currentRoom].Items.Add(enemy.droppeditem);
                     }*/
+                }
+            }
+            foreach (var key in deathTimers.Keys.ToList())
+            {
+                if (!rooms[currentRoom].Enemies.Any(enemy => rooms[currentRoom].Enemies.IndexOf(enemy) == key))
+                {
+                    deathTimers.Remove(key);
                 }
             }
             foreach (int removeIndex in toRemove)
