@@ -49,6 +49,7 @@ namespace Legend_of_the_Power_Rangers
         int bossSpriteWidth = 40;
         int bossSpriteHeight = 40;
 
+        public bool isDead { get; set; }
         private bool shouldSpawn = true;
         private bool isHurt = false;
         private double hurtTimer = 0;
@@ -80,6 +81,7 @@ namespace Legend_of_the_Power_Rangers
             SetRandomDirection();
             InitializeFrames();
             IsDragonBoss = true;
+            isDead = false;
             projectiles = new List<Tuple<DragonProjectile, Vector2>>();
             currentLocationPortal = new BluePortal();
             newLocationPortal = new OrangePortal();
@@ -166,10 +168,6 @@ namespace Legend_of_the_Power_Rangers
             timeSinceLastToggle += gameTime.ElapsedGameTime.TotalMilliseconds;
             if (timeSinceLastToggle >= millisecondsPerToggle)
             {
-                // if (currentFrameIndex == frameIndex1)
-                //     currentFrameIndex = frameIndex2;
-                // else
-                //     currentFrameIndex = frameIndex1;
                 currentFrameIndex = (currentFrameIndex + 1) % sourceRectangle.Length;
                 timeSinceLastToggle = 0;
             }
@@ -177,7 +175,6 @@ namespace Legend_of_the_Power_Rangers
             // Update destinationRectangle based on direction and speed
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
-            Console.WriteLine(destinationRectangle.X + "  "+ destinationRectangle.Y);
             UpdateProjectiles(gameTime);
             base.Update(gameTime);
         }
@@ -335,16 +332,16 @@ namespace Legend_of_the_Power_Rangers
 
         public void TakeDamage(int damage = 1)
         {
+            isHurt = true;
             Health -= damage;
             if (Health <= 0)
             {
-                isHurt = true;
-                // Clear projectiles one last time
                 for (int i = projectiles.Count - 1; i >= 0; i--)
-                {
+                {   // Clear the projectiles that are left
                     projectiles[i].Item1.CollisionHitbox = Rectangle.Empty;
                     projectiles.RemoveAt(i);
                 }
+                isDead = true;
                 projectiles.Clear();
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
                 this.destinationRectangle.Width = 0;
@@ -352,9 +349,7 @@ namespace Legend_of_the_Power_Rangers
             }
             else
             {
-                isHurt = true;
                 hurtTimer = 0;
-
                 if (Health == 4 || Health == 2)
                 {
                     PhaseChange();
