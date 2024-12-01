@@ -19,11 +19,15 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         int[,] map;
         List<IWall> walls;
         Dictionary<int, LevelLoader> rooms;
+        List<int> toRemove;
         Texture2D levelSpriteSheet;
         StreamReader reader;
         Rectangle wallsSource;
         Rectangle wallsDestination;
         private String ContentPath;
+        private String oldManQuote;
+        private Vector2 quotePos;
+        private SpriteFont font;
         int numRooms;
         public int currentRoom;
         int currentRoomRow;
@@ -48,11 +52,15 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         private Camera2D camera;
 
         private List<ICollision> loadedObjects;
-        public Level(Texture2D levelSpriteSheet, String ContentPath)
+        public Level(Texture2D levelSpriteSheet, String ContentPath, SpriteFont font)
         {
             this.ContentPath = ContentPath;
             this.levelSpriteSheet = levelSpriteSheet;
+            toRemove = new List<int>();
             rooms = new Dictionary<int, LevelLoader>();
+            this.font = font;
+            oldManQuote = "SKIBIDI TOILET";
+            quotePos = new Vector2(300, 1800);
             numRooms = 18;
             currentRoom = 1;
             loadedRoom = 1;
@@ -125,13 +133,18 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 wall.Draw(spriteBatch, levelSpriteSheet);
             }
-            foreach (IDoor door in rooms[currentRoom].Doors)
+            // for loop to draw for every room, even if not current
+            // necessary to keep look during transitions and such
+            for (int i = 0; i < 19; i++)
             {
-                door.Draw(spriteBatch);
-            }
-            foreach (IBlock block in rooms[currentRoom].Blocks)
-            {
-                block.Draw(spriteBatch);
+                foreach (IDoor door in rooms[i].Doors)
+                {
+                    door.Draw(spriteBatch);
+                }
+                foreach (IBlock block in rooms[i].Blocks)
+                {
+                    block.Draw(spriteBatch);
+                }
             }
             foreach (IItem item in rooms[currentRoom].Items)
             {
@@ -139,13 +152,17 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             }
             foreach (IEnemy enemy in rooms[currentRoom].Enemies)
             {
-                    enemy.Draw(enemySpritesheet, spriteBatch);
+                enemy.Draw(enemySpritesheet, spriteBatch);
+            }
+            if (currentRoom == 10)
+            {
+                spriteBatch.DrawString(font, oldManQuote, quotePos, Color.White, 0, new Vector2(0, 0), 2.0f, SpriteEffects.None, 1.0f);
             }
             portalManager.Draw(spriteBatch);
         }
         public void Update(GameTime gametime) 
         {
-            List<int> toRemove = new List<int>();
+            bool secretActivated = false;
             if (currentRoom != loadedRoom)
             {
                 //rooms[currentRoom].LoadEnemies();
@@ -172,11 +189,31 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             foreach (IBlock block in rooms[currentRoom].Blocks)
             {
                 block.Update(gametime);
+                if (block.BlockType == BlockType.Push)
+                {
+                    if (block.IsMoving)
+                    {
+                        secretActivated = true;
+                    }
+                }
             }
             foreach (IEnemy enemy in rooms[currentRoom].Enemies)
             {
                 enemy.Update(gametime);
+                if (enemy.isDead)
+                {
+                    toRemove.Add(rooms[currentRoom].Enemies.IndexOf(enemy));
+                    /*if (enemy.droppeditem != null)
+                    {
+                        rooms[currentRoom].Items.Add(enemy.droppeditem);
+                    }*/
+                }
             }
+            foreach (int removeIndex in toRemove)
+            {
+                rooms[currentRoom].Enemies.RemoveAt(removeIndex);
+            }
+            toRemove.Clear();
             foreach (int removeIndex in toRemove)
             {
                 rooms[currentRoom].Enemies.RemoveAt(removeIndex);
@@ -186,9 +223,19 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             {
                 if (door.DoorType == DoorType.Diamond)
                 {
-                    if (rooms[currentRoom].Enemies.Count == 0)
+                    if (currentRoom == 9)
                     {
-                        door.IsOpen = true;
+                        if (secretActivated)
+                        {
+                            door.IsOpen = true;
+                        }
+                    }
+                    else
+                    {
+                        if (rooms[currentRoom].Enemies.Count == 0)
+                        {
+                            door.IsOpen = true;
+                        }
                     }
                 }
 

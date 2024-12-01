@@ -89,6 +89,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
 
             line = reader.ReadLine();
             splitLine = CSVParser.Split(line);
+
             for (int i = 0; i < 4; i++)
             {
                 if (doorMaker != null && splitLine[i][4] != '9')
@@ -140,6 +141,45 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                         enemy.CollisionHitbox = new Rectangle(currentx, currenty, enemyWidth, enemyHeight);
                         enemies.Add(enemy);
                     }
+                }
+            }
+
+            if (RoomRow == 0 && RoomColumn == 0) //Secret room doesn't fit the rest
+            {
+                LoadSecretRoom(blocks);
+            }
+        }
+        public void LoadEnemies()
+        {
+            String line;
+            String[] splitLine;
+            Regex CSVParser = new Regex(",(?=(?:[^\"]*\"[^\"]*\")*(?![^\"]*\"))");
+
+            // read doorLine
+            line = reader.ReadLine();
+            splitLine = CSVParser.Split(line);
+            /*for (int i = 0; i < 4; i++)
+            {
+                if (doorMaker != null && splitLine[i][4] != '9')
+                {
+                    doors.Add(doorMaker.CreateDoor((splitLine[i])[4], i, RoomRow, RoomColumn));
+                }
+            }*/
+
+            //reads top-bottom left-right
+            for (int i = 1; i < 8; i++)
+            {
+                line = reader.ReadLine();
+                for (int j = 0; j < 12; j++)
+                {
+                    splitLine = CSVParser.Split(line);
+
+                    int currentx = 128 + (64 * j) + (RoomColumn * 1020);
+                    int currenty = 320 + (64 * (i-1)) + (RoomRow * 698);
+                    String tileCode = splitLine[j];
+                    String enemyCode = tileCode.Substring(7, 2);
+                    String itemCode = tileCode.Substring(10, 2);
+                    
                 }
             }
 

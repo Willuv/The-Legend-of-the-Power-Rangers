@@ -13,5 +13,6 @@ namespace Legend_of_the_Power_Rangers
         public void TriggerDeath(int X, int Y);
         public void TakeDamage(int X);
         public bool IsHurt();
+        public bool isDead { get; set; }
     }
 }
