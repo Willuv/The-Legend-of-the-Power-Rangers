@@ -200,18 +200,18 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             foreach (IEnemy enemy in rooms[currentRoom].Enemies)
             {
                 enemy.Update(gametime);
-                //if (enemy.isdead)
-                //{
-                    //toRemove.Add(rooms[currentRoom].Items.IndexOf(item));
-                    //if (enemy.droppeditem != null)
-                    //{
-                        //rooms[currentRoom].Items.Add(enemy.droppeditem);
-                    //}
-                //}
+                if (enemy.isDead)
+                {
+                    toRemove.Add(rooms[currentRoom].Enemies.IndexOf(enemy));
+                    /*if (enemy.droppeditem != null)
+                    {
+                        rooms[currentRoom].Items.Add(enemy.droppeditem);
+                    }*/
+                }
             }
             foreach (int removeIndex in toRemove)
             {
-                rooms[currentRoom].Items.RemoveAt(removeIndex);
+                rooms[currentRoom].Enemies.RemoveAt(removeIndex);
             }
             toRemove.Clear();
             foreach (int removeIndex in toRemove)
