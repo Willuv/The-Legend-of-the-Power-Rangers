@@ -22,6 +22,7 @@ namespace Legend_of_the_Power_Rangers
             else if (door is keyDoor && LinkManager.GetLinkInventory().GetItemCount(ItemType.Key) > 0)
             {
                 LinkManager.GetLinkInventory().SetItemCount(ItemType.Key, LinkManager.GetLinkInventory().GetItemCount(ItemType.Key) - 1);
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Door_Unlock");
                 door.IsOpen = true;
             }
             else

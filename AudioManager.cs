@@ -37,54 +37,31 @@ namespace Legend_of_the_Power_Rangers
 
         public void Initialize(ContentManager content)
         {
-            //Done
             music["Dungeon"] = content.Load<Song>("Dungeon");
             music["Main_Theme"] = content.Load<Song>("Main Theme");
-            //Done
             music["Win"] = content.Load<Song>("Win");
-            //Done
             soundEffects["Arrow_Boomerang"] = content.Load<SoundEffect>("LOZ_Arrow_Boomerang");
-            //Done
             soundEffects["Bomb_Blow"] = content.Load<SoundEffect>("LOZ_Bomb_Blow");
-            //Done
             soundEffects["Bomb_Drop"] = content.Load<SoundEffect>("LOZ_Bomb_Drop");
-            //Done
             soundEffects["Boss_Hit"] = content.Load<SoundEffect>("LOZ_Boss_Hit");
-            //Done
             soundEffects["Boss_Scream1"] = content.Load<SoundEffect>("LOZ_Boss_Scream1");
-            //Done
             soundEffects["Candle"] = content.Load<SoundEffect>("LOZ_Candle");
             soundEffects["Door_Unlock"] = content.Load<SoundEffect>("LOZ_Door_Unlock");
-            //Done
             soundEffects["Enemy_Die"] = content.Load<SoundEffect>("LOZ_Enemy_Die");
-            //Done
             soundEffects["Enemy_Hit"] = content.Load<SoundEffect>("LOZ_Enemy_Hit");
-            //Done
             soundEffects["Get_Heart"] = content.Load<SoundEffect>("LOZ_Get_Heart");
-            //Done
             soundEffects["Get_Item"] = content.Load<SoundEffect>("LOZ_Get_Item");
-            //Done
             soundEffects["Get_Ruppee"] = content.Load<SoundEffect>("LOZ_Get_Rupee");
             soundEffects["Key_Appear"] = content.Load<SoundEffect>("LOZ_Key_Appear");
-            //Done
             soundEffects["Link_Die"] = content.Load<SoundEffect>("LOZ_Link_Die");
-            //Done
             soundEffects["Link_Hurt"] = content.Load<SoundEffect>("LOZ_Link_Hurt");
-            //Done
             soundEffects["LowHealth"] = content.Load<SoundEffect>("LOZ_LowHealth");
-
             soundEffects["Refill_Loop"] = content.Load<SoundEffect>("LOZ_Refill_Loop");
-
             soundEffects["Secret"] = content.Load<SoundEffect>("LOZ_Secret");
-
             soundEffects["Shield"] = content.Load<SoundEffect>("LOZ_Shield");
-            //Done
             soundEffects["Stairs"] = content.Load<SoundEffect>("LOZ_Stairs");
-            //Done
             soundEffects["Sword_Combined"] = content.Load<SoundEffect>("LOZ_Sword_Combined");
-            //Done
             soundEffects["Sword_Shoot"] = content.Load<SoundEffect>("LOZ_Sword_Shoot");
-            //Done
             soundEffects["Sword_Slash"] = content.Load<SoundEffect>("LOZ_Sword_Slash");
             soundEffects["Text"] = content.Load<SoundEffect>("LOZ_Text");
             soundEffects["Text_Slow"] = content.Load<SoundEffect>("LOZ_Text_Slow");
