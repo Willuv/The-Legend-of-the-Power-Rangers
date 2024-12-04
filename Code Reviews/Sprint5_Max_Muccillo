@@ -1,0 +1,21 @@
+Readability:
+	Max Muccillo
+	12/4/24
+	Sprint 5
+	GameStateMachine.cs
+	Will Ulivin
+	10
+	The code in the GameStateMachine file is very organized and easily readable. All the variables and function names are descriptive 
+	and coencide with the correct functionality.
+
+Quality:
+	Max Muccillo
+	12/4/24
+	Sprint 5
+	GameStateMachine.cs
+	Will Ulvin
+	10
+	The code in the GameStatemachine file is very high quality. It isn't too complex and is easy to build on if you wanted to add new states to the game.
+	One thing that I might do differently to improve code quality is to create an update state for each state that updates all the necessary components so that the update function 
+	looks cleaner.
+
