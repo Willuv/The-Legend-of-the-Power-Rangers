@@ -117,7 +117,7 @@ namespace Legend_of_the_Power_Rangers
             AddNonDirectionalEvents(list, link, new List<ICollision>() { new BlockFire() }, new LinkVSFire());
 
             //projectiles against blocks
-            allCollidableBlocks.Remove(new BlockBlueGap()); //projectiles go over the water
+            allCollidableBlocks.RemoveAt(1); //projectiles go over the water
             AddNonDirectionalEvents(list, allProjectiles, allCollidableBlocks, new ProjectileVanish());
             allCollidableBlocks.Add(new BlockBlueGap());
             //projectiles against doors
