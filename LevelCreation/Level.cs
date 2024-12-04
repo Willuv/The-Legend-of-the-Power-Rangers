@@ -58,6 +58,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         private bool keyDropped2 = false;
         private bool bombDropped1 = false;
         private bool bombDropped2 = false;
+        private bool portalDropped = false;
 
         private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, String ContentPath, SpriteFont font)
@@ -230,6 +231,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             enemiesKilled++;
                             enemy.HasBeenCounted = true; // Count enemies only once
                         }
+                        if (enemy.EnemyType == EnemyType.DragonBoss && !portalDropped) {
+                            IItem PortalGun = ItemSpriteFactory.Instance.CreateItem("PortalGun");
+                            PortalGun.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
+                            rooms[currentRoom].Items.Add(PortalGun);
+                            DelegateManager.RaiseObjectCreated(PortalGun);
+                            portalDropped = true;
+                        }
                         
                         // Enemies 4 and 8 drop bombs
                         if (enemiesKilled == 4 && !bombDropped1)
@@ -269,6 +277,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             DelegateManager.RaiseObjectCreated(key);
                             keyDropped2 = true;
                         }
+
                     }
                 }
             }

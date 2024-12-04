@@ -64,7 +64,7 @@ namespace Legend_of_the_Power_Rangers
             };
             List<ICollision> enemyProjectiles = new()
             {
-                new DragonProjectile(null, r) //add octo
+                new DragonProjectile(null, r), new OctoProjectile(null, r, new Vector2(0, 0))//add octo -> just added 12/4
             };
             List<ICollision> allProjectiles = new();
             allProjectiles.AddRange(linkProjectiles);
