@@ -58,6 +58,8 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         private bool keyDropped2 = false;
         private bool bombDropped1 = false;
         private bool bombDropped2 = false;
+        private bool secretActivated = false;
+        private bool doorUnlocked = false;
 
         private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, String ContentPath, SpriteFont font)
@@ -170,7 +172,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         }
         public void Update(GameTime gametime) 
         {
-            bool secretActivated = false;
+            
             if (currentRoom != loadedRoom)
             {
 
@@ -306,6 +308,21 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             door.IsOpen = true;
                         }
                     }
+                }
+                if (door.DoorType == DoorType.Key)
+                {
+                    if ((currentRoom == 9  || currentRoom == 6))
+                    {
+                        if (door.IsOpen == true)
+                        {
+                            doorUnlocked = true;
+                        }
+                        if (doorUnlocked)
+                        {
+                            door.IsOpen = true;
+                        }
+                    }
+                    
                 }
 
                 door.Update(gametime);
