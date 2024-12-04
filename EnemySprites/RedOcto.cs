@@ -177,6 +177,7 @@ namespace Legend_of_the_Power_Rangers
             var projectileRectangle = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 15, 7);
             OctoProjectile projectile = new OctoProjectile(projectileTexture, projectileRectangle, direction);
             projectiles.Add(projectile);
+            DelegateManager.RaiseObjectCreated(projectile);
         }
 
         int Health = 2;
