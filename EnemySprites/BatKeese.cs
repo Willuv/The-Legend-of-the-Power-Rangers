@@ -14,6 +14,7 @@ namespace Legend_of_the_Power_Rangers
             get { return destinationRectangle; }
             set { destinationRectangle = value; }
         }
+        public bool HasBeenCounted { get; set; } = false;
         private int currentFrameIndex;
         private Vector2 direction;
         private float speed = 100f;
