@@ -1,0 +1,26 @@
+Readability
+	Jake Meyer
+	12/4/2024
+	Sprint 5
+	LevelLoader.cs
+	Christian Colon
+	10
+	As for readability, the ReadData method is extremely difficult to read. However, that feels pretty expected, seeing as
+	it's parsing a .csv file which isn't very readable to humans. The rest of the file is readable. The method names all
+	make sense and don't really have any issues. The LoadEnemies is also a little difficult, but due to the csv issue from
+	before. Could potentially leave comments for the ReadData and LoadEnemies sections in case anyone else would need to read them.
+
+
+
+Quality
+	Jake Meyer
+	12/4/2024
+	Sprint 5
+	LevelLoader.cs
+	Christian Colon
+	10
+	Firstly, there is some commented out code that could be removed, or at least explained why it was kept. The load secret room
+	section could be streamlined instead of checking in both ReadData and LoadEnemies, but honestly I may have written those
+	myself. I was the one in charge of a lot of secret room. I don't remember adding it to LoadEnemies, so it looks as though
+	that duplicate call could be removed. The math also seems pretty solid for reading through the csv. Ultimately, this code
+	seems pretty efficient. 
