@@ -1,0 +1,24 @@
+Readability
+	Alex Mitelman
+	12/3/24
+	5
+	ItemSelector.cs
+	Max Muccillo
+	15	
+	Specific comments on what is readable and what is not:
+    Reading the code is pretty clear as the method names are descriptive and the use of switch case makes the design clear. The code is also spaced in a way that groups related variables for further clarity. Overall, the code is highly readable and could maybe only improve on using less hard coded numbers as those can reduce readability and mainatainablility. If not, maybe the addition of some comments would help explain. 
+	.
+
+Quality
+	Alex Mitelman
+	11/3/24
+	5
+	ItemSelector.cs
+	Max Muccillo
+    15
+	Specific comments on code quality:
+	As the class maintains the relatiely small scope of handleing item selecton, it does a good job with cohesion. The seperation of functions handled by methods is also respected, Update and Draw, so the class does a good job at that. As for improvements, the addition of error handleing and less hard coded values would only benefit.
+	A hypothetical change to make to the game related to file being reviewed and how the current:
+	A useful hypothetical change could be the addition of sound affects to provide more feedback to the user. This would further enhance game immersion.
+
+	
