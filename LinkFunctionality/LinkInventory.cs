@@ -30,7 +30,7 @@ namespace Legend_of_the_Power_Rangers
             switch (item.ItemType)
             {
                 case ItemType.Rupee:
-                    itemCounts[item.ItemType]++;
+                    itemCounts[item.ItemType] = itemCounts[item.ItemType] + 5;
                     break;
                 case ItemType.Key:
                     itemCounts[item.ItemType]++;
