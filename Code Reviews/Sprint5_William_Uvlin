@@ -1,0 +1,24 @@
+Readability
+	William Uvlin
+	12/3/2024
+	Sprint 5
+	PortalManager.cs
+	Jake Meyer
+	15
+	Overall Jake made the PortalManager class easy to read. I did not work on this but after reading it for the first time I am able to understand it
+	relatively well. The methods in this class are all well named and help describe what each ones job is very accurately. Some parts of the file that
+	could have improvements to the readability are to create X and Y position variables for the blue and orange portals instead of using TeleportPosition.X/Y. 
+	This would allow for even quicker understanding especially in regards to when link is teleported.
+
+
+
+Quality
+	William Uvlin
+	12/3/2024
+	Sprint 5
+	PortalManager.cs
+	Jake Meyer
+	15
+	One hypothetical change I would make to the PortalManager class would be to combine the addBlue/OrangePortal into one general method
+	and the same for the handle portals method. This would allow for greater simplicity within the class by reducing any duplicated code
+	currently in the code. This change also would allow for easier updates if something about the portal logic needs to be changed

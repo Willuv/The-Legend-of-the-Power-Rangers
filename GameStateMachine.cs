@@ -261,10 +261,12 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.GameOver:
                     // Handle game over update
+                    keyboardController.Update();
                     deathManager.Update(gameTime);
                     break;
                 case GameState.Winning:
                     // Handle winning update
+                    keyboardController.Update();
                     triforceManager.Update(gameTime, this);
                     break;
                 case GameState.RoomTransition:

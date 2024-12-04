@@ -258,6 +258,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             key.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
                             rooms[currentRoom].Items.Add(key);
                             DelegateManager.RaiseObjectCreated(key);
+                            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Key_Appear");
                             keyDropped1 = true;
                         }
                         if (enemiesKilled == 9 && !keyDropped2)
