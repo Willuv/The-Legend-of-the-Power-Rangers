@@ -165,7 +165,6 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
             bool secretActivated = false;
             if (currentRoom != loadedRoom)
             {
-                //rooms[currentRoom].LoadEnemies();
 
                 loadedRoom = currentRoom;
 
