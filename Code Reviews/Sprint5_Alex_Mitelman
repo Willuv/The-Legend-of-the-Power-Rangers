@@ -6,12 +6,11 @@ Readability
 	Max Muccillo
 	15	
 	Specific comments on what is readable and what is not:
-    Reading the code is pretty clear as the method names are descriptive and the use of switch case makes the design clear. The code is also spaced in a way that groups related variables for further clarity. Overall, the code is highly readable and could maybe only improve on using less hard coded numbers as those can reduce readability and mainatainablility. If not, maybe the addition of some comments would help explain. 
-	.
+    Reading the code is pretty clear as the method names are descriptive and the use of switch case makes the design clear. The code is also spaced in a way that groups related variables for further clarity. Overall, the code is highly readable and could maybe only improve on using less hard coded numbers as those can reduce readability and mainatainablility. If not, maybe the addition of some comments would help explain the values.
 
 Quality
 	Alex Mitelman
-	11/3/24
+	12/3/24
 	5
 	ItemSelector.cs
 	Max Muccillo
