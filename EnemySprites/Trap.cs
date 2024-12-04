@@ -38,14 +38,14 @@ namespace Legend_of_the_Power_Rangers
         public TrapEnemy() : base()
         {
             InitializeFrames();
-            CollisionHitbox = new Rectangle(200, 200, 30, 30); // Initial position
+            CollisionHitbox = new Rectangle(200, 200, 64, 64); // Initial position
         }
 
         private void InitializeFrames()
         {
             sourceRectangle = new Rectangle[]
             {
-                new Rectangle(265, 316, 30, 30),  // Example frame 1
+                new Rectangle(270, 330, 16, 16),  // Example frame 1
             };
         }
 
