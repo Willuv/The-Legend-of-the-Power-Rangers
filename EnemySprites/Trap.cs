@@ -1,9 +1,3 @@
-////LinkDecorator.baseLink.GetPosition();
-//using Legend_of_the_Power_Rangers;
-
-//LinkManager.getLink().DestinationRectangle.X
-//x 265
-//y 316
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -21,10 +15,16 @@ namespace Legend_of_the_Power_Rangers
         }
 
         public bool HasBeenCounted { get; set; } = false;
-        private float speed = 150f;
-        private int frameIndex1;
-        private int frameIndex2;
-        private int currentFrameIndex;
+        private int originalX;
+        private int originalY;
+        private float speed = 300f;
+        private Vector2 direction = Vector2.Zero;
+        
+        private bool isReturning = false;
+        private bool isTriggered = false;
+        private double triggeredTimer = 0; 
+        private const double returnDelay = 2000;
+
         private bool isHurt = false;
         private double hurtTimer = 0;
         private const double hurtDuration = 1000;
@@ -33,31 +33,22 @@ namespace Legend_of_the_Power_Rangers
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.Trap; } }
 
-        private Vector2 direction = Vector2.Zero;
 
         public TrapEnemy() : base()
         {
             InitializeFrames();
-            CollisionHitbox = new Rectangle(200, 200, 30, 30); // Initial position
+            CollisionHitbox = new Rectangle(200, 200, 64, 64); // Initial position
         }
 
         private void InitializeFrames()
         {
-            sourceRectangle = new Rectangle[]
-            {
-                new Rectangle(265, 316, 30, 30),  // Example frame 1
-            };
+            sourceRectangle = new Rectangle[] { new Rectangle(270, 330, 16, 16)};
         }
 
         public void SetDirection(Vector2 newDirection)
         {
             direction = newDirection;
-
-            // Update sprite animation frames based on direction
-            if (direction.X > 0) currentFrameIndex = 1; // Moving right
-            else if (direction.X < 0) currentFrameIndex = 3; // Moving left
-            else if (direction.Y > 0) currentFrameIndex = 5; // Moving down
-            else if (direction.Y < 0) currentFrameIndex = 7; // Moving up
+            // Usually houses change frame logic, but traps have no frames.
         }
 
         public void Update(GameTime gameTime)
@@ -72,29 +63,69 @@ namespace Legend_of_the_Power_Rangers
                 }
             }
 
-            // Get Link's position
-            Rectangle linkPosition;
-            Link link = LinkManager.GetLink();
-            linkPosition.X = link.destinationRectangle.X;
-            linkPosition.Y = link.destinationRectangle.Y;
+            if (isReturning)
+            {
+                // Return to starting position
+                // Vector2 currentPosition = new Vector2(destinationRectangle.X, destinationRectangle.Y);
+                // Vector2 returnDirection = startPosition - currentPosition;
+                Vector2 currentPosition = new Vector2(destinationRectangle.X, destinationRectangle.Y);
+                Vector2 returnDirection = new Vector2(originalX, originalY) - currentPosition;
 
-            // Check if TrapEnemy is aligned with Link in the X or Y direction
-            if (linkPosition.X == destinationRectangle.X)
-            {
-                // Move up or down towards Link
-                if (linkPosition.Y > destinationRectangle.Y) SetDirection(new Vector2(0, 1)); // Down
-                else SetDirection(new Vector2(0, -1)); // Up
+                // Stop when close enough to start position
+                if (returnDirection.Length() < 1.5) // Used to use 1, but there is a bug with the top two traps getting stuck at the bottom of the room
+                {
+                    // Set location of where trap currently is
+                    destinationRectangle.X = originalX;
+                    destinationRectangle.Y = originalY;
+                    
+                    direction = Vector2.Zero;
+                    isReturning = false; // Stop returning
+                    isTriggered = false; // Ready for next trigger
+                }
+                else
+                {
+                    returnDirection.Normalize();
+                    SetDirection(returnDirection);
+                }
             }
-            else if (linkPosition.Y == destinationRectangle.Y)
+            else if (!isTriggered)
             {
-                // Move left or right towards Link
-                if (linkPosition.X > destinationRectangle.X) SetDirection(new Vector2(1, 0)); // Right
-                else SetDirection(new Vector2(-1, 0)); // Left
+                Link link = LinkManager.GetLink();
+                Rectangle linkPosition;
+                linkPosition.X = link.destinationRectangle.X;
+                linkPosition.Y = link.destinationRectangle.Y;
+                
+                const int tolerance = 5; // Trap Sensativity for trigger
+                bool alignedX = Math.Abs(linkPosition.X - destinationRectangle.X) <= tolerance;
+                bool alignedY = Math.Abs(linkPosition.Y - destinationRectangle.Y) <= tolerance;
+
+                if (alignedX || alignedY)
+                {
+                    originalX = destinationRectangle.X;
+                    originalY = destinationRectangle.Y;
+                    isTriggered = true;
+
+                    if (alignedX)
+                    {
+                        // Up or Down
+                        SetDirection(new Vector2(0, linkPosition.Y > destinationRectangle.Y ? 1 : -1));
+                    }
+                    else if (alignedY)
+                    {
+                        // Left or Right
+                        SetDirection(new Vector2(linkPosition.X > destinationRectangle.X ? 1 : -1, 0));
+                    }
+                }
             }
             else
             {
-                // Not aligned, stop moving
-                SetDirection(Vector2.Zero);
+                triggeredTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+
+                if (triggeredTimer >= returnDelay) // Return set to two second cycle
+                {
+                    triggeredTimer = 0;
+                    isReturning = true;
+                }
             }
 
             // Update position
@@ -107,7 +138,7 @@ namespace Legend_of_the_Power_Rangers
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
             Color tint = isHurt ? Color.Red : Color.White;
-            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[currentFrameIndex], tint);
+            spriteBatch.Draw(texture, destinationRectangle, sourceRectangle[0], tint);
         }
 
         int Health = 2;
