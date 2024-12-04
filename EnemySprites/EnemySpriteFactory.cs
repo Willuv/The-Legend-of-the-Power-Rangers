@@ -71,7 +71,7 @@ namespace Legend_of_the_Power_Rangers
                 case "18":
                     return new GelSmallTeal();
                 case "19":
-                    // Trap
+                    return new TrapEnemy();
                 case "98":
                     return new OldMan();
                 default:

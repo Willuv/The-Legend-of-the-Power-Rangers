@@ -14,5 +14,6 @@ namespace Legend_of_the_Power_Rangers
         public void TakeDamage(int X);
         public bool IsHurt();
         public bool isDead { get; set; }
+        public bool HasBeenCounted { get; set; }
     }
 }

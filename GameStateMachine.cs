@@ -22,6 +22,8 @@ namespace Legend_of_the_Power_Rangers
             Winning,
             RoomTransition,
             Running,
+            Reset,
+            Quit
         }
 
         public GameState currentState;
@@ -162,8 +164,8 @@ namespace Legend_of_the_Power_Rangers
 
 
 
-            triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this, link);
-            deathManager = new DeathScreenManager(game.GraphicsDevice, link, this, spriteBatch);
+            triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this, link, font);
+            deathManager = new DeathScreenManager(game.GraphicsDevice, link, this, spriteBatch, font);
         }
 
         private void InitializePausedState()
@@ -192,7 +194,7 @@ namespace Legend_of_the_Power_Rangers
             // Game Over logic (e.g., display game over screen, stop gameplay)
             if (deathManager == null)
             {
-                deathManager = new DeathScreenManager(game.GraphicsDevice,link,  this, spriteBatch);
+                deathManager = new DeathScreenManager(game.GraphicsDevice,link,  this, spriteBatch, font);
             }
             MediaPlayer.Stop();
             if (!AudioManager.Instance.IsMuted()) audioManager.PlaySound("Link_Die");
@@ -202,7 +204,7 @@ namespace Legend_of_the_Power_Rangers
         {
             if (triforceManager == null)
             {
-                triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this, link);
+                triforceManager = new TriforceCompletionManager(game.GraphicsDevice, this, link, font);
             }
             MediaPlayer.Stop();
             if (!AudioManager.Instance.IsMuted()) audioManager.PlayMusic("Win");
@@ -259,14 +261,22 @@ namespace Legend_of_the_Power_Rangers
                     break;
                 case GameState.GameOver:
                     // Handle game over update
+                    keyboardController.Update();
                     deathManager.Update(gameTime);
                     break;
                 case GameState.Winning:
                     // Handle winning update
+                    keyboardController.Update();
                     triforceManager.Update(gameTime, this);
                     break;
                 case GameState.RoomTransition:
                     UpdateRoomTranstion(gameTime);
+                    break;
+                case GameState.Reset: 
+                    ResetGame();
+                    break;
+                case GameState.Quit: 
+                    game.Exit();
                     break;
             }
         }

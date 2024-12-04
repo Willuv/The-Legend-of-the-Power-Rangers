@@ -20,6 +20,7 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
+        public bool HasBeenCounted { get; set; } = false;
         private Vector2 direction;
         private bool isFacingLeft = true;
         int scale = 3;

@@ -1,6 +1,8 @@
 using System;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
+
 
 namespace Legend_of_the_Power_Rangers
 {
@@ -12,15 +14,24 @@ namespace Legend_of_the_Power_Rangers
             RedScreen,
             Spinning,
             BlackScreen,
-            Complete
+            Menu
+        }
+        private enum MenuOption
+        {
+            Continue,
+            Quit,
+            Reset
         }
 
         private DeathStage currentStage = DeathStage.TurningForward;
+        private MenuOption currentMenuOption = MenuOption.Continue;
+
         private double elapsedTime = 0;
         private int spinCount = 0;
         private float fadeAlpha = 0f;
         private Texture2D screenOverlayTexture;
 
+        private SpriteFont font;
         private readonly Link link;
         private readonly GameStateMachine gameStateMachine;
         private readonly LinkStateMachine linkStateMachine;
@@ -33,13 +44,16 @@ namespace Legend_of_the_Power_Rangers
         private const float SPIN_SPEED = 200;
         private const double BLACK_SCREEN_DURATION = 3000;
 
-        public DeathScreenManager(GraphicsDevice graphicsDevice, Link link, GameStateMachine gameStateMachine, SpriteBatch spriteBatch)
+        private KeyboardState previousKeyboardState;
+
+        public DeathScreenManager(GraphicsDevice graphicsDevice, Link link, GameStateMachine gameStateMachine, SpriteBatch spriteBatch, SpriteFont font)
         {
             //this.link = link;
             this.link = LinkManager.GetLink();
             this.gameStateMachine = gameStateMachine;
             this.linkStateMachine = link.GetStateMachine();
             this.spriteBatch = spriteBatch;
+            this.font = font;
 
             linkDecorator = new LinkDecorator(link);
             screenOverlayTexture = new Texture2D(graphicsDevice, 1, 1);
@@ -98,14 +112,51 @@ namespace Legend_of_the_Power_Rangers
                     fadeAlpha = Math.Min(1f, fadeAlpha + (float)gameTime.ElapsedGameTime.TotalSeconds);
                     if (elapsedTime >= BLACK_SCREEN_DURATION)
                     {
-                        currentStage = DeathStage.Complete;
+                        currentStage = DeathStage.Menu;
                     }
                     break;
+                case DeathStage.Menu:
+                    HandleMenuInput();
+                    break;
 
-                case DeathStage.Complete:
-                    // Reset game or other actions as needed
+            }
+        }
+
+        private void HandleMenuInput()
+        {
+            KeyboardState keyboardState = Keyboard.GetState();
+
+            if (keyboardState.IsKeyDown(Keys.Up) && previousKeyboardState.IsKeyUp(Keys.Up))
+            {
+                currentMenuOption = (MenuOption)(((int)currentMenuOption - 1 + 3) % 3); // Wrap around
+            }
+            else if (keyboardState.IsKeyDown(Keys.Down) && previousKeyboardState.IsKeyUp(Keys.Down))
+            {
+                currentMenuOption = (MenuOption)(((int)currentMenuOption + 1) % 3); // Wrap around
+            }
+            else if (keyboardState.IsKeyDown(Keys.Enter) && previousKeyboardState.IsKeyUp(Keys.Enter))
+            {
+                ExecuteMenuOption();
+            }
+
+            // Update previous keyboard state for next frame
+            previousKeyboardState = keyboardState;
+        }
+
+        private void ExecuteMenuOption()
+        {
+            switch (currentMenuOption)
+            {
+                case MenuOption.Continue:
+                    // Resume w/ full health
                     LinkManager.GetLink().Heal(LinkManager.GetLink().GetMaxHealth());
                     gameStateMachine.ChangeState(GameStateMachine.GameState.Running);
+                    break;
+                case MenuOption.Quit:
+                    gameStateMachine.ChangeState(GameStateMachine.GameState.Quit);
+                    break;
+                case MenuOption.Reset:
+                    gameStateMachine.ChangeState(GameStateMachine.GameState.Reset);
                     break;
             }
         }
@@ -127,9 +178,29 @@ namespace Legend_of_the_Power_Rangers
             {
                 spriteBatch.Draw(screenOverlayTexture, screenBounds, Color.Red * 0.6f);
             }
-            else if (currentStage == DeathStage.BlackScreen || currentStage == DeathStage.Complete)
+            else if (currentStage == DeathStage.BlackScreen || currentStage == DeathStage.Menu) 
             {
                 spriteBatch.Draw(screenOverlayTexture, screenBounds, Color.Black * fadeAlpha);
+                if (currentStage == DeathStage.Menu)
+                {
+                    DrawMenu(spriteBatch, screenBounds);
+                }
+            }
+        }
+        private void DrawMenu(SpriteBatch spriteBatch, Rectangle screenBounds)
+        {
+            string[] menuOptions = { "Continue", "Quit", "Reset" };
+            Vector2 center = new Vector2(screenBounds.Width / 2, screenBounds.Height / 2);
+            float scale = 2.0f;
+
+            for (int i = 0; i < menuOptions.Length; i++)
+            {
+                string text = menuOptions[i];
+                Vector2 textSize = font.MeasureString(text);
+                Vector2 position = center + new Vector2(0, (i - 1) * 50);
+
+                Color color = (i == (int)currentMenuOption) ? Color.Yellow : Color.White;
+                spriteBatch.DrawString(font, text, position - textSize / 2, color,0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             }
         }
 

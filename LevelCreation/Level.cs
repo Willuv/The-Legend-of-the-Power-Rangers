@@ -46,10 +46,18 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         }
         int loadedRoom;
         int scaleFactor = 4;
+        
         private CollisionManager collisionManager;
-
+        Dictionary<int, TimeSpan> deathTimers = new Dictionary<int, TimeSpan>();
+        
         private PortalManager portalManager;
         private Camera2D camera;
+        
+        private int enemiesKilled = 0;
+        private bool keyDropped1 = false;
+        private bool keyDropped2 = false;
+        private bool bombDropped1 = false;
+        private bool bombDropped2 = false;
 
         private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, String ContentPath, SpriteFont font)
@@ -196,16 +204,78 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     }
                 }
             }
+            
             foreach (IEnemy enemy in rooms[currentRoom].Enemies)
             {
                 enemy.Update(gametime);
                 if (enemy.isDead)
                 {
-                    toRemove.Add(rooms[currentRoom].Enemies.IndexOf(enemy));
-                    /*if (enemy.droppeditem != null)
+                    int enemyIndex = rooms[currentRoom].Enemies.IndexOf(enemy);
+                    //toRemove.Add(rooms[currentRoom].Enemies.IndexOf(enemy));
+                    if (!deathTimers.ContainsKey(enemyIndex))
                     {
-                        rooms[currentRoom].Items.Add(enemy.droppeditem);
-                    }*/
+                        deathTimers[enemyIndex] = gametime.TotalGameTime;
+                    }
+                    if (gametime.TotalGameTime - deathTimers[enemyIndex] >= TimeSpan.FromMilliseconds(1500))
+                    {
+                        toRemove.Add(enemyIndex);
+                        deathTimers.Remove(enemyIndex);
+                        //toRemove.Add(rooms[currentRoom].Enemies.IndexOf(enemy));
+                    }
+                    if (enemy.isDead)
+                    {
+                        if (!enemy.HasBeenCounted)
+                        {
+                            enemiesKilled++;
+                            enemy.HasBeenCounted = true; // Count enemies only once
+                        }
+                        
+                        // Enemies 4 and 8 drop bombs
+                        if (enemiesKilled == 4 && !bombDropped1)
+                        {
+                            IItem bomb = ItemSpriteFactory.Instance.CreateItem("Bomb");
+                            bomb.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
+                            rooms[currentRoom].Items.Add(bomb);
+                            DelegateManager.RaiseObjectCreated(bomb);
+                            bombDropped1 = true;
+                            
+                        }
+                        if (enemiesKilled == 8 && !bombDropped2)
+                        {
+                            IItem bomb = ItemSpriteFactory.Instance.CreateItem("Bomb");
+                            bomb.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
+                            rooms[currentRoom].Items.Add(bomb);
+                            DelegateManager.RaiseObjectCreated(bomb);
+                            bombDropped2 = true;
+                            
+                        }
+
+                        // Enemies 5 and 9 drop keys
+                        if (enemiesKilled == 5 && !keyDropped1)
+                        {
+                            IItem key = ItemSpriteFactory.Instance.CreateItem("Key");
+                            key.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
+                            rooms[currentRoom].Items.Add(key);
+                            DelegateManager.RaiseObjectCreated(key);
+                            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Key_Appear");
+                            keyDropped1 = true;
+                        }
+                        if (enemiesKilled == 9 && !keyDropped2)
+                        {
+                            IItem key = ItemSpriteFactory.Instance.CreateItem("Key");
+                            key.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
+                            rooms[currentRoom].Items.Add(key);
+                            DelegateManager.RaiseObjectCreated(key);
+                            keyDropped2 = true;
+                        }
+                    }
+                }
+            }
+            foreach (var key in deathTimers.Keys.ToList())
+            {
+                if (!rooms[currentRoom].Enemies.Any(enemy => rooms[currentRoom].Enemies.IndexOf(enemy) == key))
+                {
+                    deathTimers.Remove(key);
                 }
             }
             foreach (int removeIndex in toRemove)

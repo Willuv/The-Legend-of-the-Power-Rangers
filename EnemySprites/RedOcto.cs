@@ -16,6 +16,7 @@ namespace Legend_of_the_Power_Rangers
             set { destinationRectangle = value; }
         }
         
+        public bool HasBeenCounted { get; set; } = false;
         private Vector2 direction;
         private float speed = 100f;
         private int scale = 2;

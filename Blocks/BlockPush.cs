@@ -35,6 +35,7 @@ namespace Legend_of_the_Power_Rangers
         public void Push()
         {
             IsPushable = false;
+            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Secret");
             switch (PushableDirection)
             {
                 case CollisionDirection.Left:

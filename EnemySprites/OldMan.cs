@@ -13,7 +13,7 @@ namespace Legend_of_the_Power_Rangers
             set { destinationRectangle = value; }
         }
         public bool isDead { get; set; }
-        
+        public bool HasBeenCounted { get; set; } = false;
         private bool isHurt = false;
         private double hurtTimer = 0;
         private const double hurtDuration = 1000;

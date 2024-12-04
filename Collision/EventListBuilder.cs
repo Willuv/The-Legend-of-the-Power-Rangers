@@ -25,7 +25,7 @@ namespace Legend_of_the_Power_Rangers
                 new BatKeese(), new BlueCentaur(), new BlueGorya(), new BlueKnight(), new BlueOcto(null),
                 new DarkMoblin(), new DragonBoss(null, null), new GelBigGray(), new GelBigGreen(),
                 new GelSmallBlack(), new GelSmallTeal(), new RedCentaur(), new RedGorya(), new RedKnight(),
-                new RedMoblin(), new RedOcto(null), new Skeleton(), new WallMaster()
+                new RedMoblin(), new RedOcto(null), new Skeleton(), new WallMaster(), new TrapEnemy()
             };
 
             List<ICollision> unmovableBlocks = new() {

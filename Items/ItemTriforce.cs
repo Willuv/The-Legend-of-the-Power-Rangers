@@ -16,6 +16,7 @@ namespace Legend_of_the_Power_Rangers
             set { destinationRectangle = value;}
         }
 
+        private readonly Link link;
         public ObjectType ObjectType { get { return ObjectType.Item; } }
         public ItemType ItemType { get { return ItemType.Triforce; } }
 
@@ -30,7 +31,6 @@ namespace Legend_of_the_Power_Rangers
 
         private bool reverse = false;
 
-        
         public void Update(GameTime gameTime)
         {
             int time = 8;
@@ -62,7 +62,21 @@ namespace Legend_of_the_Power_Rangers
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(ItemSpriteFactory.Instance.GetItemSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
+            if (PickedUp)
+            {
+                Link link = LinkManager.GetLink();
+                // Draw above link
+                destinationRectangle = new Rectangle(
+                    link.destinationRectangle.X + link.destinationRectangle.Width / 2 - CollisionHitbox.Width / 2,
+                    link.destinationRectangle.Y - CollisionHitbox.Height,
+                    CollisionHitbox.Width,
+                    CollisionHitbox.Height
+                );
+                spriteBatch.Draw(ItemSpriteFactory.Instance.GetItemSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
+
+            } else {
+                spriteBatch.Draw(ItemSpriteFactory.Instance.GetItemSpritesheet(), destinationRectangle, sourceRectangle, Color.White);
+            }
         }
     }
 }
