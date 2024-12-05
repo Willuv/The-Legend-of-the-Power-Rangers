@@ -1,8 +1,7 @@
-# Legend of the Power Rangers - Sprint 4
-
+# Legend of the Power Rangers - Sprint 5
 ## Overview
 
-This README provides information about our game project **Legend of the Power Rangers** for Sprint 3.
+This README provides information about our game project **Legend of the Power Rangers** for Sprint 5.
 
 ## Controls
 
@@ -12,6 +11,8 @@ This README provides information about our game project **Legend of the Power Ra
 - **1, 2, 3...**: Select different items (Developer).
 - **E**: Cause Link to take damage (Developer).
 - **I**: Open/Close Inventory
+- **B**: Use active item
+- **V**: Shoot orange portal
   
 ### Mouse Control
 -- **Left/Right Click**: Cycle Through Rooms (Developer)
@@ -21,17 +22,4 @@ This README provides information about our game project **Legend of the Power Ra
 - **R**: Reset the game to the initial state.
 
 ## Features Implemented
-- Majority of functionality for the 1st Dungeon
-    
-- **Basic Gameplay Mechanics**:
-  - Movement for all objects.
-  - State changes for Link and other objects.
-  - Sprite animation for different objects.
-  - Collision for different objects
-  - Cycling between rooms
-
-## Known Bugs
-  - Enemies not despawning when dead
-  - Camera transition from left to right
-  - Link does not spawn when originally loading the game (Change rooms with the mouse to fix)
-
+- All features of the original Legend of Zelda's first dungeon
