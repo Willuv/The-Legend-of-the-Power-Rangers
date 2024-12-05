@@ -88,9 +88,11 @@ namespace Legend_of_the_Power_Rangers
 
         private void SetRandomDirection()
         {
-            float angle = (float)(random.NextDouble() * Math.PI * 2); // Random angle in radians
-            direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-            direction.Normalize();
+            //float angle = (float)(random.NextDouble() * Math.PI * 2); // Random angle in radians
+            //direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+            Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
+            direction = directions[random.Next(directions.Length)];
+            //direction.Normalize();
             SetDirection(direction);
         }
 
