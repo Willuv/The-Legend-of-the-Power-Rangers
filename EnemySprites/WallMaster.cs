@@ -64,8 +64,8 @@ namespace Legend_of_the_Power_Rangers
         {
             InitializeFrames();
             SetRandomDirection();
-            CollisionHitbox = new Rectangle(300, 100, 60, 50); // Default positon
-            DestinationRectangle = new Rectangle(300, 100, 60, 50);
+            CollisionHitbox = new Rectangle(300, 100, 120, 100); // Default positon
+            DestinationRectangle = new Rectangle(300, 100, 120, 100);
             // screenOverlayTexture = new Texture2D(graphicsDevice, 1, 1);
             // screenOverlayTexture.SetData(new[] { Color.White });
             isDead = false;

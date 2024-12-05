@@ -58,10 +58,13 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         private bool keyDropped2 = false;
         private bool bombDropped1 = false;
         private bool bombDropped2 = false;
+        private bool secretActivated = false;
+        private bool doorUnlocked = false;
+        private bool door1Bombed = false;
+        private bool door2Bombed = false;
         private bool portalDropped = false;
         private bool rupeeDropped1 = false;
         private bool rupeeDropped2 = false;
-
 
         private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, String ContentPath, SpriteFont font)
@@ -174,10 +177,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         }
         public void Update(GameTime gametime) 
         {
-            bool secretActivated = false;
+            
             if (currentRoom != loadedRoom)
             {
-                //rooms[currentRoom].LoadEnemies();
 
                 loadedRoom = currentRoom;
 
@@ -339,6 +341,45 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                     else
                     {
                         if (rooms[currentRoom].Enemies.Count == 0)
+                        {
+                            door.IsOpen = true;
+                        }
+                    }
+                }
+                if (door.DoorType == DoorType.Key)
+                {
+                    if (currentRoom == 9  || currentRoom == 6)
+                    {
+                        if (door.IsOpen == true)
+                        {
+                            doorUnlocked = true;
+                        }
+                        if (doorUnlocked)
+                        {
+                            door.IsOpen = true;
+                        }
+                    }
+                }
+                if (door.DoorType == DoorType.Hole)
+                {
+                    if (currentRoom == 8 || currentRoom == 5)
+                    {
+                        if (door.IsOpen == true)
+                        {
+                            door1Bombed = true;
+                        }
+                        if (door1Bombed)
+                        {
+                            door.IsOpen = true;
+                        }
+                    }
+                    if (currentRoom == 11 || currentRoom == 7)
+                    {
+                        if (door.IsOpen == true)
+                        {
+                            door2Bombed = true;
+                        }
+                        if (door2Bombed)
                         {
                             door.IsOpen = true;
                         }

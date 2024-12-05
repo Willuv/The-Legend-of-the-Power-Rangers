@@ -48,7 +48,7 @@ namespace Legend_of_the_Power_Rangers
             InitializeFrames();
             SetRandomDirection();
             projectiles = new List<OctoProjectile>();
-            CollisionHitbox = new Rectangle(300, 100, 30, 30); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 64, 64); // Default positon
             isDead = false;
         }
         private void InitializeFrames()

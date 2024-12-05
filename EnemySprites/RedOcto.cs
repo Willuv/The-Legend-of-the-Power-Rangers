@@ -58,7 +58,7 @@ namespace Legend_of_the_Power_Rangers
             }
             else
             {
-                CollisionHitbox = new Rectangle(300, 100, 15 * scale, 15 * scale); // Default position
+                CollisionHitbox = new Rectangle(300, 100, 30 * scale, 30 * scale); // Default position
             }
         }
 

@@ -39,7 +39,7 @@ namespace Legend_of_the_Power_Rangers
 
         public BatKeese() : base()
         {
-            CollisionHitbox = new Rectangle(300, 100, 44, 30); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 88, 60); // Default positon
             InitializeFrames();
             SetRandomDirection();
             isDead = false;
