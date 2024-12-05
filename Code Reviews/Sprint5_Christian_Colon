@@ -1,1 +1,20 @@
-CODE REVIEW GOES HERE
+Readability
+	Christian Colon
+	12/4/2024
+	Sprint 5
+	DeathScreenManager.cs
+	Alex Mitelman
+	15
+  The methods really help with readability. The occasional comment for some loops are really helpful.	
+
+
+
+Quality
+	Christian Colon
+	12/4/2024
+	Sprint 5
+	DeathScreenManager.cs
+	Alex Mitelman
+	15
+	Overall this code is pretty good, I see the use of Keyboard.GetState, and I think maybe we should be using the commands for that, but otherwise pretty good.
+  Each method seems to have a pretty specific function.
