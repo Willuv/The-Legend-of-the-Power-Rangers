@@ -9,6 +9,7 @@ namespace Legend_of_the_Power_Rangers
         private Texture2D enemySpriteSheet;
         private Texture2D projectileSpriteSheet;
         private Texture2D bossSpriteSheet;
+        private Texture2D itemSpriteSheet;
         public static EnemySpriteFactory Instance
         {
             get { return instance; }
@@ -28,6 +29,10 @@ namespace Legend_of_the_Power_Rangers
         public void SetBossSpritesheet(Texture2D spritesheet)
         {
             bossSpriteSheet = spritesheet;
+        }
+        public void SetItemSpritesheet(Texture2D spritesheet)
+        {
+            itemSpriteSheet = spritesheet;
         }
 
         public IEnemy CreateEnemy(string enemyType)
@@ -51,7 +56,7 @@ namespace Legend_of_the_Power_Rangers
                 case "08":
                     return new RedCentaur();
                 case "09":
-                    return new RedGorya();
+                    return new RedGorya(itemSpriteSheet);
                 case "10":
                     return new RedKnight();
                 case "11":

@@ -24,7 +24,7 @@ namespace Legend_of_the_Power_Rangers
             List<ICollision> enemies = new() {
                 new BatKeese(), new BlueCentaur(), new BlueGorya(), new BlueKnight(), new BlueOcto(null),
                 new DarkMoblin(), new DragonBoss(null, null), new GelBigGray(), new GelBigGreen(),
-                new GelSmallBlack(), new GelSmallTeal(), new RedCentaur(), new RedGorya(), new RedKnight(),
+                new GelSmallBlack(), new GelSmallTeal(), new RedCentaur(), new RedGorya(null), new RedKnight(),
                 new RedMoblin(), new RedOcto(null), new Skeleton(), new WallMaster(), new TrapEnemy()
             };
 
@@ -64,7 +64,7 @@ namespace Legend_of_the_Power_Rangers
             };
             List<ICollision> enemyProjectiles = new()
             {
-                new DragonProjectile(null, r), new OctoProjectile(null, r, new Vector2(0, 0)) //add octo
+                new DragonProjectile(null, r), new OctoProjectile(null, r, new Vector2(0, 0)), new GoryaProjectile(null, r,new Vector2(0,0))
             };
             List<ICollision> allProjectiles = new();
             allProjectiles.AddRange(linkProjectiles);

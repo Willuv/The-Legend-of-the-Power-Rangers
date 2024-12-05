@@ -35,6 +35,11 @@ public class LinkVSEnemyProjectile : IEvent
                 dragonProjectile.destinationRectangle = new Rectangle(0, 0, 0, 0);
                 if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Shield");
             }
+            else if (projectile is GoryaProjectile goryaProjectile)
+            {
+                goryaProjectile.destinationRectangle = new Rectangle(0, 0, 0, 0);
+                if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Shield");
+            }
 
             ProjectileVanish vanish = new();
             vanish.Execute(collidable, null, direction);

@@ -8,6 +8,6 @@ namespace Legend_of_the_Power_Rangers
 {
     public enum EnemyProjectileType
     {
-        DragonBoss, RedOcto, BlueOcto, Octo
+        DragonBoss, RedOcto, BlueOcto, Octo, GoryaBoomerang
     }
 }

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -34,15 +35,24 @@ namespace Legend_of_the_Power_Rangers
         private double hurtTimer = 0;
         private const double hurtDuration = 1000;
 
+        private List<GoryaProjectile> projectiles = new List<GoryaProjectile>();
+        private double timeSinceLastProjectile = 0;
+        private const double projectileCooldown = 3000; // 3 seconds between boomerang throws
+        private Texture2D projectileTexture;
+        private GoryaProjectile currentProjectile;
+        private bool isThrowing;
+
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.RedGorya; } }
 
-        public RedGorya() : base()
+        public RedGorya(Texture2D projectileTexture) : base()
         {
             InitializeFrames();
             SetRandomDirection();
             CollisionHitbox = new Rectangle(300, 100, 64, 64); // Default positon
             isDead = false;
+            isThrowing = false;
+            this.projectileTexture = projectileTexture;
         }
         private void InitializeFrames()
         {
@@ -100,6 +110,18 @@ namespace Legend_of_the_Power_Rangers
                     hurtTimer = 0;
                 }
             }
+            if (isThrowing)
+            {
+                currentProjectile?.Update(gameTime);
+
+                if (currentProjectile != null && currentProjectile.GetState())
+                {
+                    isThrowing = false;
+                    currentProjectile = null;
+                }
+
+                return;
+            }
 
             directionChangeTimer += gameTime.ElapsedGameTime.TotalSeconds;
             if (directionChangeTimer >= 3) // ChangeDirrection every 3sec
@@ -123,6 +145,36 @@ namespace Legend_of_the_Power_Rangers
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
             base.Update(gameTime);
+            
+            timeSinceLastProjectile += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (timeSinceLastProjectile >= projectileCooldown)
+            {
+                SpawnProjectile();
+                timeSinceLastProjectile = 0;
+            }
+
+            for (int i = projectiles.Count - 1; i >= 0; i--) // Iterate in reverse to safely remove items
+            {
+                var projectile = projectiles[i];
+                if (projectile.HasHitWall || timeSinceLastProjectile >= projectileCooldown)
+                {
+                    projectile.CollisionHitbox = Rectangle.Empty;
+                    projectiles.RemoveAt(i);
+                }
+                else
+                {
+                    projectile.Update(gameTime);
+                }
+            }
+
+            projectiles.RemoveAll(p => p.GetState());
+        }
+        private void SpawnProjectile()
+        {
+            var position = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 10, 10); // Adjust size if necessary
+            var projectile = new GoryaProjectile(projectileTexture, position, direction);
+            projectiles.Add(projectile);
+            DelegateManager.RaiseObjectCreated(projectile);
         }
         public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
@@ -131,6 +183,10 @@ namespace Legend_of_the_Power_Rangers
             if (IsSpawning || IsDying)
             {
                 base.Draw(texture, spriteBatch);
+            }
+            foreach (var projectile in projectiles)
+            {
+                projectile.Draw(texture, spriteBatch);
             }
         }
 
@@ -141,6 +197,12 @@ namespace Legend_of_the_Power_Rangers
             Health -= damage;
             if (Health <= 0)
             {
+                for (int i = projectiles.Count - 1; i >= 0; i--)
+                {   // Clear the projectiles that are left
+                    projectiles[i].CollisionHitbox = Rectangle.Empty;
+                    projectiles.RemoveAt(i);
+                }
+
                 isDead = true;
                 TriggerDeath(destinationRectangle.X, destinationRectangle.Y);
                 this.destinationRectangle.Width = 0;
