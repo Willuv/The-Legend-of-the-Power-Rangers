@@ -18,7 +18,6 @@ internal class holeDoor : IDoor
     private int xPos;
     private int yPos;
     private int scaleFactor = 4;
-    public bool blownUp;
     public ObjectType ObjectType { get { return ObjectType.Door; } }
     public DoorType DoorType { get { return DoorType.Hole; } }
     public bool IsCameraMoving { get; set; }
@@ -31,7 +30,6 @@ internal class holeDoor : IDoor
         this.spriteSheet = spriteSheet;
         this.sourceRectangle = new Rectangle(294, (33 * doorNum), 31, 31);
         DetermineDestination();
-        blownUp = false;
         IsCameraMoving = false;
         IsOpen = false;
     }
@@ -57,7 +55,7 @@ internal class holeDoor : IDoor
     }
     public void Update(GameTime gameTime)
     {
-        if (blownUp)
+        if (IsOpen)
         {
             sourceRectangle = new Rectangle(426, (33 * doorNum), 31, 31);
         }

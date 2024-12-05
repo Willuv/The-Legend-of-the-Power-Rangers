@@ -40,7 +40,7 @@ namespace Legend_of_the_Power_Rangers
         {
             InitializeFrames();
             SetRandomDirection();
-            CollisionHitbox = new Rectangle(300, 100, 44, 36); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 88, 72); // Default positon
             isDead = false;
         }
         private void InitializeFrames()

@@ -55,8 +55,8 @@ namespace Legend_of_the_Power_Rangers
         {
             InitializeFrames();
             SetRandomDirection();
-            CollisionHitbox = new Rectangle(300, 100, 60, 50); // Default positon
-            DestinationRectangle = new Rectangle(300, 100, 60, 50);
+            CollisionHitbox = new Rectangle(300, 100, 120, 100); // Default positon
+            DestinationRectangle = new Rectangle(300, 100, 120, 100);
             isDead = false;
         }
 

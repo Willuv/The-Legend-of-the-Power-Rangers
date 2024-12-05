@@ -40,7 +40,7 @@ namespace Legend_of_the_Power_Rangers
 
         public DarkMoblin() : base()
         {
-            CollisionHitbox = new Rectangle(300, 100, 30, 30); // Default positon
+            CollisionHitbox = new Rectangle(300, 100, 64, 64); // Default positon
             InitializeFrames();
             SetRandomDirection();
             isDead = false;
