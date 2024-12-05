@@ -62,6 +62,9 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
         private bool doorUnlocked = false;
         private bool door1Bombed = false;
         private bool door2Bombed = false;
+        private bool portalDropped = false;
+        private bool rupeeDropped1 = false;
+        private bool rupeeDropped2 = false;
 
         private List<ICollision> loadedObjects;
         public Level(Texture2D levelSpriteSheet, String ContentPath, SpriteFont font)
@@ -233,7 +236,35 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             enemiesKilled++;
                             enemy.HasBeenCounted = true; // Count enemies only once
                         }
-                        
+                        if (enemy.EnemyType == EnemyType.DragonBoss && !portalDropped) {
+                            IItem PortalGun = ItemSpriteFactory.Instance.CreateItem("PortalGun");
+                            PortalGun.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
+                            rooms[currentRoom].Items.Add(PortalGun);
+                            DelegateManager.RaiseObjectCreated(PortalGun);
+                            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Key_Appear");
+                            portalDropped = true;
+                        }
+                        if (enemiesKilled == 2 && !rupeeDropped1)
+                        {
+                            IItem rupee = ItemSpriteFactory.Instance.CreateItem("Rupee");
+                            rupee.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
+                            rooms[currentRoom].Items.Add(rupee);
+                            DelegateManager.RaiseObjectCreated(rupee);
+                            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Key_Appear");
+                            rupeeDropped1 = true;
+
+                        }
+                        if (enemiesKilled == 6 && !rupeeDropped2)
+                        {
+                            IItem rupee = ItemSpriteFactory.Instance.CreateItem("Rupee");
+                            rupee.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
+                            rooms[currentRoom].Items.Add(rupee);
+                            DelegateManager.RaiseObjectCreated(rupee);
+                            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Key_Appear");
+                            rupeeDropped2 = true;
+
+                        }
+
                         // Enemies 4 and 8 drop bombs
                         if (enemiesKilled == 4 && !bombDropped1)
                         {
@@ -241,6 +272,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             bomb.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
                             rooms[currentRoom].Items.Add(bomb);
                             DelegateManager.RaiseObjectCreated(bomb);
+                            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Key_Appear");
                             bombDropped1 = true;
                             
                         }
@@ -250,6 +282,7 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             bomb.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
                             rooms[currentRoom].Items.Add(bomb);
                             DelegateManager.RaiseObjectCreated(bomb);
+                            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Key_Appear");
                             bombDropped2 = true;
                             
                         }
@@ -270,8 +303,10 @@ namespace Legend_of_the_Power_Rangers.LevelCreation
                             key.CollisionHitbox = new Rectangle(enemy.CollisionHitbox.X, enemy.CollisionHitbox.Y, 40, 40);
                             rooms[currentRoom].Items.Add(key);
                             DelegateManager.RaiseObjectCreated(key);
+                            if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Key_Appear");
                             keyDropped2 = true;
                         }
+
                     }
                 }
             }

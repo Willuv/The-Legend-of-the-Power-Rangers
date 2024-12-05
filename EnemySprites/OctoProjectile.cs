@@ -4,19 +4,34 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Legend_of_the_Power_Rangers
 {
-    public class OctoProjectile
+    public class OctoProjectile : IEnemyProjectile
     {
         private Texture2D projectileTexture;
         private Rectangle sourceRectangle;
+        public Rectangle destinationRectangle;
+        public Rectangle CollisionHitbox
+        {
+            get { return destinationRectangle; }
+            set { destinationRectangle = value; }
+        }
         private Rectangle offset;
         private Vector2 movement;
         private Rectangle position;
+        public Vector2 Direction { get; set; }
         private int currentFrame;
         private int totalFrames;
         private bool finished;
-        private float scaleFactor = 3f;
+        private int scale = 3;
 
-        public Rectangle DestinationRectangle { get; set; }
+        public ObjectType ObjectType { get { return ObjectType.EnemyProjectile; } }
+        public EnemyProjectileType EnemyProjectileType { get { return EnemyProjectileType.Octo; } }
+        private bool hasHitWall = false;
+        public bool HasHitWall
+        {
+            get { return hasHitWall; }
+            set { hasHitWall = value; }
+        }
+
 
         public OctoProjectile(Texture2D texture, Rectangle position, Vector2 direction)
         {
@@ -27,6 +42,7 @@ namespace Legend_of_the_Power_Rangers
             finished = false;
 
             SetDirection(direction);
+            this.Direction = direction;
         }
 
         public void SetDirection(Vector2 direction)
@@ -71,16 +87,16 @@ namespace Legend_of_the_Power_Rangers
                 finished = true;
             }
 
-            DestinationRectangle = new Rectangle(
+            destinationRectangle = new Rectangle(
                 position.X + offset.X,
                 position.Y + offset.Y,
-                sourceRectangle.Width * (int)scaleFactor,
-                sourceRectangle.Height * (int)scaleFactor);
+                sourceRectangle.Width * scale,
+                sourceRectangle.Height * scale);
         }
 
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(Texture2D texture, SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(projectileTexture, DestinationRectangle, sourceRectangle, Color.White);
+            spriteBatch.Draw(projectileTexture, destinationRectangle, sourceRectangle, Color.White);
         }
 
         public bool GetState()

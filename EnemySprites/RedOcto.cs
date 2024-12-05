@@ -152,11 +152,24 @@ namespace Legend_of_the_Power_Rangers
                 projectileTimer = 0;
             }
             // Update projectiles
-            foreach (var projectile in projectiles)
+            // foreach (var projectile in projectiles)
+            // {
+            //     projectile.Update(gameTime);
+            // }
+            // projectiles.RemoveAll(p => p.GetState());
+            for (int i = projectiles.Count - 1; i >= 0; i--) // Iterate in reverse to safely remove items
             {
-                projectile.Update(gameTime);
+                var projectile = projectiles[i];
+                if (projectile.HasHitWall)
+                {
+                    projectile.CollisionHitbox = Rectangle.Empty;
+                    projectiles.RemoveAt(i);
+                }
+                else
+                {
+                    projectile.Update(gameTime);
+                }
             }
-            projectiles.RemoveAll(p => p.GetState());
             base.Update(gameTime);
         }
         private void FireProjectile()
@@ -164,6 +177,7 @@ namespace Legend_of_the_Power_Rangers
             var projectileRectangle = new Rectangle(destinationRectangle.X, destinationRectangle.Y, 15, 7);
             OctoProjectile projectile = new OctoProjectile(projectileTexture, projectileRectangle, direction);
             projectiles.Add(projectile);
+            DelegateManager.RaiseObjectCreated(projectile);
         }
 
         int Health = 2;
@@ -191,7 +205,7 @@ namespace Legend_of_the_Power_Rangers
 
             foreach (var projectile in projectiles)
             {
-                projectile.Draw(spriteBatch);
+                projectile.Draw(projectileTexture, spriteBatch);
             }
             if (IsSpawning || IsDying)
             {

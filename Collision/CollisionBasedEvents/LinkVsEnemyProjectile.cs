@@ -27,7 +27,7 @@ public class LinkVSEnemyProjectile : IEvent
             // Set the destination rectangle of the projectile to 0,0 size
             if (projectile is OctoProjectile octoProjectile)
             {
-                octoProjectile.DestinationRectangle = new Rectangle(0, 0, 0, 0);
+                octoProjectile.destinationRectangle = new Rectangle(0, 0, 0, 0);
                 if (!AudioManager.Instance.IsMuted()) AudioManager.Instance.PlaySound("Shield");
             }
             else if (projectile is DragonProjectile dragonProjectile)

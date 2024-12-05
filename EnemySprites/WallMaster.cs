@@ -41,13 +41,22 @@ namespace Legend_of_the_Power_Rangers
         private const float proximityThreshold = 100f;
         private const float doorReachThreshold = 300f;
 
-        private readonly Point startPosition = new Point(100, 100);
+        private readonly Point startPosition = new Point(2530, 4192);
         private readonly Point topDoor = new Point(510, 0);
         private readonly Point bottomDoor = new Point(510, 842);
         private readonly Point leftDoor = new Point(0, 446);
         private readonly Point rightDoor = new Point(970, 446);
-        private Level level;
-        private Camera2D camera;
+        
+        private const double fadeDuration = 2000; // 2 seconds for fade-to-black
+        private const double maxGrabDuration = 3000; // 3 seconds max grabbing
+        private double fadeTimer = 0;
+        private float fadeOpacity = 0;
+        //private Texture2D screenOverlayTexture;
+        
+
+        private double grabTimer = 0;
+        private bool isFading = false;
+
         public ObjectType ObjectType { get { return ObjectType.Enemy; } }
         public EnemyType EnemyType { get { return EnemyType.WallMaster; } }
 
@@ -57,6 +66,8 @@ namespace Legend_of_the_Power_Rangers
             SetRandomDirection();
             CollisionHitbox = new Rectangle(300, 100, 120, 100); // Default positon
             DestinationRectangle = new Rectangle(300, 100, 120, 100);
+            // screenOverlayTexture = new Texture2D(graphicsDevice, 1, 1);
+            // screenOverlayTexture.SetData(new[] { Color.White });
             isDead = false;
         }
 
@@ -77,9 +88,11 @@ namespace Legend_of_the_Power_Rangers
 
         private void SetRandomDirection()
         {
-            float angle = (float)(random.NextDouble() * Math.PI * 2); // Random angle in radians
-            direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
-            direction.Normalize();
+            //float angle = (float)(random.NextDouble() * Math.PI * 2); // Random angle in radians
+            //direction = new Vector2((float)Math.Cos(angle), (float)Math.Sin(angle));
+            Vector2[] directions = { new Vector2(1, 0), new Vector2(-1, 0), new Vector2(0, 1), new Vector2(0, -1) };
+            direction = directions[random.Next(directions.Length)];
+            //direction.Normalize();
             SetDirection(direction);
         }
 
@@ -110,7 +123,7 @@ namespace Legend_of_the_Power_Rangers
 
             if (isGrabbing)
             {
-                HandleGrabbingState(deltaTime);
+                HandleGrabbingState(gameTime);
             }
             else
             {
@@ -135,8 +148,21 @@ namespace Legend_of_the_Power_Rangers
             }
         }
 
-        private void HandleGrabbingState(float deltaTime)
+        private void HandleGrabbingState(GameTime gameTime)
         {
+            grabTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+            if (isFading)
+            {
+                // Continue fading to black
+                fadeTimer += gameTime.ElapsedGameTime.TotalMilliseconds;
+                fadeOpacity = MathHelper.Clamp((float)(fadeTimer / fadeDuration), 0f, 1f);
+                if (fadeTimer >= fadeDuration)
+                {
+                    CompleteTransition();
+                }
+                return;
+            }
+
             if (!reachedDoor)
             {
                 Vector2 doorPos = targetDoor.ToVector2();
@@ -144,30 +170,45 @@ namespace Legend_of_the_Power_Rangers
                 Vector2 toTarget = doorPos - currentPos;
                 float distance = toTarget.Length();
 
-                if (distance > doorReachThreshold)
+                if (distance > doorReachThreshold && grabTimer < maxGrabDuration) // or if 3 seconds, also add fade to black
                 {
-                    toTarget.Normalize();
-                    Vector2 movement = toTarget * grabSpeed * deltaTime;
-                    destinationRectangle.X += (int)movement.X;
-                    destinationRectangle.Y += (int)movement.Y;
-
-                    // Update Link's position to match WallMaster
-                    Link link = LinkManager.GetLink();
+                    // Move towards the door
+                toTarget.Normalize();
+                Vector2 movement = toTarget * grabSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
+                destinationRectangle.X += (int)movement.X;
+                destinationRectangle.Y += (int)movement.Y;
+                
+                Link link = LinkManager.GetLink();
                     link.destinationRectangle = new Rectangle(
                         destinationRectangle.X, 
                         destinationRectangle.Y,
                         link.destinationRectangle.Width,
                         link.destinationRectangle.Height
                     );
-                    Console.WriteLine("2");
-                }
-                else
-                {
-                    reachedDoor = true;
-                    ResetLinkToStart();
-                    isGrabbing = false;
-                }
             }
+            else
+            {
+                // Start fade-to-black and prepare transition
+                reachedDoor = true;
+                StartFade();
+            }
+            }
+        }
+        private void StartFade()
+        {
+            isFading = true;
+            fadeTimer = 0; // Reset fade timer
+            fadeOpacity = 0f;
+        }
+
+        private void CompleteTransition()
+        {
+            DelegateManager.RaiseChangeToSpecificRoom(1); // Change to the first room
+            ResetLinkToStart();
+            isGrabbing = false;
+            isFading = false;
+            grabTimer = 0; // Reset grab timer
+            fadeOpacity = 0f;
         }
 
         private void HandleNormalState(GameTime gameTime, float deltaTime)
@@ -203,22 +244,8 @@ namespace Legend_of_the_Power_Rangers
                 new Vector2(link.destinationRectangle.X, link.destinationRectangle.Y)
             );
 
-            if (distanceToLink < proximityThreshold)
+            if (distanceToLink < proximityThreshold && !isGrabbing)
             {
-                //Level.SelectLevel(1);
-                //DelegateManager.RaiseChangeToSpecificRoom(1);
-                //link.CollisionHitbox = new Rectangle(270, 321, link.CollisionHitbox.Width, link.CollisionHitbox.Height);
-                
-                //camera = Camera2D.Instance;
-                
-                //DelegateManager.RaiseChangeToSpecificRoom(1);
-                //270, 321
-                // Level currentLevel = level.CurrentRooom;
-                // currentLevel.SelectLevel(1);
-                // Level.Instance.SelectLevel(1);
-                //DelegateManager.RaiseChangeToSpecificRoom(1);
-                //Link link = LinkManager.GetLink();
-                //link.CollisionHitbox = new Rectangle(1020, 698, link.CollisionHitbox.Width, link.CollisionHitbox.Height);
                 StartGrab();
             }
         }
@@ -226,16 +253,15 @@ namespace Legend_of_the_Power_Rangers
         private void ResetLinkToStart()
         {
             Link link = LinkManager.GetLink();
-            Console.WriteLine("1");
-            //int levell = level.CurrentRooom;
-            //Level.SelectLevel(1); ADd this
-            //level.SelectLevel(1);
-            link.destinationRectangle = new Rectangle(
-                startPosition.X,
-                startPosition.Y,
-                link.destinationRectangle.Width,
-                link.destinationRectangle.Height
-            );
+            DelegateManager.RaiseChangeToSpecificRoom(1);
+                    link.destinationRectangle.X = startPosition.X;
+                    link.destinationRectangle.Y = startPosition.Y;
+            // link.destinationRectangle = new Rectangle(
+            //     startPosition.X,
+            //     startPosition.Y,
+            //     link.destinationRectangle.Width,
+            //     link.destinationRectangle.Height
+            // );
         }
 
         public void StartGrab()
@@ -262,7 +288,7 @@ namespace Legend_of_the_Power_Rangers
             if (directionToLink.LengthSquared() > 0)
             {
                 directionToLink.Normalize();
-                SetDirection(directionToLink); // Use existing method to set direction and animation
+                SetDirection(directionToLink); // Use method to set direction and animation
             }
         }
 
@@ -327,6 +353,16 @@ namespace Legend_of_the_Power_Rangers
             {
                 base.Draw(texture, spriteBatch);
             }
+            // if (isFading) // Removed because of glitch
+            // {
+            //     // Overlay a black rectangle with adjustable opacity
+            //     spriteBatch.Draw(
+            //         texture: null, // Or use a single-pixel texture
+            //         destinationRectangle: new Rectangle(0, 0, 1020, 892),
+            //         color: new Color(0, 0, 0, fadeOpacity)
+            //     );
+            // }
+
         }
     }
 }

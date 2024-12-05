@@ -128,11 +128,24 @@ namespace Legend_of_the_Power_Rangers
             destinationRectangle.X += (int)(direction.X * speed * gameTime.ElapsedGameTime.TotalSeconds);
             destinationRectangle.Y += (int)(direction.Y * speed * gameTime.ElapsedGameTime.TotalSeconds);
             // Update projectiles
-            foreach (var projectile in projectiles)
+            // foreach (var projectile in projectiles)
+            // {
+            //     projectile.Update(gameTime);
+            // }
+            // projectiles.RemoveAll(p => p.GetState());
+            for (int i = projectiles.Count - 1; i >= 0; i--) // Iterate in reverse to safely remove items
             {
-                projectile.Update(gameTime);
+                var projectile = projectiles[i];
+                if (projectile.HasHitWall)
+                {
+                    projectile.CollisionHitbox = Rectangle.Empty;
+                    projectiles.RemoveAt(i);
+                }
+                else
+                {
+                    projectile.Update(gameTime);
+                }
             }
-            projectiles.RemoveAll(p => p.GetState());
 
             // Fire projectile
             projectileTimer += gameTime.ElapsedGameTime.TotalSeconds;
@@ -156,7 +169,7 @@ namespace Legend_of_the_Power_Rangers
             
             foreach (var projectile in projectiles)
             {
-                projectile.Draw(spriteBatch);
+                projectile.Draw(projectileTexture, spriteBatch);
             }
             if (IsSpawning || IsDying)
             {
