@@ -13,10 +13,10 @@ namespace Legend_of_the_Power_Rangers
         protected bool IsDying { get; set; }
         public bool IsDragonBoss { get; set; } = false;
 
-        private const int DefaultScale = 1;
+        private const int DefaultScale = 2;
         private const int DragonBossScale = 4;
         private const int DragonBossXOffset = -65;
-        private const int DragonBossYOffset = -65;
+        private const int DragonBossYOffset = -85;
 
         private double frameDisplayTime = 500; // Time between frames
         private double totalFrameTime = 0;
@@ -47,7 +47,7 @@ namespace Legend_of_the_Power_Rangers
             int scale = IsDragonBoss ? DragonBossScale : DefaultScale;
             int adjustedX = IsDragonBoss ? X + DragonBossXOffset : X;
             int adjustedY = IsDragonBoss ? Y + DragonBossYOffset : Y;
-            DestinationRectangle = new Rectangle(adjustedX, adjustedY - 25, sourceRectangles[0].Width * 3 * scale, sourceRectangles[0].Height * 3 * scale);  // X-8,Y-25 center the animation (removed - 8, looked like not needed)
+            DestinationRectangle = new Rectangle(adjustedX, adjustedY - 45, sourceRectangles[0].Width * 3 * scale, sourceRectangles[0].Height * 3 * scale);  // X-8,Y-25 center the animation (removed - 8, looked like not needed)
         }
 
         public void TriggerDeath(int X, int Y)
