@@ -137,6 +137,8 @@ namespace Legend_of_the_Power_Rangers
             LinkManager.SetLinkDecorator(linkDecorator);
             linkInventory = new LinkInventory();
             LinkManager.setLinkInventory(linkInventory);
+            linkInventory.PickUpItem(new ItemPortalGun());
+            linkInventory.ActiveItem = ItemType.PortalGun;
 
             // Load the level
             level = new Level(game.levelSpriteSheet, game.Content.RootDirectory, font);

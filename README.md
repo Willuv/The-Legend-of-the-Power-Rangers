@@ -3,6 +3,29 @@
 
 This README provides information about our game project **Legend of the Power Rangers** for Sprint 5.
 
+## Setup & Run
+
+### macOS Prerequisites
+1.  **Install Dependencies**:
+    You need `freeimage` and `freetype` installed. If you have Homebrew, run:
+    ```bash
+    brew install freeimage freetype
+    ```
+
+2.  **Update MonoGame Tools**:
+    Ensure you have the latest `dotnet-mgcb` tools (especially for Apple Silicon support):
+    ```bash
+    dotnet tool update dotnet-mgcb
+    dotnet tool update dotnet-mgcb-editor
+    dotnet tool update dotnet-mgcb-editor-mac
+    ```
+
+### Running the Game
+To start the game, run:
+```bash
+dotnet run
+```
+
 ## Controls
 
 ### Player Controls (Link)
